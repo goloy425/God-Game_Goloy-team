@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class idou : MonoBehaviour
+public class idou : MonoBehaviour // ※これ仮で作ったものなので、名前は適当です。名前を変更するなり、新しいスクリプトを作るなりしてください・・・！！！！
 {
     public float speed = 5.0f; // 移動速度
 
