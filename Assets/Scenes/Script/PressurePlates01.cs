@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PressurePlates01 : MonoBehaviour
 {
+    public Action<bool> OnPressurePlateChanged; // 感圧板の状態変化を通知するイベント
+
     int NowPressing = 0; // 感圧板に触れているオブジェクトの数を保持するやつ
     private Renderer plateRenderer; // Rendererの参照を保持
 
@@ -42,10 +45,12 @@ public class PressurePlates01 : MonoBehaviour
     void OnTriggerEnter(Collider col) // トリガー領域にオブジェクトが入った場合
     {
         NowPressing++;
+        OnPressurePlateChanged?.Invoke(true); // 押された状態を通知
     }
     void OnTriggerExit(Collider col) // トリガー領域からオブジェクトが退出した場合
     {
         NowPressing--;
+        OnPressurePlateChanged?.Invoke(false); // 離れた状態を通知
     }
 }
 
