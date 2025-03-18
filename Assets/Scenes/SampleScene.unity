@@ -292,6 +292,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  rotationSpeed: 5
+  cameraTransform: {fileID: 963194228}
 --- !u!54 &132440694
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -624,6 +626,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  rotationSpeed: 5
+  cameraTransform: {fileID: 963194228}
 --- !u!136 &556853638
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2143,7 +2147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1105721423
 AudioListener:
   m_ObjectHideFlags: 0
