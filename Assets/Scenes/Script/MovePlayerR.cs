@@ -14,7 +14,7 @@ public class MovePlayerR : MonoBehaviour
     private GameInputs inputs;          // GameInputsクラス
 
     private Vector2 moveInputValue; // スティックの入力を受け取る
-    private Vector3 moveVector;     // カメラ基準の移動方向
+    private Vector3 moveForward;     // カメラ基準の移動方向
 
     // Start is called before the first frame update
     void Start()
@@ -37,21 +37,22 @@ public class MovePlayerR : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // カメラの方向から、X-Z平面の単位ベクトルを取得
+        Vector3 cameraForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
         // カメラの向きに合わせてスティックの傾きから移動方向と移動度を求める
-        moveVector = new Vector3(moveInputValue.x, 0.0f, moveInputValue.y);
-
-        // スティックが傾いている時
-        if (moveVector.sqrMagnitude > 0.01f )
-        {
-            // キャラクターの前向きを移動方向に徐々に向ける
-            transform.forward = Vector3.Slerp(transform.forward, moveVector, rotationSpeed * Time.deltaTime);
-
-        }
-
-        // オブジェクトを移動
-        rb.AddForce(moveVector * speed, ForceMode.Force);
+        moveForward = cameraForward * moveInputValue.y + cameraTransform.right * moveInputValue.x;
+        // 移動させる
+        rb.AddForce(moveForward * speed, ForceMode.Force);
         // 加速し続けないようにする
         rb.velocity = Vector3.zero;
+
+        // 移動方向がゼロベクトルでない時
+        if (moveForward != Vector3.zero)
+        {
+            // キャラクターの向きを移動方向に徐々に向ける
+            transform.forward = Vector3.Slerp(transform.forward, moveForward, rotationSpeed * Time.deltaTime);
+
+        }
     }
 
 
