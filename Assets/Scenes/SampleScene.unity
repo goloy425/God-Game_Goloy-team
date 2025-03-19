@@ -156,7 +156,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d910ddfc22e72d9498ccf2eda063fee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  moveSpeed: 5
+  rotationSpeed: 5
+  cameraTransform: {fileID: 963194228}
 --- !u!54 &132440694
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -489,7 +491,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b32f50caf965d4098822671bc57ff6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  moveSpeed: 5
+  rotationSpeed: 5
+  cameraTransform: {fileID: 963194228}
 --- !u!136 &556853638
 CapsuleCollider:
   m_ObjectHideFlags: 0
