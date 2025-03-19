@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2563663798684774182}
   - component: {fileID: 1413066771324218621}
   m_Layer: 0
-  m_Name: BottomPlate2
+  m_Name: Plate2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 1845902421212668735}
   - component: {fileID: 496467978388254062}
   - component: {fileID: 65350463772459807}
+  - component: {fileID: 4716134875250809088}
   m_Layer: 0
   m_Name: magnet2
   m_TagString: Untagged
@@ -225,7 +226,7 @@ HingeJoint:
   m_ConnectedBody: {fileID: 0}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.01, z: 0}
-  m_Axis: {x: 1, y: 0, z: 0}
+  m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
   m_UseSpring: 0
@@ -251,3 +252,22 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &4716134875250809088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4872076630403478060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 257b1387a4562c6448f0beaf5d6dacc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myPlate: {fileID: 907504231212604211}
+  targetPlate: {fileID: 0}
+  magnetismRange: 10
+  deadRange: 1
+  magnetism: 200
+  strongMagnetism: 999
+  snapDistance: 0.07
