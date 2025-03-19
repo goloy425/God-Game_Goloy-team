@@ -42,7 +42,7 @@ public class MovePlayerR : MonoBehaviour
         // カメラの向きに合わせてスティックの傾きから移動方向と移動度を求める
         moveForward = cameraForward * moveInputValue.y + cameraTransform.right * moveInputValue.x;
         // 移動させる
-        rb.AddForce(moveForward * speed, ForceMode.Force);
+        rb.AddForce(moveForward.normalized * speed, ForceMode.Force);
         // 加速し続けないようにする
         rb.velocity = Vector3.zero;
 
