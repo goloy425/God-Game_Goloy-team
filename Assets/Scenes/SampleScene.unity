@@ -1261,6 +1261,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4716134875250809088, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
+      propertyPath: targetPlate
+      value: 
+      objectReference: {fileID: 7539861467913733469}
     - target: {fileID: 4872076630403478060, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
       propertyPath: m_Name
       value: magnet2
@@ -1311,6 +1315,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
+--- !u!4 &2560392238681333455 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 907504231212604211, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
+  m_PrefabInstance: {fileID: 2560392238681333454}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2859593419151766651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1375,6 +1384,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1941806114872025030, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
+      propertyPath: targetPlate
+      value: 
+      objectReference: {fileID: 2560392238681333455}
     - target: {fileID: 7267011407005804723, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
       propertyPath: m_Name
       value: magnet1
@@ -1425,3 +1438,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
+--- !u!4 &7539861467913733469 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6047870758916588544, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
+  m_PrefabInstance: {fileID: 7539861467913733468}
+  m_PrefabAsset: {fileID: 0}
