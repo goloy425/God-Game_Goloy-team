@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: da4936fba00b91c439f71a269c9e3f86, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -715,6 +715,7 @@ MonoBehaviour:
   pressurePlates:
   - {fileID: 1945869447}
   - {fileID: 1819117475}
+  resultSceneName: Result
 --- !u!4 &759670267
 Transform:
   m_ObjectHideFlags: 0
