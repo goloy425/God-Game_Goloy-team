@@ -29,6 +29,7 @@ public class SceneLoader : MonoBehaviour
         // Ÿ‚ÌƒV[ƒ“–¼‚ğŒvZ‚µ‚ÄØ‚è‘Ö‚¦
         currentSceneIndex = (currentSceneIndex + 1) % sceneNames.Length;
         SceneManager.LoadScene(sceneNames[currentSceneIndex]);
+
     }
 
     void Awake()
