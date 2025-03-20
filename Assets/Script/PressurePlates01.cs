@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 制作者　ゴロイヒデキ
+
 public class PressurePlates01 : MonoBehaviour
 {
     public Action<bool> OnPressurePlateChanged; // 感圧板の状態変化を通知するイベント

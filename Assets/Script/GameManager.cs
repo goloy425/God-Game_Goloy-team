@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// §ìÒ@ƒSƒƒCƒqƒfƒL
+
 public class GameManager : MonoBehaviour
 {
     public PressurePlates01[] pressurePlates; // ‚·‚×‚Ä‚ÌŠ´ˆ³”Â‚ğ“o˜^

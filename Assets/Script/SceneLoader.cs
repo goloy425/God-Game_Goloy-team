@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// 制作者　ゴロイヒデキ
+
 public class SceneLoader : MonoBehaviour
 {
     public string[] sceneNames; // シーン名をInspectorでリスト化
