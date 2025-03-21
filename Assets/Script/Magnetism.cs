@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// §ìÒ@‹{–{˜a‰¹
+
 public class Magnetism : MonoBehaviour
 {
 	[Header("plate(Magnet‚Ì’¼‰º)‚Ìİ’è")]
