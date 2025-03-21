@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2230898120979774278}
   - component: {fileID: 2563663798684774182}
   - component: {fileID: 1413066771324218621}
+  - component: {fileID: 3956941916350352603}
+  - component: {fileID: 172411033004017733}
   m_Layer: 0
   m_Name: Plate2
   m_TagString: Untagged
@@ -98,6 +100,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &3956941916350352603
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675090695876745178}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!138 &172411033004017733
+FixedJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675090695876745178}
+  m_ConnectedBody: {fileID: 496467978388254062}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &4872076630403478060
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +162,7 @@ Transform:
   m_GameObject: {fileID: 4872076630403478060}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.8113546, y: 0.2554279, z: 8.53}
-  m_LocalScale: {x: 40, y: 25.54279, z: 40}
+  m_LocalScale: {x: 40, y: 25.542791, z: 40}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 907504231212604211}
@@ -226,7 +259,7 @@ HingeJoint:
   m_ConnectedBody: {fileID: 0}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.01, z: 0}
-  m_Axis: {x: 0, y: 1, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
   m_UseSpring: 0
@@ -271,3 +304,5 @@ MonoBehaviour:
   magnetism: 200
   strongMagnetism: 999
   snapDistance: 0.07
+  inMagnetismArea: 1
+  isSnapping: 0

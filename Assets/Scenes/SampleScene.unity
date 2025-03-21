@@ -4581,25 +4581,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 556853641}
     m_Modifications:
     - target: {fileID: 65350463772459807, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
-      propertyPath: m_Axis.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 65350463772459807, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
-      propertyPath: m_Axis.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 65350463772459807, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
       propertyPath: m_ConnectedBody
       value: 
       objectReference: {fileID: 1928638934}
-    - target: {fileID: 65350463772459807, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 65350463772459807, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4716134875250809088, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
       propertyPath: targetPlate
       value: 
@@ -4611,10 +4595,6 @@ PrefabInstance:
     - target: {fileID: 5248601550667786390, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248601550667786390, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 25.542791
       objectReference: {fileID: 0}
     - target: {fileID: 5248601550667786390, guid: 080e9c3aa7bce1842a52523b5f4cd0c5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4863,15 +4843,19 @@ PrefabInstance:
       objectReference: {fileID: 1546523914}
     - target: {fileID: 352830587850817191, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
       propertyPath: m_ConnectedAnchor.x
-      value: 1.3054801
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 352830587850817191, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
       propertyPath: m_ConnectedAnchor.y
-      value: -0.050739795
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 352830587850817191, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
       propertyPath: m_ConnectedAnchor.z
-      value: 0.03805561
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 352830587850817191, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
+      propertyPath: m_AutoConfigureConnectedAnchor
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1941806114872025030, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
       propertyPath: targetPlate
