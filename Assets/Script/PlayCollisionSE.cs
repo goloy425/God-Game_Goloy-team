@@ -68,4 +68,42 @@ public class PlayCollisionSE : MonoBehaviour
             }
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // 衝突検知するオブジェクトが指定されている時
+        if (collisionObject != null)
+        {
+            // 当たったオブジェクトが指定したオブジェクトと同じ時
+            if (other.gameObject == collisionObject)
+            {
+                // 1回のみ再生する時
+                if (playOnceFg && playCnt < 1)
+                {
+                    audioSource.PlayOneShot(collisionSE);   // SEを再生
+                    playCnt++;
+                }
+                // 何回も再生する時
+                else if (!playOnceFg)
+                {
+                    audioSource.PlayOneShot(collisionSE);   // SEを再生
+                }
+            }
+        }
+        // 指定されていない時はすべてのオブジェクトと衝突検知
+        else
+        {
+            // 1回のみ再生する時
+            if (playOnceFg && playCnt < 1)
+            {
+                audioSource.PlayOneShot(collisionSE);   // SEを再生
+                playCnt++;
+            }
+            // 何回も再生する時
+            else if (!playOnceFg)
+            {
+                audioSource.PlayOneShot(collisionSE);   // SEを再生
+            }
+        }
+    }
 }
