@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
 
     public string resultSceneName = "Result"; // 遷移先のシーン名をInspectorで設定
 
+    private bool gameClearFg = false;         // ゲームクリアしたかどうか
+    private bool gameOverFg = false;          // ゲームオーバーしたかどうか
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,9 +36,21 @@ public class GameManager : MonoBehaviour
 
         if (totalPressed == pressurePlates.Length) // すべてが押された場合
         {
+            gameClearFg = true; // ゲームクリア
             Debug.Log("全ての感圧板が押されています！ゲームクリア！Result画面に移ります");
             // ここにゲームクリア処理を書く
             SceneManager.LoadScene(resultSceneName);
         }
+    }
+
+
+    public bool GetGameClearFg()
+    {
+        return gameClearFg;
+    }
+
+    public bool GetGameOverFg()
+    {
+        return gameOverFg;
     }
 }
