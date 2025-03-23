@@ -16,6 +16,9 @@ public class PressurePlates01 : MonoBehaviour
     public Color defaultColor = Color.green;  // 初期色
     public Color pressedColor = Color.red;    // 踏まれた時の色
 
+    public string targetTag = "Player"; // 感圧板が反応する対象のタグ
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,13 +49,23 @@ public class PressurePlates01 : MonoBehaviour
     }
     void OnTriggerEnter(Collider col) // トリガー領域にオブジェクトが入った場合
     {
-        NowPressing++;
-        OnPressurePlateChanged?.Invoke(true); // 押された状態を通知
+        // オブジェクトのタグを確認
+        if (col.CompareTag(targetTag))
+        {
+            NowPressing++;
+            OnPressurePlateChanged?.Invoke(true); // 押された状態を通知
+        }
+
     }
     void OnTriggerExit(Collider col) // トリガー領域からオブジェクトが退出した場合
     {
-        NowPressing--;
-        OnPressurePlateChanged?.Invoke(false); // 離れた状態を通知
+        // オブジェクトのタグを確認
+        if (col.CompareTag(targetTag))
+        {
+            NowPressing--;
+            OnPressurePlateChanged?.Invoke(false); // 離れた状態を通知
+        }
+
     }
 }
 
