@@ -39,37 +39,48 @@ public class Magnetism : MonoBehaviour
 	{
 		//--- 磁力・範囲のデバッグ用 ---//
 		// 磁石同士で各変数が一致しているかチェック、不一致なら実行できない
-		if (magnetismRange != targetMagnet.magnetismRange || deadRange != targetMagnet.deadRange ||
-			magnetism != targetMagnet.magnetism || strongMagnetism != targetMagnet.strongMagnetism ||
-			snapDistance != targetMagnet.snapDistance)
+
+		GameObject magnet1 = GameObject.Find("magnet1");
+		GameObject magnet2 = GameObject.Find("magnet2");
+		Magnetism mag1 = magnet1.GetComponent<Magnetism>();
+		Magnetism mag2 = magnet2.GetComponent<Magnetism>();
+
+		if (mag1.magnetismRange != mag2.magnetismRange || mag1.deadRange != mag2.deadRange ||
+			mag1.magnetism != mag2.magnetism || mag1.strongMagnetism != mag2.strongMagnetism ||
+			mag1.snapDistance != mag2.snapDistance)
 		{
-			if (magnetismRange != targetMagnet.MagnetismRange)
+			if (mag1.magnetismRange != mag2.MagnetismRange)
 			{
-				Debug.LogError("Error：変数不一致　magnetismRangeが一致していません");
+				Debug.LogError("Error：変数不一致　[magnetismRange]が一致していません　" +
+					"magnet1：" + mag1.magnetismRange + "　magnet2：" + mag2.magnetismRange);
 			}
-			else if (deadRange != targetMagnet.deadRange)
+			if (mag1.deadRange != mag2.deadRange)
 			{
-				Debug.LogError("Error：変数不一致　deadRangeが一致していません");
+				Debug.LogError("Error：変数不一致　[deadRange]が一致していません　" +
+					"magnet1：" + mag1.deadRange + "　magnet2：" + mag2.deadRange);
 			}
-			else if (magnetism != targetMagnet.magnetism)
+			if (mag1.magnetism != mag2.magnetism)
 			{
-				Debug.LogError("Error：変数不一致　magnetismが一致していません");
+				Debug.LogError("Error：変数不一致　[magnetism]が一致していません　" +
+					"magnet1：" + mag1.magnetism + "　magnet2：" + mag2.magnetism);
 			}
-			else if (strongMagnetism != targetMagnet.strongMagnetism)
+			if (mag1.strongMagnetism != mag2.strongMagnetism)
 			{
-				Debug.LogError("Error：変数不一致　strongMagnetismが一致していません");
+				Debug.LogError("Error：変数不一致　[strongMagnetism]が一致していません　" +
+					"magnet1：" + mag1.strongMagnetism + "　magnet2：" + mag2.strongMagnetism);
 			}
-			else if (snapDistance != targetMagnet.snapDistance)
+			if (mag1.snapDistance != mag2.snapDistance)
 			{
-				Debug.LogError("Error：変数不一致　snapDistanceが一致していません");
+				Debug.LogError("Error：変数不一致　[snapDistance]が一致していません　" +
+					"magnet1：" + mag1.snapDistance + "　magnet2：" + mag2.snapDistance);
 			}
 
 			UnityEditor.EditorApplication.isPlaying = false;    // ゲームの実行を停止
 		}
 	}
 
-	// Start is called before the first frame update
-	void Start()
+        // Start is called before the first frame update
+        void Start()
 	{
 		rb = GetComponent<Rigidbody>();
 		isSnapping = false;
