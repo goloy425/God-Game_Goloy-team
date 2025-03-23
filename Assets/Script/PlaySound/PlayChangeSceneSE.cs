@@ -24,6 +24,13 @@ public class PlayChangeSceneSE : MonoBehaviour
     {
         // コンポーネントを取得
         audioSource = GetComponent<AudioSource>();
+
+        // AudioSourceがnullの時、エラーメッセージを表示
+        if (audioSource == null)
+        {
+            Debug.LogError(this.name + "にAudioSourceが存在しません");
+        }
+        // GameManagerコンポーネントを取得
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // シーン遷移しても削除されないようにする

@@ -15,8 +15,9 @@ public class MovePlayerL : MonoBehaviour
     [Header("移動の基準となるカメラ")]
     public Transform cameraTransform;   // カメラのTransform
 
-    private Rigidbody rb;               // Rigidbody
-    private GameInputs inputs;          // GameInputsクラス
+    private Rigidbody rb;                       // Rigidbody
+    private GameInputs inputs;                  // GameInputsクラス
+    private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
 
     private Vector2 moveInputValue;     // スティックの入力を受け取る
     private Vector3 moveForward;        // カメラ基準の移動方向
@@ -26,7 +27,8 @@ public class MovePlayerL : MonoBehaviour
     {
         // Rigidbodyコンポーネントを取得
         rb = GetComponent<Rigidbody>();
-
+        // PlaySEAtRegularIntervalsコンポーネントを取得
+        playSE = GetComponent<PlaySEAtRegularIntervals>();
         // GameInputsクラスのインスタンスを作成
         inputs = new GameInputs();
 
@@ -53,8 +55,15 @@ public class MovePlayerL : MonoBehaviour
         // 移動方向がゼロベクトルでない時
         if (moveForward != Vector3.zero)
         {
-            // キャラクターの向きを移動方向に徐々に向ける
+            playSE.enabled = true;      // SE再生スクリプトを有効化
+            // キャラクターの向きを徐々に移動方向に向ける
             transform.forward = Vector3.Slerp(transform.forward, moveForward, rotationSpeed * Time.deltaTime);
+        }
+        // 移動方向がゼロベクトルの時
+        else
+        {
+            playSE.SetElapsedTime(0);   // SE再生スクリプトの経過時間をリセット
+            playSE.enabled = false;     // SE再生スクリプトを無効化
         }
     }
 
