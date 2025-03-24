@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+//=================================================
 // 制作者　宮本和音
+//=================================================
 
 // ↓振動の強さを調整する時の目安
 // 0.002が最小値 それ以上低くすると振動しない（コントローラーによって差あり？分からん）
@@ -20,18 +22,20 @@ public class Vibration : MonoBehaviour
 
 	private Gamepad gamepad;
 	private Coroutine vibrationCoroutine;
+	private AdjustMagnetism adjMag;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		gamepad = Gamepad.current;
+		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
 
 		if (gamepad == null) { return; }		// コントローラーがない時はスルー
 		else { gamepad.SetMotorSpeeds(0, 0); }	// 起動時に謎の振動が起こるのを抑制
 
-		//--- ここに足していけば複数の振動をコントロールできる？ ---//
 		if (!notVibration)
 		{
+			//--- ここに足していけば複数の振動をコントロールできる？ ---//
 			vibrationCoroutine = StartCoroutine(Vibration_MagnetDistance());	// 磁石の距離に応じた振動
 		}
 	}
@@ -44,10 +48,17 @@ public class Vibration : MonoBehaviour
 	{
 		while (true)
 		{
+			// adjustedがfalseに戻るまで停止
+			while (adjMag.Adjusted)
+			{
+				gamepad.SetMotorSpeeds(0.0f, 0.0f); // 振動をオフ
+				yield return null;	// 次のフレームまで待つ
+			}
+
 			float distance = Vector3.Distance(magnet1.transform.position, magnet2.transform.position);	// 磁石の距離
 
 			float minDistance = magnet1.DeadRange;
-			float maxDistance = magnet1.MagnetismRange;
+			float maxDistance = magnet1.magnetismRange;
 			float vibStrength;  // 振動の強さ
 			float vibInterval;  // 振動の間隔
 
@@ -88,6 +99,8 @@ public class Vibration : MonoBehaviour
 			yield return new WaitForSeconds(0.05f);
 			gamepad.SetMotorSpeeds(0.0f, 0.0f);
 			yield return new WaitForSeconds(vibInterval);
+
+			//Debug.Log("vibStrength:"+vibStrength);
 		}
 	}
 

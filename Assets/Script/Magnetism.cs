@@ -9,16 +9,16 @@ using UnityEngine;
 public class Magnetism : MonoBehaviour
 {
 	[Header("plate(Magnetの直下)の設定")]
-	public Magnetism targetMagnet;  // 対になる磁石
-	public Transform myPlate;   // 自分のBottomPlate
-	public Transform targetPlate;   // くっつける相手のBottomPlate
+	public Magnetism targetMagnet;	// 対になる磁石
+	public Transform myPlate;	// 自分のBottomPlate
+	public Transform targetPlate;	// くっつける相手のBottomPlate
 
 	[Header("磁力・範囲の設定")]
-	[SerializeField] private float magnetismRange = 10.0f;  // 引き寄せ合う距離
-	[SerializeField] private float deadRange = 1.0f;    // 近づきすぎるとくっつく、の距離
-	public float magnetism = 200.0f;    // 磁力
-	public float strongMagnetism = 999.0f;  // 磁力
-	public float snapDistance = 0.07f;      // くっつく距離の閾値
+	public float magnetismRange= 10.0f;	// 引き寄せ合う距離
+	[SerializeField] private float deadRange = 1.0f;	// 近づきすぎるとくっつく、の距離
+	public float magnetism = 200.0f;	// 磁力
+	public float strongMagnetism = 999.0f;	// 磁力
+	public float snapDistance = 0.07f;		// くっつく距離の閾値
 
 	//--- magnetismRangeとdeadRangeの設定 ---//
 	// とりあえずこの2つだけ、もし他の変数も同じようにする場合は↓
@@ -26,12 +26,21 @@ public class Magnetism : MonoBehaviour
 	// 下のと同じやつを変数名のとこだけ変えて付け足してやればいける
 
 	// 外部から書き換えできないようにする（アクセスはできる）
-	public float MagnetismRange => magnetismRange;
+	// magnetismRangeはAdjustMagnetismからのみ書き換え可にする
+	public float MagnetismRange { get; private set; }
 	public float DeadRange => deadRange;
 
+	public void SetMagnetismRange(float newRange,object caller)
+	{
+		if (caller is AdjustMagnetism)
+		{
+			magnetismRange = newRange;
+		}
+	}
+
 	[Header("ゲームの進行に関わるフラグ")]
-	public bool inMagnetismArea = true;     // 磁力範囲内かどうか
-	public bool isSnapping = false;     // くっついてるかどうか
+	public bool inMagnetismArea = true;		// 磁力範囲内かどうか
+	public bool isSnapping = false;		// くっついてるかどうか
 
 	private Rigidbody rb;
 
@@ -75,12 +84,12 @@ public class Magnetism : MonoBehaviour
 					"magnet1：" + mag1.snapDistance + "　magnet2：" + mag2.snapDistance);
 			}
 
-			UnityEditor.EditorApplication.isPlaying = false;    // ゲームの実行を停止
+			UnityEditor.EditorApplication.isPlaying = false;	// ゲームの実行を停止
 		}
 	}
 
-        // Start is called before the first frame update
-        void Start()
+		// Start is called before the first frame update
+		void Start()
 	{
 		rb = GetComponent<Rigidbody>();
 		isSnapping = false;
@@ -104,7 +113,7 @@ public class Magnetism : MonoBehaviour
 			inMagnetismArea = false;
 		}
 
-		if (distance < snapDistance)    // 接近しすぎるとくっつく
+		if (distance < snapDistance)	// 接近しすぎるとくっつく
 		{
 			rb.velocity = Vector3.zero;
 			rb.angularVelocity = Vector3.zero;
