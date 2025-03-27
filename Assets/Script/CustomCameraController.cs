@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CustomCameraController : MonoBehaviour
 {
-    public Transform target1;
-    public Transform target2;
-    public float minSize = 5f;
+    public Transform target1; // 対象物１
+    public Transform target2; // 対象物２
+    public float minSize = 5f; // 最小サイズ
     public float maxSize = 15f; // 最大サイズを15に制限
-    public float zoomSpeed = 5f;
-    public float padding = 2f;
-    public Vector3 initialOffset = new Vector3(0, 5, -10);
+    public float zoomSpeed = 5f; // 拡大速度
+    public float padding = 2f; // 対象物間の距離に余裕を持たせるための調節値
+    public Vector3 initialOffset = new Vector3(0, 5, -10); // カメラの初期位置を指定し、ズームによって変化させる基本的なオフセット値
 
     private Camera cam;
     private Vector3 dynamicOffset;
