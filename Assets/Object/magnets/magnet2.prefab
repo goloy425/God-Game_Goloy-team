@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 65350463772459807}
   - component: {fileID: 4716134875250809088}
   - component: {fileID: 1209771514}
+  - component: {fileID: 1991463290}
   m_Layer: 13
   m_Name: magnet2
   m_TagString: Untagged
@@ -302,7 +303,7 @@ MonoBehaviour:
   myPlate: {fileID: 907504231212604211}
   targetPlate: {fileID: 0}
   magnetismRange: 6
-  deadRange: 1
+  deadRange: 1.2
   magnetism: 200
   strongMagnetism: 1000
   snapDistance: 0.07
@@ -332,3 +333,19 @@ SpringJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &1991463290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4872076630403478060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3eef4dc29d45044d9c0e2816cc2cfd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Circles: {fileID: 0}
+  magnetismCircle: {fileID: 0}
+  deadCircle: {fileID: 0}
+  Plate: {fileID: 2675090695876745178}

@@ -19,7 +19,7 @@ public class AdjustMagnetism : MonoBehaviour
 	public bool Adjusted=>adjusted;
 
 	private float originalMag;
-	private float adjustTime = 1.0f;	// この秒数待ってから磁力範囲を戻す
+	private float adjustTime = 0.3f;	// この秒数待ってから磁力範囲を戻す
 
 	// Start is called before the first frame update
 	void Start()

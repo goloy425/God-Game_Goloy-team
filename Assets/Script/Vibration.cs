@@ -1,24 +1,27 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 //=================================================
-// §ìÒ@‹{–{˜a‰¹
+// åˆ¶ä½œè€…ã€€å®®æœ¬å’ŒéŸ³
 //=================================================
 
-// «U“®‚Ì‹­‚³‚ğ’²®‚·‚é‚Ì–ÚˆÀ
-// 0.002‚ªÅ¬’l ‚»‚êˆÈã’á‚­‚·‚é‚ÆU“®‚µ‚È‚¢iƒRƒ“ƒgƒ[ƒ‰[‚É‚æ‚Á‚Ä·‚ ‚èH•ª‚©‚ç‚ñj
-// 1.0‚ªÅ‘å’li‚½‚Ô‚ñj‚¾‚ª‚©``‚È‚è‹­‚©‚Á‚½‚Ì‚Å‚à‚Á‚Æ”’l¬‚³‚¢•û‚ª‚¿‚å‚¤‚Ç‚¢‚¢A‚Æ‚¢‚¤‚©è‚ª‚µ‚ñ‚Ç‚­‚È‚¢
+// â†“æŒ¯å‹•ã®å¼·ã•ã‚’èª¿æ•´ã™ã‚‹æ™‚ã®ç›®å®‰
+// 0.002ãŒæœ€å°å€¤ ãã‚Œä»¥ä¸Šä½ãã™ã‚‹ã¨æŒ¯å‹•ã—ãªã„ï¼ˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã«ã‚ˆã£ã¦å·®ã‚ã‚Šï¼Ÿåˆ†ã‹ã‚‰ã‚“ï¼‰
+// 1.0ãŒæœ€å¤§å€¤ï¼ˆãŸã¶ã‚“ï¼‰ã ãŒã‹ï½ï½ãªã‚Šå¼·ã‹ã£ãŸã®ã§ã‚‚ã£ã¨æ•°å€¤å°ã•ã„æ–¹ãŒã¡ã‚‡ã†ã©ã„ã„ã€ã¨ã„ã†ã‹æ‰‹ãŒã—ã‚“ã©ããªã„
+
+// 3/29è¿½è¨˜ã€€ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã«ã‚ˆã£ã¦åŒã˜æ•°å€¤ã§ã‚‚æŒ¯å‹•ã®å¼·ã•ã«å·®ãŒã‚ã‚‹å¯èƒ½æ€§ãŒé«˜ã„
+// æˆæ¥­å†…ã§çš†ã§ä½œæ¥­ã§ãã‚‹ã‚ˆã†ã«ãªã£ãŸã‚‰æ‰‹æŒã¡ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æŒã¡å¯„ã£ã¦æ•°å€¤èª¿æ•´ã™ã‚‹ã®ãŒã„ã„ã‹ã‚‚
 
 public class Vibration : MonoBehaviour
 {
-	[Header("ƒvƒŒƒCƒ„[‚Ì¥Î(‡•s“¯)")]
+	[Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³(é †ä¸åŒ)")]
 	public Magnetism magnet1;
 	public Magnetism magnet2;
 
-	[Header("ƒ`ƒFƒbƒN‚ÅU“®ƒIƒt")]
-	public bool notVibration = false;   // ƒfƒoƒbƒO’†U“®‚ª‚¤‚´‚­‚È‚Á‚½‚çƒ`ƒFƒbƒN
+	[Header("ãƒã‚§ãƒƒã‚¯ã§æŒ¯å‹•ã‚ªãƒ•")]
+	public bool notVibration = false;   // ãƒ‡ãƒãƒƒã‚°ä¸­æŒ¯å‹•ãŒã†ã–ããªã£ãŸã‚‰ãƒã‚§ãƒƒã‚¯
 
 	private Gamepad gamepad;
 	private Coroutine vibrationCoroutine;
@@ -30,71 +33,76 @@ public class Vibration : MonoBehaviour
 		gamepad = Gamepad.current;
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
 
-		if (gamepad == null) { return; }		// ƒRƒ“ƒgƒ[ƒ‰[‚ª‚È‚¢‚ÍƒXƒ‹[
-		else { gamepad.SetMotorSpeeds(0, 0); }	// ‹N“®‚É“ä‚ÌU“®‚ª‹N‚±‚é‚Ì‚ğ—}§
+		if (gamepad == null) { return; }	// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒãªã„æ™‚ã¯ã‚¹ãƒ«ãƒ¼
+		else	// èµ·å‹•æ™‚ã«è¬ã®æŒ¯å‹•ãŒèµ·ã“ã‚‹ã®ã‚’æŠ‘åˆ¶
+		{
+			gamepad.SetMotorSpeeds(0, 0);
+			// ä»Šæ¥ç¶šã•ã‚Œã¦ã‚‹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ç¨®é¡ã‚’å‡ºåŠ›
+			Debug.Log("æ¥ç¶šã•ã‚Œã¦ã„ã‚‹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼:"+Gamepad.current.displayName);
+		}
 
 		if (!notVibration)
 		{
-			//--- ‚±‚±‚É‘«‚µ‚Ä‚¢‚¯‚Î•¡”‚ÌU“®‚ğƒRƒ“ƒgƒ[ƒ‹‚Å‚«‚éH ---//
-			vibrationCoroutine = StartCoroutine(Vibration_MagnetDistance());	// ¥Î‚Ì‹——£‚É‰‚¶‚½U“®
+			//--- ã“ã“ã«è¶³ã—ã¦ã„ã‘ã°è¤‡æ•°ã®æŒ¯å‹•ã‚’ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã§ãã‚‹ï¼Ÿ ---//
+			vibrationCoroutine = StartCoroutine(Vibration_MagnetDistance());	// ç£çŸ³ã®è·é›¢ã«å¿œã˜ãŸæŒ¯å‹•
 		}
 	}
 
 
 	//=================================================
-	// ¥Î‚Ì‹——£‚É‰‚¶‚ÄU“®‚³‚¹‚éŠÖ”
+	// ç£çŸ³ã®è·é›¢ã«å¿œã˜ã¦æŒ¯å‹•ã•ã›ã‚‹é–¢æ•°
 	//=================================================
 	IEnumerator Vibration_MagnetDistance()
 	{
 		while (true)
 		{
-			// adjusted‚ªfalse‚É–ß‚é‚Ü‚Å’â~
+			// adjustedãŒfalseã«æˆ»ã‚‹ã¾ã§åœæ­¢
 			while (adjMag.Adjusted)
 			{
-				gamepad.SetMotorSpeeds(0.0f, 0.0f); // U“®‚ğƒIƒt
-				yield return null;	// Ÿ‚ÌƒtƒŒ[ƒ€‚Ü‚Å‘Ò‚Â
+				gamepad.SetMotorSpeeds(0.0f, 0.0f); // æŒ¯å‹•ã‚’ã‚ªãƒ•
+				yield return null;	// æ¬¡ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã¾ã§å¾…ã¤
 			}
 
-			float distance = Vector3.Distance(magnet1.transform.position, magnet2.transform.position);	// ¥Î‚Ì‹——£
+			float distance = Vector3.Distance(magnet1.transform.position, magnet2.transform.position);	// ç£çŸ³ã®è·é›¢
 
 			float minDistance = magnet1.DeadRange;
 			float maxDistance = magnet1.magnetismRange;
-			float vibStrength;  // U“®‚Ì‹­‚³
-			float vibInterval;  // U“®‚ÌŠÔŠu
+			float vibStrength;  // æŒ¯å‹•ã®å¼·ã•
+			float vibInterval;  // æŒ¯å‹•ã®é–“éš”
 
-			//--- ”’l‚Ì•‚ğ•ÏX‚·‚é‚È‚çƒRƒR ---//
-			// U“®‚Ì‹­‚³
-			float minVibStrength = 0.002f;	// ‰“‚¢
-			float maxVibStrength = 0.03f;	// ‹ß‚¢
+			//--- æ•°å€¤ã®å¹…ã‚’å¤‰æ›´ã™ã‚‹ãªã‚‰ã‚³ã‚³ ---//
+			// æŒ¯å‹•ã®å¼·ã•
+			float minVibStrength = 0.002f;	// é ã„
+			float maxVibStrength = 0.03f;	// è¿‘ã„
 
-			// U“®‚ÌŠÔŠu
-			float minVibInterval = 0.7f;	// ‹ß‚¢
-			float maxVibInterval = 1.5f;	// ‰“‚¢
+			// æŒ¯å‹•ã®é–“éš”
+			float minVibInterval = 0.7f;	// è¿‘ã„
+			float maxVibInterval = 1.5f;	// é ã„
 
 
-			if (distance <= minDistance)	// ‹ß‚·‚¬‚é¨Å‘åU“®
+			if (distance <= minDistance)	// è¿‘ã™ãã‚‹â†’æœ€å¤§æŒ¯å‹•
 			{
 				vibStrength = maxVibStrength;
 				vibInterval = minVibInterval;
 
-				if (magnet1.GetComponent<Magnetism>().isSnapping)	// ‚­‚Á‚Â‚¢‚½‚çU“®Ø‚é
+				if (magnet1.GetComponent<Magnetism>().isSnapping)	// ãã£ã¤ã„ãŸã‚‰æŒ¯å‹•åˆ‡ã‚‹
 				{
 					vibStrength = 0.0f;
 				}
 			}
-			else if (distance >= maxDistance)	// ‰“‚·‚¬‚é¨U“®‚È‚µ
+			else if (distance >= maxDistance)	// é ã™ãã‚‹â†’æŒ¯å‹•ãªã—
 			{
 				vibStrength = 0.0f;
 				vibInterval = 0.0f;
 			}
-			else	// ”ÍˆÍ“à¨‹——£‚É‰‚¶‚ÄU“®‹­“x‚ÆŠÔŠu‚ğ•Ï‚¦‚é
+			else	// ç¯„å›²å†…â†’è·é›¢ã«å¿œã˜ã¦æŒ¯å‹•å¼·åº¦ã¨é–“éš”ã‚’å¤‰ãˆã‚‹
 			{
 				float t = (distance - minDistance) / (maxDistance - minDistance);
 				vibStrength = Mathf.Lerp(maxVibStrength, minVibStrength, t);
 				vibInterval = Mathf.Lerp(minVibInterval, maxVibInterval, t);
 			}
 
-			// ƒRƒ“ƒgƒ[ƒ‰[‚ğU“®‚³‚¹‚é
+			// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚’æŒ¯å‹•ã•ã›ã‚‹
 			gamepad.SetMotorSpeeds(vibStrength, vibStrength);
 			yield return new WaitForSeconds(0.05f);
 			gamepad.SetMotorSpeeds(0.0f, 0.0f);
@@ -108,7 +116,7 @@ public class Vibration : MonoBehaviour
 	{
 		if (gamepad != null)
 		{
-			gamepad.SetMotorSpeeds(0, 0);	// ƒQ[ƒ€I—¹‚ÉU“®‚ğ~‚ß‚é
+			gamepad.SetMotorSpeeds(0, 0);	// ã‚²ãƒ¼ãƒ çµ‚äº†æ™‚ã«æŒ¯å‹•ã‚’æ­¢ã‚ã‚‹
 		}
 	}
 }

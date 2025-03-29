@@ -88,8 +88,8 @@ public class Magnetism : MonoBehaviour
 		}
 	}
 
-		// Start is called before the first frame update
-		void Start()
+	// Start is called before the first frame update
+	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
 		isSnapping = false;
@@ -132,6 +132,7 @@ public class Magnetism : MonoBehaviour
 
 		myPlate.position = targetPlate.position;
 	}
+
 
 	// Update is called once per frame
 	void Update()
