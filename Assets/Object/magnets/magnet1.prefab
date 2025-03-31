@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 352830587850817191}
   - component: {fileID: 1941806114872025030}
   - component: {fileID: 1931507255}
-  - component: {fileID: 1931507254}
   - component: {fileID: 1931507264}
   - component: {fileID: 1940077802}
   m_Layer: 13
@@ -311,6 +310,7 @@ MonoBehaviour:
   snapDistance: 0.07
   inMagnetismArea: 1
   isSnapping: 0
+  magnetSE: {fileID: 0}
 --- !u!82 &1931507255
 AudioSource:
   m_ObjectHideFlags: 0
@@ -407,21 +407,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1931507254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7267011407005804723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b0ebe56c3d8a104baa76304613d908e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionObject: {fileID: 0}
-  collisionSE: {fileID: 8300000, guid: 5ae5568eda110b343af775d41b5906df, type: 3}
-  playOnceFg: 1
 --- !u!145 &1931507264
 SpringJoint:
   m_ObjectHideFlags: 0

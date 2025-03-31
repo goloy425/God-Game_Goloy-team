@@ -40,7 +40,11 @@ public class Magnetism : MonoBehaviour
 
 	[Header("ゲームの進行に関わるフラグ")]
 	public bool inMagnetismArea = true;		// 磁力範囲内かどうか
-	public bool isSnapping = false;		// くっついてるかどうか
+	public bool isSnapping = false;     // くっついてるかどうか
+
+	[Header("磁石がくっついた時のSE")]
+	public AudioClip magnetSE;
+	private AudioSource audioSource;
 
 	private Rigidbody rb;
 
@@ -94,6 +98,8 @@ public class Magnetism : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 		isSnapping = false;
 		inMagnetismArea = true;
+
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void FixedUpdate()
@@ -131,6 +137,12 @@ public class Magnetism : MonoBehaviour
 		joint.connectedBody = targetPlate.GetComponentInParent<Rigidbody>();
 
 		myPlate.position = targetPlate.position;
+
+		// AudioSourceが存在する時、SE再生
+		if(audioSource != null)
+		{
+			audioSource.PlayOneShot(magnetSE);
+		}
 	}
 
 
