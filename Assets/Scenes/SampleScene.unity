@@ -5993,7 +5993,7 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 132440699}
     m_Modifications:
-    - target: {fileID: 1931507254, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
+    - target: {fileID: 0}
       propertyPath: collisionObject
       value: 
       objectReference: {fileID: 815644023}
@@ -6017,6 +6017,10 @@ PrefabInstance:
       propertyPath: m_ConnectedBody
       value: 
       objectReference: {fileID: 1546523914}
+    - target: {fileID: 1941806114872025030, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
+      propertyPath: magnetSE
+      value: 
+      objectReference: {fileID: 8300000, guid: 5ae5568eda110b343af775d41b5906df, type: 3}
     - target: {fileID: 1941806114872025030, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
       propertyPath: targetPlate
       value: 
