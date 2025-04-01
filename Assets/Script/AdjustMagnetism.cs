@@ -24,19 +24,27 @@ public class AdjustMagnetism : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		string currentScene = SceneManager.GetActiveScene().name;	// 現在のシーン名を取得
+		string currentScene = SceneManager.GetActiveScene().name;   // 現在のシーン名を取得
 
 		//--- 適用するシーンを増やす場合はここに追記していく ---//
 		// （switch文だとうまくいかなかったのでif文にしてある）
 
 		//--- サンプルシーン ---//
-		if(currentScene=="SampleScene")
+		if (currentScene == "SampleScene")
 		{
 			originalMag = magnet1.magnetismRange;	// 本来の磁力範囲を保存しておく
 
 			magnet1.SetMagnetismRange(10.0f, this);
 			magnet2.SetMagnetismRange(10.0f, this);
 			adjusted = true;	// 調整完了
+		}
+		else if (currentScene == "TestScene")
+		{
+			originalMag = magnet1.magnetismRange;
+
+			magnet1.SetMagnetismRange(10.0f, this);
+			magnet2.SetMagnetismRange(10.0f, this);
+			adjusted = true;
 		}
 	}
 
@@ -53,8 +61,8 @@ public class AdjustMagnetism : MonoBehaviour
 		yield return new WaitForSeconds(adjustTime);
 		magnet1.SetMagnetismRange(originalMag, this);
 		magnet2.SetMagnetismRange(originalMag, this);
-        adjusted = false;
-    }
+		adjusted = false;
+	}
 }
 
 
