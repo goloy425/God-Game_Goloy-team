@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //=================================================
-// 制作者　宮本和音
+// 作成者：宮本和音
 // 磁力付きオブジェクトにアタッチするスクリプト
 //=================================================
 
@@ -16,10 +16,27 @@ public class SphereMagnetism : MonoBehaviour
 	public float magnetism = 200.0f;
 	public float strongMagnetism = 999.0f;
 
+	[Header("プレイヤーオブジェクトを設定")]
+	public GameObject playerL;
+	public GameObject playerR;
+
+	[Header("球が運搬可能かどうかのフラグ")]
+	public bool canCarry;
+
 	public float MagnetismRange => magnetismRange;
 	public float DeadRange => deadRange;
 
-	private SphereCollider sphereCollider;  // 磁石を引き寄せる頂点の計算に使う
+	// 磁力強化フラグをそれぞれ取得する用
+	private AugMagL magL_Aug;
+	private AugMagR magR_Aug;
+
+	// DeadRangeを取得・設定する用
+	private Magnetism magnet1;
+	private Magnetism magnet2;
+	private float oridinalDRange;
+
+	private SphereCollider sphereCollider;  // 磁石を引き寄せる頂点の計算用
+	private MoveSphere moveS;
 
 	//--- 磁石のリスト管理 ---//
 	private static List<Magnetism> registeredMagnets = new();
@@ -39,10 +56,41 @@ public class SphereMagnetism : MonoBehaviour
 
 	private void Start()
 	{
-		sphereCollider = GetComponent<SphereCollider>();
-		if (sphereCollider == null)
+		// TryGetComponentの返り値はbool、SphereColliderが見つからなかった時falseになる
+		if (!TryGetComponent<SphereCollider>(out sphereCollider))
 		{
 			Debug.LogError("SphereColliderついてないよ");
+		}
+
+		playerL.TryGetComponent<AugMagL>(out magL_Aug);
+		playerR.TryGetComponent<AugMagR>(out magR_Aug);
+
+		magnet1 = GameObject.Find("magnet1").GetComponent<Magnetism>();
+		magnet2 = GameObject.Find("magnet2").GetComponent<Magnetism>();
+		oridinalDRange = magnet1.deadRange;		// 本来のdeadRangeを保存しておく
+
+		TryGetComponent<MoveSphere>(out moveS);
+	}
+
+	private void Update()
+	{
+		//--- 球が動かせるかどうかの判定 ---//
+		if (magL_Aug.isAugmenting && magR_Aug.isAugmenting)
+		{
+			canCarry = true;
+			moveS.StartCarrying();
+
+			// 両方強化中はプレイヤーの磁石同士でくっつかないようにするためdeadRangeを0にしておく
+			magnet1.SetDeadRange(0.0f, this);
+			magnet2.SetDeadRange(0.0f, this);
+		}
+		else
+		{
+			canCarry = false;
+            moveS.StopCarrying();
+
+            magnet1.SetDeadRange(oridinalDRange, this);
+			magnet2.SetDeadRange(oridinalDRange, this);
 		}
 	}
 
@@ -63,7 +111,13 @@ public class SphereMagnetism : MonoBehaviour
 
 			// 球の表面と磁石の距離を計算
 			float surfaceDistance = Vector3.Distance(surfacePoint, magnetPos);
-			if (surfaceDistance > magnetismRange) continue;	// 磁力範囲外ならスキップ
+			if (surfaceDistance > magnetismRange)
+			{
+				magnet.inObjMagArea = false;
+				continue;   // 磁力範囲外ならスキップ
+			}
+
+			magnet.inObjMagArea = true;	// フラグを立てておく
 
 			// 引き寄せる処理
 			Vector3 direction = (surfacePoint - magnetPos).normalized;
@@ -94,6 +148,6 @@ public class SphereMagnetism : MonoBehaviour
 		// 位置合わせ
 		magnet.myPlate.position = transform.position;
 
-		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
+		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);	// SE再生
 	}
 }

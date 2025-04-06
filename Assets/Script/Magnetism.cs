@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Profiling.LowLevel.Unsafe;
 using UnityEngine;
 
 //=================================================
@@ -15,7 +16,7 @@ public class Magnetism : MonoBehaviour
 
 	[Header("磁力・範囲の設定")]
 	public float magnetismRange= 10.0f;	// 引き寄せ合う距離
-	[SerializeField] private float deadRange = 1.0f;	// 近づきすぎるとくっつく、の距離
+	public float deadRange = 1.0f;	// 近づきすぎるとくっつく、の距離
 	public float magnetism = 200.0f;	// 磁力
 	public float strongMagnetism = 999.0f;	// 磁力
 	public float snapDistance = 0.07f;		// くっつく距離の閾値
@@ -27,8 +28,9 @@ public class Magnetism : MonoBehaviour
 
 	// 外部から書き換えできないようにする（アクセスはできる）
 	// magnetismRangeはAdjustMagnetismからのみ書き換え可にする
+	// deadRangeはSphereMagnetismからのみ書き換え可にする（キューブ実装したらそっちからも）
 	public float MagnetismRange { get; private set; }
-	public float DeadRange => deadRange;
+	public float DeadRange { get; private set; }
 
 	public void SetMagnetismRange(float newRange,object caller)
 	{
@@ -38,9 +40,23 @@ public class Magnetism : MonoBehaviour
 		}
 	}
 
-	[Header("ゲームの進行に関わるフラグ")]
-	public bool inMagnetismArea = true;		// 磁力範囲内かどうか
-	public bool isSnapping = false;     // くっついてるかどうか
+	public void SetDeadRange(float newRange,object caller)
+	{
+		if (caller is SphereMagnetism)
+		{
+			deadRange = newRange;
+		}
+	}
+
+	[Header("ゲームの成否に関わるフラグ")]
+	public bool inMagnetismArea = true;		// 何かしらの磁力範囲内かどうか
+	// 下の「磁力範囲内かどうかのフラグ」2つがどちらともfalseになったら↑がfalseになる＝ゲームオーバー
+	public bool isSnapping = false;		// くっついてるかどうか
+	// これがtrueになる＝磁石が何かしらとくっついた＝ゲームオーバー
+
+	[Header("磁力範囲内かどうかのフラグ")]
+	public bool inPlayerMagArea = true;		// プレイヤーの磁石の磁力範囲内かどうか
+	public bool inObjMagArea = true;		// オブジェクトの磁力範囲内かどうか
 
 	[Header("磁石がくっついた時のSE")]
 	public AudioClip magnetSE;
@@ -48,15 +64,21 @@ public class Magnetism : MonoBehaviour
 
 	private Rigidbody rb;
 
+	// 強化常態かどうか確認するためのやつ
+	private AugMagL playerL;
+	private AugMagR playerR;
+
+	private bool L_isAugmenting;
+	private bool R_isAugmenting;
+
+
 	void Awake()
 	{
 		//--- 磁力・範囲のデバッグ用 ---//
 		// 磁石同士で各変数が一致しているかチェック、不一致なら実行できない
 
-		GameObject magnet1 = GameObject.Find("magnet1");
-		GameObject magnet2 = GameObject.Find("magnet2");
-		Magnetism mag1 = magnet1.GetComponent<Magnetism>();
-		Magnetism mag2 = magnet2.GetComponent<Magnetism>();
+		Magnetism mag1 = GameObject.Find("magnet1").GetComponent<Magnetism>();
+		Magnetism mag2 = GameObject.Find("magnet2").GetComponent<Magnetism>();
 
 		if (mag1.magnetismRange != mag2.magnetismRange || mag1.deadRange != mag2.deadRange ||
 			mag1.magnetism != mag2.magnetism || mag1.strongMagnetism != mag2.strongMagnetism ||
@@ -96,30 +118,60 @@ public class Magnetism : MonoBehaviour
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
+		audioSource = GetComponent<AudioSource>();
+
+		// 成否に関わるフラグを初期化しておく
 		isSnapping = false;
 		inMagnetismArea = true;
 
-		audioSource = GetComponent<AudioSource>();
+		// 強化フラグの取得
+		playerL = GameObject.Find("Player L").GetComponent<AugMagL>();
+		playerR = GameObject.Find("Player R").GetComponent<AugMagR>();
+	}
+
+	private void Update()
+	{
+		// フラグの状況は常に更新しておく
+		L_isAugmenting = playerL.isAugmenting;
+		R_isAugmenting = playerR.isAugmenting;
 	}
 
 	void FixedUpdate()
 	{
-		// 距離を計算
-		float distance = Vector3.Distance(myPlate.position, targetPlate.position);
-		Vector3 direction = (targetPlate.position - myPlate.position).normalized;
-
-		if (distance < magnetismRange) // 磁力範囲内なら引き寄せ
+		// 磁力範囲内か外かを判定する
+		if (inPlayerMagArea || inObjMagArea)
 		{
 			inMagnetismArea = true;
-			float force = (distance < deadRange) ? strongMagnetism : magnetism;
-			rb.AddForce(direction * force, ForceMode.Acceleration);
 		}
 		else
 		{
 			inMagnetismArea = false;
 		}
 
-		if (distance < snapDistance)	// 接近しすぎるとくっつく
+		// 距離を計算
+		float distance = Vector3.Distance(myPlate.position, targetPlate.position);
+		Vector3 direction = (targetPlate.position - myPlate.position).normalized;
+
+		// --- プレイヤーごとの判定 --- //
+		// アタッチされているオブジェクトがmagnet1(true)かmagnet2(false)か判定
+		bool isSelfL = gameObject.name == "magnet1";
+		// 自分が強化しているか相手が強化しているか判定
+		bool isSelfAugmenting = isSelfL ? L_isAugmenting : R_isAugmenting;
+
+		// 片方の磁石に引き寄せられるのは強化中でない時だけ
+		if (distance < magnetismRange && !isSelfAugmenting)
+		{
+			inPlayerMagArea = true;
+			float force = (distance < deadRange) ? strongMagnetism : magnetism;
+			rb.AddForce(direction * force, ForceMode.Acceleration);
+		}
+		else
+		{
+			inPlayerMagArea = false;
+		}
+
+		// くっつく処理：両方が強化状態にある時は無視
+		if (distance < snapDistance && !L_isAugmenting && !R_isAugmenting)
 		{
 			rb.velocity = Vector3.zero;
 			rb.angularVelocity = Vector3.zero;
@@ -153,12 +205,6 @@ public class Magnetism : MonoBehaviour
 	}
 	void OnDisable()
 	{
-        SphereMagnetism.Unregister(this);
-	}
-
-
-	// Update is called once per frame
-	void Update()
-	{
+		SphereMagnetism.Unregister(this);
 	}
 }

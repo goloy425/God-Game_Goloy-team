@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2192318228718671656}
   - component: {fileID: 3125006604918387952}
   - component: {fileID: 2093772769}
+  - component: {fileID: 2093772770}
   m_Layer: 0
   m_Name: ElectMag_S
   m_TagString: Untagged
@@ -129,10 +130,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5199e15247b58eb41abfdd96f9f853a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magnetismRange: 6
+  magnetismRange: 5
   deadRange: 1.2
   magnetism: 200
   strongMagnetism: 999
+  playerL: {fileID: 0}
+  playerR: {fileID: 0}
+  canCarry: 0
 --- !u!114 &2093772769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,6 +153,20 @@ MonoBehaviour:
   magnetismCircle: {fileID: 7081642487317328270}
   deadCircle: {fileID: 7081642486605973609}
   baseObj: {fileID: 2192318228718671657}
+--- !u!114 &2093772770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2192318228718671657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e72ef55def416243abccce2aa7ce521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magnet1: {fileID: 0}
+  magnet2: {fileID: 0}
 --- !u!1001 &2192318229207861420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -166,7 +184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8260567652589093371, guid: 5d022d77e1b0a4c4f94f50abdd11c006, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.05
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8260567652589093371, guid: 5d022d77e1b0a4c4f94f50abdd11c006, type: 3}
       propertyPath: m_LocalPosition.y

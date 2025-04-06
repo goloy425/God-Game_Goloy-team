@@ -1,0 +1,87 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+//=================================================
+// 作成者：宮本和音
+// 磁力強化（R）　ZRの方
+//=================================================
+
+public class AugMagR : MonoBehaviour
+{
+	[Header("PlayerRの磁石を設定")]
+	public Magnetism magnet;
+
+	[Header("フラグ：強化中")]
+	public bool isAugmenting;	// 強化中かどうかのフラグ
+
+	private GameInputs inputs;	// GameInputsクラス
+	private Magnetism mag;	// magnetのMagnetismを取得する用
+
+	// 色チェンジ用変数
+	private Renderer circleRenderer;
+	private Color defaultColor;
+	private Color poweredColor = Color.green;	// 強化中の色
+
+	// Start is called before the first frame update
+	void Start()
+	{
+		inputs = new GameInputs();
+		inputs.Enable();
+
+		magnet.TryGetComponent<Magnetism>(out mag);
+
+		// 磁力範囲オブジェクトを取得
+		Transform circle = this.transform.Find("Circles/MagnetismCircle");
+
+		if (circle != null)
+		{
+			circle.TryGetComponent<Renderer>(out circleRenderer);
+
+			if (circleRenderer != null)
+			{
+				// オブジェクト個別のマテリアルインスタンスを使うように明示
+				circleRenderer.material = new Material(circleRenderer.material);
+				defaultColor = circleRenderer.material.color;
+			}
+		}
+	}
+
+	// Update is called once per frame
+	void Update()
+	{
+		// ボタンを押されてる強さの取得
+		float RValue = inputs.PlayerR.AugmentMag.ReadValue<float>();
+
+		// オブジェクトの磁力範囲内にいる時、一定以上の強さでキーが押されたら磁力強化
+		if (RValue > 0.3f && mag.inObjMagArea)
+		{
+			AugmentPlayerRMagnetism();
+		}
+		else
+		{
+			ResetPlayerRMagnet();   // 色やら何やらを元に戻す
+		}
+	}
+
+	private void AugmentPlayerRMagnetism()
+	{
+		Color temp = poweredColor;
+		temp.a = defaultColor.a + 0.1f;	// 不透明度を若干上げる
+		circleRenderer.material.color = temp;
+
+		isAugmenting = true;
+	}
+
+	private void ResetPlayerRMagnet()
+	{
+		circleRenderer.material.color = defaultColor;   // 色を元に戻す
+		isAugmenting = false;
+	}
+
+
+	private void OnDestroy()
+	{
+		inputs?.Dispose();
+	}
+}

@@ -10,7 +10,7 @@ using UnityEngine;
 public class DrawCircle : MonoBehaviour
 {
 	[Header("Circlesを設定（表示・非表示切り替え用）")]
-	public GameObject Circles;      // 円のグループ
+	public GameObject Circles;	// 円のグループ
 
 	[Header("範囲表示の円")]
 	public Transform magnetismCircle;	// 磁力範囲の方
@@ -28,10 +28,12 @@ public class DrawCircle : MonoBehaviour
 	void Start()
 	{
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
-		mag = GetComponent<Magnetism>();
 
-		if (mag != null) return;	// Magnetismがあるなら以下はスルー
-		sMag = GetComponent<SphereMagnetism>();
+		if (TryGetComponent<Magnetism>(out mag)) { return; }
+		// Magnetismがない(=磁力オブジェクトにアタッチされている)時だけSphereMagnetismを探す
+		// 磁力オブジェクト（キューブ）を実装する時書き換えなきゃいけない
+		// {}内にGetComponentを収めると{}出た時にNullになっちゃうので注意すること
+		TryGetComponent<SphereMagnetism>(out sMag);
 	}
 
 	private void FixedUpdate()
@@ -64,8 +66,9 @@ public class DrawCircle : MonoBehaviour
 			{
 				magnetismCircle.localScale = new Vector3(sMag.MagnetismRange / 2, 0.01f, sMag.MagnetismRange / 2);
 			}
-			magnetismCircle.position = this.transform.position;		// 位置の追従
-			magnetismCircle.rotation = Quaternion.identity; // 回転を固定
+
+			// 位置の追従＆回転を固定
+			magnetismCircle.SetPositionAndRotation(this.transform.position, Quaternion.identity);
 		}
 
 		// くっつく範囲
@@ -73,14 +76,14 @@ public class DrawCircle : MonoBehaviour
 		{
 			if (mag != null)
 			{
-				deadCircle.localScale = new Vector3(mag.DeadRange * 1.1f, 0.01f, mag.DeadRange * 1.1f);
+				deadCircle.localScale = new Vector3(mag.deadRange * 1.1f, 0.01f, mag.deadRange * 1.1f);
 			}
 			else
 			{
 				deadCircle.localScale = new Vector3(sMag.DeadRange * 1.2f, 0.01f, sMag.DeadRange * 1.2f);
 			}
-			deadCircle.position = baseObj.transform.position;
-			deadCircle.rotation = Quaternion.identity;
+
+			deadCircle.SetPositionAndRotation(baseObj.transform.position, Quaternion.identity);
 		}
 	}
 }
