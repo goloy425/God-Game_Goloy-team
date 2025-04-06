@@ -32,6 +32,11 @@ public class AugMagR : MonoBehaviour
 
 	private void AugmentPlayerRMagnetism()
 	{
-		//Debug.Log("ZRキー押されてまーす");
+		Debug.Log("ZRキー押されてまーす");
+	}
+
+	private void OnDestroy()
+	{
+		inputs?.Dispose();
 	}
 }

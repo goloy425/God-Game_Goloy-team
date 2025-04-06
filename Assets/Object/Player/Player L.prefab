@@ -430,6 +430,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7762097653870733865}
     - target: {fileID: 1940077802, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
+      propertyPath: baseObj
+      value: 
+      objectReference: {fileID: 4424874248014418357}
+    - target: {fileID: 1940077802, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
       propertyPath: deadCircle
       value: 
       objectReference: {fileID: 8285588146480261583}
@@ -514,6 +518,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257b1387a4562c6448f0beaf5d6dacc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4424874248014418357 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2825697762719741060, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
+  m_PrefabInstance: {fileID: 1900143609410938161}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8488412802146391864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8039572894859833865, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}

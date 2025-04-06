@@ -38,7 +38,7 @@ public class AugMagL : MonoBehaviour
 
 	private void AugmentPlayerLMagnetism()
 	{
-		//Debug.Log("ZLキー押されてまーす");
+		Debug.Log("ZLキー押されてまーす");
 	}
 
 	private void OnDestroy()

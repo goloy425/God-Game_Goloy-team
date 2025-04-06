@@ -146,6 +146,17 @@ public class Magnetism : MonoBehaviour
 	}
 
 
+	//--- 磁力オブジェクトが磁石を引き寄せるためのリストに登録 ---//
+	void OnEnable()
+	{
+		SphereMagnetism.Register(this);
+	}
+	void OnDisable()
+	{
+        SphereMagnetism.Unregister(this);
+	}
+
+
 	// Update is called once per frame
 	void Update()
 	{

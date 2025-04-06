@@ -29,8 +29,7 @@ public class AdjustMagnetism : MonoBehaviour
 		//--- 適用するシーンを増やす場合はここに追記していく ---//
 		// （switch文だとうまくいかなかったのでif文にしてある）
 
-		//--- サンプルシーン ---//
-		if (currentScene == "SampleScene")
+		if (currentScene == "SampleScene")	// サンプルシーン
 		{
 			originalMag = magnet1.magnetismRange;	// 本来の磁力範囲を保存しておく
 
@@ -38,12 +37,12 @@ public class AdjustMagnetism : MonoBehaviour
 			magnet2.SetMagnetismRange(10.0f, this);
 			adjusted = true;	// 調整完了
 		}
-		else if (currentScene == "TestScene")
+		else if (currentScene == "TestScene")	// テストシーン
 		{
 			originalMag = magnet1.magnetismRange;
 
-			magnet1.SetMagnetismRange(10.0f, this);
-			magnet2.SetMagnetismRange(10.0f, this);
+			magnet1.SetMagnetismRange(20.0f, this);
+			magnet2.SetMagnetismRange(20.0f, this);
 			adjusted = true;
 		}
 	}
