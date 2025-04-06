@@ -65,7 +65,7 @@ public class Vibration : MonoBehaviour
 
 			float distance = Vector3.Distance(magnet1.transform.position, magnet2.transform.position);	// 磁石の距離
 
-			float minDistance = magnet1.DeadRange;
+			float minDistance = magnet1.deadRange;
 			float maxDistance = magnet1.magnetismRange;
 			float vibStrength;  // 振動の強さ
 			float vibInterval;  // 振動の間隔
