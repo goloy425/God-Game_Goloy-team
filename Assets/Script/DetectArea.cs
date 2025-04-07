@@ -2,6 +2,7 @@
 // 本田洸都
 // 指定されたオブジェクトがエリア内にいるかどうかを判定
 //--------------------------------------------------------------------------
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,8 @@ public class DetectArea : MonoBehaviour
     public Renderer[] circuitsRenderer;
     [Header("接続時のSE")]
     public AudioClip audioClip;
+
+    public Action<bool> OnDetectAreaChanged;    // 検知状態を通知するイベント
 
     private AudioSource audioSource;
     private bool isConnectFg = false; // 回路が繋がったかどうか
@@ -67,9 +70,10 @@ public class DetectArea : MonoBehaviour
                     {
                         circuitsRenderer[j].material.color = circuitColor;
                     }
-                    isConnectFg = true;
                     audioSource.PlayOneShot(audioClip);     // SE再生
-                    Debug.Log("接続" + isConnectFg);
+                    isConnectFg = true;
+                    OnDetectAreaChanged?.Invoke(true);   // 判定を通知
+                    Debug.Log("接続 isConnectFg:" + isConnectFg);
                 }
             }
         }
@@ -92,9 +96,10 @@ public class DetectArea : MonoBehaviour
                 {
                     circuitsRenderer[j].material.color = initCircuitColor;
                 }
-                isConnectFg = false;
                 // audioSource.PlayOneShot(audioClip);     // SE再生
-                Debug.Log("切断" + isConnectFg);
+                isConnectFg = false;
+                OnDetectAreaChanged?.Invoke(false);   // 判定を通知
+                Debug.Log("切断 isConnectFg:" + isConnectFg);
             }
         }
     }
