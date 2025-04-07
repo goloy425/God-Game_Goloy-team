@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public DetectArea[] detectAreas;    // すべての判定エリアを登録
+    private int totalConnected = 0;       // 接続された判定エリアの数
+
     public PressurePlates01[] pressurePlates; // すべての感圧板を登録
     private int totalPressed = 0; // 押されている感圧板の数
 
@@ -21,6 +24,11 @@ public class GameManager : MonoBehaviour
         foreach (PressurePlates01 plate in pressurePlates)
         {
             plate.OnPressurePlateChanged += OnPlateStateChanged; // イベント登録
+        }
+
+        foreach (DetectArea detectArea in detectAreas)
+        {
+            detectArea.OnDetectAreaChanged += OnDetectionStateChanged; // イベント登録
         }
     }
 
@@ -43,6 +51,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void OnDetectionStateChanged(bool isConnected)
+    {
+        totalConnected += isConnected ? 1 : -1; // 接続されている数を増減
+        Debug.Log(totalConnected);
+
+        if (totalConnected == detectAreas.Length)
+        {
+            gameClearFg = true; // ゲームクリア
+            Debug.Log("全ての回路が接続されています！ゲームクリア！Result画面に移ります");
+            // ここにゲームクリア処理を書く
+            SceneManager.LoadScene(resultSceneName);
+        }
+    }
 
     public bool GetGameClearFg()
     {
