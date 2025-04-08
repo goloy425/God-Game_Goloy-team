@@ -58,6 +58,7 @@ public class AugMagL : MonoBehaviour
 		// オブジェクトの磁力範囲内にいる時、一定以上の強さでキーが押されたら磁力強化
 		if (LValue > 0.3f && mag.inObjMagArea)
 		{
+			Debug.Log("処理通ってまーす");
 			AugmentPlayerLMagnetism();
 		}
 		else

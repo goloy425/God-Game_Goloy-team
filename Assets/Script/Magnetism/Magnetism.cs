@@ -26,12 +26,11 @@ public class Magnetism : MonoBehaviour
 	// 上の「public」を「[SerializeField] private」にしたうえで↓
 	// 下のと同じやつを変数名のとこだけ変えて付け足してやればいける
 
-	// 外部から書き換えできないようにする（アクセスはできる）
-	// magnetismRangeはAdjustMagnetismからのみ書き換え可にする
-	// deadRangeはSphereMagnetismからのみ書き換え可にする（キューブ実装したらそっちからも）
+	// 特定のスクリプトを除いて外部から書き換えできないようにする（アクセスはできる）
 	public float MagnetismRange { get; private set; }
 	public float DeadRange { get; private set; }
 
+	// magnetismRangeはAdjustMagnetismからのみ書き換え可にする
 	public void SetMagnetismRange(float newRange,object caller)
 	{
 		if (caller is AdjustMagnetism)
@@ -40,6 +39,7 @@ public class Magnetism : MonoBehaviour
 		}
 	}
 
+	// deadRangeはSphereMagnetismからのみ書き換え可にする
 	public void SetDeadRange(float newRange,object caller)
 	{
 		if (caller is SphereMagnetism)
@@ -112,6 +112,18 @@ public class Magnetism : MonoBehaviour
 
 			UnityEditor.EditorApplication.isPlaying = false;	// ゲームの実行を停止
 		}
+	}
+
+	void OnEnable()
+	{
+		// 磁石レジストリにプレイヤーの磁石を追加する
+		RegisterToAllMagnets();
+	}
+
+	void OnDisable()
+	{
+		// 磁石レジストリをクリアする
+		UnregisterFromAllMagnets();
 	}
 
 	// Start is called before the first frame update
@@ -199,12 +211,63 @@ public class Magnetism : MonoBehaviour
 
 
 	//--- 磁力オブジェクトが磁石を引き寄せるためのリストに登録 ---//
-	void OnEnable()
+	private void RegisterToAllMagnets()
 	{
-		SphereMagnetism.Register(this);
+		// タグを調べて該当のものがあれば追加
+		// 球
+		foreach (var sphere in GameObject.FindGameObjectsWithTag("MagObj_Sphere"))
+		{
+			if (sphere.GetComponent<SphereMagnetism>())
+			{
+				SphereMagnetism.Register(this);
+			}
+		}
+
+		// キューブ
+		foreach (var cube in GameObject.FindGameObjectsWithTag("MagObj_Cube"))
+		{
+			if (cube.GetComponent<CubeMagnetism>())
+			{
+				CubeMagnetism.Register(this);
+			}
+		}
+		// 半キューブ
+		foreach (var hCube in GameObject.FindGameObjectsWithTag("MagObj_HCube"))
+		{
+			if (hCube.GetComponent<HCubeMagnetism>())
+			{
+				HCubeMagnetism.Register(this);
+			}
+		}
 	}
-	void OnDisable()
+
+	private void UnregisterFromAllMagnets()
 	{
-		SphereMagnetism.Unregister(this);
+		// こっちも追加の時と一緒でタグを利用する方式
+		// 球
+		foreach (var sphere in GameObject.FindGameObjectsWithTag("MagObj_Sphere"))
+		{
+			if (sphere.GetComponent<SphereMagnetism>())
+			{
+				SphereMagnetism.Unregister(this);
+			}
+		}
+
+		// キューブ
+		foreach (var cube in GameObject.FindGameObjectsWithTag("MagObj_Cube"))
+		{
+			if (cube.GetComponent<CubeMagnetism>())
+			{
+				CubeMagnetism.Unregister(this);
+			}
+		}
+		// 半キューブ
+		foreach (var hCube in GameObject.FindGameObjectsWithTag("MagObj_HCube"))
+		{
+			if (hCube.GetComponent<HCubeMagnetism>())
+			{
+				HCubeMagnetism.Unregister(this);
+			}
+		}
 	}
 }
