@@ -310,7 +310,10 @@ MonoBehaviour:
   snapDistance: 0.07
   inMagnetismArea: 1
   isSnapping: 0
-  magnetSE: {fileID: 0}
+  inPlayerMagArea: 1
+  inObjMagArea: 1
+  magnetSE: {fileID: 8300000, guid: 5ae5568eda110b343af775d41b5906df, type: 3}
+  ellipsoidDistance: 3
 --- !u!82 &1931507255
 AudioSource:
   m_ObjectHideFlags: 0
@@ -446,4 +449,4 @@ MonoBehaviour:
   Circles: {fileID: 0}
   magnetismCircle: {fileID: 0}
   deadCircle: {fileID: 0}
-  Plate: {fileID: 2825697762719741060}
+  baseObj: {fileID: 0}
