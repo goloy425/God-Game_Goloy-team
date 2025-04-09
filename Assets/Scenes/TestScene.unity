@@ -376,6 +376,10 @@ PrefabInstance:
       propertyPath: magnetismRange
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3925730984944595870, guid: 85c033b7f252539468037e9271ae6bc4, type: 3}
+      propertyPath: ellipsoidDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6089353824014589396, guid: 85c033b7f252539468037e9271ae6bc4, type: 3}
       propertyPath: m_Name
       value: Player R
@@ -628,26 +632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257b1387a4562c6448f0beaf5d6dacc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1558477546 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3496849823571866574, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-  m_PrefabInstance: {fileID: 3496849823719339691}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1558477555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558477546}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8945cd53440958345a9a7e9da57de5bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerR: {fileID: 1567422902}
-  magnet2: {fileID: 689135667}
-  isCarryingR: 0
 --- !u!1 &1567422902 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6089353824014589396, guid: 85c033b7f252539468037e9271ae6bc4, type: 3}
@@ -744,26 +728,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8488412802146391864, guid: 0fd28b4bcfb6b2348bdd51cb9037ec38, type: 3}
   m_PrefabInstance: {fileID: 1710429518}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1859694404 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3496849822942446565, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-  m_PrefabInstance: {fileID: 3496849823719339691}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1859694413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859694404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f45199ef181abe44eb407a1017d4ee36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerL: {fileID: 952739342}
-  magnet1: {fileID: 1713388542}
-  isCarryingL: 0
 --- !u!1001 &1968536315
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -918,10 +882,6 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 1567422902}
-    - target: {fileID: 330042016, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: requiredDistance
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 1558477554, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
       propertyPath: playerL
       value: 
@@ -930,30 +890,14 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 1567422902}
-    - target: {fileID: 1558477554, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1558477554, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: magnetismRange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1558477554, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: magnetismScale.x
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1558477554, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: magnetismScale.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1558477554, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: magnetismScale.z
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1558477554, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: ellipsoidDistance
-      value: 4.5
-      objectReference: {fileID: 0}
+    - target: {fileID: 1558477555, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
+      propertyPath: magnet2
+      value: 
+      objectReference: {fileID: 689135667}
+    - target: {fileID: 1558477555, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
+      propertyPath: playerR
+      value: 
+      objectReference: {fileID: 1567422902}
     - target: {fileID: 1859694412, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
       propertyPath: playerL
       value: 
@@ -962,30 +906,14 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 1567422902}
-    - target: {fileID: 1859694412, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1859694412, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: magnetismRange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1859694412, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: magnetismScale.x
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1859694412, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: magnetismScale.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1859694412, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: magnetismScale.z
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1859694412, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: ellipsoidDistance
-      value: 4.5
-      objectReference: {fileID: 0}
+    - target: {fileID: 1859694413, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
+      propertyPath: magnet1
+      value: 
+      objectReference: {fileID: 1713388542}
+    - target: {fileID: 1859694413, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
+      propertyPath: playerL
+      value: 
+      objectReference: {fileID: 952739342}
     - target: {fileID: 3496849822908735125, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
       propertyPath: playerL
       value: 
@@ -994,14 +922,6 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 1567422902}
-    - target: {fileID: 3496849822908735125, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: magnetismRange
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3496849822942446586, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
     - target: {fileID: 3496849823473040228, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1049,10 +969,6 @@ PrefabInstance:
     - target: {fileID: 3496849823473040229, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
       propertyPath: m_Name
       value: MagObj_Cube
-      objectReference: {fileID: 0}
-    - target: {fileID: 3496849823571866563, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}
-      propertyPath: m_Constraints
-      value: 112
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88ccc474d5b5aa64b85e6fd72eff216f, type: 3}

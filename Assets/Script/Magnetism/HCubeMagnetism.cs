@@ -12,7 +12,6 @@ public class HCubeMagnetism : MonoBehaviour
 	public float strongMagnetism = 999.0f;
 
 	public Vector3 magnetismScale = new Vector3(1f, 1.5f, 1f);	// 楕円形
-	[SerializeField] private float ellipsoidDistance = 3f;	// 有効範囲の半径っぽいイメージ
 
 	public float MagnetismRange => magnetismRange;
 	public float DeadRange => deadRange;
@@ -46,19 +45,11 @@ public class HCubeMagnetism : MonoBehaviour
 
 			Vector3 magnetPos = magnet.myPlate.position;
 
+			if (!magnet.inObjMagArea) continue;
+
 			// このキューブ自身のコライダーに対してClosestPointを使う
 			Vector3 surface = GetComponent<BoxCollider>().ClosestPoint(magnetPos);
 			float distance = Vector3.Distance(surface, magnetPos);
-
-			// --- 楕円形距離による範囲判定 --- //
-			// バグったので消してある、修正必須
-			//if (!IsWithinEllipsoidRange(magnetPos, surface))
-			//{
-			//	magnet.inObjMagArea = false;
-			//	continue;
-			//}
-
-			magnet.inObjMagArea = true;
 
 			Vector3 direction = (surface - magnetPos).normalized;
 			float force = (distance < deadRange) ? strongMagnetism : magnetism;
@@ -75,20 +66,6 @@ public class HCubeMagnetism : MonoBehaviour
 			}
 		}
 	}
-
-	private bool IsWithinEllipsoidRange(Vector3 magnetPos, Vector3 surface)
-	{
-		Vector3 diff = magnetPos - surface;
-
-		float scaledX = diff.x / magnetismScale.x;
-		float scaledY = diff.y / magnetismScale.y;
-		float scaledZ = diff.z / magnetismScale.z;
-
-		float distanceSq = scaledX * scaledX + scaledY * scaledY + scaledZ * scaledZ;
-
-		return distanceSq <= ellipsoidDistance * ellipsoidDistance;
-	}
-
 
 	private void AttachToSurface(Magnetism magnet, Vector3 snapPosition)
 	{
