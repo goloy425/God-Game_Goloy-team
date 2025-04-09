@@ -1268,7 +1268,7 @@ Transform:
   m_GameObject: {fileID: 334447616}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.6399999, y: 1.77, z: 8.29}
-  m_LocalScale: {x: 2.0203276, y: 0.40654224, z: 3.8690028}
+  m_LocalScale: {x: 2.0203278, y: 0.40654227, z: 3.8690026}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2033,6 +2033,7 @@ GameObject:
   - component: {fileID: 556853637}
   - component: {fileID: 556853643}
   - component: {fileID: 556853644}
+  - component: {fileID: 556853645}
   m_Layer: 10
   m_Name: Player R
   m_TagString: Player
@@ -2052,7 +2053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b32f50caf965d4098822671bc57ff6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 3
   rotationSpeed: 3
   cameraTransform: {fileID: 963194228}
 --- !u!136 &556853638
@@ -2151,7 +2152,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &556853643
 MonoBehaviour:
@@ -2269,6 +2270,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &556853645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556853636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9cbac415097a8d4889580c926835cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSlopeSpeed: 5
+  maxSlopeAngle: 90
+  gravityMultiplier: 10
 --- !u!1 &584687685 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5772847552214891607, guid: b9a88292f18a83742a1d6bf5b6800ebf, type: 3}
@@ -3390,7 +3406,7 @@ GameObject:
   - component: {fileID: 1006584809}
   - component: {fileID: 1006584808}
   - component: {fileID: 1006584807}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Sakamiti 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3900,7 +3916,7 @@ GameObject:
   - component: {fileID: 1226764609}
   - component: {fileID: 1226764608}
   - component: {fileID: 1226764607}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Sakamiti 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5312,7 +5328,7 @@ GameObject:
   - component: {fileID: 1835759273}
   - component: {fileID: 1835759272}
   - component: {fileID: 1835759271}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Sakamiti
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5702,7 +5718,7 @@ GameObject:
   - component: {fileID: 2041010126}
   - component: {fileID: 2041010125}
   - component: {fileID: 2041010124}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Sakamiti 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
