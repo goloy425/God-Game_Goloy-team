@@ -310,7 +310,10 @@ MonoBehaviour:
   snapDistance: 0.07
   inMagnetismArea: 1
   isSnapping: 0
-  magnetSE: {fileID: 0}
+  inPlayerMagArea: 1
+  inObjMagArea: 1
+  magnetSE: {fileID: 8300000, guid: 5ae5568eda110b343af775d41b5906df, type: 3}
+  ellipsoidDistance: 3
 --- !u!145 &1209771514
 SpringJoint:
   m_ObjectHideFlags: 0

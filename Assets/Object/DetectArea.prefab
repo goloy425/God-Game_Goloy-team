@@ -118,11 +118,7 @@ MonoBehaviour:
   - {fileID: 0}
   initCircuitColor: {r: 0, g: 0, b: 1, a: 1}
   circuitColor: {r: 1, g: 1, b: 0, a: 1}
-  circuitsRenderer:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  circuitsRenderer: []
   audioClip: {fileID: 8300000, guid: d3b8d7cd50ca45f4882a16e16e686d4a, type: 3}
 --- !u!82 &4803428742003963146
 AudioSource:

@@ -20,7 +20,7 @@ public class DetectArea : MonoBehaviour
     public Color initCircuitColor;
     [Header("接続後の回路の色")]
     public Color circuitColor;
-    [Header("判定エリアと繋がっている回路")]
+    [Header("判定エリアと繋がっている回路（設定なし可）")]
     public Renderer[] circuitsRenderer;
     [Header("接続時のSE")]
     public AudioClip audioClip;
@@ -37,6 +37,7 @@ public class DetectArea : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         // 色を変更
         GetComponent<Renderer>().material.color = color;
+
         // 回路の色を初期化
         for (int i = 0; i < circuitsRenderer.Length; i++)
         {
