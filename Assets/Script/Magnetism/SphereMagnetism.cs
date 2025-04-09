@@ -11,7 +11,7 @@ using UnityEngine;
 public class SphereMagnetism : MonoBehaviour
 {
 	[Header("磁力・範囲の設定")]
-	public float magnetismRange = 10.0f;
+	[SerializeField] private float magnetismRange = 10.0f;
 	[SerializeField] private float deadRange = 1.0f;
 	public float magnetism = 200.0f;
 	public float strongMagnetism = 999.0f;
@@ -53,8 +53,8 @@ public class SphereMagnetism : MonoBehaviour
 		registeredMagnets.Remove(magnet);
 	}
 
-
-	private void Start()
+	// Start is called before the first frame update
+	void Start()
 	{
 		// TryGetComponentの返り値はbool、SphereColliderが見つからなかった時falseになる
 		if (!TryGetComponent<SphereCollider>(out sphereCollider))
@@ -72,7 +72,8 @@ public class SphereMagnetism : MonoBehaviour
 		TryGetComponent<MoveSphere>(out moveS);
 	}
 
-	private void Update()
+	// Update is called once per frame
+	void Update()
 	{
 		//--- 球が動かせるかどうかの判定 ---//
 		if (magL_Aug.isAugmenting && magR_Aug.isAugmenting)
@@ -87,9 +88,9 @@ public class SphereMagnetism : MonoBehaviour
 		else
 		{
 			canCarry = false;
-            moveS.StopCarrying();
+			moveS.StopCarrying();
 
-            magnet1.SetDeadRange(oridinalDRange, this);
+			magnet1.SetDeadRange(oridinalDRange, this);
 			magnet2.SetDeadRange(oridinalDRange, this);
 		}
 	}
@@ -106,6 +107,7 @@ public class SphereMagnetism : MonoBehaviour
 			Vector3 center = transform.position;
 			Vector3 directionToMagnet = (magnetPos - center).normalized;
 
+			// 球の表面にくっつけるために球の半径を計算
 			float radius = sphereCollider.radius * transform.localScale.x;
 			Vector3 surfacePoint = center + directionToMagnet * radius;
 
@@ -130,8 +132,8 @@ public class SphereMagnetism : MonoBehaviour
 				Rigidbody rb = magnet.GetComponent<Rigidbody>();
 				rb.velocity = Vector3.zero;
 				rb.angularVelocity = Vector3.zero;
-				AttachToSurface(magnet);
 
+				AttachToSurface(magnet);
 				magnet.isSnapping = true;
 			}
 		}

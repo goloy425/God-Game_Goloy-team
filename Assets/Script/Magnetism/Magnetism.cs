@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Profiling.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //=================================================
@@ -26,12 +27,11 @@ public class Magnetism : MonoBehaviour
 	// 上の「public」を「[SerializeField] private」にしたうえで↓
 	// 下のと同じやつを変数名のとこだけ変えて付け足してやればいける
 
-	// 外部から書き換えできないようにする（アクセスはできる）
-	// magnetismRangeはAdjustMagnetismからのみ書き換え可にする
-	// deadRangeはSphereMagnetismからのみ書き換え可にする（キューブ実装したらそっちからも）
+	// 特定のスクリプトを除いて外部から書き換えできないようにする（アクセスはできる）
 	public float MagnetismRange { get; private set; }
 	public float DeadRange { get; private set; }
 
+	// magnetismRangeはAdjustMagnetismからのみ書き換え可にする
 	public void SetMagnetismRange(float newRange,object caller)
 	{
 		if (caller is AdjustMagnetism)
@@ -40,6 +40,7 @@ public class Magnetism : MonoBehaviour
 		}
 	}
 
+	// deadRangeはSphereMagnetismからのみ書き換え可にする
 	public void SetDeadRange(float newRange,object caller)
 	{
 		if (caller is SphereMagnetism)
@@ -71,6 +72,13 @@ public class Magnetism : MonoBehaviour
 	private bool L_isAugmenting;
 	private bool R_isAugmenting;
 
+	// 半キューブ用のリスト（磁力範囲内外を判定するのに使う）
+	private List<Transform> listHCubes = new List<Transform>();
+	[SerializeField] private float ellipsoidDistance = 3f;  // 半キューブの有効範囲半径
+
+	// 半キューブの磁力オンオフを観測する用
+	private HCubeMagnetism hcMag;
+	private bool isMagEnabled = false;
 
 	void Awake()
 	{
@@ -114,6 +122,18 @@ public class Magnetism : MonoBehaviour
 		}
 	}
 
+	void OnEnable()
+	{
+		// 磁石レジストリにプレイヤーの磁石を追加する
+		RegisterToAllMagnets();
+	}
+
+	void OnDisable()
+	{
+		// 磁石レジストリをクリアする
+		UnregisterFromAllMagnets();
+	}
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -127,6 +147,21 @@ public class Magnetism : MonoBehaviour
 		// 強化フラグの取得
 		playerL = GameObject.Find("Player L").GetComponent<AugMagL>();
 		playerR = GameObject.Find("Player R").GetComponent<AugMagR>();
+
+		// 半キューブがあるかどうか調べる
+		HCubeMagnetism[] foundCubes = FindObjectsOfType<HCubeMagnetism>();
+		foreach (var cube in foundCubes)
+		{
+			if (cube != null)
+			{
+				listHCubes.Add(cube.transform);
+			}
+		}
+
+		if (listHCubes.Count > 0)
+		{
+			hcMag = listHCubes[0].GetComponent<HCubeMagnetism>();
+		}
 	}
 
 	private void Update()
@@ -134,11 +169,13 @@ public class Magnetism : MonoBehaviour
 		// フラグの状況は常に更新しておく
 		L_isAugmenting = playerL.isAugmenting;
 		R_isAugmenting = playerR.isAugmenting;
+
+		isMagEnabled = hcMag.enabled;
 	}
 
 	void FixedUpdate()
 	{
-		// 磁力範囲内か外かを判定する
+		//--- 磁力範囲内か外かを常に判定する ---//
 		if (inPlayerMagArea || inObjMagArea)
 		{
 			inMagnetismArea = true;
@@ -148,11 +185,12 @@ public class Magnetism : MonoBehaviour
 			inMagnetismArea = false;
 		}
 
+		//--- プレイヤーの磁石同士の引き寄せ処理 ---//
 		// 距離を計算
 		float distance = Vector3.Distance(myPlate.position, targetPlate.position);
 		Vector3 direction = (targetPlate.position - myPlate.position).normalized;
 
-		// --- プレイヤーごとの判定 --- //
+		// プレイヤーごとの判定
 		// アタッチされているオブジェクトがmagnet1(true)かmagnet2(false)か判定
 		bool isSelfL = gameObject.name == "magnet1";
 		// 自分が強化しているか相手が強化しているか判定
@@ -178,6 +216,31 @@ public class Magnetism : MonoBehaviour
 			AttachToTarget();
 			isSnapping = true;
 		}
+
+		//--- 半キューブが存在する時：磁力範囲の内か外か判定 ---//
+		if(isMagEnabled)
+		{
+			foreach (var cube in listHCubes)
+			{
+				if (cube == null) continue;
+
+				Vector3 magnetPos = transform.position;
+
+				// 
+				Vector3 surface = cube.GetComponent<Collider>().ClosestPoint(magnetPos);
+				Vector3 hcMag = cube.GetComponent<HCubeMagnetism>().magnetismScale;
+
+				if (IsWithinEllipsoidRange(magnetPos, surface, hcMag))
+				{
+					inObjMagArea = true;
+					break;
+				}
+				else
+				{
+					inObjMagArea = false;
+				}
+			}
+		}
 	}
 
 	void AttachToTarget()
@@ -198,13 +261,80 @@ public class Magnetism : MonoBehaviour
 	}
 
 
-	//--- 磁力オブジェクトが磁石を引き寄せるためのリストに登録 ---//
-	void OnEnable()
+	//=================================================
+	//=================================================
+	private bool IsWithinEllipsoidRange(Vector3 magnetPos, Vector3 surface, Vector3 range)
 	{
-		SphereMagnetism.Register(this);
+		Vector3 diff = magnetPos - surface;
+
+		float scaledX = diff.x / range.x;
+		float scaledY = diff.y / range.y;
+		float scaledZ = diff.z / range.z;
+
+		float distanceSq = scaledX * scaledX + scaledY * scaledY + scaledZ * scaledZ;
+
+		return distanceSq <= ellipsoidDistance * ellipsoidDistance;
 	}
-	void OnDisable()
+
+
+	//--- 磁力オブジェクトが磁石を引き寄せるためのリストに登録 ---//
+	private void RegisterToAllMagnets()
 	{
-		SphereMagnetism.Unregister(this);
+		// タグを調べて該当のものがあれば追加
+		// 球
+		foreach (var sphere in GameObject.FindGameObjectsWithTag("MagObj_Sphere"))
+		{
+			if (sphere.GetComponent<SphereMagnetism>())
+			{
+				SphereMagnetism.Register(this);
+			}
+		}
+
+		// キューブ
+		foreach (var cube in GameObject.FindGameObjectsWithTag("MagObj_Cube"))
+		{
+			if (cube.GetComponent<CubeMagnetism>())
+			{
+				CubeMagnetism.Register(this);
+			}
+		}
+		// 半キューブ
+		foreach (var hCube in GameObject.FindGameObjectsWithTag("MagObj_HCube"))
+		{
+			if (hCube.GetComponent<HCubeMagnetism>())
+			{
+				HCubeMagnetism.Register(this);
+			}
+		}
+	}
+
+	private void UnregisterFromAllMagnets()
+	{
+		// こっちも追加の時と一緒でタグを利用する方式
+		// 球
+		foreach (var sphere in GameObject.FindGameObjectsWithTag("MagObj_Sphere"))
+		{
+			if (sphere.GetComponent<SphereMagnetism>())
+			{
+				SphereMagnetism.Unregister(this);
+			}
+		}
+
+		// キューブ
+		foreach (var cube in GameObject.FindGameObjectsWithTag("MagObj_Cube"))
+		{
+			if (cube.GetComponent<CubeMagnetism>())
+			{
+				CubeMagnetism.Unregister(this);
+			}
+		}
+		// 半キューブ
+		foreach (var hCube in GameObject.FindGameObjectsWithTag("MagObj_HCube"))
+		{
+			if (hCube.GetComponent<HCubeMagnetism>())
+			{
+				HCubeMagnetism.Unregister(this);
+			}
+		}
 	}
 }
