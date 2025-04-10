@@ -35,7 +35,7 @@ public class DrawCircle : MonoBehaviour
 	void Start()
 	{
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
-		TryGetComponent<SplitCube>(out sCube);
+		GameObject.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
 
 		// Magnetismがアタッチされている（＝プレイヤーの磁石である）場合
 		if (TryGetComponent<Magnetism>(out mag)) { return; }
@@ -63,14 +63,15 @@ public class DrawCircle : MonoBehaviour
 
 	void UpdateCircles()
 	{
-		if (adjMag.Adjusted)
+        //--- 表示条件の分岐 ---//
+        if (adjMag.Adjusted)
 		{
 			Circles.SetActive(false);	// 円を非表示にする
 			return;		// 磁力調整終わるまでスルー
 		}
 		else
 		{
-			if (!isHCube)	// キューブ（割れる前）でなければ非表示解除
+			if (!isHCube)	// 半キューブでなければ非表示解除
 			{
 				Circles.SetActive(true);
 			}
@@ -81,7 +82,6 @@ public class DrawCircle : MonoBehaviour
 					Circles.SetActive(true);
 				}
 			}
-
 		}
 
 		//--- 範囲表示の円 ---//
@@ -99,13 +99,13 @@ public class DrawCircle : MonoBehaviour
 				{
 					magnetismCircle.localScale = new Vector3(sMag.MagnetismRange * 1.2f, 0.01f, sMag.MagnetismRange * 1.2f);
 				}
-				else if (cMag != null)	// キューブ
+				else if (!sCube.splited && cMag != null)	// キューブ
 				{
 					magnetismCircle.localScale = new Vector3(cMag.MagnetismRange * 2, 0.01f, cMag.MagnetismRange * 2);
 				}
-				else if (hcMag != null)	// 半キューブ
+				else if (sCube.splited && hcMag != null)	// 半キューブ
 				{
-					magnetismCircle.localScale = new Vector3(hcMag.MagnetismRange, 0.01f, hcMag.MagnetismRange);
+					magnetismCircle.localScale = new Vector3(hcMag.MagnetismRange * 2, 0.01f, hcMag.MagnetismRange * 2);
 				}
 			}
 
@@ -126,13 +126,13 @@ public class DrawCircle : MonoBehaviour
 				{
 					deadCircle.localScale = new Vector3(sMag.DeadRange * 1.5f, 0.01f, sMag.DeadRange * 1.5f);
 				}
-				else if (cMag != null)	// キューブ
+				else if (!sCube.splited && cMag != null)	// キューブ
 				{
 					deadCircle.localScale = new Vector3(cMag.DeadRange * 4.0f, 0.01f, cMag.DeadRange * 4.0f);
 				}
-				else if (hcMag != null) // 半キューブ
+				else if (sCube.splited && hcMag != null) // 半キューブ
 				{
-					magnetismCircle.localScale = new Vector3(hcMag.DeadRange, 0.01f, hcMag.DeadRange);
+					magnetismCircle.localScale = new Vector3(hcMag.DeadRange * 1.5f, 0.01f, hcMag.DeadRange * 1.5f);
 				}
 			}
 

@@ -42,32 +42,54 @@ public class HCubeMagnetism : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		//--- 磁石の引き寄せ処理 ---//
+		if (registeredMagnets == null || registeredMagnets.Count == 0) return;
+
+		Magnetism nearestMagnet = null;
+		float minDistance = float.MaxValue;
+		Vector3 surface = Vector3.zero;
+
+		// 一番近い磁石を探す
 		foreach (var magnet in registeredMagnets)
 		{
 			if (magnet == null || magnet.isSnapping) continue;
 
 			Vector3 magnetPos = magnet.myPlate.position;
+			Vector3 tempSurface = GetComponent<SphereCollider>().ClosestPoint(magnetPos);
+			float distance = Vector3.Distance(tempSurface, magnetPos);
 
-			if (!magnet.inObjMagArea) continue;
-
-			// このキューブ自身のコライダーに対してClosestPointを使う
-			Vector3 surface = GetComponent<SphereCollider>().ClosestPoint(magnetPos);
-			float distance = Vector3.Distance(surface, magnetPos);
-
-			Vector3 direction = (surface - magnetPos).normalized;
-			float force = (distance < deadRange) ? strongMagnetism : magnetism;
-			magnet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Acceleration);
-
-			if (distance < magnet.snapDistance)
+			if (distance < minDistance)
 			{
-				Rigidbody rb = magnet.GetComponent<Rigidbody>();
-				rb.velocity = Vector3.zero;
-				rb.angularVelocity = Vector3.zero;
-
-				AttachToSurface(magnet, surface);
-				magnet.isSnapping = true;
+				minDistance = distance;
+				nearestMagnet = magnet;
+				surface = tempSurface;
 			}
+		}
+
+		if (nearestMagnet == null) return;
+
+		// 範囲内かどうかチェック（円形判定）
+		if (minDistance > magnetismRange)
+		{
+			nearestMagnet.inObjMagArea = false;
+			return;
+		}
+
+		nearestMagnet.inObjMagArea = true;
+
+		// 引き寄せ処理
+		Vector3 direction = (surface - nearestMagnet.myPlate.position).normalized;
+		float force = (minDistance < deadRange) ? strongMagnetism : magnetism;
+		nearestMagnet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Acceleration);
+
+		// 吸着処理
+		if (minDistance < nearestMagnet.snapDistance)
+		{
+			Rigidbody rb = nearestMagnet.GetComponent<Rigidbody>();
+			rb.velocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
+
+			AttachToSurface(nearestMagnet, surface);
+			nearestMagnet.isSnapping = true;
 		}
 	}
 
