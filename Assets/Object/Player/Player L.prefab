@@ -266,7 +266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5e7347d3bd7d54b872985bda7c0059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magnet: {fileID: 48419004817750775}
+  magnet: {fileID: 9117316258157563266}
+  isAugmenting: 0
 --- !u!1 &8285588147021619188
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,17 +508,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
---- !u!114 &48419004817750775 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1941806114872025030, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
-  m_PrefabInstance: {fileID: 1900143609410938161}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 257b1387a4562c6448f0beaf5d6dacc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4424874248014418357 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2825697762719741060, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
@@ -526,6 +516,11 @@ GameObject:
 --- !u!4 &8488412802146391864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8039572894859833865, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
+  m_PrefabInstance: {fileID: 1900143609410938161}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9117316258157563266 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7267011407005804723, guid: 3ad36a676bab71e4bbe0b4257e48b767, type: 3}
   m_PrefabInstance: {fileID: 1900143609410938161}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8285588145820440055

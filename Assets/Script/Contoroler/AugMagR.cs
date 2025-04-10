@@ -10,7 +10,7 @@ using UnityEngine;
 public class AugMagR : MonoBehaviour
 {
 	[Header("PlayerRの磁石を設定")]
-	public Magnetism magnet;
+	public GameObject magnet;
 
 	[Header("フラグ：強化中")]
 	public bool isAugmenting;	// 強化中かどうかのフラグ
