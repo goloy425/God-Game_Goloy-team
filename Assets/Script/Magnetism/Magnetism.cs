@@ -170,8 +170,11 @@ public class Magnetism : MonoBehaviour
 		L_isAugmenting = playerL.isAugmenting;
 		R_isAugmenting = playerR.isAugmenting;
 
-		isMagEnabled = hcMag.enabled;
-	}
+		if(listHCubes.Count > 0)
+		{
+            isMagEnabled = hcMag.enabled;
+        }
+    }
 
 	void FixedUpdate()
 	{
