@@ -35,6 +35,7 @@ public class DrawCircle : MonoBehaviour
 	void Start()
 	{
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
+		TryGetComponent<SplitCube>(out sCube);
 
 		// Magnetismがアタッチされている（＝プレイヤーの磁石である）場合
 		if (TryGetComponent<Magnetism>(out mag)) { return; }
@@ -51,7 +52,6 @@ public class DrawCircle : MonoBehaviour
 		else if (gameObject.CompareTag("MagObj_HCube"))
 		{
 			TryGetComponent<HCubeMagnetism>(out hcMag);
-			TryGetComponent<SplitCube>(out sCube);
 			isHCube = true;
 		}
 	}
@@ -74,10 +74,14 @@ public class DrawCircle : MonoBehaviour
 			{
 				Circles.SetActive(true);
 			}
-			else if (sCube.splited)
+			else if (sCube != null)
 			{
-				Circles.SetActive(true);
+				if (sCube.splited)
+				{
+					Circles.SetActive(true);
+				}
 			}
+
 		}
 
 		//--- 範囲表示の円 ---//
@@ -101,7 +105,7 @@ public class DrawCircle : MonoBehaviour
 				}
 				else if (hcMag != null)	// 半キューブ
 				{
-					magnetismCircle.localScale = new Vector3(hcMag.magnetismScale.x, 0.01f, hcMag.magnetismScale.z);
+					magnetismCircle.localScale = new Vector3(hcMag.MagnetismRange, 0.01f, hcMag.MagnetismRange);
 				}
 			}
 
@@ -128,7 +132,7 @@ public class DrawCircle : MonoBehaviour
 				}
 				else if (hcMag != null) // 半キューブ
 				{
-					magnetismCircle.localScale = new Vector3(hcMag.MagnetismRange, 0.01f, hcMag.MagnetismRange);
+					magnetismCircle.localScale = new Vector3(hcMag.DeadRange, 0.01f, hcMag.DeadRange);
 				}
 			}
 

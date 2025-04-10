@@ -39,7 +39,7 @@ public class CubeMagnetism : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		//--- 磁力の引き寄せ処理 ---//
+		//--- 磁石の引き寄せ処理 ---//
 		foreach (var magnet in registeredMagnets)
 		{
 			if (magnet == null || magnet.isSnapping) continue;
@@ -47,8 +47,8 @@ public class CubeMagnetism : MonoBehaviour
 			Vector3 magnetPos = magnet.myPlate.position;
 
 			// Colliderを利用して一番近い表面の座標を取得
-			Vector3 surface1 = cube1.GetComponent<BoxCollider>().ClosestPoint(magnetPos);
-			Vector3 surface2 = cube2.GetComponent<BoxCollider>().ClosestPoint(magnetPos);
+			Vector3 surface1 = cube1.GetComponent<CapsuleCollider>().ClosestPoint(magnetPos);
+			Vector3 surface2 = cube2.GetComponent<CapsuleCollider>().ClosestPoint(magnetPos);
 
 			// 表面座標との距離を計算
 			float distance1 = Vector3.Distance(surface1, magnetPos);

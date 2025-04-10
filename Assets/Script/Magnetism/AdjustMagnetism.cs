@@ -29,29 +29,50 @@ public class AdjustMagnetism : MonoBehaviour
 		//--- 適用するシーンを増やす場合はここに追記していく ---//
 		// （switch文だとうまくいかなかったのでif文にしてある）
 
-		if (currentScene == "SampleScene")	// サンプルシーン
+		//--- メインステージ ---//
+		if (currentScene == "Stage2")
 		{
-			originalMag = magnet1.magnetismRange;	// 本来の磁力範囲を保存しておく
+			originalMag = magnet1.magnetismRange;
+
+			magnet1.SetMagnetismRange(15.0f, this);
+			magnet2.SetMagnetismRange(15.0f, this);
+			adjusted = true;
+		}
+		else if (currentScene == "Stage3")
+		{
+			originalMag = magnet1.magnetismRange;
+
+			magnet1.SetMagnetismRange(15.0f, this);
+			magnet2.SetMagnetismRange(15.0f, this);
+			adjusted = true;
+		}
+
+		//--- テンプレ　コピペして使ってね ---//
+		//else if (currentScene == "")
+		//{
+		//    originalMag = magnet1.magnetismRange;
+
+		//    magnet1.SetMagnetismRange(15.0f, this);
+		//    magnet2.SetMagnetismRange(15.0f, this);
+		//    adjusted = true;
+		//}
+
+
+		//--- テスト用シーン ---//
+		else if (currentScene == "SampleScene")
+		{
+			originalMag = magnet1.magnetismRange;   // 本来の磁力範囲を保存しておく
 
 			magnet1.SetMagnetismRange(10.0f, this);
 			magnet2.SetMagnetismRange(10.0f, this);
-			adjusted = true;	// 調整完了
+			adjusted = true;    // 調整完了
 		}
-		else if (currentScene == "TestScene")	// テストシーン
+		else if (currentScene == "TestScene")
 		{
 			originalMag = magnet1.magnetismRange;
 
 			magnet1.SetMagnetismRange(20.0f, this);
 			magnet2.SetMagnetismRange(20.0f, this);
-			adjusted = true;
-		}
-
-		else if(currentScene =="Stage2")
-		{
-			originalMag= magnet1.magnetismRange;
-
-			magnet1.SetMagnetismRange(15.0f, this);
-			magnet2.SetMagnetismRange(15.0f, this);
 			adjusted = true;
 		}
 	}

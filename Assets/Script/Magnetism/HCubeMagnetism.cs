@@ -48,7 +48,7 @@ public class HCubeMagnetism : MonoBehaviour
 			if (!magnet.inObjMagArea) continue;
 
 			// このキューブ自身のコライダーに対してClosestPointを使う
-			Vector3 surface = GetComponent<BoxCollider>().ClosestPoint(magnetPos);
+			Vector3 surface = GetComponent<CapsuleCollider>().ClosestPoint(magnetPos);
 			float distance = Vector3.Distance(surface, magnetPos);
 
 			Vector3 direction = (surface - magnetPos).normalized;

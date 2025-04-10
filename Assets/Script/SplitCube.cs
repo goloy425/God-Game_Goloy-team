@@ -15,6 +15,10 @@ public class SplitCube : MonoBehaviour
 	public GameObject playerL;
 	public GameObject playerR;
 
+	[Header("くっついてるキューブを設定")]
+	public GameObject cube1;
+	public GameObject cube2;
+
 	[Header("キューブが分割できるかどうか")]
 	public bool canSplit;
 	public bool splited;	// 分割したらこっちがtrueになる
@@ -29,8 +33,6 @@ public class SplitCube : MonoBehaviour
 	public bool isTracking = false;
 
 	// 分離後にFixedJointを解除する用
-	private GameObject cube1;
-	private GameObject cube2;
 	private FixedJoint jointL;
 	private FixedJoint jointR;
 
@@ -60,8 +62,6 @@ public class SplitCube : MonoBehaviour
 		mag1 = magnet1.GetComponent<Magnetism>();
 		mag2 = magnet2.GetComponent<Magnetism>();
 
-		cube1 = GameObject.Find("Cube1");
-		cube2 = GameObject.Find("Cube2");
 		jointL = cube1.GetComponent<FixedJoint>();
 		jointR = cube2.GetComponent<FixedJoint>();
 		cMag1 = cube1.GetComponent<HCubeMagnetism>();
