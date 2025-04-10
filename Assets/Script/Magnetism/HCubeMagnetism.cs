@@ -6,12 +6,9 @@ public class HCubeMagnetism : MonoBehaviour
 {
 	[Header("磁力・範囲の設定")]
 	[SerializeField] private float magnetismRange = 10.0f;
-	// ↑こっちのスクリプトでは使ってないけどDrawCircleに使ってるので残しておく
 	[SerializeField] private float deadRange = 1.0f;
 	public float magnetism = 200.0f;
 	public float strongMagnetism = 999.0f;
-
-	public Vector3 magnetismScale = new Vector3(1f, 1.5f, 1f);	// 楕円形
 
 	public float MagnetismRange => magnetismRange;
 	public float DeadRange => deadRange;
@@ -36,6 +33,13 @@ public class HCubeMagnetism : MonoBehaviour
 	}
 
 
+	private void Start()
+	{
+		// 半分になる前は非アクティブにしておく
+		enabled = false;
+	}
+
+
 	private void FixedUpdate()
 	{
 		//--- 磁石の引き寄せ処理 ---//
@@ -48,7 +52,7 @@ public class HCubeMagnetism : MonoBehaviour
 			if (!magnet.inObjMagArea) continue;
 
 			// このキューブ自身のコライダーに対してClosestPointを使う
-			Vector3 surface = GetComponent<CapsuleCollider>().ClosestPoint(magnetPos);
+			Vector3 surface = GetComponent<SphereCollider>().ClosestPoint(magnetPos);
 			float distance = Vector3.Distance(surface, magnetPos);
 
 			Vector3 direction = (surface - magnetPos).normalized;

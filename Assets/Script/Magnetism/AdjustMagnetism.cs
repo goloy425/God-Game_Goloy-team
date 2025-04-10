@@ -46,6 +46,14 @@ public class AdjustMagnetism : MonoBehaviour
 			magnet2.SetMagnetismRange(15.0f, this);
 			adjusted = true;
 		}
+		else if (currentScene == "Stage4")
+		{
+			originalMag = magnet1.magnetismRange;
+
+			magnet1.SetMagnetismRange(20.0f, this);
+			magnet2.SetMagnetismRange(20.0f, this);
+			adjusted = true;
+		}
 
 		//--- テンプレ　コピペして使ってね ---//
 		//else if (currentScene == "")

@@ -124,7 +124,7 @@ public class DrawCircle : MonoBehaviour
 			{
 				if (sMag != null)	// ãÖ
 				{
-					deadCircle.localScale = new Vector3(sMag.DeadRange * 1.2f, 0.01f, sMag.DeadRange * 1.2f);
+					deadCircle.localScale = new Vector3(sMag.DeadRange * 1.5f, 0.01f, sMag.DeadRange * 1.5f);
 				}
 				else if (cMag != null)	// ÉLÉÖÅ[Éu
 				{

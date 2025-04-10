@@ -47,8 +47,8 @@ public class CubeMagnetism : MonoBehaviour
 			Vector3 magnetPos = magnet.myPlate.position;
 
 			// Colliderを利用して一番近い表面の座標を取得
-			Vector3 surface1 = cube1.GetComponent<CapsuleCollider>().ClosestPoint(magnetPos);
-			Vector3 surface2 = cube2.GetComponent<CapsuleCollider>().ClosestPoint(magnetPos);
+			Vector3 surface1 = cube1.GetComponent<SphereCollider>().ClosestPoint(magnetPos);
+			Vector3 surface2 = cube2.GetComponent<SphereCollider>().ClosestPoint(magnetPos);
 
 			// 表面座標との距離を計算
 			float distance1 = Vector3.Distance(surface1, magnetPos);
@@ -57,7 +57,7 @@ public class CubeMagnetism : MonoBehaviour
 			Vector3 targetSurface = (distance1 < distance2) ? surface1 : surface2;
 			float surfaceDistance = Mathf.Min(distance1, distance2);
 
-			if (surfaceDistance > magnetismRange)
+			if (surfaceDistance > MagnetismRange)
 			{
 				magnet.inObjMagArea = false;
 				continue;

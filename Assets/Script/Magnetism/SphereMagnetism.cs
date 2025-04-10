@@ -35,7 +35,7 @@ public class SphereMagnetism : MonoBehaviour
 	private Magnetism magnet2;
 	private float oridinalDRange;
 
-	private SphereCollider sphereCollider;  // 磁石を引き寄せる頂点の計算用
+	private SphereCollider sCollider;  // 磁石を引き寄せる頂点の計算用
 	private MoveSphere moveS;
 
 	//--- 磁石のリスト管理 ---//
@@ -57,7 +57,7 @@ public class SphereMagnetism : MonoBehaviour
 	void Start()
 	{
 		// TryGetComponentの返り値はbool、SphereColliderが見つからなかった時falseになる
-		if (!TryGetComponent<SphereCollider>(out sphereCollider))
+		if (!TryGetComponent<SphereCollider>(out sCollider))
 		{
 			Debug.LogError("SphereColliderついてないよ");
 		}
@@ -108,7 +108,7 @@ public class SphereMagnetism : MonoBehaviour
 			Vector3 directionToMagnet = (magnetPos - center).normalized;
 
 			// 球の表面にくっつけるために球の半径を計算
-			float radius = sphereCollider.radius * transform.localScale.x;
+			float radius = sCollider.radius * transform.localScale.x;
 			Vector3 surfacePoint = center + directionToMagnet * radius;
 
 			// 球の表面と磁石の距離を計算
