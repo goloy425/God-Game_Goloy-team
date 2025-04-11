@@ -21,13 +21,17 @@ public class MoveHCubeR : MonoBehaviour
 
 	// 磁力強化フラグをそれぞれ取得する用
 	private AugMagR magR_Aug;
+	
+    private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
 		playerR.TryGetComponent<AugMagR>(out magR_Aug);
-	}
+
+        playSE = GetComponent<PlaySEAtRegularIntervals>();
+    }
 
 	private void Update()
 	{
@@ -61,7 +65,9 @@ public class MoveHCubeR : MonoBehaviour
 		isCarryingR = true;
 		rb.useGravity = false;
 		rb.angularDrag = 5f;
-	}
+
+        playSE.enabled = true;      // SE再生スクリプトを有効化
+    }
 
 	// --- 持ち上げ終了 --- //
 	public void StopCarryingR()
@@ -70,5 +76,9 @@ public class MoveHCubeR : MonoBehaviour
 		rb.useGravity = true;
 		rb.angularDrag = 10f;
 		rb.velocity = Vector3.zero;
-	}
+
+        playSE.SetElapsedTime(0);   // SE再生スクリプトの経過時間をリセット
+        playSE.SetPlayCnt(0);		// SE再生スクリプトの再生回数をリセット
+        playSE.enabled = false;     // SE再生スクリプトを無効化
+    }
 }
