@@ -22,12 +22,16 @@ public class MoveHCubeL : MonoBehaviour
 	// 磁力強化フラグをそれぞれ取得する用
 	private AugMagL magL_Aug;
 
-	// Start is called before the first frame update
-	void Start()
+    private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
+
+    // Start is called before the first frame update
+    void Start()
 	{
 		rb = GetComponent<Rigidbody>();
 		playerL.TryGetComponent<AugMagL>(out magL_Aug);
-	}
+
+        playSE = GetComponent<PlaySEAtRegularIntervals>();
+    }
 
 	private void Update()
 	{
@@ -51,7 +55,7 @@ public class MoveHCubeL : MonoBehaviour
 
 			Vector3 velocity = direction.normalized * speed;
 			rb.velocity = Vector3.Lerp(rb.velocity, velocity, Time.fixedDeltaTime * 10f);
-		}
+        }
 	}
 
 	// --- 持ち上げ開始 --- //
@@ -60,7 +64,9 @@ public class MoveHCubeL : MonoBehaviour
 		isCarryingL = true;
 		rb.useGravity = false;
 		rb.angularDrag = 5f;
-	}
+
+        playSE.enabled = true;      // SE再生スクリプトを有効化
+    }
 
 	// --- 持ち上げ終了 --- //
 	public void StopCarryingL()
@@ -69,5 +75,9 @@ public class MoveHCubeL : MonoBehaviour
 		rb.useGravity = true;
 		rb.angularDrag = 10f;
 		rb.velocity = Vector3.zero;
-	}
+
+        playSE.SetElapsedTime(0);   // SE再生スクリプトの経過時間をリセット
+        playSE.SetPlayCnt(0);		// SE再生スクリプトの再生回数をリセット
+        playSE.enabled = false;     // SE再生スクリプトを無効化
+    }
 }

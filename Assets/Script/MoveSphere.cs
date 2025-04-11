@@ -17,11 +17,15 @@ public class MoveSphere : MonoBehaviour
 	private Rigidbody rb;
 	private bool isCarrying = false;
 
-	// Start is called before the first frame update
-	void Start()
+    private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
+
+    // Start is called before the first frame update
+    void Start()
 	{
 		rb = GetComponent<Rigidbody>();
-	}
+
+        playSE = GetComponent<PlaySEAtRegularIntervals>();
+    }
 
 	private void FixedUpdate()
 	{
@@ -45,7 +49,9 @@ public class MoveSphere : MonoBehaviour
 		isCarrying = true;
 		rb.useGravity = false;
 		rb.angularDrag = 5.0f;
-	}
+
+        playSE.enabled = true;      // SE再生スクリプトを有効化
+    }
 
 	public void StopCarrying()
 	{
@@ -53,5 +59,9 @@ public class MoveSphere : MonoBehaviour
 		rb.useGravity = true;
 		rb.angularDrag = 10.0f;
 		rb.velocity = Vector3.zero;
-	}
+
+        playSE.SetElapsedTime(0);   // SE再生スクリプトの経過時間をリセット
+        playSE.SetPlayCnt(0);		// SE再生スクリプトの再生回数をリセット
+        playSE.enabled = false;     // SE再生スクリプトを無効化
+    }
 }
