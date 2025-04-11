@@ -1318,7 +1318,7 @@ MonoBehaviour:
   maxSize: 20
   zoomSpeed: 5
   padding: 2
-  initialOffset: {x: 9, y: 10, z: 9}
+  initialOffset: {x: 12, y: 13, z: 12}
 --- !u!1001 &991445898
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1404,6 +1404,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DetectArea
       objectReference: {fileID: 0}
+    - target: {fileID: 4803428742003963153, guid: 6c22c5212b84c6c408c6499f85d17bc1, type: 3}
+      propertyPath: detectedObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 6406254622786964865}
     - target: {fileID: 4803428742003963157, guid: 6c22c5212b84c6c408c6499f85d17bc1, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -3687,6 +3691,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+--- !u!1 &6406254622786964865 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2192318228718671657, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+  m_PrefabInstance: {fileID: 6406254622786964864}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6516482960543003755
 PrefabInstance:
   m_ObjectHideFlags: 0
