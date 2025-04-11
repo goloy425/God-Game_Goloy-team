@@ -20,6 +20,7 @@ public class PlaySEAtRegularIntervals : MonoBehaviour
     private AudioSource audioSource;
     private int playNum = 0;            // 再生するSEの番号
     private float elapsedTime = 0.0f;   // 経過時間
+    private int playCnt = 0;            // 再生回数
 
     // Start is called before the first frame update
     void Start()
@@ -32,29 +33,34 @@ public class PlaySEAtRegularIntervals : MonoBehaviour
         {
             Debug.LogError(this.name + "にAudioSourceが存在しません");
         }
-
-        // 最初に一回だけ再生する時
-        if (playOnAwakeFg)
-        {
-            // 順番通りに再生する時
-            if (inOrderFg)
-            {
-                // playNum番目のSEを再生
-                audioSource.PlayOneShot(audioClips[playNum]);
-                playNum = (playNum + 1) % audioClips.Length;    // 要素数以上の番号にならないように更新
-            }
-            // 順番通りに再生しない時はランダムな順番で再生
-            else
-            {
-                playNum = Random.Range(0, audioClips.Length - 1);
-                audioSource.PlayOneShot(audioClips[playNum]);
-            }
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        // 一回も再生していない時
+        if (playCnt == 0)
+        {
+            // 最初に一回だけ再生する時
+            if (playOnAwakeFg)
+            {
+                // 順番通りに再生する時
+                if (inOrderFg)
+                {
+                    // playNum番目のSEを再生
+                    audioSource.PlayOneShot(audioClips[playNum]);
+                    playNum = (playNum + 1) % audioClips.Length;    // 要素数以上の番号にならないように更新
+                }
+                // 順番通りに再生しない時はランダムな順番で再生
+                else
+                {
+                    playNum = Random.Range(0, audioClips.Length - 1);
+                    audioSource.PlayOneShot(audioClips[playNum]);
+                }
+                playCnt++;
+            }
+        }
+
         // 指定した秒数になった時
         if (elapsedTime >= second)
         {
@@ -79,5 +85,10 @@ public class PlaySEAtRegularIntervals : MonoBehaviour
     public void SetElapsedTime(float _elapsedTime)
     {
         elapsedTime = _elapsedTime;
+    }
+
+    public void SetPlayCnt(int _playCnt)
+    {
+        playCnt = _playCnt;
     }
 }
