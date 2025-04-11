@@ -13,9 +13,16 @@ public class AugMagR : MonoBehaviour
 	public GameObject magnet;
 
 	[Header("フラグ：強化中")]
-	public bool isAugmenting;	// 強化中かどうかのフラグ
+	public bool isAugmenting;   // 強化中かどうかのフラグ
 
-	private GameInputs inputs;	// GameInputsクラス
+    [Header("磁力強化SE")]
+    public AudioClip audioClip;
+
+    private AudioSource audioSource;
+    private float timer = 0.0f; // 再生秒数
+    private int playCnt = 0;    // 再生回数
+
+    private GameInputs inputs;	// GameInputsクラス
 	private Magnetism mag;	// magnetのMagnetismを取得する用
 
 	// 色チェンジ用変数
@@ -45,7 +52,9 @@ public class AugMagR : MonoBehaviour
 				defaultColor = circleRenderer.material.color;
 			}
 		}
-	}
+
+        audioSource = GetComponent<AudioSource>();  // AudioSource取得
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -57,7 +66,8 @@ public class AugMagR : MonoBehaviour
 		if (RValue > 0.3f && mag.inObjMagArea)
 		{
 			AugmentPlayerRMagnetism();
-		}
+            PlaySE();
+        }
 		else
 		{
 			ResetPlayerRMagnet();   // 色やら何やらを元に戻す
@@ -77,11 +87,34 @@ public class AugMagR : MonoBehaviour
 	{
 		circleRenderer.material.color = defaultColor;   // 色を元に戻す
 		isAugmenting = false;
-	}
+
+        timer = 0.0f;   // タイマーをリセット
+        playCnt = 0;    // 再生回数をリセット
+    }
 
 
 	private void OnDestroy()
 	{
 		inputs?.Dispose();
 	}
+
+    // SEを再生終了後にループ再生
+    private void PlaySE()
+    {
+        timer += Time.deltaTime;    // 再生からの経過時間
+
+        // 最初に一回再生
+        if (playCnt == 0)
+        {
+            audioSource.PlayOneShot(audioClip);
+            playCnt++;
+        }
+
+        // 再生終了後にループ再生
+        if (timer >= audioClip.length)
+        {
+            audioSource.PlayOneShot(audioClip);
+            timer = 0.0f;   // タイマーをリセット
+        }
+    }
 }

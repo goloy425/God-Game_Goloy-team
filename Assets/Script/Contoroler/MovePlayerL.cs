@@ -63,6 +63,7 @@ public class MovePlayerL : MonoBehaviour
         else
         {
             playSE.SetElapsedTime(0);   // SE再生スクリプトの経過時間をリセット
+            playSE.SetPlayCnt(0);		// SE再生スクリプトの再生回数をリセット
             playSE.enabled = false;     // SE再生スクリプトを無効化
         }
     }
