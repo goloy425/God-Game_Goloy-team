@@ -1094,6 +1094,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6089353824014589402, guid: 85c033b7f252539468037e9271ae6bc4, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85c033b7f252539468037e9271ae6bc4, type: 3}
 --- !u!1 &739194400 stripped
@@ -2093,6 +2097,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player L
       objectReference: {fileID: 0}
+    - target: {fileID: 8285588146585420315, guid: 0fd28b4bcfb6b2348bdd51cb9037ec38, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fd28b4bcfb6b2348bdd51cb9037ec38, type: 3}
 --- !u!1001 &1217862434
@@ -3012,6 +3020,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6089353824014589401, guid: 85c033b7f252539468037e9271ae6bc4, type: 3}
   m_PrefabInstance: {fileID: 710805916}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1608960901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608960891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9cbac415097a8d4889580c926835cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSlopeSpeed: 5
+  maxSlopeAngle: 60
 --- !u!114 &1616783141 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3925730984944595870, guid: 85c033b7f252539468037e9271ae6bc4, type: 3}
@@ -3518,6 +3540,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8285588146585420310, guid: 0fd28b4bcfb6b2348bdd51cb9037ec38, type: 3}
   m_PrefabInstance: {fileID: 1205214442}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1917591272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917591262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9cbac415097a8d4889580c926835cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSlopeSpeed: 5
+  maxSlopeAngle: 60
 --- !u!1 &1954056968 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 77f6e5fc535d709498d61c18e4ec8dbc, type: 3}
