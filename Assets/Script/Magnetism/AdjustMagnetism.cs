@@ -26,11 +26,20 @@ public class AdjustMagnetism : MonoBehaviour
 	{
 		string currentScene = SceneManager.GetActiveScene().name;   // 現在のシーン名を取得
 
-		//--- 適用するシーンを増やす場合はここに追記していく ---//
-		// （switch文だとうまくいかなかったのでif文にしてある）
+        //--- 適用するシーンを増やす場合はここに追記していく ---//
+        // （switch文だとうまくいかなかったのでif文にしてある）
 
-		//--- メインステージ ---//
-		if (currentScene == "Stage2")
+        //--- メインステージ ---//
+
+        if (currentScene == "Stage1")
+        {
+            originalMag = magnet1.magnetismRange;
+
+            magnet1.SetMagnetismRange(15.0f, this);
+            magnet2.SetMagnetismRange(15.0f, this);
+            adjusted = true;
+        }
+        else if (currentScene == "Stage2")
 		{
 			originalMag = magnet1.magnetismRange;
 
