@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     private bool gameClearFg = false;         // ゲームクリアしたかどうか
     private bool gameOverFg = false;          // ゲームオーバーしたかどうか
 
+    private float changeSceneTime = 1.0f;     // 何秒後にリザルトシーンに遷移するか
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,18 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void FixedUpdate()
+    {
+        if(gameOverFg)
+        {
+            Debug.Log("磁石がくっつきました！ゲームオーバー！Result画面に移ります");
+            // ここにゲームオーバー処理を書く
+
+            // changeSceneTime秒後にリザルトシーンに遷移
+            Invoke("MoveResultScene", changeSceneTime);    
+        }
     }
 
     void OnPlateStateChanged(bool isPressed)
@@ -61,17 +75,39 @@ public class GameManager : MonoBehaviour
             gameClearFg = true; // ゲームクリア
             Debug.Log("全ての回路が接続されています！ゲームクリア！Result画面に移ります");
             // ここにゲームクリア処理を書く
-            SceneManager.LoadScene(resultSceneName);
+
+            // changeSceneTime秒後にリザルトシーンに遷移
+            Invoke("MoveResultScene", changeSceneTime);
         }
     }
 
+    // リザルトシーンに遷移
+    private void MoveResultScene()
+    {
+        SceneManager.LoadScene(resultSceneName);
+    }
+
+    // ゲームクリアフラグを取得
     public bool GetGameClearFg()
     {
         return gameClearFg;
     }
 
+    // ゲームオーバーフラグを取得
     public bool GetGameOverFg()
     {
         return gameOverFg;
+    }
+
+    // ゲームクリアフラグをセット
+    public void SetGameClearFg(bool _gameClearFg)
+    {
+        gameClearFg = _gameClearFg;
+    }
+
+    // ゲームオーバーフラグをセット
+    public void SetGameOverFg(bool _gameOverFg)
+    {
+        gameOverFg = _gameOverFg;
     }
 }
