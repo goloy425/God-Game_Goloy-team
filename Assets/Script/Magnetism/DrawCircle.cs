@@ -35,9 +35,9 @@ public class DrawCircle : MonoBehaviour
 	void Start()
 	{
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
-		if(GameObject.Find("Connecter")!=null )
+		if (GameObject.Find("Connecter") != null)
 		{
-			TryGetComponent<SplitCube>(out sCube);
+			GameObject.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
 		}
 
 		// Magnetismがアタッチされている（＝プレイヤーの磁石である）場合
