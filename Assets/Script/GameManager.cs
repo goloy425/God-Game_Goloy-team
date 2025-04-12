@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     public PressurePlates01[] pressurePlates; // すべての感圧板を登録
     private int totalPressed = 0; // 押されている感圧板の数
 
-    public string resultSceneName = "Result"; // 遷移先のシーン名をInspectorで設定
+    public string resultSceneName = "Result";       // 遷移先のシーン名をInspectorで設定
+    public string gameOverSceneName = "GameOver";   // 遷移先のシーン名をInspectorで設定
 
     private bool gameClearFg = false;         // ゲームクリアしたかどうか
     private bool gameOverFg = false;          // ゲームオーバーしたかどうか
@@ -47,8 +48,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("磁石がくっつきました！ゲームオーバー！Result画面に移ります");
             // ここにゲームオーバー処理を書く
 
-            // changeSceneTime秒後にリザルトシーンに遷移
-            Invoke("MoveResultScene", changeSceneTime);    
+            // changeSceneTime秒後にゲームオーバーシーンに遷移
+            Invoke("MoveGameOverScene", changeSceneTime);    
         }
     }
 
@@ -61,7 +62,9 @@ public class GameManager : MonoBehaviour
             gameClearFg = true; // ゲームクリア
             Debug.Log("全ての感圧板が押されています！ゲームクリア！Result画面に移ります");
             // ここにゲームクリア処理を書く
-            SceneManager.LoadScene(resultSceneName);
+
+            // changeSceneTime秒後にリザルトシーンに遷移
+            Invoke("MoveResultScene", changeSceneTime);
         }
     }
 
@@ -85,6 +88,12 @@ public class GameManager : MonoBehaviour
     private void MoveResultScene()
     {
         SceneManager.LoadScene(resultSceneName);
+    }
+
+    // ゲームオーバーシーンに遷移
+    private void MoveGameOverScene()
+    {
+        SceneManager.LoadScene(gameOverSceneName);
     }
 
     // ゲームクリアフラグを取得
