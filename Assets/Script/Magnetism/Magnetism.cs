@@ -112,7 +112,7 @@ public class Magnetism : MonoBehaviour
 					"magnet1：" + mag1.snapDistance + "　magnet2：" + mag2.snapDistance);
 			}
 
-			UnityEditor.EditorApplication.isPlaying = false;	// ゲームの実行を停止
+			//UnityEditor.EditorApplication.isPlaying = false;	// ゲームの実行を停止
 		}
 	}
 
