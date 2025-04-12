@@ -7,8 +7,6 @@ public class SlopeMove : MonoBehaviour
     public float moveSlopeSpeed = 5.0f;
     public float maxSlopeAngle = 60.0f;
 
-    bool colSlope = false;
-
     private Rigidbody rb;
 
     // Start is called before the first frame update
@@ -68,18 +66,6 @@ public class SlopeMove : MonoBehaviour
             //rb.MovePosition(transform.position + slopeDirection * moveSlopeSpeed /** Time.deltaTime*/);
 
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Slope"))
-            colSlope = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Slope"))
-            colSlope = false;
     }
 }
 
