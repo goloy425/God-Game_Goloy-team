@@ -4,6 +4,7 @@
 //------------------------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayChangeSceneSE : MonoBehaviour
@@ -12,7 +13,9 @@ public class PlayChangeSceneSE : MonoBehaviour
     public AudioClip gameClearSE;
     public AudioClip gameOverSE;
     [Header("SE再生から何秒後に自身を削除するか")]
-    public int DestroySecond = 6;
+    public float destroySecond = 6.0f;
+    [Header("フラグが立ってから何秒後に再生するか")]
+    public float playSecond = 1.0f;
 
     private AudioSource audioSource;
     private GameManager gameManager;
@@ -43,17 +46,29 @@ public class PlayChangeSceneSE : MonoBehaviour
         // ゲームクリアした時、1回再生
         if(gameManager.GetGameClearFg() && playCnt < 1)
         {
-            audioSource.PlayOneShot(gameClearSE);   // ゲームクリアSE再生
-            Destroy(gameObject, DestroySecond);     // DestroySecond秒後に自身を削除
+            Invoke("PlayGameClearSE", playSecond);               // playSecond秒後にSE再生
+;           Destroy(gameObject, destroySecond + playSecond);     // DestroySecond秒後に自身を削除
             playCnt++;
         }
 
         // ゲームオーバーになった時、1回再生
         if (gameManager.GetGameOverFg() && playCnt < 1)
         {
-            audioSource.PlayOneShot(gameOverSE);    // ゲームオーバーSE再生
-            Destroy(gameObject, DestroySecond);     // DestroySecond秒後に自身を削除
+            Invoke("PlayGameOverSE", playSecond);                // playSecond秒後にSE再生
+            Destroy(gameObject, destroySecond + playSecond);     // DestroySecond秒後に自身を削除
             playCnt++;
         }
+    }
+
+    // ゲームクリア時のSE再生
+    private void PlayGameClearSE()
+    {
+        audioSource.PlayOneShot(gameClearSE);   // ゲームクリアSE再生
+    }
+
+    // ゲームオーバー時のSE再生
+    private void PlayGameOverSE()
+    {
+        audioSource.PlayOneShot(gameOverSE);   // ゲームオーバーSE再生
     }
 }
