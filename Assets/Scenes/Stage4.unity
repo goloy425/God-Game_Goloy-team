@@ -1064,7 +1064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6089353824014589401, guid: 85c033b7f252539468037e9271ae6bc4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7
+      value: 2.91
       objectReference: {fileID: 0}
     - target: {fileID: 6089353824014589401, guid: 85c033b7f252539468037e9271ae6bc4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1166,6 +1166,7 @@ MonoBehaviour:
   - {fileID: 1011091177}
   pressurePlates: []
   resultSceneName: Result
+  gameOverSceneName: GameOver
 --- !u!1001 &832898088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2059,7 +2060,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8285588146585420310, guid: 0fd28b4bcfb6b2348bdd51cb9037ec38, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.7437735
+      value: -3.74
       objectReference: {fileID: 0}
     - target: {fileID: 8285588146585420310, guid: 0fd28b4bcfb6b2348bdd51cb9037ec38, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2829,7 +2830,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameClearSE: {fileID: 8300000, guid: 6a75cdf419cdf0c479536a709ca555c4, type: 3}
   gameOverSE: {fileID: 8300000, guid: 0cb95394423a6e449b50933bba2ce1ae, type: 3}
-  DestroySecond: 6
+  destroySecond: 6
+  playSecond: 1
 --- !u!82 &1562601316
 AudioSource:
   m_ObjectHideFlags: 0
