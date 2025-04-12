@@ -35,7 +35,10 @@ public class DrawCircle : MonoBehaviour
 	void Start()
 	{
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
-		GameObject.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
+		if(GameObject.Find("Connecter")!=null )
+		{
+			TryGetComponent<SplitCube>(out sCube);
+		}
 
 		// Magnetismがアタッチされている（＝プレイヤーの磁石である）場合
 		if (TryGetComponent<Magnetism>(out mag)) { return; }
@@ -63,8 +66,8 @@ public class DrawCircle : MonoBehaviour
 
 	void UpdateCircles()
 	{
-        //--- 表示条件の分岐 ---//
-        if (adjMag.Adjusted)
+		//--- 表示条件の分岐 ---//
+		if (adjMag.Adjusted)
 		{
 			Circles.SetActive(false);	// 円を非表示にする
 			return;		// 磁力調整終わるまでスルー
