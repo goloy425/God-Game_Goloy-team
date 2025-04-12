@@ -41,7 +41,9 @@ public class SphereMagnetism : MonoBehaviour
 	//--- 磁石のリスト管理 ---//
 	private static List<Magnetism> registeredMagnets = new();
 
-	public static void Register(Magnetism magnet)
+    private GameManager gameManager;
+
+    public static void Register(Magnetism magnet)
 	{
 		if (!registeredMagnets.Contains(magnet))
 		{
@@ -70,7 +72,9 @@ public class SphereMagnetism : MonoBehaviour
 		oridinalDRange = magnet1.deadRange;		// 本来のdeadRangeを保存しておく
 
 		TryGetComponent<MoveSphere>(out moveS);
-	}
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -150,6 +154,8 @@ public class SphereMagnetism : MonoBehaviour
 		// 位置合わせ
 		magnet.myPlate.position = transform.position;
 
-		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);	// SE再生
-	}
+		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);    // SE再生
+
+        gameManager.SetGameOverFg(true);    // ゲームオーバーにする
+    }
 }

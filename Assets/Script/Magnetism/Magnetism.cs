@@ -161,7 +161,9 @@ public class Magnetism : MonoBehaviour
 		else
 		{
 			inMagnetismArea = false;
-		}
+
+            gameManager.SetGameOverFg(true);    // ゲームオーバーにする
+        }
 
 		//--- プレイヤーの磁石同士の引き寄せ処理 ---//
 		// 距離を計算
