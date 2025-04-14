@@ -24,7 +24,9 @@ public class CubeMagnetism : MonoBehaviour
 	//--- 磁石のリスト管理 ---//
 	private static List<Magnetism> registeredMagnets = new();
 
-	public static void Register(Magnetism magnet)
+    private GameManager gameManager;
+
+    public static void Register(Magnetism magnet)
 	{
 		if (!registeredMagnets.Contains(magnet))
 		{
@@ -37,7 +39,13 @@ public class CubeMagnetism : MonoBehaviour
 	}
 
 
-	private void FixedUpdate()
+    private void Start()
+    {
+		// GameManagerを取得
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    private void FixedUpdate()
 	{
 		//--- 磁石の引き寄せ処理 ---//
 		foreach (var magnet in registeredMagnets)
@@ -91,5 +99,7 @@ public class CubeMagnetism : MonoBehaviour
 		magnet.myPlate.position = snapPosition;
 
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
-	}
+
+        gameManager.SetGameOverFg(true);    // ゲームオーバーにする
+    }
 }
