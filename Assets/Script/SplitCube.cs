@@ -57,8 +57,8 @@ public class SplitCube : MonoBehaviour
 		playerL.TryGetComponent<AugMagL>(out magL_Aug);
 		playerR.TryGetComponent<AugMagR>(out magR_Aug);
 
-		magnet1 = GameObject.Find("magnet1");
-		magnet2 = GameObject.Find("magnet2");
+		magnet1 = GameObject.Find("Magnet1");
+		magnet2 = GameObject.Find("Magnet2");
 		mag1 = magnet1.GetComponent<Magnetism>();
 		mag2 = magnet2.GetComponent<Magnetism>();
 

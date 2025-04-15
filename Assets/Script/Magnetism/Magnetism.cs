@@ -79,8 +79,8 @@ public class Magnetism : MonoBehaviour
 		//--- 磁力・範囲のデバッグ用 ---//
 		// 磁石同士で各変数が一致しているかチェック、不一致なら実行できない
 
-		Magnetism mag1 = GameObject.Find("magnet1").GetComponent<Magnetism>();
-		Magnetism mag2 = GameObject.Find("magnet2").GetComponent<Magnetism>();
+		Magnetism mag1 = GameObject.Find("Magnet1").GetComponent<Magnetism>();
+		Magnetism mag2 = GameObject.Find("Magnet2").GetComponent<Magnetism>();
 
 		if (mag1.magnetismRange != mag2.magnetismRange || mag1.deadRange != mag2.deadRange ||
 			mag1.magnetism != mag2.magnetism || mag1.strongMagnetism != mag2.strongMagnetism ||

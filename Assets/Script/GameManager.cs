@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
             // ここにゲームオーバー処理を書く
 
             // changeSceneTime秒後にゲームオーバーシーンに遷移
-            Invoke("MoveGameOverScene", changeSceneTime);    
+            //Invoke("MoveGameOverScene", changeSceneTime);    
         }
     }
 
