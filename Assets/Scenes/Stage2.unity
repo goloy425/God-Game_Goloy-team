@@ -1093,6 +1093,7 @@ MonoBehaviour:
   - {fileID: 56163642}
   pressurePlates: []
   resultSceneName: Result
+  gameOverSceneName: GameOver
 --- !u!1001 &783727542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2016,7 +2017,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameClearSE: {fileID: 8300000, guid: 6a75cdf419cdf0c479536a709ca555c4, type: 3}
   gameOverSE: {fileID: 8300000, guid: 0cb95394423a6e449b50933bba2ce1ae, type: 3}
-  DestroySecond: 6
+  destroySecond: 6
+  playSecond: 1
 --- !u!82 &1562601316
 AudioSource:
   m_ObjectHideFlags: 0
