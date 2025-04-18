@@ -141,7 +141,7 @@ public class Magnetism : MonoBehaviour
 
 		// ‹­‰»ƒtƒ‰ƒO‚ÌŽæ“¾
 		playerL = GameObject.Find("Player L").GetComponent<AugMagL>();
-		playerR = GameObject.Find("Player R").GetComponent<AugMagR>();
+		playerR = GameObject.Find("PlayerR_Controller").GetComponent<AugMagR>();
 	}
 
 	private void Update()

@@ -39,7 +39,7 @@ public class AugMagR : MonoBehaviour
 		magnet.TryGetComponent<Magnetism>(out mag);
 
 		// 磁力範囲オブジェクトを取得
-		Transform circle = this.transform.Find("Circles/MagnetismCircle");
+		Transform circle = GameObject.Find("PlayerR").transform.Find("Circles/MagnetismCircle");
 
 		if (circle != null)
 		{
