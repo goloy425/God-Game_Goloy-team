@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 2458994160036537048}
   - component: {fileID: 2458994160036537054}
   - component: {fileID: 2458994160036537058}
+  - component: {fileID: 2341719373804418571}
   m_Layer: 10
   m_Name: PlayerR_Controller
   m_TagString: Untagged
@@ -298,6 +299,20 @@ MonoBehaviour:
   magnet: {fileID: 4801164836941916783}
   isAugmenting: 0
   audioClip: {fileID: 8300000, guid: 6c13a9122a5b25f42a6022f6756b83d6, type: 3}
+--- !u!114 &2341719373804418571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2458994160036537050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9cbac415097a8d4889580c926835cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSlopeSpeed: 5
+  maxSlopeAngle: 60
 --- !u!1 &2458994161109117035
 GameObject:
   m_ObjectHideFlags: 0

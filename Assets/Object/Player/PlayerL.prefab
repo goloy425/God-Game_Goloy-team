@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 1126505313533574755}
   - component: {fileID: 1126505313533574752}
   - component: {fileID: 1126505313533574753}
+  - component: {fileID: 48061475637661387}
   m_Layer: 0
   m_Name: PlayerL_Controller
   m_TagString: Untagged
@@ -257,6 +258,20 @@ MonoBehaviour:
   magnet: {fileID: 4913229365792623939}
   isAugmenting: 0
   audioClip: {fileID: 8300000, guid: 6c13a9122a5b25f42a6022f6756b83d6, type: 3}
+--- !u!114 &48061475637661387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126505313533574759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9cbac415097a8d4889580c926835cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSlopeSpeed: 5
+  maxSlopeAngle: 60
 --- !u!1 &1126505314370515923
 GameObject:
   m_ObjectHideFlags: 0
