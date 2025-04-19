@@ -31,7 +31,6 @@ public class MovePlayerR : MonoBehaviour
     {
         // Rigidbodyコンポーネントを取得
         rb = GetComponent<Rigidbody>();
-        ropeRb = rope.GetComponent<Rigidbody>();
         // PlaySEAtRegularIntervalsコンポーネントを取得
         playSE = GetComponent<PlaySEAtRegularIntervals>();
         // GameInputsクラスのインスタンスを作成
@@ -56,7 +55,8 @@ public class MovePlayerR : MonoBehaviour
         moveForward = cameraForward * moveInputValue.y + cameraRight * moveInputValue.x;
         // 移動させる
         rb.velocity = moveForward * moveSpeed;
-        ropeRb.velocity = rb.velocity;
+        // 紐の位置を合わせる
+        rope.transform.position = this.transform.position;  
 
         // 移動方向がゼロベクトルでない時
         if (moveForward != Vector3.zero)

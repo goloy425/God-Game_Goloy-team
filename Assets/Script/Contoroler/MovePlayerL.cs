@@ -15,6 +15,9 @@ public class MovePlayerL : MonoBehaviour
     [Header("移動の基準となるカメラ")]
     public Transform cameraTransform;   // カメラのTransform
 
+    [Header("移動させる紐オブジェクト")]
+    public GameObject rope;
+
     private Rigidbody rb;                       // Rigidbody
     private GameInputs inputs;                  // GameInputsクラス
     private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
@@ -51,6 +54,8 @@ public class MovePlayerL : MonoBehaviour
         moveForward = cameraForward * moveInputValue.y + cameraRight * moveInputValue.x;
         // 移動させる
         rb.velocity = moveForward * moveSpeed;
+        // 紐の位置を合わせる
+        rope.transform.position = this.transform.position;
 
         // 移動方向がゼロベクトルでない時
         if (moveForward != Vector3.zero)
