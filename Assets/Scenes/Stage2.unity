@@ -299,6 +299,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.55077904, y: 1, z: 0.77660227}
   m_Center: {x: 1.3765618, y: 0, z: -0.010154398}
+--- !u!1 &239492737 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8325333954846281185, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+  m_PrefabInstance: {fileID: 748096983}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &239492741
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239492737}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &248979527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1097,6 +1118,10 @@ PrefabInstance:
       propertyPath: targetMagnet
       value: 
       objectReference: {fileID: 1417111799}
+    - target: {fileID: 6645266099146840925, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 478689112}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
 --- !u!4 &748096984 stripped
@@ -1993,6 +2018,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerR
       objectReference: {fileID: 0}
+    - target: {fileID: 8739186073179222220, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 478689112}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetPlate
       value: 
@@ -2881,6 +2910,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1054835779}
     m_Modifications:
+    - target: {fileID: 2093772769, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 478689112}
     - target: {fileID: 2093772770, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: magnet1
       value: 

@@ -20,7 +20,11 @@ public class DrawCircle : MonoBehaviour
 	public GameObject baseObj;
 	// ↑deadRangeは基本的にオブジェクトの中心から生えてる方が自然
 	// でもプレイヤーの磁石の場合はplateに追従する方が自然
+
+	[Header("床を設定")]
+	public GameObject floor;
 	
+	// 各オブジェクトの磁力スクリプト
 	private Magnetism mag;
 	private SphereMagnetism sMag;
 	private CubeMagnetism cMag;
@@ -28,8 +32,14 @@ public class DrawCircle : MonoBehaviour
 	private HCubeMagnetism hcMag;
 	private bool isHCube = false;	// 半キューブかどうか（割れる前は円非表示）
 
-	private AdjustMagnetism adjMag;
-	private SplitCube sCube;
+	// その他スクリプト
+	private AdjustMagnetism adjMag;		// 磁力調整
+	private SplitCube sCube;		// キューブ分割
+
+	// 座標調整用の変数ズ
+	private float thisPosX;		// アタッチされてるオブジェクトのx座標
+	private float thisPosZ;		//				〃				 z座標
+	private float floorPosY;    // 床のy座標
 
 	// Start is called before the first frame update
 	void Start()
@@ -57,6 +67,9 @@ public class DrawCircle : MonoBehaviour
 			TryGetComponent<HCubeMagnetism>(out hcMag);
 			isHCube = true;
 		}
+
+		// 床のy座標を取得
+		floorPosY = floor.transform.position.y + 0.02f;
 	}
 
 	private void FixedUpdate()
@@ -66,8 +79,13 @@ public class DrawCircle : MonoBehaviour
 
 	void UpdateCircles()
 	{
-		//--- 表示条件の分岐 ---//
-		if (adjMag.Adjusted)
+        // アタッチされてるオブジェクトの座標を取得
+        thisPosX = this.transform.position.x;
+        thisPosZ = this.transform.position.z;
+
+
+        //--- 表示条件の分岐 ---//
+        if (adjMag.Adjusted)
 		{
 			Circles.SetActive(false);	// 円を非表示にする
 			return;		// 磁力調整終わるまでスルー
@@ -113,7 +131,7 @@ public class DrawCircle : MonoBehaviour
 			}
 
 			// 位置の追従＆回転を固定
-			magnetismCircle.SetPositionAndRotation(this.transform.position, Quaternion.identity);
+			magnetismCircle.SetPositionAndRotation(new Vector3(thisPosX, floorPosY, thisPosZ), Quaternion.identity);
 		}
 
 		// くっつく範囲
@@ -127,7 +145,7 @@ public class DrawCircle : MonoBehaviour
 			{
 				if (sMag != null)	// 球
 				{
-					deadCircle.localScale = new Vector3(sMag.DeadRange * 1.5f, 0.01f, sMag.DeadRange * 1.5f);
+					deadCircle.localScale = new Vector3(sMag.DeadRange * 3.0f, 0.01f, sMag.DeadRange * 3.0f);
 				}
 				else if (!sCube.splited && cMag != null)	// キューブ
 				{
@@ -139,7 +157,8 @@ public class DrawCircle : MonoBehaviour
 				}
 			}
 
-			deadCircle.SetPositionAndRotation(baseObj.transform.position, Quaternion.identity);
+			float newFloorPosY = floorPosY + 0.01f;
+			deadCircle.SetPositionAndRotation(new Vector3(thisPosX, newFloorPosY, thisPosZ), Quaternion.identity);
 		}
 	}
 }
