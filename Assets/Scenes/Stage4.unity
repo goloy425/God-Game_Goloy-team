@@ -1260,7 +1260,7 @@ MonoBehaviour:
   maxSize: 20
   zoomSpeed: 5
   padding: 2
-  initialOffset: {x: 12, y: 13, z: 12}
+  initialOffset: {x: 14, y: 15, z: 14}
 --- !u!1001 &991445898
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3145,7 +3145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2458994161109117034, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.6
+      value: 1.12
       objectReference: {fileID: 0}
     - target: {fileID: 2458994161109117034, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3179,10 +3179,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerR
       objectReference: {fileID: 0}
-    - target: {fileID: 8739186073179222220, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
-      propertyPath: floor
-      value: 
-      objectReference: {fileID: 275240914}
+    - target: {fileID: 6364010298965974825, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364010298965974825, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetPlate
       value: 
@@ -3217,6 +3221,11 @@ MonoBehaviour:
 --- !u!1 &1778423363 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2458994160036537050, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+  m_PrefabInstance: {fileID: 1778423359}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1778423364 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2458994160036537049, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
   m_PrefabInstance: {fileID: 1778423359}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1787620464
@@ -3572,7 +3581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1126505314370515922, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.1
+      value: -6.54
       objectReference: {fileID: 0}
     - target: {fileID: 1126505314370515922, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3646,6 +3655,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257b1387a4562c6448f0beaf5d6dacc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &2126189319 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1126505313533574758, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+  m_PrefabInstance: {fileID: 2126189314}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &543450651595461691 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2192318228718671652, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
