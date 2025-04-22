@@ -1150,6 +1150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257b1387a4562c6448f0beaf5d6dacc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &748096988 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1126505313533574758, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+  m_PrefabInstance: {fileID: 748096983}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &759670265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,9 +1564,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 622927aca104ef143bc32bf0a4725960, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target1: {fileID: 0}
-  target2: {fileID: 0}
-  minSize: 5
+  target1: {fileID: 748096988}
+  target2: {fileID: 1417111810}
+  minSize: 7
   maxSize: 20
   zoomSpeed: 5
   padding: 2
@@ -1943,6 +1948,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magnet1: {fileID: 748096987}
   magnet2: {fileID: 1417111799}
+  magObjs:
+  - {fileID: 919132148262884160}
   notVibration: 0
 --- !u!4 &1397853227
 Transform:
@@ -2056,6 +2063,11 @@ Transform:
 --- !u!1 &1417111802 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2458994160036537050, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+  m_PrefabInstance: {fileID: 1417111798}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1417111810 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2458994160036537049, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
   m_PrefabInstance: {fileID: 1417111798}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1417377385

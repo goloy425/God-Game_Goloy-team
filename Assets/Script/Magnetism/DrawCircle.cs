@@ -79,13 +79,13 @@ public class DrawCircle : MonoBehaviour
 
 	void UpdateCircles()
 	{
-        // アタッチされてるオブジェクトの座標を取得
-        thisPosX = this.transform.position.x;
-        thisPosZ = this.transform.position.z;
+		// アタッチされてるオブジェクトの座標を取得
+		thisPosX = this.transform.position.x;
+		thisPosZ = this.transform.position.z;
 
 
-        //--- 表示条件の分岐 ---//
-        if (adjMag.Adjusted)
+		//--- 表示条件の分岐 ---//
+		if (adjMag.Adjusted)
 		{
 			Circles.SetActive(false);	// 円を非表示にする
 			return;		// 磁力調整終わるまでスルー
@@ -157,7 +157,7 @@ public class DrawCircle : MonoBehaviour
 				}
 			}
 
-			float newFloorPosY = floorPosY + 0.01f;
+			float newFloorPosY = floorPosY + 0.02f;
 			deadCircle.SetPositionAndRotation(new Vector3(thisPosX, newFloorPosY, thisPosZ), Quaternion.identity);
 		}
 	}
