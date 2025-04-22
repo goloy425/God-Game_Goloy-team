@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("プレイヤーの磁石")]
+    public GameObject magnet1;
+    public GameObject magnet2;
+
     public DetectArea[] detectAreas;    // すべての判定エリアを登録
     private int totalConnected = 0;       // 接続された判定エリアの数
 
@@ -21,6 +25,9 @@ public class GameManager : MonoBehaviour
 
     private float changeSceneTime = 1.0f;     // 何秒後にリザルトシーンに遷移するか
 
+    private Magnetism magnetism1 = null;      // プレイヤーLのマグネティズム
+    private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +40,10 @@ public class GameManager : MonoBehaviour
         {
             detectArea.OnDetectAreaChanged += OnDetectionStateChanged; // イベント登録
         }
+
+        // 磁力スクリプトを取得
+        magnetism1 = magnet1.GetComponent<Magnetism>();
+        magnetism2 = magnet2.GetComponent<Magnetism>();
     }
 
     // Update is called once per frame
@@ -43,7 +54,9 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(gameOverFg)
+        // プレイヤーの磁石に何かがくっついた時
+        if((magnetism1.isSnapping || magnetism2.isSnapping) || 
+            (!magnetism1.inMagnetismArea || !magnetism2.inMagnetismArea))
         {
             Debug.Log("磁石がくっつきました！ゲームオーバー！Result画面に移ります");
             // ここにゲームオーバー処理を書く

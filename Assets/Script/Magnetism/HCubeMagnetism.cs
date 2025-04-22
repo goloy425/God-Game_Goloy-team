@@ -20,8 +20,6 @@ public class HCubeMagnetism : MonoBehaviour
 	//--- 磁石のリスト管理 ---//
 	private static List<Magnetism> registeredMagnets = new();
 
-	private GameManager gameManager;
-
 	public static void Register(Magnetism magnet)
 	{
 		if (!registeredMagnets.Contains(magnet))
@@ -39,8 +37,6 @@ public class HCubeMagnetism : MonoBehaviour
 	{
 		// 半分になる前は非アクティブにしておく
 		enabled = false;
-
-		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 
 
@@ -107,7 +103,5 @@ public class HCubeMagnetism : MonoBehaviour
 		magnet.myPlate.position = snapPosition;
 
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
-
-		gameManager.SetGameOverFg(true);	// ゲームオーバーにする
 	}
 }
