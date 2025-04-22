@@ -90,8 +90,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 現在のステージをクリアした時、次のステージに進む
-        if (stageDatas[curStage].clearFg )
+        // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
+        if (stageDatas[curStage].clearFg && curStage + 1 < stageDatas.Count)
         {
             curStage++;
             ActiveMagObjects(curStage); // 次のステージの磁力オブジェクトを有効化

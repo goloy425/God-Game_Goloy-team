@@ -1179,13 +1179,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b41b7d49407b444bc432db62e3938f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageDatas:
+  - magObjects:
+    - {fileID: 919132148262884160}
+    detectAreas:
+    - {fileID: 56163642}
+    clearFg: 0
   magnet1: {fileID: 1522724225}
   magnet2: {fileID: 411815700}
   detectAreas:
   - {fileID: 56163642}
-  pressurePlates: []
   resultSceneName: Result
   gameOverSceneName: GameOver
+  pressurePlates: []
 --- !u!1001 &783727542
 PrefabInstance:
   m_ObjectHideFlags: 0
