@@ -28,8 +28,15 @@ public class Vibration : MonoBehaviour
 	public bool notVibration = false;   // デバッグ中振動がうざくなったらチェック
 
 	private Gamepad gamepad;
-	private Coroutine vibrationCoroutine;
 	private AdjustMagnetism adjMag;
+
+	// 強化中かどうか取得する用
+	private AugMagL playerL;
+	private AugMagR playerR;
+
+	// 強化した瞬間だけ振動させる用のフラグ
+	private bool vibratedL;
+	private bool vibratedR;
 
 	// 磁力スクリプトの取得用
 	private SphereMagnetism[] sMag;
@@ -46,6 +53,9 @@ public class Vibration : MonoBehaviour
 	{
 		gamepad = Gamepad.current;
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
+
+		playerL = GameObject.Find("PlayerL_Controller").GetComponent<AugMagL>();
+		playerR = GameObject.Find("PlayerR_Controller").GetComponent<AugMagR>();
 
 		if (gamepad == null) { return; }	// コントローラーがない時はスルー
 		else	// 起動時に謎の振動が起こるのを抑制
@@ -75,39 +85,27 @@ public class Vibration : MonoBehaviour
 			}
 		}
 
-		if (!notVibration)	// 振動オフじゃない時
+		if (!notVibration)
 		{
-			//--- ここに足していけば複数種類の振動をコントロールできる？ ---//
-			// プレイヤーの磁石と磁力オブジェクトの距離
-			if (magnet1.inObjMagArea || magnet2.inObjMagArea)
-			{
-				StartCoroutine(Vibration_MagObj());
-			}
-			// プレイヤーの磁石同士の距離に応じた振動
-			else if (magnet1.inPlayerMagArea)
-			{
-				StartCoroutine(Vibration_Magnets());
-			}
+			//--- ここに足していけば複数の振動をコントロールできる？ ---//
+			StartCoroutine(Vibration_Magnets());	// 磁石の距離に応じた振動
 		}
 	}
 
 	private void FixedUpdate()
 	{
-		//--- 振動の切り替え ---//
-		// プレイヤーの磁石とオブジェクトの方が優先
-		if (magnet1.inObjMagArea || magnet2.inObjMagArea)
+		// 磁力強化時ﾝ↗ﾌﾞｩﾝ…↘て感じで振動する
+		if (playerL.isAugmenting || playerR.isAugmenting)
 		{
-			StartCoroutine(Vibration_MagObj());
+			if (playerL.isAugmenting && !vibratedL)
+			{
+
+			}
+			else if (playerR.isAugmenting && !vibratedR)
+			{
+
+			}
 		}
-		// プレイヤーの磁石同士の距離に応じた振動
-		else if (magnet1.inPlayerMagArea)
-		{
-			StartCoroutine(Vibration_Magnets());
-		}
-		else
-		{
-            gamepad.SetMotorSpeeds(0, 0);	// 振動停止
-        }
 	}
 
 	//=================================================
@@ -140,8 +138,9 @@ public class Vibration : MonoBehaviour
 			float minVibStrength = 0.002f;	// 遠い
 			float maxVibStrength = 0.03f;   // 近い
 
-			// Xboxのコントローラーの場合
-			if(Gamepad.current.displayName=="Xbox Controller")
+			// Xboxのコントローラーの場合振動を強める
+			// 他にも振動弱いコントローラーあったらコンソールで名前見てここに追加していくとよさそう
+			if (Gamepad.current.displayName == "Xbox Controller")
 			{
 				minVibStrength = 1.0f;
 				maxVibStrength = 15;

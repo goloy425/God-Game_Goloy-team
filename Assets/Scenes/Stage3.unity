@@ -271,6 +271,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: eecea7d14059fb04ba9ead5e5f187c88, type: 3}
   m_PrefabInstance: {fileID: 1557914454}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &165422024 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1036036529846573615, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+  m_PrefabInstance: {fileID: 1036036529620549662}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &176886219
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1818,7 +1823,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magnet1: {fileID: 1069937681}
   magnet2: {fileID: 1593035275}
-  magObjs: []
+  magObjs:
+  - {fileID: 165422024}
+  - {fileID: 1036036529620549664}
+  - {fileID: 1036036529620549663}
   notVibration: 0
 --- !u!4 &1397853227
 Transform:
