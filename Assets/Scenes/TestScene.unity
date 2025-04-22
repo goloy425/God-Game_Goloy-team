@@ -151,6 +151,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 471677731}
     m_Modifications:
+    - target: {fileID: 2093772769, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 514144324}
     - target: {fileID: 2093772770, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: magnet1
       value: 
@@ -811,6 +815,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257b1387a4562c6448f0beaf5d6dacc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1944337885 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 632146294883812610, guid: c389c21688cccc84ba354d529aadb88c, type: 3}
+  m_PrefabInstance: {fileID: 1968536315}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1944337888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944337885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 331c9f672c8d2c94b92aa651ddd393bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magnet1: {fileID: 151330990}
+  magnet2: {fileID: 1677274748}
+  notVibration: 0
 --- !u!1001 &1968536315
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -861,18 +885,6 @@ PrefabInstance:
     - target: {fileID: 632146294883812608, guid: c389c21688cccc84ba354d529aadb88c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 632146294883812609, guid: c389c21688cccc84ba354d529aadb88c, type: 3}
-      propertyPath: magnet1
-      value: 
-      objectReference: {fileID: 151330990}
-    - target: {fileID: 632146294883812609, guid: c389c21688cccc84ba354d529aadb88c, type: 3}
-      propertyPath: magnet2
-      value: 
-      objectReference: {fileID: 1677274748}
-    - target: {fileID: 632146294883812609, guid: c389c21688cccc84ba354d529aadb88c, type: 3}
-      propertyPath: notVibration
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 632146294883812610, guid: c389c21688cccc84ba354d529aadb88c, type: 3}
       propertyPath: m_Name
@@ -1009,6 +1021,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerR
       objectReference: {fileID: 0}
+    - target: {fileID: 8739186073179222220, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 514144324}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetPlate
       value: 
@@ -1091,6 +1107,10 @@ PrefabInstance:
       propertyPath: targetMagnet
       value: 
       objectReference: {fileID: 1677274748}
+    - target: {fileID: 6645266099146840925, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 514144324}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
 --- !u!1 &4416749209779368609 stripped

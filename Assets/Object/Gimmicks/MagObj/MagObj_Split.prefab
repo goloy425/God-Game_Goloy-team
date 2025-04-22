@@ -188,6 +188,7 @@ MonoBehaviour:
   magnetismCircle: {fileID: 8235707398309161971}
   deadCircle: {fileID: 8235707397346972180}
   baseObj: {fileID: 1036036530018306738}
+  floor: {fileID: 0}
 --- !u!114 &1036036530018306731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,6 +369,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8362976978656553978, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -7664602792472506743, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2070879322938307423, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -948252224090329956, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -948252224090329956, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -948252224090329956, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -315862514568703231, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -315862514568703231, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
       propertyPath: m_Name
       value: MagObj_split1
@@ -375,6 +408,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
       propertyPath: m_TagString
       value: MagObj_HCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706144973085369821, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903522582043146075, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8651516595821919551, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
@@ -427,55 +472,6 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!114 &1036036529462454104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189666228103047332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fbe949e9a2c99d4789dd08b1a978d58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  magnetismRange: 6
-  deadRange: 1
-  magnetism: 200
-  strongMagnetism: 999
-  playerL: {fileID: 0}
-  playerR: {fileID: 0}
---- !u!114 &1036036529462454106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189666228103047332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3eef4dc29d45044d9c0e2816cc2cfd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Circles: {fileID: 7714609037645665146}
-  magnetismCircle: {fileID: 8235707396588448123}
-  deadCircle: {fileID: 8235707396947464348}
-  baseObj: {fileID: 189666228103047332}
---- !u!114 &1036036529462454107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189666228103047332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f45199ef181abe44eb407a1017d4ee36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerL: {fileID: 0}
-  magnet1: {fileID: 0}
-  isCarryingL: 0
 --- !u!82 &3141497102835372282
 AudioSource:
   m_ObjectHideFlags: 0
@@ -572,6 +568,56 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1036036529462454104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189666228103047332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fbe949e9a2c99d4789dd08b1a978d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magnetismRange: 6
+  deadRange: 1
+  magnetism: 200
+  strongMagnetism: 999
+  playerL: {fileID: 0}
+  playerR: {fileID: 0}
+--- !u!114 &1036036529462454106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189666228103047332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3eef4dc29d45044d9c0e2816cc2cfd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Circles: {fileID: 7714609037645665146}
+  magnetismCircle: {fileID: 8235707396588448123}
+  deadCircle: {fileID: 8235707396947464348}
+  baseObj: {fileID: 189666228103047332}
+  floor: {fileID: 0}
+--- !u!114 &1036036529462454107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189666228103047332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f45199ef181abe44eb407a1017d4ee36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerL: {fileID: 0}
+  magnet1: {fileID: 0}
+  isCarryingL: 0
 --- !u!114 &3249295422534650433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,6 +703,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7664602792472506743, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -315862514568703231, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
       propertyPath: m_Name
       value: MagObj_split2
@@ -716,72 +770,6 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!114 &1036036530677158008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189666226807847416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3eef4dc29d45044d9c0e2816cc2cfd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Circles: {fileID: 7714609036986394352}
-  magnetismCircle: {fileID: 8235707397478472945}
-  deadCircle: {fileID: 8235707398177203478}
-  baseObj: {fileID: 189666226807847416}
---- !u!114 &1036036530677158010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189666226807847416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8945cd53440958345a9a7e9da57de5bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerR: {fileID: 0}
-  magnet2: {fileID: 0}
-  isCarryingR: 0
---- !u!114 &1036036530677158011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189666226807847416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fbe949e9a2c99d4789dd08b1a978d58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  magnetismRange: 6
-  deadRange: 1
-  magnetism: 200
-  strongMagnetism: 999
-  playerL: {fileID: 0}
-  playerR: {fileID: 0}
---- !u!114 &1638173354286192082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189666226807847416}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e417544b634806542803521dff5f1e5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioClips:
-  - {fileID: 8300000, guid: 4293af504a3ccc4458421adf372e8655, type: 3}
-  second: 2
-  inOrderFg: 1
-  playOnAwakeFg: 1
 --- !u!82 &2406033392085892030
 AudioSource:
   m_ObjectHideFlags: 0
@@ -878,6 +866,73 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1036036530677158008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189666226807847416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3eef4dc29d45044d9c0e2816cc2cfd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Circles: {fileID: 7714609036986394352}
+  magnetismCircle: {fileID: 8235707397478472945}
+  deadCircle: {fileID: 8235707398177203478}
+  baseObj: {fileID: 189666226807847416}
+  floor: {fileID: 0}
+--- !u!114 &1036036530677158010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189666226807847416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8945cd53440958345a9a7e9da57de5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerR: {fileID: 0}
+  magnet2: {fileID: 0}
+  isCarryingR: 0
+--- !u!114 &1036036530677158011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189666226807847416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fbe949e9a2c99d4789dd08b1a978d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magnetismRange: 6
+  deadRange: 1
+  magnetism: 200
+  strongMagnetism: 999
+  playerL: {fileID: 0}
+  playerR: {fileID: 0}
+--- !u!114 &1638173354286192082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189666226807847416}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e417544b634806542803521dff5f1e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: 4293af504a3ccc4458421adf372e8655, type: 3}
+  second: 2
+  inOrderFg: 1
+  playOnAwakeFg: 1
 --- !u!4 &714388718679843650 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e4d52c6a1d9854c4da9aafa7bd3f0044, type: 3}
