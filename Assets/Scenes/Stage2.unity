@@ -1180,11 +1180,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageDatas:
-  - magObjects:
+  - magObjSphere:
     - {fileID: 919132148262884160}
+    magObjSplit1: []
+    magObjSplit2: []
+    magObjConnecter: []
     detectAreas:
     - {fileID: 56163642}
-    clearFg: 0
   magnet1: {fileID: 1522724225}
   magnet2: {fileID: 411815700}
   detectAreas:
