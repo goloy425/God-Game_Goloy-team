@@ -507,6 +507,10 @@ PrefabInstance:
       propertyPath: targetMagnet
       value: 
       objectReference: {fileID: 1602353199}
+    - target: {fileID: 6645266099146840925, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1662151177}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
 --- !u!4 &56990288 stripped
@@ -2628,6 +2632,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 1036036529462454106, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1240502397}
     - target: {fileID: 1036036529462454107, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet1
       value: 
@@ -2684,6 +2692,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagObj_Split
       objectReference: {fileID: 0}
+    - target: {fileID: 1036036530018306730, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1240502397}
     - target: {fileID: 1036036530018306731, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: playerL
       value: 
@@ -2700,6 +2712,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 1036036530677158008, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1240502397}
     - target: {fileID: 1036036530677158010, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet2
       value: 
@@ -2764,6 +2780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magnet1: {fileID: 56990289}
   magnet2: {fileID: 1602353199}
+  magObjs: []
   notVibration: 0
 --- !u!4 &384193730
 Transform:
@@ -4750,6 +4767,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 1036036529462454106, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 396898879}
     - target: {fileID: 1036036529462454107, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet1
       value: 
@@ -4806,6 +4827,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagObj_Split
       objectReference: {fileID: 0}
+    - target: {fileID: 1036036530018306730, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 396898879}
     - target: {fileID: 1036036530018306731, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: playerL
       value: 
@@ -4822,6 +4847,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 1036036530677158008, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 396898879}
     - target: {fileID: 1036036530677158010, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet2
       value: 
@@ -7541,6 +7570,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 419970047}
     m_Modifications:
+    - target: {fileID: 2093772769, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1611347069}
     - target: {fileID: 2093772770, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: magnet1
       value: 
@@ -12185,6 +12218,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerR
       objectReference: {fileID: 0}
+    - target: {fileID: 8739186073179222220, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1662151177}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetPlate
       value: 
@@ -12818,6 +12855,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 1036036529462454106, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1224564348}
     - target: {fileID: 1036036529462454107, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet1
       value: 
@@ -12874,6 +12915,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagObj_split
       objectReference: {fileID: 0}
+    - target: {fileID: 1036036530018306730, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1224564348}
     - target: {fileID: 1036036530018306731, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: playerL
       value: 
@@ -12890,6 +12935,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 1036036530677158008, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1224564348}
     - target: {fileID: 1036036530677158010, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet2
       value: 
@@ -14418,6 +14467,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 1036036529462454106, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1240502397}
     - target: {fileID: 1036036529462454107, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet1
       value: 
@@ -14474,6 +14527,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagObj_Split (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1036036530018306730, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1240502397}
     - target: {fileID: 1036036530018306731, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: playerL
       value: 
@@ -14490,6 +14547,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 1036036530677158008, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1240502397}
     - target: {fileID: 1036036530677158010, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet2
       value: 
@@ -15097,6 +15158,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1243312461}
     m_Modifications:
+    - target: {fileID: 2093772769, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 1662151177}
     - target: {fileID: 2093772770, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: magnet1
       value: 
