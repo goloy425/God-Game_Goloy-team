@@ -70,11 +70,11 @@ public class HCubeMagnetism : MonoBehaviour
 		// 範囲内かどうかチェック（円形判定）
 		if (minDistance > magnetismRange)
 		{
-			nearestMagnet.inObjMagArea = false;
+			nearestMagnet.inHCubeObjMagArea = false;
 			return;
 		}
 
-		nearestMagnet.inObjMagArea = true;
+		nearestMagnet.inHCubeObjMagArea = true;
 
 		// 引き寄せ処理
 		Vector3 direction = (surface - nearestMagnet.myPlate.position).normalized;

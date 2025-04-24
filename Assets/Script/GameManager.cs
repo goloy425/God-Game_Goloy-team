@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
     private bool gameClearFg = false;         // ゲームクリアしたかどうか
     private bool gameOverFg = false;          // ゲームオーバーしたかどうか
 
+    private float clearTimer = 0.0f;          // 接続され続けている秒数
+    private float clearTime = 4.0f;           // 接続されている秒数がこの秒数を超えるとクリアとみなす
     private float changeSceneTime = 1.0f;     // 何秒後にリザルトシーンに遷移するか
 
     private Magnetism magnetism1 = null;      // プレイヤーLのマグネティズム
@@ -113,10 +115,17 @@ public class GameManager : MonoBehaviour
             {
                 connectCount++;
 
-                // すべての判定エリアが繋がっている時、クリアフラグを立てる
+                // すべての判定エリアが繋がっている時、秒数によってクリアフラグを変更
                 if (connectCount == stageDatas[curStage].detectAreas.Count)
                 {
-                    stageDatas[curStage].SetClearFg(true);
+                    clearTimer += Time.deltaTime;   // 繋がっている秒数を計測
+
+                    // クリアとみなす秒数を超えたらクリア
+                    if (clearTimer > clearTime) 
+                    {
+                        stageDatas[curStage].SetClearFg(true);
+                        clearTimer = 0.0f;   // タイマーリセット
+                    }   
                 }
             }
         }
@@ -140,26 +149,6 @@ public class GameManager : MonoBehaviour
             // changeSceneTime秒後にゲームオーバーシーンに遷移
             Invoke("MoveGameOverScene", changeSceneTime);    
         }
-
-        //// オブジェクトの磁力範囲外に出た時
-        //if (!magnetism1.inObjMagArea || !magnetism2.inObjMagArea)
-        //{
-        //    Debug.Log("オブジェクトの磁力範囲外に出ました！ゲームオーバー！Result画面に移ります");
-        //    // ここにゲームオーバー処理を書く
-
-        //    // changeSceneTime秒後にゲームオーバーシーンに遷移
-        //    Invoke("MoveGameOverScene", changeSceneTime);
-        //}
-
-        //// プレイヤーの磁力範囲外に出た時
-        //if (!magnetism1.inPlayerMagArea || !magnetism2.inPlayerMagArea)
-        //{
-        //    Debug.Log("プレイヤーの磁力範囲外に出ました！ゲームオーバー！Result画面に移ります");
-        //    // ここにゲームオーバー処理を書く
-
-        //    // changeSceneTime秒後にゲームオーバーシーンに遷移
-        //    Invoke("MoveGameOverScene", changeSceneTime);
-        //}
 
         // 磁力範囲外に出た時
         if (!magnetism1.inMagnetismArea || !magnetism2.inMagnetismArea)
@@ -193,6 +182,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 判定エリアオブジェクトの状態を検知
     void OnDetectionStateChanged(bool isConnected)
     {
         totalConnected += isConnected ? 1 : -1; // 接続されている数を増減
@@ -304,28 +294,28 @@ public class GameManager : MonoBehaviour
             // 球体の磁力オブジェクト
             if (stageDatas[i].magObjSphere != null)
             {
-                foreach (SphereMagnetism sphereMag in stageDatas[i].GetSphereMagCS()) { sphereMag.enabled = false; }
+                //foreach (SphereMagnetism sphereMag in stageDatas[i].GetSphereMagCS()) { sphereMag.enabled = false; }
                 foreach (MoveSphere moveSphere in stageDatas[i].GetMoveSphereCS()) { moveSphere.enabled = false; }
             }
 
             // 分裂物体の左側の磁力オブジェクト
             if (stageDatas[i].magObjSplit1 != null)
             {
-                foreach (HCubeMagnetism hCubeMag in stageDatas[i].GetHCubeMagCS()) { hCubeMag.enabled = false; }
+                //foreach (HCubeMagnetism hCubeMag in stageDatas[i].GetHCubeMagCS()) { hCubeMag.enabled = false; }
                 foreach (MoveHCubeL moveHCubeL in stageDatas[i].GetMoveHCubeLCS()) { moveHCubeL.enabled = false; }
             }
 
             // 分裂物体の右側の磁力オブジェクト
             if (stageDatas[i].magObjSplit2 != null)
             {
-                foreach (HCubeMagnetism hCubeMag in stageDatas[i].GetHCubeMagCS()) { hCubeMag.enabled = false; }
+                //foreach (HCubeMagnetism hCubeMag in stageDatas[i].GetHCubeMagCS()) { hCubeMag.enabled = false; }
                 foreach (MoveHCubeR moveHCubeR in stageDatas[i].GetMoveHCubeRCS()) { moveHCubeR.enabled = false; }
             }
 
             // 分裂物体を接続する磁力オブジェクト
             if (stageDatas[i].magObjConnecter != null)
             {
-                foreach (CubeMagnetism CubeMag in stageDatas[i].GetCubeMagCS()) { CubeMag.enabled = false; }
+                //foreach (CubeMagnetism CubeMag in stageDatas[i].GetCubeMagCS()) { CubeMag.enabled = false; }
             }
         }
 
@@ -340,28 +330,28 @@ public class GameManager : MonoBehaviour
             // 球体の磁力オブジェクト
             if (stageDatas[_stageIndex].magObjSphere != null)
             {
-                foreach (SphereMagnetism sphereMag in stageDatas[_stageIndex].GetSphereMagCS()) { sphereMag.enabled = true; }
+                //foreach (SphereMagnetism sphereMag in stageDatas[_stageIndex].GetSphereMagCS()) { sphereMag.enabled = true; }
                 foreach (MoveSphere moveSphere in stageDatas[_stageIndex].GetMoveSphereCS()) { moveSphere.enabled = true; }
             }
 
             // 分裂物体の左側の磁力オブジェクト
             if (stageDatas[_stageIndex].magObjSplit1 != null)
             {
-                foreach (HCubeMagnetism hCubeMag in stageDatas[_stageIndex].GetHCubeMagCS()) { hCubeMag.enabled = true; }
+                //foreach (HCubeMagnetism hCubeMag in stageDatas[_stageIndex].GetHCubeMagCS()) { hCubeMag.enabled = true; }
                 foreach (MoveHCubeL moveHCubeL in stageDatas[_stageIndex].GetMoveHCubeLCS()) { moveHCubeL.enabled = true; }
             }
 
             // 分裂物体の右側の磁力オブジェクト
             if (stageDatas[_stageIndex].magObjSplit2 != null)
             {
-                foreach (HCubeMagnetism hCubeMag in stageDatas[_stageIndex].GetHCubeMagCS()) { hCubeMag.enabled = true; }
+                //foreach (HCubeMagnetism hCubeMag in stageDatas[_stageIndex].GetHCubeMagCS()) { hCubeMag.enabled = true; }
                 foreach (MoveHCubeR moveHCubeR in stageDatas[_stageIndex].GetMoveHCubeRCS()) { moveHCubeR.enabled = true; }
             }
 
             // 分裂物体を接続する磁力オブジェクト
             if (stageDatas[_stageIndex].magObjConnecter != null)
             {
-                foreach (CubeMagnetism CubeMag in stageDatas[_stageIndex].GetCubeMagCS()) { CubeMag.enabled = true; }
+                //foreach (CubeMagnetism CubeMag in stageDatas[_stageIndex].GetCubeMagCS()) { CubeMag.enabled = true; }
             }
         }
     }

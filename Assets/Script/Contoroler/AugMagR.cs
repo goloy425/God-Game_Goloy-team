@@ -62,9 +62,10 @@ public class AugMagR : MonoBehaviour
 		// ボタンを押されてる強さの取得
 		float RValue = inputs.PlayerR.AugmentMag.ReadValue<float>();
 
-		// オブジェクトの磁力範囲内にいる時、一定以上の強さでキーが押されたら磁力強化
-		if (RValue > 0.3f && mag.inObjMagArea)
-		{
+        // オブジェクトの磁力範囲内にいる時、一定以上の強さでキーが押されたら磁力強化
+        //if (RValue > 0.3f && mag.inObjMagArea)
+        if (RValue > 0.3f && (mag.inSphereObjMagArea || mag.inHCubeObjMagArea || mag.inCubeObjMagArea))
+        {
 			AugmentPlayerRMagnetism();
             PlaySE();
         }

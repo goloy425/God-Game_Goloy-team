@@ -115,11 +115,11 @@ public class SphereMagnetism : MonoBehaviour
 			float surfaceDistance = Vector3.Distance(surfacePoint, magnetPos);
 			if (surfaceDistance > magnetismRange)
 			{
-				magnet.inObjMagArea = false;
+				magnet.inSphereObjMagArea = false;
 				continue;   // 磁力範囲外ならスキップ
 			}
 
-			magnet.inObjMagArea = true;	// フラグを立てておく
+			magnet.inSphereObjMagArea = true;	// フラグを立てておく
 
 			// 引き寄せる処理
 			Vector3 direction = (surfacePoint - magnetPos).normalized;

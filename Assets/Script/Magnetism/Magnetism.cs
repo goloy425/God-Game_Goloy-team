@@ -56,10 +56,13 @@ public class Magnetism : MonoBehaviour
 	// これがtrueになる＝磁石が何かしらとくっついた＝ゲームオーバー
 
 	[Header("磁力範囲内かどうかのフラグ")]
-	public bool inPlayerMagArea = true;		// プレイヤーの磁石の磁力範囲内かどうか
-	public bool inObjMagArea = true;		// オブジェクトの磁力範囲内かどうか
+	public bool inPlayerMagArea = true;     // プレイヤーの磁石の磁力範囲内かどうか
+    //public bool inObjMagArea = true;        // オブジェクトの磁力範囲内かどうか
+    public bool inSphereObjMagArea = true;  // 球体オブジェクトの磁力範囲内かどうか
+    public bool inHCubeObjMagArea = true;   // 分裂後のオブジェクトの磁力範囲内かどうか
+    public bool inCubeObjMagArea = true;	// コネクターオブジェクトの磁力範囲内かどうか
 
-	[Header("磁石がくっついた時のSE")]
+    [Header("磁石がくっついた時のSE")]
 	public AudioClip magnetSE;
 	private AudioSource audioSource;
 
@@ -151,14 +154,15 @@ public class Magnetism : MonoBehaviour
 	void FixedUpdate()
 	{
 		//--- 磁力範囲内か外かを常に判定する ---//
-		if (inPlayerMagArea || inObjMagArea)
+		//if (inPlayerMagArea || inObjMagArea)
+		if (inPlayerMagArea || inSphereObjMagArea || inHCubeObjMagArea || inCubeObjMagArea)
 		{
 			inMagnetismArea = true;
 		}
 		else
 		{
 			inMagnetismArea = false;
-        }
+		}
 
 		//--- プレイヤーの磁石同士の引き寄せ処理 ---//
 		// 距離を計算
