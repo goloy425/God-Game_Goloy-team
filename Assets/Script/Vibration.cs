@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,8 +36,16 @@ public class Vibration : MonoBehaviour
 	private AugMagR playerR;
 
 	// 強化した瞬間だけ振動させる用のフラグ
-	private bool vibratedL;
-	private bool vibratedR;
+	public bool vibratedL = false;
+	public bool vibratedR = false;
+
+	public bool isVibratingL = false;
+	public bool isVibratingR = false;
+
+	public bool prevAugL = false;	
+	public bool prevAugR = false;
+
+	Coroutine vibR = null;
 
 	// 磁力スクリプトの取得用
 	private SphereMagnetism[] sMag;
@@ -62,7 +71,7 @@ public class Vibration : MonoBehaviour
 		{
 			gamepad.SetMotorSpeeds(0, 0);
 			// 今接続されてるコントローラーの種類を出力
-			Debug.Log("接続されているコントローラー:"+Gamepad.current.displayName);
+			Debug.Log("接続されているコントローラー:"+gamepad.displayName);
 		}
 
 		// シーン内にある磁力オブジェクトを格納していく
@@ -92,20 +101,57 @@ public class Vibration : MonoBehaviour
 		}
 	}
 
-	private void FixedUpdate()
+	private void Update()
 	{
-		// 磁力強化時ﾝ↗ﾌﾞｩﾝ…↘て感じで振動する
-		if (playerL.isAugmenting || playerR.isAugmenting)
+		// 強化状態の更新
+		bool nowAugL = playerL.isAugmenting;
+		bool nowAugR = playerR.isAugmenting;
+
+		// PlayerLが強化状態になったら
+		if (nowAugL && !prevAugL && !isVibratingL)
 		{
-			if (playerL.isAugmenting && !vibratedL)
-			{
+			vibratedL = true;
+			isVibratingL = true;
 
+			if (gamepad.displayName == "Xbox Controller")
+			{
+				StartCoroutine(Vibration_Augment(0.08f, 0.08f, 0.2f, true));
 			}
-			else if (playerR.isAugmenting && !vibratedR)
+			else
 			{
-
+				vibR = StartCoroutine(Vibration_Augment(0.01f, 0.01f, 0.2f, true));
 			}
 		}
+
+		// PlayerRが強化状態になったら
+		if (nowAugR && !prevAugR && !isVibratingR)
+		{
+			vibratedR = true;
+			isVibratingR = true;
+
+			if (gamepad.displayName == "Xbox Controller")
+			{
+				StartCoroutine(Vibration_Augment(0.08f, 0.08f, 0.2f, false));
+			}
+			else
+			{
+				StartCoroutine(Vibration_Augment(0.01f, 0.01f, 0.2f, false));
+			}
+		}
+
+		// 振動済みの状態でキーが離されたら未振動に戻す
+		if (vibratedL && !isVibratingL)
+		{
+			vibratedL = false;
+		}
+		if (vibratedR && !isVibratingR)
+		{
+			vibratedR = false;
+		}
+
+		// フラグの更新
+		prevAugL = nowAugL;
+		prevAugR = nowAugR;
 	}
 
 	//=================================================
@@ -129,6 +175,8 @@ public class Vibration : MonoBehaviour
 			float vibStrength;	// 振動の強さ
 			float vibInterval;  // 振動の間隔
 
+			float vibAdjust = 0.0f;		// XboxController
+
 			//--- 数値の幅を変更するならココ ---//
 			// 振動の間隔
 			float minVibInterval = 0.7f;	// 近い
@@ -140,10 +188,11 @@ public class Vibration : MonoBehaviour
 
 			// Xboxのコントローラーの場合振動を強める
 			// 他にも振動弱いコントローラーあったらコンソールで名前見てここに追加していくとよさそう
-			if (Gamepad.current.displayName == "Xbox Controller")
+			if (gamepad.displayName == "Xbox Controller")
 			{
-				minVibStrength = 1.0f;
-				maxVibStrength = 15;
+				minVibStrength *= 100;
+				maxVibStrength *= 100;
+				vibAdjust = 2.0f;
 			}
 
 			if (distance <= minDistance)	// 近すぎる→最大振動
@@ -169,12 +218,13 @@ public class Vibration : MonoBehaviour
 			}
 
 			// コントローラーを振動させる
-			gamepad.SetMotorSpeeds(vibStrength, vibStrength);
+			gamepad.SetMotorSpeeds(vibStrength, vibStrength + vibAdjust);
 			yield return new WaitForSeconds(0.05f);
 			gamepad.SetMotorSpeeds(0.0f, 0.0f);
 			yield return new WaitForSeconds(vibInterval);
 		}
 	}
+
 
 	//================================================================
 	// プレイヤーの磁石と磁力オブジェクトの距離に応じて振動させる関数
@@ -182,6 +232,63 @@ public class Vibration : MonoBehaviour
 	IEnumerator Vibration_MagObj()
 	{
 		yield return new WaitForSeconds(0);		// とりあえずのやつ
+	}
+
+
+	//=================================================
+	// 磁力強化時の振動
+	//=================================================
+	IEnumerator Vibration_Augment(float targetLow, float targetHigh, float duration, bool isL)
+	{
+		Debug.Log("振動開始");
+
+		float timer = 0f;
+		float startLow = 0f;
+		float startHigh = 0f;
+
+		// 段階的に振動強くする
+		while (timer < duration)
+		{
+			timer += Time.deltaTime;
+			float t = timer / duration;
+
+			float currentLow = Mathf.Lerp(startLow, targetLow, t);
+			float currentHigh = Mathf.Lerp(startHigh, targetHigh, t);
+			gamepad.SetMotorSpeeds(currentLow, currentHigh);
+
+			yield return null;
+		}
+
+		// ちょっと余韻
+		yield return new WaitForSeconds(0.1f);
+
+		// 緩やかに振動を戻す
+		timer = 0f;
+		while (timer < duration)
+		{
+			timer += Time.deltaTime;
+			float t = timer / duration;
+
+			float currentLow = Mathf.Lerp(targetLow, 0f, t);
+			float currentHigh = Mathf.Lerp(targetHigh, 0f, t);
+			gamepad.SetMotorSpeeds(currentLow, currentHigh);
+
+			yield return null;
+		}
+
+		gamepad.SetMotorSpeeds(0, 0);	// 念のため完全停止
+
+		if(isL)
+		{
+			isVibratingL = false;
+			Debug.Log("L側の振動を切ったよ");
+		}
+		else
+		{
+			isVibratingR = false;
+			Debug.Log("R側の振動を切ったよ");
+		}
+
 	}
 
 
