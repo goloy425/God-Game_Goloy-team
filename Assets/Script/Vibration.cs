@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,18 +21,41 @@ public class Vibration : MonoBehaviour
 	public Magnetism magnet1;
 	public Magnetism magnet2;
 
+	[Header("磁力オブジェクトを登録")]
+	public GameObject[] magObjs;
+
 	[Header("チェックで振動オフ")]
 	public bool notVibration = false;   // デバッグ中振動がうざくなったらチェック
 
 	private Gamepad gamepad;
-	private Coroutine vibrationCoroutine;
 	private AdjustMagnetism adjMag;
+
+	// 強化中かどうか取得する用
+	private AugMagL playerL;
+	private AugMagR playerR;
+
+	// 強化した瞬間だけ振動させる用のフラグ
+	private bool vibratedL;
+	private bool vibratedR;
+
+	// 磁力スクリプトの取得用
+	private SphereMagnetism[] sMag;
+	private CubeMagnetism[] cMag;
+	private HCubeMagnetism[] hcMag;
+
+	// 要素数管理
+	private int sMagCnt = 0;
+	private int cMagCnt = 0;
+	private int hcMagCnt = 0;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		gamepad = Gamepad.current;
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
+
+		playerL = GameObject.Find("PlayerL_Controller").GetComponent<AugMagL>();
+		playerR = GameObject.Find("PlayerR_Controller").GetComponent<AugMagR>();
 
 		if (gamepad == null) { return; }	// コントローラーがない時はスルー
 		else	// 起動時に謎の振動が起こるのを抑制
@@ -41,18 +65,53 @@ public class Vibration : MonoBehaviour
 			Debug.Log("接続されているコントローラー:"+Gamepad.current.displayName);
 		}
 
+		// シーン内にある磁力オブジェクトを格納していく
+		foreach (GameObject obj in magObjs)
+		{
+			if (gameObject.CompareTag("MagObj_Sphere"))
+			{
+				TryGetComponent<SphereMagnetism>(out sMag[sMagCnt]);
+				sMagCnt++;
+			}
+			else if (gameObject.CompareTag("MagObj_Cube"))
+			{
+				TryGetComponent<CubeMagnetism>(out cMag[cMagCnt]);
+				cMagCnt++;
+			}
+			else if (gameObject.CompareTag("MagObj_HCube"))
+			{
+				TryGetComponent<HCubeMagnetism>(out hcMag[hcMagCnt]);
+				hcMagCnt++;
+			}
+		}
+
 		if (!notVibration)
 		{
 			//--- ここに足していけば複数の振動をコントロールできる？ ---//
-			vibrationCoroutine = StartCoroutine(Vibration_MagnetDistance());	// 磁石の距離に応じた振動
+			StartCoroutine(Vibration_Magnets());	// 磁石の距離に応じた振動
 		}
 	}
 
+	private void FixedUpdate()
+	{
+		// 磁力強化時ﾝ↗ﾌﾞｩﾝ…↘て感じで振動する
+		if (playerL.isAugmenting || playerR.isAugmenting)
+		{
+			if (playerL.isAugmenting && !vibratedL)
+			{
+
+			}
+			else if (playerR.isAugmenting && !vibratedR)
+			{
+
+			}
+		}
+	}
 
 	//=================================================
 	// 磁石の距離に応じて振動させる関数
 	//=================================================
-	IEnumerator Vibration_MagnetDistance()
+	IEnumerator Vibration_Magnets()
 	{
 		while (true)
 		{
@@ -67,18 +126,25 @@ public class Vibration : MonoBehaviour
 
 			float minDistance = magnet1.deadRange;
 			float maxDistance = magnet1.magnetismRange;
-			float vibStrength;  // 振動の強さ
+			float vibStrength;	// 振動の強さ
 			float vibInterval;  // 振動の間隔
 
 			//--- 数値の幅を変更するならココ ---//
-			// 振動の強さ
-			float minVibStrength = 0.002f;	// 遠い
-			float maxVibStrength = 0.03f;	// 近い
-
 			// 振動の間隔
 			float minVibInterval = 0.7f;	// 近い
 			float maxVibInterval = 1.5f;	// 遠い
 
+			// 振動の強さ
+			float minVibStrength = 0.002f;	// 遠い
+			float maxVibStrength = 0.03f;   // 近い
+
+			// Xboxのコントローラーの場合振動を強める
+			// 他にも振動弱いコントローラーあったらコンソールで名前見てここに追加していくとよさそう
+			if (Gamepad.current.displayName == "Xbox Controller")
+			{
+				minVibStrength = 1.0f;
+				maxVibStrength = 15;
+			}
 
 			if (distance <= minDistance)	// 近すぎる→最大振動
 			{
@@ -107,10 +173,17 @@ public class Vibration : MonoBehaviour
 			yield return new WaitForSeconds(0.05f);
 			gamepad.SetMotorSpeeds(0.0f, 0.0f);
 			yield return new WaitForSeconds(vibInterval);
-
-			//Debug.Log("vibStrength:"+vibStrength);
 		}
 	}
+
+	//================================================================
+	// プレイヤーの磁石と磁力オブジェクトの距離に応じて振動させる関数
+	//================================================================
+	IEnumerator Vibration_MagObj()
+	{
+		yield return new WaitForSeconds(0);		// とりあえずのやつ
+	}
+
 
 	void OnDestroy()
 	{
