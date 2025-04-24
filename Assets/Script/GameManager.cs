@@ -10,19 +10,19 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class StageData
 {
-    public List<GameObject> magObjSphere;       // 球体の磁力オブジェクト
-    public List<GameObject> magObjSplit1;       // 分裂物体の左側の磁力オブジェクト
-    public List<GameObject> magObjSplit2;       // 分裂物体の右側の磁力オブジェクト
-    public List<GameObject> magObjConnecter;    // 分裂物体を接続する磁力オブジェクト
-    public List<DetectArea> detectAreas;        // クリア判定オブジェクト
+    public List<GameObject> magObjSphere = new List<GameObject>();              // 球体の磁力オブジェクト
+    public List<GameObject> magObjSplit1 = new List<GameObject>();              // 分裂物体の左側の磁力オブジェクト
+    public List<GameObject> magObjSplit2 = new List<GameObject>();              // 分裂物体の右側の磁力オブジェクト
+    public List<GameObject> magObjConnecter = new List<GameObject>();           // 分裂物体を接続する磁力オブジェクト
+    public List<DetectArea> detectAreas = new List<DetectArea>();               // クリア判定オブジェクト
 
-    private List<SphereMagnetism> sphereMagCS;  // 球体の磁力スクリプト
-    private List<HCubeMagnetism> hCubeMagCS;    // 分裂物体の磁力スクリプト
-    private List<CubeMagnetism> cubeMagCS;      // コネクターの磁力スクリプト
+    private List<SphereMagnetism> sphereMagCS = new List<SphereMagnetism>();    // 球体の磁力スクリプト
+    private List<HCubeMagnetism> hCubeMagCS = new List<HCubeMagnetism>();       // 分裂物体の磁力スクリプト
+    private List<CubeMagnetism> cubeMagCS = new List<CubeMagnetism>();          // コネクターの磁力スクリプト
                                                 
-    private List<MoveSphere> moveSphereCS;      // 球体の動作スクリプト
-    private List<MoveHCubeL> moveHCubeLCS;      // 分裂物体の左側の動作スクリプト
-    private List<MoveHCubeR> moveHCubeRCS;      // 分裂物体の右側の動作スクリプト
+    private List<MoveSphere> moveSphereCS = new List<MoveSphere>();             // 球体の動作スクリプト
+    private List<MoveHCubeL> moveHCubeLCS = new List<MoveHCubeL>();             // 分裂物体の左側の動作スクリプト
+    private List<MoveHCubeR> moveHCubeRCS = new List<MoveHCubeR>();             // 分裂物体の右側の動作スクリプト
                                                 
     private bool clearFg = false;               // クリアフラグ
 
