@@ -58,11 +58,11 @@ public class CubeMagnetism : MonoBehaviour
 
 			if (surfaceDistance > MagnetismRange)
 			{
-				magnet.inCubeObjMagArea = false;
+				magnet.inHCubeObjMagArea = false;
 				continue;
 			}
 
-			magnet.inCubeObjMagArea = true;
+			magnet.inHCubeObjMagArea = true;
 
 			Vector3 direction = (targetSurface - magnetPos).normalized;
 			float force = (surfaceDistance < deadRange) ? strongMagnetism : magnetism;

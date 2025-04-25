@@ -57,10 +57,10 @@ public class Magnetism : MonoBehaviour
 
 	[Header("磁力範囲内かどうかのフラグ")]
 	public bool inPlayerMagArea = true;     // プレイヤーの磁石の磁力範囲内かどうか
-    //public bool inObjMagArea = true;        // オブジェクトの磁力範囲内かどうか
-    public bool inSphereObjMagArea = true;  // 球体オブジェクトの磁力範囲内かどうか
-    public bool inHCubeObjMagArea = true;   // 分裂後のオブジェクトの磁力範囲内かどうか
-    public bool inCubeObjMagArea = true;	// コネクターオブジェクトの磁力範囲内かどうか
+    public bool inObjMagArea = true;        // オブジェクトの磁力範囲内かどうか
+    public bool inSphereObjMagArea = false; // 球体オブジェクトの磁力範囲内かどうか
+    public bool inHCubeObjMagArea = false;  // 分裂後のオブジェクトの磁力範囲内かどうか
+    //public bool inCubeObjMagArea = false;	// コネクターオブジェクトの磁力範囲内かどうか
 
     [Header("磁石がくっついた時のSE")]
 	public AudioClip magnetSE;
@@ -153,9 +153,17 @@ public class Magnetism : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		//--- 磁力範囲内か外かを常に判定する ---//
-		//if (inPlayerMagArea || inObjMagArea)
-		if (inPlayerMagArea || inSphereObjMagArea || inHCubeObjMagArea || inCubeObjMagArea)
+        //--- 磁力範囲内か外かを常に判定する ---//
+        if (inSphereObjMagArea || inHCubeObjMagArea)
+        {
+            inObjMagArea = true;
+        }
+        else
+        {
+            inObjMagArea = false;
+        }
+
+        if (inPlayerMagArea || inObjMagArea)
 		{
 			inMagnetismArea = true;
 		}

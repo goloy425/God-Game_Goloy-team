@@ -104,6 +104,41 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // ----- 移動できる磁力オブジェクトの探索 ----- //
+        Vector3 distanceLToMagObj = Vector3.zero;    // プレイヤーLの磁石から磁力オブジェクトまでの距離
+        Vector3 distanceRToMagObj = Vector3.zero;    // プレイヤーRの磁石から磁力オブジェクトまでの距離
+
+        // 球体の磁力オブジェクトの各スクリプトをリストに追加
+        foreach (GameObject magObj in stageDatas[curStage].magObjSphere)
+        {
+            distanceLToMagObj = magObj.transform +
+            if (magObj.transform)
+            {
+
+            }
+        }
+
+        // 分裂物体の左側の磁力オブジェクトの各スクリプトをリストに追加
+        foreach (GameObject magObj in stageDatas[i].magObjSplit1)
+        {
+            if (magObj != null)
+            {
+                stageDatas[i].GetHCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
+                stageDatas[i].GetMoveHCubeLCS().Add(magObj.GetComponent<MoveHCubeL>());
+            }
+        }
+
+        // 分裂物体の右側の磁力オブジェクトの各スクリプトをリストに追加
+        foreach (GameObject magObj in stageDatas[i].magObjSplit2)
+        {
+            if (magObj != null)
+            {
+                stageDatas[i].GetHCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
+                stageDatas[i].GetMoveHCubeRCS().Add(magObj.GetComponent<MoveHCubeR>());
+            }
+        }
+
+
         // ----- ステージのクリア処理 ----- //
         int connectCount = 0;  // 繋がっている判定エリア
 
