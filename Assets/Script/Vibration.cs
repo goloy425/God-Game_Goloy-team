@@ -36,16 +36,14 @@ public class Vibration : MonoBehaviour
 	private AugMagR playerR;
 
 	// 強化した瞬間だけ振動させる用のフラグ
-	public bool vibratedL = false;
-	public bool vibratedR = false;
+	private bool vibratedL = false;
+	private bool vibratedR = false;
 
-	public bool isVibratingL = false;
-	public bool isVibratingR = false;
+	private bool isVibratingL = false;
+	private bool isVibratingR = false;
 
-	public bool prevAugL = false;	
-	public bool prevAugR = false;
-
-	Coroutine vibR = null;
+	private bool prevAugL = false;
+	private bool prevAugR = false;
 
 	// 磁力スクリプトの取得用
 	private SphereMagnetism[] sMag;
@@ -97,12 +95,23 @@ public class Vibration : MonoBehaviour
 		if (!notVibration)
 		{
 			//--- ここに足していけば複数の振動をコントロールできる？ ---//
-			StartCoroutine(Vibration_Magnets());	// 磁石の距離に応じた振動
+
+			// 磁石の距離に応じた振動
+			if (gamepad.displayName == "Xbox Controller")	// Xbox
+			{
+				StartCoroutine(VibMagnets_X());
+			}
+			else	// その他（今のところPS5のみ）
+			{
+				StartCoroutine(VibMagnets());
+			}
 		}
 	}
 
 	private void Update()
 	{
+		if (notVibration) { return; }	// 振動無しの場合はスキップ
+
 		// 強化状態の更新
 		bool nowAugL = playerL.isAugmenting;
 		bool nowAugR = playerR.isAugmenting;
@@ -115,11 +124,11 @@ public class Vibration : MonoBehaviour
 
 			if (gamepad.displayName == "Xbox Controller")
 			{
-				StartCoroutine(Vibration_Augment(0.08f, 0.08f, 0.2f, true));
+				StartCoroutine(VibAugment_X(0.1f, 0.1f, 0.1f, true));
 			}
 			else
 			{
-				vibR = StartCoroutine(Vibration_Augment(0.01f, 0.01f, 0.2f, true));
+				StartCoroutine(VibAugment(true));
 			}
 		}
 
@@ -131,11 +140,11 @@ public class Vibration : MonoBehaviour
 
 			if (gamepad.displayName == "Xbox Controller")
 			{
-				StartCoroutine(Vibration_Augment(0.08f, 0.08f, 0.2f, false));
-			}
+				StartCoroutine(VibAugment_X(0.1f, 0.1f, 0.1f, false));
+            }
 			else
 			{
-				StartCoroutine(Vibration_Augment(0.01f, 0.01f, 0.2f, false));
+				StartCoroutine(VibAugment(false));
 			}
 		}
 
@@ -154,10 +163,12 @@ public class Vibration : MonoBehaviour
 		prevAugR = nowAugR;
 	}
 
-	//=================================================
-	// 磁石の距離に応じて振動させる関数
-	//=================================================
-	IEnumerator Vibration_Magnets()
+
+	//=========================================================
+	// 基本コントローラー（とりあえずPS5をこっちにしておく）
+	//=========================================================
+	// ① 磁石の距離に応じた振動
+	IEnumerator VibMagnets()
 	{
 		while (true)
 		{
@@ -168,39 +179,29 @@ public class Vibration : MonoBehaviour
 				yield return null;	// 次のフレームまで待つ
 			}
 
-			float distance = Vector3.Distance(magnet1.transform.position, magnet2.transform.position);	// 磁石の距離
+			float distance = Vector3.Distance(magnet1.transform.position, magnet2.transform.position);  // 磁石の距離
 
 			float minDistance = magnet1.deadRange;
-			float maxDistance = magnet1.magnetismRange;
+			float maxDistance = magnet1.magnetismRange + 2.0f;
 			float vibStrength;	// 振動の強さ
 			float vibInterval;  // 振動の間隔
 
-			float vibAdjust = 0.0f;		// XboxController
-
 			//--- 数値の幅を変更するならココ ---//
 			// 振動の間隔
-			float minVibInterval = 0.7f;	// 近い
+			float minVibInterval = 0.5f;	// 近い
 			float maxVibInterval = 1.5f;	// 遠い
 
 			// 振動の強さ
-			float minVibStrength = 0.002f;	// 遠い
+			float minVibStrength = 0.001f;	// 遠い
 			float maxVibStrength = 0.03f;   // 近い
 
-			// Xboxのコントローラーの場合振動を強める
-			// 他にも振動弱いコントローラーあったらコンソールで名前見てここに追加していくとよさそう
-			if (gamepad.displayName == "Xbox Controller")
-			{
-				minVibStrength *= 100;
-				maxVibStrength *= 100;
-				vibAdjust = 2.0f;
-			}
 
 			if (distance <= minDistance)	// 近すぎる→最大振動
 			{
 				vibStrength = maxVibStrength;
 				vibInterval = minVibInterval;
 
-				if (magnet1.GetComponent<Magnetism>().isSnapping)	// くっついたら振動切る
+				if (magnet1.isSnapping) // くっついたら振動切る
 				{
 					vibStrength = 0.0f;
 				}
@@ -218,35 +219,109 @@ public class Vibration : MonoBehaviour
 			}
 
 			// コントローラーを振動させる
-			gamepad.SetMotorSpeeds(vibStrength, vibStrength + vibAdjust);
+			gamepad.SetMotorSpeeds(vibStrength, vibStrength);
 			yield return new WaitForSeconds(0.05f);
 			gamepad.SetMotorSpeeds(0.0f, 0.0f);
 			yield return new WaitForSeconds(vibInterval);
 		}
 	}
 
-
-	//================================================================
-	// プレイヤーの磁石と磁力オブジェクトの距離に応じて振動させる関数
-	//================================================================
-	IEnumerator Vibration_MagObj()
+	// ② 磁力強化時
+	IEnumerator VibAugment(bool isL)
 	{
-		yield return new WaitForSeconds(0);		// とりあえずのやつ
+		// 1回目の振動
+		gamepad.SetMotorSpeeds(0.02f, 0.02f);
+		yield return new WaitForSeconds(0.05f);
+
+		gamepad.SetMotorSpeeds(0, 0);
+		yield return new WaitForSeconds(0.1f);	// 間
+
+		// 2回目の振動
+		gamepad.SetMotorSpeeds(0.02f, 0.02f);
+		yield return new WaitForSeconds(0.05f);
+
+		gamepad.SetMotorSpeeds(0, 0);	// 念のため停止
+
+		if (isL)
+		{
+			isVibratingL = false;
+		}
+		else
+		{
+			isVibratingR = false;
+		}
 	}
 
 
 	//=================================================
-	// 磁力強化時の振動
+	// Xboxコントローラー
 	//=================================================
-	IEnumerator Vibration_Augment(float targetLow, float targetHigh, float duration, bool isL)
+	// ① 磁石の距離に応じた振動
+	IEnumerator VibMagnets_X()
 	{
-		Debug.Log("振動開始");
+		while (true)
+		{
+			// adjustedがfalseに戻るまで停止
+			while (adjMag.Adjusted)
+			{
+				gamepad.SetMotorSpeeds(0.0f, 0.0f); // 振動をオフ
+				yield return null;  // 次のフレームまで待つ
+			}
 
+			float distance = Vector3.Distance(magnet1.transform.position, magnet2.transform.position);  // 磁石の距離
+
+			float minDistance = magnet1.deadRange;
+			float maxDistance = magnet1.magnetismRange + 2.0f;
+			float vibStrength;  // 振動の強さ
+			float vibInterval;  // 振動の間隔
+
+			//--- 数値の幅を変更するならココ ---//
+			// 振動の間隔
+			float minVibInterval = 0.5f;	// 近い
+			float maxVibInterval = 1.5f;	// 遠い
+
+			// 振動の強さ
+			float minVibStrength = 0.1f;
+			float maxVibStrength = 3.0f;
+
+			if (distance <= minDistance)	// 近すぎる→最大振動
+			{
+				vibStrength = maxVibStrength;
+				vibInterval = minVibInterval;
+
+				if (magnet1.isSnapping) // くっついたら振動切る
+				{
+					vibStrength = 0.0f;
+				}
+			}
+			else if (distance >= maxDistance)   // 遠すぎる→振動なし
+			{
+				vibStrength = 0.0f;
+				vibInterval = 0.0f;
+			}
+			else    // 範囲内→距離に応じて振動強度と間隔を変える
+			{
+				float t = (distance - minDistance) / (maxDistance - minDistance);
+				vibStrength = Mathf.Lerp(maxVibStrength, minVibStrength, t);
+				vibInterval = Mathf.Lerp(minVibInterval, maxVibInterval, t);
+			}
+
+			// コントローラーを振動させる
+			gamepad.SetMotorSpeeds(vibStrength, vibStrength);
+			yield return new WaitForSeconds(0.1f);
+			gamepad.SetMotorSpeeds(0.0f, 0.0f);
+			yield return new WaitForSeconds(vibInterval);
+		}
+	}
+
+	// ② 磁力強化時
+	IEnumerator VibAugment_X(float targetLow, float targetHigh, float duration, bool isL)
+	{
 		float timer = 0f;
 		float startLow = 0f;
 		float startHigh = 0f;
 
-		// 段階的に振動強くする
+		// 段階的に振動を強くする
 		while (timer < duration)
 		{
 			timer += Time.deltaTime;
@@ -276,19 +351,25 @@ public class Vibration : MonoBehaviour
 			yield return null;
 		}
 
-		gamepad.SetMotorSpeeds(0, 0);	// 念のため完全停止
+		gamepad.SetMotorSpeeds(0, 0);   // 念のため完全停止
 
-		if(isL)
+		if (isL)
 		{
 			isVibratingL = false;
-			Debug.Log("L側の振動を切ったよ");
 		}
 		else
 		{
 			isVibratingR = false;
-			Debug.Log("R側の振動を切ったよ");
 		}
+	}
 
+
+	//================================================================
+	// プレイヤーの磁石と磁力オブジェクトの距離に応じて振動させる関数
+	//================================================================
+	IEnumerator Vibration_MagObj()
+	{
+		yield return new WaitForSeconds(0);     // とりあえずのやつ そのうち実装する
 	}
 
 

@@ -111,8 +111,8 @@ public class DrawCircle : MonoBehaviour
 		{
 			if (mag != null)	// magnetism付き（=プレイヤーの磁石）の場合
 			{
-				// サイズ更新（*1.1の理由：ないのがリアル範囲だけど視覚的にはこんな感じ）
-				magnetismCircle.localScale = new Vector3(mag.magnetismRange * 1.1f, 0.01f, mag.magnetismRange * 1.1f);
+				// サイズ更新（*1.2の理由：ないのがリアル範囲だけど視覚的にはこんな感じ）
+				magnetismCircle.localScale = new Vector3(mag.magnetismRange * 1.2f, 0.01f, mag.magnetismRange * 1.2f);
 			}
 			else	// magnetismが付いてない（=磁力オブジェクト）の場合
 			{

@@ -135,8 +135,8 @@ public class Magnetism : MonoBehaviour
 		audioSource = GetComponent<AudioSource>();
 		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        // 成否に関わるフラグを初期化しておく
-        isSnapping = false;
+		// 成否に関わるフラグを初期化しておく
+		isSnapping = false;
 		inMagnetismArea = true;
 
 		// 強化フラグの取得
@@ -162,8 +162,8 @@ public class Magnetism : MonoBehaviour
 		{
 			inMagnetismArea = false;
 
-            gameManager.SetGameOverFg(true);    // ゲームオーバーにする
-        }
+			gameManager.SetGameOverFg(true);    // ゲームオーバーにする
+		}
 
 		//--- プレイヤーの磁石同士の引き寄せ処理 ---//
 		// 距離を計算
