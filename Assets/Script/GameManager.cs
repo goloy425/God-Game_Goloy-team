@@ -18,7 +18,8 @@ public class StageData
     public List<DetectArea> detectAreas = new List<DetectArea>();               // クリア判定オブジェクト
 
     private List<SphereMagnetism> sphereMagCS = new List<SphereMagnetism>();    // 球体の磁力スクリプト
-    private List<HCubeMagnetism> hCubeMagCS = new List<HCubeMagnetism>();       // 分裂物体の磁力スクリプト
+    private List<HCubeMagnetism> split1HCubeMagCS = new List<HCubeMagnetism>(); // 分裂物体の左側の磁力スクリプト
+    private List<HCubeMagnetism> split2HCubeMagCS = new List<HCubeMagnetism>(); // 分裂物体の右側の磁力スクリプト
     private List<CubeMagnetism> cubeMagCS = new List<CubeMagnetism>();          // コネクターの磁力スクリプト
                                                 
     private List<MoveSphere> moveSphereCS = new List<MoveSphere>();             // 球体の動作スクリプト
@@ -27,15 +28,32 @@ public class StageData
                                                 
     private bool clearFg = false;               // クリアフラグ
 
+    // クリアフラグのゲッター
+    public bool GetClearFg() { return clearFg; }
 
-    public bool GetClearFg() { return clearFg; }                    // クリアフラグのゲッター
-    public void SetClearFg(bool _clearFg) { clearFg = _clearFg; }   // クリアフラグのセッター
-    public List<SphereMagnetism> GetSphereMagCS() { return sphereMagCS; }   // 球体の磁力スクリプトリストのゲッター
-    public List<HCubeMagnetism> GetHCubeMagCS() { return hCubeMagCS; }      // 球体の磁力スクリプトリストのゲッター
-    public List<CubeMagnetism> GetCubeMagCS() { return cubeMagCS; }         // 球体の磁力スクリプトリストのゲッター
-    public List<MoveSphere> GetMoveSphereCS() { return moveSphereCS; }      // 球体の磁力スクリプトリストのゲッター
-    public List<MoveHCubeL> GetMoveHCubeLCS() { return moveHCubeLCS; }      // 球体の磁力スクリプトリストのゲッター
-    public List<MoveHCubeR> GetMoveHCubeRCS() { return moveHCubeRCS; }      // 球体の磁力スクリプトリストのゲッター
+    // クリアフラグのセッター                   
+    public void SetClearFg(bool _clearFg) { clearFg = _clearFg; }   
+    
+    // 球体の磁力スクリプトリストのゲッター
+    public List<SphereMagnetism> GetSphereMagCS() { return sphereMagCS; }   
+
+    // 分裂物体の左側の磁力スクリプトリストのゲッター
+    public List<HCubeMagnetism> GetSplit1HCubeMagCS() { return split1HCubeMagCS; }  
+    
+    // 分裂物体の右側の磁力スクリプトリストのゲッター
+    public List<HCubeMagnetism> GetSplit2HCubeMagCS() { return split2HCubeMagCS; }
+    
+    // コネクターの磁力スクリプトリストのゲッター
+    public List<CubeMagnetism> GetCubeMagCS() { return cubeMagCS; }
+
+    // 球体の動作スクリプトリストのゲッター
+    public List<MoveSphere> GetMoveSphereCS() { return moveSphereCS; }
+
+    // 分裂物体の左側の動作スクリプトリストのゲッター
+    public List<MoveHCubeL> GetMoveHCubeLCS() { return moveHCubeLCS; }
+
+    // 分裂物体の右側の動作スクリプトリストのゲッター
+    public List<MoveHCubeR> GetMoveHCubeRCS() { return moveHCubeRCS; }      
 }
 
 
@@ -96,12 +114,12 @@ public class GameManager : MonoBehaviour
         //// ステージ1の各磁力スクリプトを有効化
         //ActiveMagObjects(0);
 
+        Debug.Log("ステージ数 : " + stageDatas.Count);
         // 全ステージの移動できる磁力オブジェクトの探索
         for (int i = 0; i < stageDatas.Count; i++)
         {
-            SearchCanMoveMagObj(i);
-            Debug.Log(i);
-            Debug.Log(stageDatas.Count);
+            Debug.Log("ステージ" + (i + 1) + "初期化");
+            SearchCanCarryMagObj(i);
         }
     }
 
@@ -114,7 +132,11 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         // ----- 移動できる磁力オブジェクトの探索 ----- //
-        SearchCanMoveMagObj(curStage);
+        SearchCanCarryMagObj(curStage);
+        //for (int i = 0; i < stageDatas.Count; i++)
+        //{
+        //    SearchCanCarryMagObj(i);
+        //}
 
         // ----- ステージのクリア処理 ----- //
         int connectCount = 0;  // 繋がっている判定エリア
@@ -145,7 +167,6 @@ public class GameManager : MonoBehaviour
         // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
         if (stageDatas[curStage].GetClearFg() && curStage + 1 < stageDatas.Count)
         {
-            //DisableMagObjectCS(curStage);                 // 次のステージの磁力オブジェクトを有効化
             stageDatas[curStage].SetClearFg(false);   // 複数回更新しないようにフラグを折る
             curStage++;
         }
@@ -232,7 +253,7 @@ public class GameManager : MonoBehaviour
             {
                 if (magObj != null)
                 {
-                    stageDatas[i].GetHCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
+                    stageDatas[i].GetSplit1HCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
                     stageDatas[i].GetMoveHCubeLCS().Add(magObj.GetComponent<MoveHCubeL>());
                 }
             }
@@ -242,7 +263,7 @@ public class GameManager : MonoBehaviour
             {
                 if (magObj != null)
                 {
-                    stageDatas[i].GetHCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
+                    stageDatas[i].GetSplit2HCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
                     stageDatas[i].GetMoveHCubeRCS().Add(magObj.GetComponent<MoveHCubeR>());
                 }
             }
@@ -273,14 +294,14 @@ public class GameManager : MonoBehaviour
             // 分裂物体の左側の磁力オブジェクトの各スクリプトをリストから削除
             if (stageDatas[i].magObjSplit1 != null)
             {
-                stageDatas[i].GetHCubeMagCS().Clear();
+                stageDatas[i].GetSplit1HCubeMagCS().Clear();
                 stageDatas[i].GetMoveHCubeLCS().Clear();
             }
 
             // 分裂物体の右側の磁力オブジェクトの各スクリプトをリストから削除
             if (stageDatas[i].magObjSplit2 != null)
             {
-                stageDatas[i].GetHCubeMagCS().Clear();
+                stageDatas[i].GetSplit2HCubeMagCS().Clear();
                 stageDatas[i].GetMoveHCubeRCS().Clear();
             }
 
@@ -293,196 +314,167 @@ public class GameManager : MonoBehaviour
     }
 
     // 指定したステージの移動できる磁力オブジェクトを探索し、スクリプトの有効状態を変更
-    private void SearchCanMoveMagObj(int _index)
+    private void SearchCanCarryMagObj(int _index)
     {
-        int cnt = 0;    // ループ回数
         // 球体の磁力オブジェクト
-        foreach (GameObject magObj in stageDatas[_index].magObjSphere)
+        //foreach (GameObject magObj in stageDatas[_index].magObjSphere)
+        for(int i = 0; i < stageDatas[_index].magObjSphere.Count; i++)
         {
+            GameObject magObj = stageDatas[_index].magObjSphere[i];
+
             if (magObj != null)
             {
                 // プレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(curStage, 1, cnt, magObj) < stageDatas[_index].GetSphereMagCS()[cnt].GetMagnetismRange())
+                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageDatas[_index].GetSphereMagCS()[i].GetMagnetismRange())
                 {
                     Debug.Log(_index + 1 + ": Sphere 有効化");
-                    stageDatas[_index].GetSphereMagCS()[cnt].enabled = true;
-                    stageDatas[_index].GetMoveSphereCS()[cnt].enabled = true;
+                    stageDatas[_index].GetSphereMagCS()[i].enabled = true;
+                    stageDatas[_index].GetMoveSphereCS()[i].enabled = true;
                 }
                 // 入っていない時は無効化
-                else
+                else if (!magnetism1.inObjMagArea)
                 {
                     Debug.Log(_index + 1 + ": Sphere 無効化");
-                    stageDatas[_index].GetSphereMagCS()[cnt].enabled = false;
-                    stageDatas[_index].GetMoveSphereCS()[cnt].enabled = false;
+                    stageDatas[_index].GetSphereMagCS()[i].enabled = false;
+                    stageDatas[_index].GetMoveSphereCS()[i].enabled = false;
                 }
 
                 // プレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(curStage, 2, cnt, magObj) < stageDatas[_index].GetSphereMagCS()[cnt].GetMagnetismRange())
+                if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageDatas[_index].GetSphereMagCS()[i].GetMagnetismRange())
                 {
                     Debug.Log(_index + 1 + ": Sphere 有効化");
-                    stageDatas[_index].GetSphereMagCS()[cnt].enabled = true;
-                    stageDatas[_index].GetMoveSphereCS()[cnt].enabled = true;
+                    stageDatas[_index].GetSphereMagCS()[i].enabled = true;
+                    stageDatas[_index].GetMoveSphereCS()[i].enabled = true;
                 }
                 // 入っていない時は無効化
-                else
+                else if (!magnetism2.inObjMagArea)
                 {
                     Debug.Log(_index + 1 + ": Sphere 無効化");
-                    stageDatas[_index].GetSphereMagCS()[cnt].enabled = false;
-                    stageDatas[_index].GetMoveSphereCS()[cnt].enabled = false;
+                    stageDatas[_index].GetSphereMagCS()[i].enabled = false;
+                    stageDatas[_index].GetMoveSphereCS()[i].enabled = false;
                 }
-                cnt++;
             }
         }
 
-        cnt = 0;
         // 分裂物体の左側の磁力オブジェクト
-        foreach (GameObject magObj in stageDatas[_index].magObjSplit1)
+        //foreach (GameObject magObj in stageDatas[_index].magObjSplit1)
+        for (int i = 0; i < stageDatas[_index].magObjSplit1.Count; i++)
         {
+            GameObject magObj = stageDatas[_index].magObjSplit1[i];
+            GameObject connecter = stageDatas[_index].magObjConnecter[i];
+
             if (magObj != null)
             {
-                // プレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(curStage, 1, cnt, magObj) < stageDatas[_index].GetHCubeMagCS()[cnt].GetMagnetismRange())
+                // 分割後でプレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
+                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageDatas[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split1 有効化");
-                    stageDatas[_index].GetHCubeMagCS()[cnt].enabled = true;
-                    stageDatas[_index].GetMoveHCubeLCS()[cnt].enabled = true;
+                    stageDatas[_index].GetSplit1HCubeMagCS()[i].enabled = true;
+                    stageDatas[_index].GetMoveHCubeLCS()[i].enabled = true;
                 }
-                // 入っていない時は無効化
-                else
+                // 分割前または、入っていない時は無効化
+                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split1 無効化");
-                    stageDatas[_index].GetHCubeMagCS()[cnt].enabled = false;
-                    stageDatas[_index].GetMoveHCubeLCS()[cnt].enabled = false;
+                    stageDatas[_index].GetSplit1HCubeMagCS()[i].enabled = false;
+                    stageDatas[_index].GetMoveHCubeLCS()[i].enabled = false;
                 }
 
-                // プレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(curStage, 2, cnt, magObj) < stageDatas[_index].GetHCubeMagCS()[cnt].GetMagnetismRange())
+                // 分割後でプレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
+                if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageDatas[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split1 有効化");
-                    stageDatas[_index].GetHCubeMagCS()[cnt].enabled = true;
-                    stageDatas[_index].GetMoveHCubeLCS()[cnt].enabled = true;
+                    stageDatas[_index].GetSplit1HCubeMagCS()[i].enabled = true;
+                    stageDatas[_index].GetMoveHCubeLCS()[i].enabled = true;
                 }
-                // 入っていない時は無効化
-                else
+                // 分割前または、入っていない時は無効化
+                else if (!magnetism2.inObjMagArea || connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split1 無効化");
-                    stageDatas[_index].GetHCubeMagCS()[cnt].enabled = false;
-                    stageDatas[_index].GetMoveHCubeLCS()[cnt].enabled = false;
+                    stageDatas[_index].GetSplit1HCubeMagCS()[i].enabled = false;
+                    stageDatas[_index].GetMoveHCubeLCS()[i].enabled = false;
                 }
-                cnt++;
             }
         }
 
-        cnt = 0;
         // 分裂物体の右側の磁力オブジェクト
-        foreach (GameObject magObj in stageDatas[_index].magObjSplit2)
+        //foreach (GameObject magObj in stageDatas[_index].magObjSplit2)
+        for (int i = 0; i < stageDatas[_index].magObjSplit2.Count; i++)
         {
+            GameObject magObj = stageDatas[_index].magObjSplit2[i];
+            GameObject connecter = stageDatas[_index].magObjConnecter[i];
+
             if (magObj != null)
             {
-                // プレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(curStage, 1, cnt, magObj) < stageDatas[_index].GetHCubeMagCS()[cnt].GetMagnetismRange())
+                // 分割後でプレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
+                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageDatas[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split2 有効化");
-                    stageDatas[_index].GetHCubeMagCS()[cnt].enabled = true;
-                    stageDatas[_index].GetMoveHCubeRCS()[cnt].enabled = true;
+                    stageDatas[_index].GetSplit2HCubeMagCS()[i].enabled = true;
+                    stageDatas[_index].GetMoveHCubeRCS()[i].enabled = true;
                 }
-                // 入っていない時は無効化
-                else
+                // 分割前または、入っていない時は無効化
+                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split2 無効化");
-                    stageDatas[_index].GetHCubeMagCS()[cnt].enabled = false;
-                    stageDatas[_index].GetMoveHCubeRCS()[cnt].enabled = false;
+                    stageDatas[_index].GetSplit2HCubeMagCS()[i].enabled = false;
+                    stageDatas[_index].GetMoveHCubeRCS()[i].enabled = false;
                 }
 
-                // プレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(curStage, 2, cnt, magObj) < stageDatas[_index].GetHCubeMagCS()[cnt].GetMagnetismRange())
+                // 分割後でプレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
+                if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageDatas[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split2 有効化");
-                    stageDatas[_index].GetHCubeMagCS()[cnt].enabled = true;
-                    stageDatas[_index].GetMoveHCubeRCS()[cnt].enabled = true;
+                    stageDatas[_index].GetSplit2HCubeMagCS()[i].enabled = true;
+                    stageDatas[_index].GetMoveHCubeRCS()[i].enabled = true;
                 }
-                // 入っていない時は無効化
-                else
+                // 分割前または、入っていない時は無効化
+                else if (!magnetism2.inObjMagArea || connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split2 無効化");
-                    stageDatas[_index].GetHCubeMagCS()[cnt].enabled = false;
-                    stageDatas[_index].GetMoveHCubeRCS()[cnt].enabled = false;
+                    stageDatas[_index].GetSplit2HCubeMagCS()[i].enabled = false;
+                    stageDatas[_index].GetMoveHCubeRCS()[i].enabled = false;
                 }
-                cnt++;
             }
         }
 
-        cnt = 0;
         // 分裂物体を接続する磁力オブジェクト
-        foreach (GameObject magObj in stageDatas[_index].magObjConnecter)
+        //foreach (GameObject magObj in stageDatas[_index].magObjConnecter)
+        for (int i = 0; i < stageDatas[_index].magObjConnecter.Count; i++)
         {
+            GameObject magObj = stageDatas[_index].magObjConnecter[i];
+
             if (magObj != null)
             {
                 // プレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(curStage, 1, cnt, magObj) < stageDatas[_index].GetCubeMagCS()[cnt].GetMagnetismRange())
+                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageDatas[_index].GetCubeMagCS()[i].GetMagnetismRange())
                 {
                     Debug.Log(_index + 1 + ": Connecter 有効化");
-                    stageDatas[_index].GetCubeMagCS()[cnt].enabled = true;
+                    stageDatas[_index].GetCubeMagCS()[i].enabled = true;
                 }
                 // 入っていない時は無効化
-                else
+                else if (!magnetism1.inObjMagArea)
                 {
                     Debug.Log(_index + 1 + ": Connecter 無効化");
-                    stageDatas[_index].GetCubeMagCS()[cnt].enabled = false;
+                    stageDatas[_index].GetCubeMagCS()[i].enabled = false;
                 }
 
                 // プレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(curStage, 2, cnt, magObj) < stageDatas[_index].GetCubeMagCS()[cnt].GetMagnetismRange())
+                if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageDatas[_index].GetCubeMagCS()[i].GetMagnetismRange())
                 {
                     Debug.Log(_index + 1 + ": Connecter 有効化");
-                    stageDatas[_index].GetCubeMagCS()[cnt].enabled = true;
+                    stageDatas[_index].GetCubeMagCS()[i].enabled = true;
                 }
                 // 入っていない時は無効化
-                else
+                else if (!magnetism2.inObjMagArea)
                 {
                     Debug.Log(_index + 1 + ": Connecter 無効化");
-                    stageDatas[_index].GetCubeMagCS()[cnt].enabled = false;
+                    stageDatas[_index].GetCubeMagCS()[i].enabled = false;
                 }
-            }
-        }
-    }
-
-    // 指定したステージの磁力オブジェクトのスクリプトを無効化
-    private void DisableMagObjectCS(int _stageIndex)
-    {
-        // 全ステージの各スクリプトを無効化
-        for (int i = 0; i < stageDatas.Count; i++)
-        {
-            //foreach (GameObject obj in stageDatas[i].magObjects)
-            //{
-            //    if (obj != null) { obj.SetActive(false); }
-            //}
-
-            // 球体の磁力オブジェクト
-            if (stageDatas[i].magObjSphere != null)
-            {
-                foreach (SphereMagnetism sphereMag in stageDatas[i].GetSphereMagCS()) { sphereMag.enabled = false; }
-                foreach (MoveSphere moveSphere in stageDatas[i].GetMoveSphereCS()) { moveSphere.enabled = false; }
-            }
-
-            // 分裂物体の左側の磁力オブジェクト
-            if (stageDatas[i].magObjSplit1 != null)
-            {
-                foreach (HCubeMagnetism hCubeMag in stageDatas[i].GetHCubeMagCS()) { hCubeMag.enabled = false; }
-                foreach (MoveHCubeL moveHCubeL in stageDatas[i].GetMoveHCubeLCS()) { moveHCubeL.enabled = false; }
-            }
-
-            // 分裂物体の右側の磁力オブジェクト
-            if (stageDatas[i].magObjSplit2 != null)
-            {
-                foreach (HCubeMagnetism hCubeMag in stageDatas[i].GetHCubeMagCS()) { hCubeMag.enabled = false; }
-                foreach (MoveHCubeR moveHCubeR in stageDatas[i].GetMoveHCubeRCS()) { moveHCubeR.enabled = false; }
-            }
-
-            // 分裂物体を接続する磁力オブジェクト
-            if (stageDatas[i].magObjConnecter != null)
-            {
-                foreach (CubeMagnetism CubeMag in stageDatas[i].GetCubeMagCS()) { CubeMag.enabled = false; }
             }
         }
     }
@@ -490,33 +482,51 @@ public class GameManager : MonoBehaviour
     // プレイヤーの磁石から磁力オブジェクトまでの距離を取得
     private float GetDistancePlayerMagToMagObj(int _index, int _playerMagNumber, int _magObjNumber, GameObject _magObj)
     {
-        Vector3 playerMagPos = (_playerMagNumber == 1) ? magnet1.transform.position : magnet2.transform.position;   // プレイヤーの磁石の位置
-        float playerMagArea = (_playerMagNumber == 1) ? magnetism1.magnetismRange : magnetism2.magnetismRange;      // プレイヤーの磁石の磁力範囲
-
+        Vector3 playerMagPos = (_playerMagNumber == 1) ? magnetism1.myPlate.transform.position : magnetism2.myPlate.transform.position;   // プレイヤーの磁石の位置
         Vector3 magObjPos = _magObj.transform.position;     // 磁力オブジェクトの位置
+        //float playerMagArea = (_playerMagNumber == 1) ? magnetism1.magnetismRange * 1.1f : magnetism2.magnetismRange * 1.1f;              // プレイヤーの磁石の磁力範囲
 
-        // 種類別の磁力オブジェクトの磁力範囲を取得
-        float magObjArea = 0.0f;
+        // 種類別で磁力範囲の距離を取得（各Magnetism.csと同じ処理で距離を求める）
+        //float magObjArea = 0.0f;
+        float surfaceDistance = 0.0f;
         switch (_magObj.name)
         {
             case "MagObj_Sphere":
-                magObjArea = stageDatas[_index].GetSphereMagCS()[_magObjNumber].GetMagnetismRange();     // 球体の磁力オブジェクトの磁力範囲
+                // 球の表面にくっつけるために球の半径を計算
+                Vector3 surfacePoint = stageDatas[_index].GetSphereMagCS()[_magObjNumber].GetSphereCollider().ClosestPoint(playerMagPos);
+                // 球の表面と磁石の距離を計算
+                surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
+                //magObjArea = stageDatas[_index].GetSphereMagCS()[_magObjNumber].GetMagnetismRange() * 1.2f;     // 球体の磁力オブジェクトの磁力範囲
                 break;
             case "MagObj_split1":
-                magObjArea = stageDatas[_index].GetHCubeMagCS()[_magObjNumber].GetMagnetismRange();      // 分裂物体の左側の磁力オブジェクトの磁力範囲
+                surfacePoint = stageDatas[_index].GetSplit1HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
+                surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
+                //magObjArea = stageDatas[_index].GetSplit1HCubeMagCS()[_magObjNumber].GetMagnetismRange() * 2.0f;      // 分裂物体の左側の磁力オブジェクトの磁力範囲
                 break;
             case "MagObj_split2":
-                magObjArea = stageDatas[_index].GetHCubeMagCS()[_magObjNumber].GetMagnetismRange();      // 分裂物体の右側の磁力オブジェクトの磁力範囲
+                surfacePoint = stageDatas[_index].GetSplit2HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
+                surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
+                //magObjArea = stageDatas[_index].GetSplit2HCubeMagCS()[_magObjNumber].GetMagnetismRange() * 2.0f;      // 分裂物体の右側の磁力オブジェクトの磁力範囲
                 break;
             case "Connecter":
-                magObjArea = stageDatas[_index].GetCubeMagCS()[_magObjNumber].GetMagnetismRange();       // 分裂物体を接続する磁力オブジェクトの磁力範囲
+                // Colliderを利用して一番近い表面の座標を取得
+                Vector3 surface1 = stageDatas[_index].GetCubeMagCS()[_magObjNumber].GetCube1Collider().ClosestPoint(playerMagPos);
+                Vector3 surface2 = stageDatas[_index].GetCubeMagCS()[_magObjNumber].GetCube2Collider().ClosestPoint(playerMagPos);
+
+                // 表面座標との距離を計算
+                float distance1 = Vector3.Distance(surface1, playerMagPos);
+                float distance2 = Vector3.Distance(surface2, playerMagPos);
+
+                Vector3 targetSurface = (distance1 < distance2) ? surface1 : surface2;
+                surfaceDistance = Mathf.Min(distance1, distance2);
+                //magObjArea = stageDatas[_index].GetCubeMagCS()[_magObjNumber].GetMagnetismRange() * 2.0f;       // 分裂物体を接続する磁力オブジェクトの磁力範囲
                 break;
         }
 
-        float centerDistance = Vector3.Distance(playerMagPos, magObjPos);   // 中心位置の距離
+        //float centerDistance = Vector3.Distance(playerMagPos, magObjPos);   // 中心位置の距離
 
-        float magnetismAreaDistance = Mathf.Max(0.0f, centerDistance - (playerMagArea + magObjArea));   // 磁力範囲の距離
-        return magnetismAreaDistance;
+        //float magnetismAreaDistance = Mathf.Max(0.0f, centerDistance - (playerMagArea + magObjArea));   // 磁力範囲の距離
+        return surfaceDistance;
     }
 
     // リザルトシーンに遷移

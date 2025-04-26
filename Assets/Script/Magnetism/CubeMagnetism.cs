@@ -21,8 +21,12 @@ public class CubeMagnetism : MonoBehaviour
 	public Transform cube1;
 	public Transform cube2;
 
-	//--- 磁石のリスト管理 ---//
-	private static List<Magnetism> registeredMagnets = new();
+	// くっついているキューブの各コライダー
+    private SphereCollider cube1Collider;
+    private SphereCollider cube2Collider;
+
+    //--- 磁石のリスト管理 ---//
+    private static List<Magnetism> registeredMagnets = new();
 
     public static void Register(Magnetism magnet)
 	{
@@ -35,6 +39,13 @@ public class CubeMagnetism : MonoBehaviour
 	{
 		registeredMagnets.Remove(magnet);
 	}
+
+    private void Start()
+    {
+		// コライダーを取得
+        cube1Collider = cube1.GetComponent<SphereCollider>();
+        cube2Collider = cube2.GetComponent<SphereCollider>();
+    }
 
     private void FixedUpdate()
 	{
@@ -58,11 +69,11 @@ public class CubeMagnetism : MonoBehaviour
 
 			if (surfaceDistance > MagnetismRange)
 			{
-				magnet.inHCubeObjMagArea = false;
-				continue;
+                magnet.inObjMagArea = false;
+                continue;
 			}
 
-			magnet.inHCubeObjMagArea = true;
+            magnet.inObjMagArea = true;
 
 			Vector3 direction = (targetSurface - magnetPos).normalized;
 			float force = (surfaceDistance < deadRange) ? strongMagnetism : magnetism;
@@ -97,5 +108,17 @@ public class CubeMagnetism : MonoBehaviour
     public float GetMagnetismRange()
     {
         return magnetismRange;
+    }
+
+	// くっついている左側のオブジェクトのコライダーのゲッター
+	public SphereCollider GetCube1Collider()
+	{
+		return cube1Collider;
+	}
+
+    // くっついている右側のオブジェクトのコライダーのゲッター
+    public SphereCollider GetCube2Collider()
+    {
+        return cube2Collider;
     }
 }

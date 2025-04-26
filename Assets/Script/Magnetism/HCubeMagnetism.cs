@@ -17,6 +17,8 @@ public class HCubeMagnetism : MonoBehaviour
 	public GameObject playerL;
 	public GameObject playerR;
 
+	private SphereCollider hCubeCollider;
+
 	//--- 磁石のリスト管理 ---//
 	private static List<Magnetism> registeredMagnets = new();
 
@@ -37,6 +39,9 @@ public class HCubeMagnetism : MonoBehaviour
 	{
 		// 半分になる前は非アクティブにしておく
 		enabled = false;
+
+		// コライダーを取得
+		hCubeCollider = GetComponent<SphereCollider>();
 	}
 
 
@@ -69,12 +74,12 @@ public class HCubeMagnetism : MonoBehaviour
 
 		// 範囲内かどうかチェック（円形判定）
 		if (minDistance > magnetismRange)
-		{
-			nearestMagnet.inHCubeObjMagArea = false;
+        {
+            nearestMagnet.inObjMagArea = false;
 			return;
 		}
 
-		nearestMagnet.inHCubeObjMagArea = true;
+        nearestMagnet.inObjMagArea = true;
 
 		// 引き寄せ処理
 		Vector3 direction = (surface - nearestMagnet.myPlate.position).normalized;
@@ -111,4 +116,10 @@ public class HCubeMagnetism : MonoBehaviour
     {
         return magnetismRange;
     }
+
+	// コライダーのゲッター
+	public SphereCollider GetHCubeCollider()
+	{
+		return hCubeCollider;
+	}
 }

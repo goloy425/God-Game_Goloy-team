@@ -114,15 +114,15 @@ public class SphereMagnetism : MonoBehaviour
 			// 球の表面と磁石の距離を計算
 			float surfaceDistance = Vector3.Distance(surfacePoint, magnetPos);
 			if (surfaceDistance > magnetismRange)
-			{
-				magnet.inSphereObjMagArea = false;
-				continue;   // 磁力範囲外ならスキップ
+            {
+                magnet.inObjMagArea = false;
+                continue;   // 磁力範囲外ならスキップ
 			}
 
-			magnet.inSphereObjMagArea = true;	// フラグを立てておく
+            magnet.inObjMagArea = true;   // フラグを立てておく
 
-			// 引き寄せる処理
-			Vector3 direction = (surfacePoint - magnetPos).normalized;
+            // 引き寄せる処理
+            Vector3 direction = (surfacePoint - magnetPos).normalized;
 			float force = (surfaceDistance < deadRange) ? strongMagnetism : magnetism;
 			magnet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Acceleration);
 
@@ -154,9 +154,15 @@ public class SphereMagnetism : MonoBehaviour
 	}
 
 
-	// 磁力範囲のゲッター
-	public float GetMagnetismRange()
+    // 磁力範囲のゲッター
+    public float GetMagnetismRange()
+    {
+        return magnetismRange;
+    }
+
+	// コライダーのゲッター
+	public SphereCollider GetSphereCollider() 
 	{
-		return magnetismRange;
+		return sCollider;
 	}
 }

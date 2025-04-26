@@ -1273,7 +1273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageDatas:
   - magObjSphere:
-    - {fileID: 833530960}
+    - {fileID: 1602161780}
     magObjSplit1:
     - {fileID: 1036036529620549664}
     magObjSplit2:
@@ -1340,11 +1340,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.054499, y: 1, z: 1}
   m_Center: {x: -0.011721131, y: 0, z: 0}
---- !u!1 &833530960 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2192318228718671657, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
-  m_PrefabInstance: {fileID: 1746188600}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &856943973 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 034c39c4e9513014ea17a5cca881d044, type: 3}
@@ -2556,6 +2551,11 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2458994160036537049, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
   m_PrefabInstance: {fileID: 1593035272}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1602161780 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2192318228718671657, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+  m_PrefabInstance: {fileID: 1746188600}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1618569845
 PrefabInstance:
