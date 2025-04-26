@@ -152,4 +152,11 @@ public class SphereMagnetism : MonoBehaviour
 
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
 	}
+
+
+	// 磁力範囲のゲッター
+	public float GetMagnetismRange()
+	{
+		return magnetismRange;
+	}
 }

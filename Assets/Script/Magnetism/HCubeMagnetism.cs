@@ -104,4 +104,11 @@ public class HCubeMagnetism : MonoBehaviour
 
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
 	}
+
+
+    // ¥—Í”ÍˆÍ‚ÌƒQƒbƒ^[
+    public float GetMagnetismRange()
+    {
+        return magnetismRange;
+    }
 }
