@@ -170,8 +170,8 @@ public class GameManager : MonoBehaviour
         // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
         if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
         {
-            stageData[curStage].SetClearFg(false);   // 複数回更新しないようにフラグを折る
             curStage++;
+            Debug.Log("現在のステージ :" + (curStage + 1));
         }
 
 
@@ -454,6 +454,13 @@ public class GameManager : MonoBehaviour
     private void MoveGameOverScene()
     {
         SceneManager.LoadScene(gameOverSceneName);
+    }
+
+
+    // 指定したステージのクリアフラグを取得
+    public bool GetStageClearFg(int _stageNumber)
+    {
+        return stageData[_stageNumber].GetClearFg();
     }
 
     // ゲームクリアフラグを取得
