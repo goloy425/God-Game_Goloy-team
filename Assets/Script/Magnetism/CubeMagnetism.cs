@@ -21,10 +21,12 @@ public class CubeMagnetism : MonoBehaviour
 	public Transform cube1;
 	public Transform cube2;
 
-	//--- 磁石のリスト管理 ---//
-	private static List<Magnetism> registeredMagnets = new();
+    // くっついているキューブの各コライダー
+    private SphereCollider cube1Collider;
+    private SphereCollider cube2Collider;
 
-    private GameManager gameManager;
+    //--- 磁石のリスト管理 ---//
+    private static List<Magnetism> registeredMagnets = new();
 
     public static void Register(Magnetism magnet)
 	{
@@ -41,8 +43,9 @@ public class CubeMagnetism : MonoBehaviour
 
     private void Start()
     {
-		// GameManagerを取得
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        // コライダーを取得
+        cube1Collider = cube1.GetComponent<SphereCollider>();
+        cube2Collider = cube2.GetComponent<SphereCollider>();
     }
 
     private void FixedUpdate()
@@ -99,7 +102,23 @@ public class CubeMagnetism : MonoBehaviour
 		magnet.myPlate.position = snapPosition;
 
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
+    }
 
-        gameManager.SetGameOverFg(true);    // ゲームオーバーにする
+    // 磁力範囲のゲッター
+    public float GetMagnetismRange()
+    {
+        return magnetismRange;
+    }
+
+    // くっついている左側のオブジェクトのコライダーのゲッター
+    public SphereCollider GetCube1Collider()
+    {
+        return cube1Collider;
+    }
+
+    // くっついている右側のオブジェクトのコライダーのゲッター
+    public SphereCollider GetCube2Collider()
+    {
+        return cube2Collider;
     }
 }

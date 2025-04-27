@@ -63,8 +63,6 @@ public class Magnetism : MonoBehaviour
 	public AudioClip magnetSE;
 	private AudioSource audioSource;
 
-	private GameManager gameManager;
-
 	private Rigidbody rb;
 
 	// 強化常態かどうか確認するためのやつ
@@ -133,7 +131,6 @@ public class Magnetism : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody>();
 		audioSource = GetComponent<AudioSource>();
-		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 		// 成否に関わるフラグを初期化しておく
 		isSnapping = false;
@@ -161,8 +158,6 @@ public class Magnetism : MonoBehaviour
 		else
 		{
 			inMagnetismArea = false;
-
-			gameManager.SetGameOverFg(true);    // ゲームオーバーにする
 		}
 
 		//--- プレイヤーの磁石同士の引き寄せ処理 ---//
@@ -213,8 +208,6 @@ public class Magnetism : MonoBehaviour
 		{
 			audioSource.PlayOneShot(magnetSE);
 		}
-
-		gameManager.SetGameOverFg(true);	// ゲームオーバーにする
 	}
 
 
