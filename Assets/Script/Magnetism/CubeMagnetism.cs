@@ -25,6 +25,8 @@ public class CubeMagnetism : MonoBehaviour
     private SphereCollider cube1Collider;
     private SphereCollider cube2Collider;
 
+	private SplitCube splitCube;
+
     //--- 磁石のリスト管理 ---//
     private static List<Magnetism> registeredMagnets = new();
 
@@ -45,6 +47,8 @@ public class CubeMagnetism : MonoBehaviour
 		// コライダーを取得
         cube1Collider = cube1.GetComponent<SphereCollider>();
         cube2Collider = cube2.GetComponent<SphereCollider>();
+
+		splitCube = GetComponent<SplitCube>();
     }
 
     private void FixedUpdate()
@@ -103,6 +107,11 @@ public class CubeMagnetism : MonoBehaviour
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
     }
 
+    // このスクリプトを持つオブジェクトが消される瞬間に分裂したかのフラグを有効にする
+    private void OnDestroy()
+    {
+		splitCube.splited = true;
+    }
 
     // 磁力範囲のゲッター
     public float GetMagnetismRange()

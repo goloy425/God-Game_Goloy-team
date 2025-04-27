@@ -153,6 +153,15 @@ public class SphereMagnetism : MonoBehaviour
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
 	}
 
+	// このスクリプトが無効になる瞬間に磁力範囲エリアに入っているかのフラグを無効にする
+    private void OnDisable()
+    {
+		foreach (var magnet in registeredMagnets)
+		{
+			if (magnet == null) continue;
+			magnet.inObjMagArea = false;
+		}
+    }
 
     // 磁力範囲のゲッター
     public float GetMagnetismRange()
