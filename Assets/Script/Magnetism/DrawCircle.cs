@@ -10,11 +10,11 @@ using UnityEngine;
 public class DrawCircle : MonoBehaviour
 {
 	[Header("Circlesを設定（表示・非表示切り替え用）")]
-	public GameObject Circles;	// 円のグループ
+	public GameObject Circles;  // 円のグループ
 
 	[Header("範囲表示の円")]
-	public Transform magnetismCircle;	// 磁力範囲の方
-	public Transform deadCircle;		// くっつく範囲の方
+	public Transform magnetismCircle;   // 磁力範囲の方
+	public Transform deadCircle;        // くっつく範囲の方
 
 	[Header("表示基準：plate（もしくはオブジェクト自身）")]
 	public GameObject baseObj;
@@ -23,12 +23,12 @@ public class DrawCircle : MonoBehaviour
 
 	[Header("床を設定")]
 	public GameObject floor;
-	
+
 	// 各オブジェクトの磁力スクリプト
 	private Magnetism mag;
 	private SphereMagnetism sMag;
 	private CubeMagnetism cMag;
-	
+
 	private HCubeMagnetism hcMag;
 	private bool isHCube = false;	// 半キューブかどうか（割れる前は円非表示）
 
@@ -39,7 +39,9 @@ public class DrawCircle : MonoBehaviour
 	// 座標調整用の変数ズ
 	private float thisPosX;		// アタッチされてるオブジェクトのx座標
 	private float thisPosZ;		//				〃				 z座標
-	private float floorPosY;    // 床のy座標
+	private float floorPosY;	// 床のy座標
+
+	private bool isPlayerMag = false;   // アタッチされているのがプレイヤーの磁石かどうか
 
 	// Start is called before the first frame update
 	void Start()
@@ -50,24 +52,28 @@ public class DrawCircle : MonoBehaviour
 		//	GameObject.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
 		//}
 
-        // 各分裂するオブジェクトごとのSolitCubeスクリプトを取得
-        // 分裂するオブジェクトが複数あると分裂後に範囲が表示されないなどのバグがあったので追加しました
-        // コネクターの時はそのまま取得
-        if (gameObject.name == "Connecter")
-        {
-            gameObject.TryGetComponent<SplitCube>(out sCube);
-        }
-        // 半キューブの時はコネクターから取得
-        if (gameObject.name == "MagObj_split1" || gameObject.name == "MagObj_split2")
-        {
-            if (transform.parent != null)
-            {
-                transform.parent.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
-            }
-        }
+		// 各分裂するオブジェクトごとのSplitCubeスクリプトを取得
+		// 分裂するオブジェクトが複数あると分裂後に範囲が表示されないなどのバグがあったので追加しました
+		// コネクターの時はそのまま取得
+		if (gameObject.name == "Connecter")
+		{
+			gameObject.TryGetComponent<SplitCube>(out sCube);
+		}
+		// 半キューブの時はコネクターから取得
+		if (gameObject.name == "MagObj_split1" || gameObject.name == "MagObj_split2")
+		{
+			if (transform.parent != null)
+			{
+				transform.parent.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
+			}
+		}
 
-        // Magnetismがアタッチされている（＝プレイヤーの磁石である）場合
-        if (TryGetComponent<Magnetism>(out mag)) { return; }
+		// Magnetismがアタッチされている（＝プレイヤーの磁石である）場合
+		if (TryGetComponent<Magnetism>(out mag))
+		{
+			isPlayerMag = true;
+			return;
+		}
 
 		// 後はオブジェクトのタグによって分岐
 		if (gameObject.CompareTag("MagObj_Sphere"))
@@ -147,7 +153,14 @@ public class DrawCircle : MonoBehaviour
 			}
 
 			// 位置の追従＆回転を固定
-			magnetismCircle.SetPositionAndRotation(new Vector3(thisPosX, floorPosY, thisPosZ), Quaternion.identity);
+			if (isPlayerMag)		// プレイヤーの磁石の円なら磁石にくっついていく
+			{
+				magnetismCircle.SetPositionAndRotation(this.transform.position, Quaternion.identity);
+			}
+			else
+			{
+				magnetismCircle.SetPositionAndRotation(new Vector3(thisPosX, floorPosY, thisPosZ), Quaternion.identity);
+			}
 		}
 
 		// くっつく範囲
@@ -167,14 +180,21 @@ public class DrawCircle : MonoBehaviour
 				{
 					deadCircle.localScale = new Vector3(cMag.DeadRange * 4.0f, 0.01f, cMag.DeadRange * 4.0f);
 				}
-				else if (sCube.splited && hcMag != null) // 半キューブ
+				else if (sCube.splited && hcMag != null)	// 半キューブ
 				{
 					magnetismCircle.localScale = new Vector3(hcMag.DeadRange * 1.5f, 0.01f, hcMag.DeadRange * 1.5f);
 				}
 			}
 
-			float newFloorPosY = floorPosY + 0.02f;
-			deadCircle.SetPositionAndRotation(new Vector3(thisPosX, newFloorPosY, thisPosZ), Quaternion.identity);
+			if (isPlayerMag)
+			{
+				deadCircle.SetPositionAndRotation(this.transform.position, Quaternion.identity);
+			}
+			else
+			{
+				float newFloorPosY = floorPosY + 0.02f;
+				deadCircle.SetPositionAndRotation(new Vector3(thisPosX, newFloorPosY, thisPosZ), Quaternion.identity);
+			}
 		}
 	}
 }

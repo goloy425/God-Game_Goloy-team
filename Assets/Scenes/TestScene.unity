@@ -393,33 +393,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514144324}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &546288530 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4803428742003963153, guid: 6c22c5212b84c6c408c6499f85d17bc1, type: 3}
-  m_PrefabInstance: {fileID: 1531670255}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd527cdbbd0b1164fb8e99ab7e03e903, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &546288535 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4803428742003963157, guid: 6c22c5212b84c6c408c6499f85d17bc1, type: 3}
   m_PrefabInstance: {fileID: 1531670255}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &634878129 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4803428742003963153, guid: 6c22c5212b84c6c408c6499f85d17bc1, type: 3}
-  m_PrefabInstance: {fileID: 1095271074}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd527cdbbd0b1164fb8e99ab7e03e903, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &634878134 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4803428742003963157, guid: 6c22c5212b84c6c408c6499f85d17bc1, type: 3}
@@ -441,7 +419,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &890174844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,12 +432,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b41b7d49407b444bc432db62e3938f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectAreas:
-  - {fileID: 546288530}
-  - {fileID: 634878129}
-  pressurePlates: []
+  stageData: []
+  magnet1: {fileID: 0}
+  magnet2: {fileID: 0}
   resultSceneName: Result
   gameOverSceneName: GameOver
+  pressurePlates: []
 --- !u!4 &890174845
 Transform:
   m_ObjectHideFlags: 0
