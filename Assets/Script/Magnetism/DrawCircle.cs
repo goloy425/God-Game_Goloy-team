@@ -45,13 +45,29 @@ public class DrawCircle : MonoBehaviour
 	void Start()
 	{
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
-		if (GameObject.Find("Connecter") != null)
-		{
-			GameObject.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
-		}
+		//if (GameObject.Find("Connecter") != null)
+		//{
+		//	GameObject.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
+		//}
 
-		// Magnetismがアタッチされている（＝プレイヤーの磁石である）場合
-		if (TryGetComponent<Magnetism>(out mag)) { return; }
+        // 各分裂するオブジェクトごとのSolitCubeスクリプトを取得
+        // 分裂するオブジェクトが複数あると分裂後に範囲が表示されないなどのバグがあったので追加しました
+        // コネクターの時はそのまま取得
+        if (gameObject.name == "Connecter")
+        {
+            gameObject.TryGetComponent<SplitCube>(out sCube);
+        }
+        // 半キューブの時はコネクターから取得
+        if (gameObject.name == "MagObj_split1" || gameObject.name == "MagObj_split2")
+        {
+            if (transform.parent != null)
+            {
+                transform.parent.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
+            }
+        }
+
+        // Magnetismがアタッチされている（＝プレイヤーの磁石である）場合
+        if (TryGetComponent<Magnetism>(out mag)) { return; }
 
 		// 後はオブジェクトのタグによって分岐
 		if (gameObject.CompareTag("MagObj_Sphere"))
