@@ -17,10 +17,11 @@ public class HCubeMagnetism : MonoBehaviour
 	public GameObject playerL;
 	public GameObject playerR;
 
+
 	private SphereCollider hCubeCollider;
 
-	//--- 磁石のリスト管理 ---//
-	private static List<Magnetism> registeredMagnets = new();
+    //--- 磁石のリスト管理 ---//
+    private static List<Magnetism> registeredMagnets = new();
 
 	public static void Register(Magnetism magnet)
 	{
