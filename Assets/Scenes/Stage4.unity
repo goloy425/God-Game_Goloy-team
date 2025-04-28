@@ -3824,10 +3824,6 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 1778423363}
-    - target: {fileID: 7840700237947308375, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.54
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
 --- !u!1 &6406254622786964865 stripped
@@ -3842,6 +3838,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 248979528}
     m_Modifications:
+    - target: {fileID: 6516482960483746611, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 6516482961009907300, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
       propertyPath: m_Name
       value: Base

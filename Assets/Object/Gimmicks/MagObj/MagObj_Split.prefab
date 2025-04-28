@@ -189,6 +189,9 @@ MonoBehaviour:
   deadCircle: {fileID: 8235707397346972180}
   baseObj: {fileID: 1036036530018306738}
   floor: {fileID: 0}
+  ground:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!114 &1036036530018306731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,6 +606,9 @@ MonoBehaviour:
   deadCircle: {fileID: 8235707396947464348}
   baseObj: {fileID: 189666228103047332}
   floor: {fileID: 0}
+  ground:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!114 &1036036529462454107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -883,6 +889,9 @@ MonoBehaviour:
   deadCircle: {fileID: 8235707398177203478}
   baseObj: {fileID: 189666226807847416}
   floor: {fileID: 0}
+  ground:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!114 &1036036530677158010
 MonoBehaviour:
   m_ObjectHideFlags: 0

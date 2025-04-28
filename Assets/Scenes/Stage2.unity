@@ -707,7 +707,7 @@ GameObject:
   - component: {fileID: 478689113}
   - component: {fileID: 478689117}
   - component: {fileID: 478689118}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1126,6 +1126,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 478689112}
+    - target: {fileID: 6645266099146840925, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
 --- !u!4 &748096984 stripped
@@ -2065,6 +2069,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 478689112}
+    - target: {fileID: 8739186073179222220, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetPlate
       value: 
@@ -2966,6 +2974,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 478689112}
+    - target: {fileID: 2093772769, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 2093772770, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: magnet1
       value: 
