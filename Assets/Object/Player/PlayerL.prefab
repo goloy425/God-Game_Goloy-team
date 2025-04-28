@@ -627,7 +627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8260567652589093371, guid: 5d022d77e1b0a4c4f94f50abdd11c006, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.17
+      value: 2.2
       objectReference: {fileID: 0}
     - target: {fileID: 8260567652589093371, guid: 5d022d77e1b0a4c4f94f50abdd11c006, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1356,3 +1356,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6399980653610968040, guid: f26b074f22f284945a0a74dd5d29c7f0, type: 3}
   m_PrefabInstance: {fileID: 1708501164250412049}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5934292797042172496 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5039254317671323201, guid: f26b074f22f284945a0a74dd5d29c7f0, type: 3}
+  m_PrefabInstance: {fileID: 1708501164250412049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1546098712
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5934292797042172496}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.08, y: 0.02, z: 0.08}
+  m_Center: {x: 0, y: 0.01, z: 0}
