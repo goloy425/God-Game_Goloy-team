@@ -96,6 +96,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Other Key",
+            "id": "d753af44-db13-4c53-b3ec-e2a23f970391",
+            "actions": [
+                {
+                    "name": "Inactive Circle",
+                    "type": "Button",
+                    "id": "c6474103-da59-4b32-9472-b3943c9fced5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "db40c733-7dba-4c9f-8cae-2517918d7abc",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inactive Circle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

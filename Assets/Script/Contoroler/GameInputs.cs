@@ -15,294 +15,375 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public partial class @GameInputs: IInputActionCollection2, IDisposable
+public partial class @GameInputs : IInputActionCollection2, IDisposable
 {
-    public InputActionAsset asset { get; }
-    public @GameInputs()
-    {
-        asset = InputActionAsset.FromJson(@"{
-    ""name"": ""GameInputs"",
-    ""maps"": [
-        {
-            ""name"": ""Player L"",
-            ""id"": ""0b82a5f3-4a5f-4cd4-9fe3-0a0ed434bd54"",
-            ""actions"": [
-                {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""d5d5a249-2c42-48ae-b5e6-e1f3fd0f0369"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""AugmentMag"",
-                    ""type"": ""Button"",
-                    ""id"": ""ea40c82a-6b0b-4055-ad79-a11d8a358fc3"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""17533a46-c313-4547-b168-eacf1a6e8f7b"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""016ab852-0ca5-45f4-be47-6a1f9c862e33"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""AugmentMag"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Player R"",
-            ""id"": ""93613ae5-2239-4675-92ee-d83fcc9dd02a"",
-            ""actions"": [
-                {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""6065b8c3-6b4a-46e7-ad88-1fd4e923d417"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""AugmentMag"",
-                    ""type"": ""Button"",
-                    ""id"": ""e7d63bbe-733b-4b13-9e97-526282a14323"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""954df4d5-6941-43af-888e-750f231d3418"",
-                    ""path"": ""<Gamepad>/rightStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""901278ad-747a-484e-8020-3f8df6d8a7d1"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""AugmentMag"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        }
-    ],
-    ""controlSchemes"": []
+	public InputActionAsset asset { get; }
+	public @GameInputs()
+	{
+		asset = InputActionAsset.FromJson(@"{
+	""name"": ""GameInputs"",
+	""maps"": [
+		{
+			""name"": ""Player L"",
+			""id"": ""0b82a5f3-4a5f-4cd4-9fe3-0a0ed434bd54"",
+			""actions"": [
+				{
+					""name"": ""Move"",
+					""type"": ""Value"",
+					""id"": ""d5d5a249-2c42-48ae-b5e6-e1f3fd0f0369"",
+					""expectedControlType"": ""Vector2"",
+					""processors"": """",
+					""interactions"": """",
+					""initialStateCheck"": true
+				},
+				{
+					""name"": ""AugmentMag"",
+					""type"": ""Button"",
+					""id"": ""ea40c82a-6b0b-4055-ad79-a11d8a358fc3"",
+					""expectedControlType"": ""Button"",
+					""processors"": """",
+					""interactions"": """",
+					""initialStateCheck"": false
+				}
+			],
+			""bindings"": [
+				{
+					""name"": """",
+					""id"": ""17533a46-c313-4547-b168-eacf1a6e8f7b"",
+					""path"": ""<Gamepad>/leftStick"",
+					""interactions"": """",
+					""processors"": """",
+					""groups"": """",
+					""action"": ""Move"",
+					""isComposite"": false,
+					""isPartOfComposite"": false
+				},
+				{
+					""name"": """",
+					""id"": ""016ab852-0ca5-45f4-be47-6a1f9c862e33"",
+					""path"": ""<Gamepad>/leftTrigger"",
+					""interactions"": """",
+					""processors"": """",
+					""groups"": """",
+					""action"": ""AugmentMag"",
+					""isComposite"": false,
+					""isPartOfComposite"": false
+				}
+			]
+		},
+		{
+			""name"": ""Player R"",
+			""id"": ""93613ae5-2239-4675-92ee-d83fcc9dd02a"",
+			""actions"": [
+				{
+					""name"": ""Move"",
+					""type"": ""Value"",
+					""id"": ""6065b8c3-6b4a-46e7-ad88-1fd4e923d417"",
+					""expectedControlType"": ""Vector2"",
+					""processors"": """",
+					""interactions"": """",
+					""initialStateCheck"": true
+				},
+				{
+					""name"": ""AugmentMag"",
+					""type"": ""Button"",
+					""id"": ""e7d63bbe-733b-4b13-9e97-526282a14323"",
+					""expectedControlType"": ""Button"",
+					""processors"": """",
+					""interactions"": """",
+					""initialStateCheck"": false
+				}
+			],
+			""bindings"": [
+				{
+					""name"": """",
+					""id"": ""954df4d5-6941-43af-888e-750f231d3418"",
+					""path"": ""<Gamepad>/rightStick"",
+					""interactions"": """",
+					""processors"": """",
+					""groups"": """",
+					""action"": ""Move"",
+					""isComposite"": false,
+					""isPartOfComposite"": false
+				},
+				{
+					""name"": """",
+					""id"": ""901278ad-747a-484e-8020-3f8df6d8a7d1"",
+					""path"": ""<Gamepad>/rightTrigger"",
+					""interactions"": """",
+					""processors"": """",
+					""groups"": """",
+					""action"": ""AugmentMag"",
+					""isComposite"": false,
+					""isPartOfComposite"": false
+				}
+			]
+		},
+		{
+			""name"": ""Other Key"",
+			""id"": ""d753af44-db13-4c53-b3ec-e2a23f970391"",
+			""actions"": [
+				{
+					""name"": ""Inactive Circle"",
+					""type"": ""Button"",
+					""id"": ""c6474103-da59-4b32-9472-b3943c9fced5"",
+					""expectedControlType"": ""Button"",
+					""processors"": """",
+					""interactions"": """",
+					""initialStateCheck"": false
+				}
+			],
+			""bindings"": [
+				{
+					""name"": """",
+					""id"": ""db40c733-7dba-4c9f-8cae-2517918d7abc"",
+					""path"": ""<Gamepad>/buttonSouth"",
+					""interactions"": """",
+					""processors"": """",
+					""groups"": """",
+					""action"": ""Inactive Circle"",
+					""isComposite"": false,
+					""isPartOfComposite"": false
+				}
+			]
+		}
+	],
+	""controlSchemes"": []
 }");
-        // Player L
-        m_PlayerL = asset.FindActionMap("Player L", throwIfNotFound: true);
-        m_PlayerL_Move = m_PlayerL.FindAction("Move", throwIfNotFound: true);
-        m_PlayerL_AugmentMag = m_PlayerL.FindAction("AugmentMag", throwIfNotFound: true);
-        // Player R
-        m_PlayerR = asset.FindActionMap("Player R", throwIfNotFound: true);
-        m_PlayerR_Move = m_PlayerR.FindAction("Move", throwIfNotFound: true);
-        m_PlayerR_AugmentMag = m_PlayerR.FindAction("AugmentMag", throwIfNotFound: true);
-    }
+		// Player L
+		m_PlayerL = asset.FindActionMap("Player L", throwIfNotFound: true);
+		m_PlayerL_Move = m_PlayerL.FindAction("Move", throwIfNotFound: true);
+		m_PlayerL_AugmentMag = m_PlayerL.FindAction("AugmentMag", throwIfNotFound: true);
+		// Player R
+		m_PlayerR = asset.FindActionMap("Player R", throwIfNotFound: true);
+		m_PlayerR_Move = m_PlayerR.FindAction("Move", throwIfNotFound: true);
+		m_PlayerR_AugmentMag = m_PlayerR.FindAction("AugmentMag", throwIfNotFound: true);
+		// Other Key
+		m_OtherKey = asset.FindActionMap("Other Key", throwIfNotFound: true);
+		m_OtherKey_InactiveCircle = m_OtherKey.FindAction("Inactive Circle", throwIfNotFound: true);
+	}
 
-    public void Dispose()
-    {
-        UnityEngine.Object.Destroy(asset);
-    }
+	public void Dispose()
+	{
+		UnityEngine.Object.Destroy(asset);
+	}
 
-    public InputBinding? bindingMask
-    {
-        get => asset.bindingMask;
-        set => asset.bindingMask = value;
-    }
+	public InputBinding? bindingMask
+	{
+		get => asset.bindingMask;
+		set => asset.bindingMask = value;
+	}
 
-    public ReadOnlyArray<InputDevice>? devices
-    {
-        get => asset.devices;
-        set => asset.devices = value;
-    }
+	public ReadOnlyArray<InputDevice>? devices
+	{
+		get => asset.devices;
+		set => asset.devices = value;
+	}
 
-    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+	public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
 
-    public bool Contains(InputAction action)
-    {
-        return asset.Contains(action);
-    }
+	public bool Contains(InputAction action)
+	{
+		return asset.Contains(action);
+	}
 
-    public IEnumerator<InputAction> GetEnumerator()
-    {
-        return asset.GetEnumerator();
-    }
+	public IEnumerator<InputAction> GetEnumerator()
+	{
+		return asset.GetEnumerator();
+	}
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		return GetEnumerator();
+	}
 
-    public void Enable()
-    {
-        asset.Enable();
-    }
+	public void Enable()
+	{
+		asset.Enable();
+	}
 
-    public void Disable()
-    {
-        asset.Disable();
-    }
+	public void Disable()
+	{
+		asset.Disable();
+	}
 
-    public IEnumerable<InputBinding> bindings => asset.bindings;
+	public IEnumerable<InputBinding> bindings => asset.bindings;
 
-    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
-    {
-        return asset.FindAction(actionNameOrId, throwIfNotFound);
-    }
+	public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
+	{
+		return asset.FindAction(actionNameOrId, throwIfNotFound);
+	}
 
-    public int FindBinding(InputBinding bindingMask, out InputAction action)
-    {
-        return asset.FindBinding(bindingMask, out action);
-    }
+	public int FindBinding(InputBinding bindingMask, out InputAction action)
+	{
+		return asset.FindBinding(bindingMask, out action);
+	}
 
-    // Player L
-    private readonly InputActionMap m_PlayerL;
-    private List<IPlayerLActions> m_PlayerLActionsCallbackInterfaces = new List<IPlayerLActions>();
-    private readonly InputAction m_PlayerL_Move;
-    private readonly InputAction m_PlayerL_AugmentMag;
-    public struct PlayerLActions
-    {
-        private @GameInputs m_Wrapper;
-        public PlayerLActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_PlayerL_Move;
-        public InputAction @AugmentMag => m_Wrapper.m_PlayerL_AugmentMag;
-        public InputActionMap Get() { return m_Wrapper.m_PlayerL; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerLActions set) { return set.Get(); }
-        public void AddCallbacks(IPlayerLActions instance)
-        {
-            if (instance == null || m_Wrapper.m_PlayerLActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlayerLActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
-            @AugmentMag.started += instance.OnAugmentMag;
-            @AugmentMag.performed += instance.OnAugmentMag;
-            @AugmentMag.canceled += instance.OnAugmentMag;
-        }
+	// Player L
+	private readonly InputActionMap m_PlayerL;
+	private List<IPlayerLActions> m_PlayerLActionsCallbackInterfaces = new List<IPlayerLActions>();
+	private readonly InputAction m_PlayerL_Move;
+	private readonly InputAction m_PlayerL_AugmentMag;
+	public struct PlayerLActions
+	{
+		private @GameInputs m_Wrapper;
+		public PlayerLActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+		public InputAction @Move => m_Wrapper.m_PlayerL_Move;
+		public InputAction @AugmentMag => m_Wrapper.m_PlayerL_AugmentMag;
+		public InputActionMap Get() { return m_Wrapper.m_PlayerL; }
+		public void Enable() { Get().Enable(); }
+		public void Disable() { Get().Disable(); }
+		public bool enabled => Get().enabled;
+		public static implicit operator InputActionMap(PlayerLActions set) { return set.Get(); }
+		public void AddCallbacks(IPlayerLActions instance)
+		{
+			if (instance == null || m_Wrapper.m_PlayerLActionsCallbackInterfaces.Contains(instance)) return;
+			m_Wrapper.m_PlayerLActionsCallbackInterfaces.Add(instance);
+			@Move.started += instance.OnMove;
+			@Move.performed += instance.OnMove;
+			@Move.canceled += instance.OnMove;
+			@AugmentMag.started += instance.OnAugmentMag;
+			@AugmentMag.performed += instance.OnAugmentMag;
+			@AugmentMag.canceled += instance.OnAugmentMag;
+		}
 
-        private void UnregisterCallbacks(IPlayerLActions instance)
-        {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
-            @AugmentMag.started -= instance.OnAugmentMag;
-            @AugmentMag.performed -= instance.OnAugmentMag;
-            @AugmentMag.canceled -= instance.OnAugmentMag;
-        }
+		private void UnregisterCallbacks(IPlayerLActions instance)
+		{
+			@Move.started -= instance.OnMove;
+			@Move.performed -= instance.OnMove;
+			@Move.canceled -= instance.OnMove;
+			@AugmentMag.started -= instance.OnAugmentMag;
+			@AugmentMag.performed -= instance.OnAugmentMag;
+			@AugmentMag.canceled -= instance.OnAugmentMag;
+		}
 
-        public void RemoveCallbacks(IPlayerLActions instance)
-        {
-            if (m_Wrapper.m_PlayerLActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
+		public void RemoveCallbacks(IPlayerLActions instance)
+		{
+			if (m_Wrapper.m_PlayerLActionsCallbackInterfaces.Remove(instance))
+				UnregisterCallbacks(instance);
+		}
 
-        public void SetCallbacks(IPlayerLActions instance)
-        {
-            foreach (var item in m_Wrapper.m_PlayerLActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_PlayerLActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public PlayerLActions @PlayerL => new PlayerLActions(this);
+		public void SetCallbacks(IPlayerLActions instance)
+		{
+			foreach (var item in m_Wrapper.m_PlayerLActionsCallbackInterfaces)
+				UnregisterCallbacks(item);
+			m_Wrapper.m_PlayerLActionsCallbackInterfaces.Clear();
+			AddCallbacks(instance);
+		}
+	}
+	public PlayerLActions @PlayerL => new PlayerLActions(this);
 
-    // Player R
-    private readonly InputActionMap m_PlayerR;
-    private List<IPlayerRActions> m_PlayerRActionsCallbackInterfaces = new List<IPlayerRActions>();
-    private readonly InputAction m_PlayerR_Move;
-    private readonly InputAction m_PlayerR_AugmentMag;
-    public struct PlayerRActions
-    {
-        private @GameInputs m_Wrapper;
-        public PlayerRActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_PlayerR_Move;
-        public InputAction @AugmentMag => m_Wrapper.m_PlayerR_AugmentMag;
-        public InputActionMap Get() { return m_Wrapper.m_PlayerR; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerRActions set) { return set.Get(); }
-        public void AddCallbacks(IPlayerRActions instance)
-        {
-            if (instance == null || m_Wrapper.m_PlayerRActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlayerRActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
-            @AugmentMag.started += instance.OnAugmentMag;
-            @AugmentMag.performed += instance.OnAugmentMag;
-            @AugmentMag.canceled += instance.OnAugmentMag;
-        }
+	// Player R
+	private readonly InputActionMap m_PlayerR;
+	private List<IPlayerRActions> m_PlayerRActionsCallbackInterfaces = new List<IPlayerRActions>();
+	private readonly InputAction m_PlayerR_Move;
+	private readonly InputAction m_PlayerR_AugmentMag;
+	public struct PlayerRActions
+	{
+		private @GameInputs m_Wrapper;
+		public PlayerRActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+		public InputAction @Move => m_Wrapper.m_PlayerR_Move;
+		public InputAction @AugmentMag => m_Wrapper.m_PlayerR_AugmentMag;
+		public InputActionMap Get() { return m_Wrapper.m_PlayerR; }
+		public void Enable() { Get().Enable(); }
+		public void Disable() { Get().Disable(); }
+		public bool enabled => Get().enabled;
+		public static implicit operator InputActionMap(PlayerRActions set) { return set.Get(); }
+		public void AddCallbacks(IPlayerRActions instance)
+		{
+			if (instance == null || m_Wrapper.m_PlayerRActionsCallbackInterfaces.Contains(instance)) return;
+			m_Wrapper.m_PlayerRActionsCallbackInterfaces.Add(instance);
+			@Move.started += instance.OnMove;
+			@Move.performed += instance.OnMove;
+			@Move.canceled += instance.OnMove;
+			@AugmentMag.started += instance.OnAugmentMag;
+			@AugmentMag.performed += instance.OnAugmentMag;
+			@AugmentMag.canceled += instance.OnAugmentMag;
+		}
 
-        private void UnregisterCallbacks(IPlayerRActions instance)
-        {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
-            @AugmentMag.started -= instance.OnAugmentMag;
-            @AugmentMag.performed -= instance.OnAugmentMag;
-            @AugmentMag.canceled -= instance.OnAugmentMag;
-        }
+		private void UnregisterCallbacks(IPlayerRActions instance)
+		{
+			@Move.started -= instance.OnMove;
+			@Move.performed -= instance.OnMove;
+			@Move.canceled -= instance.OnMove;
+			@AugmentMag.started -= instance.OnAugmentMag;
+			@AugmentMag.performed -= instance.OnAugmentMag;
+			@AugmentMag.canceled -= instance.OnAugmentMag;
+		}
 
-        public void RemoveCallbacks(IPlayerRActions instance)
-        {
-            if (m_Wrapper.m_PlayerRActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
+		public void RemoveCallbacks(IPlayerRActions instance)
+		{
+			if (m_Wrapper.m_PlayerRActionsCallbackInterfaces.Remove(instance))
+				UnregisterCallbacks(instance);
+		}
 
-        public void SetCallbacks(IPlayerRActions instance)
-        {
-            foreach (var item in m_Wrapper.m_PlayerRActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_PlayerRActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public PlayerRActions @PlayerR => new PlayerRActions(this);
-    public interface IPlayerLActions
-    {
-        void OnMove(InputAction.CallbackContext context);
-        void OnAugmentMag(InputAction.CallbackContext context);
-    }
-    public interface IPlayerRActions
-    {
-        void OnMove(InputAction.CallbackContext context);
-        void OnAugmentMag(InputAction.CallbackContext context);
-    }
+		public void SetCallbacks(IPlayerRActions instance)
+		{
+			foreach (var item in m_Wrapper.m_PlayerRActionsCallbackInterfaces)
+				UnregisterCallbacks(item);
+			m_Wrapper.m_PlayerRActionsCallbackInterfaces.Clear();
+			AddCallbacks(instance);
+		}
+	}
+	public PlayerRActions @PlayerR => new PlayerRActions(this);
+
+	// Other Key
+	private readonly InputActionMap m_OtherKey;
+	private List<IOtherKeyActions> m_OtherKeyActionsCallbackInterfaces = new List<IOtherKeyActions>();
+	private readonly InputAction m_OtherKey_InactiveCircle;
+	public struct OtherKeyActions
+	{
+		private @GameInputs m_Wrapper;
+		public OtherKeyActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+		public InputAction @InactiveCircle => m_Wrapper.m_OtherKey_InactiveCircle;
+		public InputActionMap Get() { return m_Wrapper.m_OtherKey; }
+		public void Enable() { Get().Enable(); }
+		public void Disable() { Get().Disable(); }
+		public bool enabled => Get().enabled;
+		public static implicit operator InputActionMap(OtherKeyActions set) { return set.Get(); }
+		public void AddCallbacks(IOtherKeyActions instance)
+		{
+			if (instance == null || m_Wrapper.m_OtherKeyActionsCallbackInterfaces.Contains(instance)) return;
+			m_Wrapper.m_OtherKeyActionsCallbackInterfaces.Add(instance);
+			@InactiveCircle.started += instance.OnInactiveCircle;
+			@InactiveCircle.performed += instance.OnInactiveCircle;
+			@InactiveCircle.canceled += instance.OnInactiveCircle;
+		}
+
+		private void UnregisterCallbacks(IOtherKeyActions instance)
+		{
+			@InactiveCircle.started -= instance.OnInactiveCircle;
+			@InactiveCircle.performed -= instance.OnInactiveCircle;
+			@InactiveCircle.canceled -= instance.OnInactiveCircle;
+		}
+
+		public void RemoveCallbacks(IOtherKeyActions instance)
+		{
+			if (m_Wrapper.m_OtherKeyActionsCallbackInterfaces.Remove(instance))
+				UnregisterCallbacks(instance);
+		}
+
+		public void SetCallbacks(IOtherKeyActions instance)
+		{
+			foreach (var item in m_Wrapper.m_OtherKeyActionsCallbackInterfaces)
+				UnregisterCallbacks(item);
+			m_Wrapper.m_OtherKeyActionsCallbackInterfaces.Clear();
+			AddCallbacks(instance);
+		}
+	}
+	public OtherKeyActions @OtherKey => new OtherKeyActions(this);
+	public interface IPlayerLActions
+	{
+		void OnMove(InputAction.CallbackContext context);
+		void OnAugmentMag(InputAction.CallbackContext context);
+	}
+	public interface IPlayerRActions
+	{
+		void OnMove(InputAction.CallbackContext context);
+		void OnAugmentMag(InputAction.CallbackContext context);
+	}
+	public interface IOtherKeyActions
+	{
+		void OnInactiveCircle(InputAction.CallbackContext context);
+	}
 }
