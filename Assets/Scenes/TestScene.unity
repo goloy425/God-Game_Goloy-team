@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &53307975 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2458994161428476716, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+  m_PrefabInstance: {fileID: 635567192514460338}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &151330989 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5720869771669805049, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
@@ -139,6 +144,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257b1387a4562c6448f0beaf5d6dacc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &171694613 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1126505312647816736, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+  m_PrefabInstance: {fileID: 3668556402141482182}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &244674737 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6890334393772629958, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
@@ -221,7 +231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2192318228718671657, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3125006604918387952, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: playerL
@@ -465,6 +475,10 @@ PrefabInstance:
     - target: {fileID: 2058397867631179344, guid: fe1ddd26e992be84dac8d01211a22cb7, type: 3}
       propertyPath: m_Name
       value: bridge_low_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2058397867631179344, guid: fe1ddd26e992be84dac8d01211a22cb7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5626885552247728520, guid: fe1ddd26e992be84dac8d01211a22cb7, type: 3}
       propertyPath: m_Layer
@@ -1137,7 +1151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2458994161109117034, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.8
+      value: 4.03
       objectReference: {fileID: 0}
     - target: {fileID: 2458994161109117034, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1175,18 +1189,14 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 514144324}
-    - target: {fileID: 8739186073179222220, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
-      propertyPath: slope.m_Bits
-      value: 16384
-      objectReference: {fileID: 0}
-    - target: {fileID: 8739186073179222220, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
-      propertyPath: ground.m_Bits
-      value: 16384
-      objectReference: {fileID: 0}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetPlate
       value: 
       objectReference: {fileID: 509656131}
+    - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: snapDistance
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetMagnet
       value: 
@@ -1198,6 +1208,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2458994160036537050, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
   m_PrefabInstance: {fileID: 635567192514460338}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3094508232237619305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3094508232237619304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ec7d5343ef658048909ae99cb65f6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 1127656643}
+  rope: {fileID: 53307975}
+  moveSpeed: 5
 --- !u!1001 &3668556402141482182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1223,7 +1248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1126505314370515922, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.99
+      value: -2.97
       objectReference: {fileID: 0}
     - target: {fileID: 1126505314370515922, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1262,6 +1287,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 244674737}
     - target: {fileID: 6645266099146840924, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+      propertyPath: snapDistance
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645266099146840924, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
       propertyPath: targetMagnet
       value: 
       objectReference: {fileID: 1677274748}
@@ -1269,18 +1298,6 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 514144324}
-    - target: {fileID: 6645266099146840925, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
-      propertyPath: slope.m_Bits
-      value: 16384
-      objectReference: {fileID: 0}
-    - target: {fileID: 6645266099146840925, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
-      propertyPath: ground.m_Bits
-      value: 16384
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007560024425968953, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
 --- !u!1 &4416749209779368609 stripped
@@ -1288,6 +1305,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1126505313533574759, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
   m_PrefabInstance: {fileID: 3668556402141482182}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4416749209779368611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416749209779368609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ec7d5343ef658048909ae99cb65f6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 1127656643}
+  rope: {fileID: 171694613}
+  moveSpeed: 5
 --- !u!1001 &7966163008997317798
 PrefabInstance:
   m_ObjectHideFlags: 0

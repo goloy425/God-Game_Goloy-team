@@ -165,6 +165,8 @@ public class Magnetism : MonoBehaviour
 		float distance = Vector3.Distance(myPlate.position, targetPlate.position);
 		Vector3 direction = (targetPlate.position - myPlate.position).normalized;
 
+		Debug.Log(distance);
+
 		// プレイヤーごとの判定
 		// アタッチされているオブジェクトがmagnet1(true)かmagnet2(false)か判定
 		bool isSelfL = gameObject.name == "magnet1";
@@ -188,9 +190,33 @@ public class Magnetism : MonoBehaviour
 		{
 			rb.velocity = Vector3.zero;
 			rb.angularVelocity = Vector3.zero;
+
+			SnapToTarget();
 			AttachToTarget();
+
 			isSnapping = true;
 		}
+	}
+
+	void SnapToTarget()
+	{
+		if(isSnapping) return;
+
+		Collider myCollider = myPlate.GetComponent<BoxCollider>();
+		Collider targetCollider = targetPlate.GetComponent<BoxCollider>();
+
+		// Colliderの中心を取得
+		Vector3 myCenter = myCollider.bounds.center;
+		Vector3 targetCenter = targetCollider.bounds.center;
+
+		// 中心点の差分を求める
+		Vector3 offset = targetCenter - myCenter;
+
+		// 差分だけPlateを動かす
+		myPlate.position += offset;
+
+		// 回転も合わせる（必要なら）
+		myPlate.rotation = targetPlate.rotation;
 	}
 
 	void AttachToTarget()
@@ -201,10 +227,8 @@ public class Magnetism : MonoBehaviour
 		FixedJoint joint = gameObject.AddComponent<FixedJoint>();
 		joint.connectedBody = targetPlate.GetComponentInParent<Rigidbody>();
 
-		myPlate.position = targetPlate.position;
-
 		// AudioSourceが存在する時、SE再生
-		if(audioSource != null)
+		if (audioSource != null)
 		{
 			audioSource.PlayOneShot(magnetSE);
 		}

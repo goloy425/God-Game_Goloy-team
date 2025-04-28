@@ -95,8 +95,6 @@ public class DrawCircle : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		ray = new Ray(this.transform.position, Vector3.down);	// オブジェクトの直下にレイを投げる
-
 		UpdateCircles();    // 位置・角度の更新
 	}
 
@@ -155,7 +153,7 @@ public class DrawCircle : MonoBehaviour
 	//=================================================
 	public void UpdateMagCircle()
 	{
-		if (mag != null)	// magnetism付き（=プレイヤーの磁石）の場合
+        if (mag != null)	// magnetism付き（=プレイヤーの磁石）の場合
 		{
 			// サイズ更新（*1.2の理由：ないのがリアル範囲だけど視覚的にはこんな感じ）
 			magnetismCircle.localScale = new Vector3(mag.magnetismRange * 1.2f, 0.01f, mag.magnetismRange * 1.2f);
@@ -170,7 +168,9 @@ public class DrawCircle : MonoBehaviour
 		}
 		else	// magnetismが付いてない（=磁力オブジェクト）の場合
 		{
-			if (sMag != null)	// 球
+            ray = new Ray(this.transform.position, Vector3.down);   // オブジェクトの直下にレイを投げる
+
+            if (sMag != null)	// 球
 			{
 				magnetismCircle.localScale = new Vector3(sMag.MagnetismRange * 1.2f, 0.01f, sMag.MagnetismRange * 1.2f);
 			}
@@ -197,7 +197,9 @@ public class DrawCircle : MonoBehaviour
 	//=================================================
 	private void UpdateDeadCircle()
 	{
-		if (mag != null)
+        ray = new Ray(baseObj.transform.position, Vector3.down);
+
+        if (mag != null)
 		{
 			// サイズ更新
 			deadCircle.localScale = new Vector3(mag.deadRange, 0.01f, mag.deadRange);

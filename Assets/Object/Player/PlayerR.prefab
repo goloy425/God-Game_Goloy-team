@@ -495,6 +495,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7767270639873342431, guid: 4a0877e4bbb8b03419ce657d2b730f1a, type: 3}
+      propertyPath: snapDistance
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7767270639873342431, guid: 4a0877e4bbb8b03419ce657d2b730f1a, type: 3}
       propertyPath: targetMagnet
       value: 
       objectReference: {fileID: 0}
@@ -510,6 +514,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6586454287682862023, guid: 4a0877e4bbb8b03419ce657d2b730f1a, type: 3}
   m_PrefabInstance: {fileID: 1336777513671314194}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6112706528488785276 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5069225944847404654, guid: 4a0877e4bbb8b03419ce657d2b730f1a, type: 3}
+  m_PrefabInstance: {fileID: 1336777513671314194}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1337834750
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112706528488785276}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.08, y: 0.008, z: 0.08}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2458994159949208572
 PrefabInstance:
   m_ObjectHideFlags: 0
