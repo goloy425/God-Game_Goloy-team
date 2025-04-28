@@ -1194,6 +1194,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 509656131}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: snapDistance
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetMagnet
       value: 
       objectReference: {fileID: 151330990}
@@ -1282,6 +1286,10 @@ PrefabInstance:
       propertyPath: targetPlate
       value: 
       objectReference: {fileID: 244674737}
+    - target: {fileID: 6645266099146840924, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+      propertyPath: snapDistance
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6645266099146840924, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
       propertyPath: targetMagnet
       value: 

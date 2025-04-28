@@ -41,9 +41,7 @@ public class Keyboard : MonoBehaviour
 
 		if (isPlayerL)	// PlayerL‚È‚çWASDƒL[‚ÅˆÚ“®
 		{
-			if (Input.GetKey(KeyCode.W)) { vertical += 1f;
-				Debug.Log("ˆÚ“®’†‚Å‚·");
-			}
+			if (Input.GetKey(KeyCode.W)) { vertical += 1f; }
 			if (Input.GetKey(KeyCode.S)) { vertical -= 1f; }
 			if (Input.GetKey(KeyCode.A)) { horizontal -= 1f; }
 			if (Input.GetKey(KeyCode.D)) { horizontal += 1f; }

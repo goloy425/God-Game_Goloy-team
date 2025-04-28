@@ -1281,6 +1281,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5444124686385114957, guid: f26b074f22f284945a0a74dd5d29c7f0, type: 3}
+      propertyPath: snapDistance
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444124686385114957, guid: f26b074f22f284945a0a74dd5d29c7f0, type: 3}
       propertyPath: targetMagnet
       value: 
       objectReference: {fileID: 0}
@@ -1372,5 +1376,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.08, y: 0.02, z: 0.08}
-  m_Center: {x: 0, y: 0.01, z: 0}
+  m_Size: {x: 0.08, y: 0.008, z: 0.08}
+  m_Center: {x: 0, y: 0, z: 0}
