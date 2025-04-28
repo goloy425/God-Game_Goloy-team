@@ -791,6 +791,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1662151177}
+    - target: {fileID: 6645266099146840925, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
 --- !u!4 &56990288 stripped
@@ -1743,7 +1747,7 @@ GameObject:
   - component: {fileID: 136590978}
   - component: {fileID: 136590977}
   - component: {fileID: 136590976}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Floor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4667,6 +4671,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1240502397}
+    - target: {fileID: 1036036529462454106, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036529462454107, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet1
       value: 
@@ -4731,6 +4739,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1240502397}
+    - target: {fileID: 1036036530018306730, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036530018306731, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: playerL
       value: 
@@ -4751,6 +4763,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1240502397}
+    - target: {fileID: 1036036530677158008, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036530677158010, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet2
       value: 
@@ -5110,6 +5126,10 @@ PrefabInstance:
     - target: {fileID: 6238533150328822266, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
       propertyPath: m_LocalPosition.z
       value: 15.0754
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516482960483746611, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6516482960483746615, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
       propertyPath: m_LocalScale.x
@@ -7638,6 +7658,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 396898879}
+    - target: {fileID: 1036036529462454106, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036529462454107, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet1
       value: 
@@ -7702,6 +7726,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 396898879}
+    - target: {fileID: 1036036530018306730, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036530018306731, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: playerL
       value: 
@@ -7722,6 +7750,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 396898879}
+    - target: {fileID: 1036036530677158008, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036530677158010, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet2
       value: 
@@ -8081,7 +8113,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5626885552247728520, guid: fe1ddd26e992be84dac8d01211a22cb7, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe1ddd26e992be84dac8d01211a22cb7, type: 3}
@@ -11858,6 +11890,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1611347069}
+    - target: {fileID: 2093772769, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 2093772770, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: magnet1
       value: 
@@ -13118,7 +13154,7 @@ GameObject:
   - component: {fileID: 1224564352}
   - component: {fileID: 1224564351}
   - component: {fileID: 1224564350}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13395,6 +13431,10 @@ PrefabInstance:
     - target: {fileID: 6238533150328822266, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
       propertyPath: m_LocalPosition.z
       value: -1.8922
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516482960483746611, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6516482960483746615, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
       propertyPath: m_LocalScale.x
@@ -15158,7 +15198,7 @@ GameObject:
   - component: {fileID: 1354013560}
   - component: {fileID: 1354013559}
   - component: {fileID: 1354013558}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Floor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18319,6 +18359,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1662151177}
+    - target: {fileID: 8739186073179222220, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetPlate
       value: 
@@ -18537,6 +18581,10 @@ PrefabInstance:
     - target: {fileID: 6238533150328822266, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
       propertyPath: m_LocalPosition.z
       value: 16.4223
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516482960483746611, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6516482960483746615, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
       propertyPath: m_LocalScale.z
@@ -19490,6 +19538,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1224564348}
+    - target: {fileID: 1036036529462454106, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036529462454107, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet1
       value: 
@@ -19554,6 +19606,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1224564348}
+    - target: {fileID: 1036036530018306730, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036530018306731, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: playerL
       value: 
@@ -19574,6 +19630,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1224564348}
+    - target: {fileID: 1036036530677158008, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036530677158010, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet2
       value: 
@@ -19862,7 +19922,7 @@ GameObject:
   - component: {fileID: 1662151181}
   - component: {fileID: 1662151180}
   - component: {fileID: 1662151179}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20901,7 +20961,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5626885552247728520, guid: fe1ddd26e992be84dac8d01211a22cb7, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe1ddd26e992be84dac8d01211a22cb7, type: 3}
@@ -21869,6 +21929,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1240502397}
+    - target: {fileID: 1036036529462454106, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036529462454107, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet1
       value: 
@@ -21933,6 +21997,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1240502397}
+    - target: {fileID: 1036036530018306730, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036530018306731, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: playerL
       value: 
@@ -21953,6 +22021,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1240502397}
+    - target: {fileID: 1036036530677158008, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 1036036530677158010, guid: a55408e8952b9874bbc94c4a14abc3ea, type: 3}
       propertyPath: magnet2
       value: 
@@ -23253,6 +23325,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1662151177}
+    - target: {fileID: 2093772769, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 2093772770, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: magnet1
       value: 

@@ -196,7 +196,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2192318228718671657}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 9.089737, y: -1.25, z: -4.39999}
   m_LocalScale: {x: 2.2, y: 2.2, z: 2.2}
   m_ConstrainProportionsScale: 0
@@ -276,6 +276,10 @@ MonoBehaviour:
   magnetismCircle: {fileID: 7081642487317328270}
   deadCircle: {fileID: 7081642486605973609}
   baseObj: {fileID: 2192318228718671657}
+  floor: {fileID: 0}
+  ground:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!114 &3125006604918387952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1275,7 +1279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8260567652589093371, guid: 5d022d77e1b0a4c4f94f50abdd11c006, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.3
+      value: 1.54
       objectReference: {fileID: 0}
     - target: {fileID: 8260567652589093371, guid: 5d022d77e1b0a4c4f94f50abdd11c006, type: 3}
       propertyPath: m_LocalRotation.w
