@@ -35,6 +35,7 @@ public class DrawCircle : MonoBehaviour
 	// その他スクリプト
 	private AdjustMagnetism adjMag;		// 磁力調整
 	private SplitCube sCube;		// キューブ分割
+	private SwitchCircle circle;		// 円の表示・非表示切替 
 
 	// 座標調整用の変数ズ
 	private float thisPosX;		// アタッチされてるオブジェクトのx座標
@@ -47,6 +48,8 @@ public class DrawCircle : MonoBehaviour
 	void Start()
 	{
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
+		circle= GameObject.Find("Main Camera").GetComponent<SwitchCircle>();
+
 		//if (GameObject.Find("Connecter") != null)
 		//{
 		//	GameObject.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
@@ -96,7 +99,7 @@ public class DrawCircle : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		UpdateCircles();
+		UpdateCircles();    // 位置・角度の更新
 	}
 
 	void UpdateCircles()
@@ -104,7 +107,6 @@ public class DrawCircle : MonoBehaviour
 		// アタッチされてるオブジェクトの座標を取得
 		thisPosX = this.transform.position.x;
 		thisPosZ = this.transform.position.z;
-
 
 		//--- 表示条件の分岐 ---//
 		if (adjMag.Adjusted)
@@ -127,7 +129,20 @@ public class DrawCircle : MonoBehaviour
 			}
 		}
 
-		//--- 範囲表示の円 ---//
+        // SwitchCircleによる表示・非表示切替
+        if (circle.isInactive)
+		{
+			Circles.SetActive(false);
+		}
+		else
+		{
+			if (!isHCube)   // 半キューブでなければ非表示解除
+			{
+				Circles.SetActive(true);
+			}
+		}
+
+		//--- 円の更新 ---//
 		// 磁力範囲
 		if (magnetismCircle != null)
 		{
