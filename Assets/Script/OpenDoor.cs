@@ -18,10 +18,11 @@ public class OpenDoor : MonoBehaviour
     [Header("ドアがあるステージ数")]
     public int curStage;
 
-    private GameManager gameManager;    // ゲームマネージャー
+    private GameManager gameManager;        // ゲームマネージャー
     private GameObject leftDoor;
     private GameObject rightDoor;
-    private bool openFg = false;        // 開けるかどうかのフラグ
+    private bool openFg = false;            // 開けるかどうかのフラグ
+    private bool completeOpenFg = false;    // 開けるかどうかのフラグ
     private float timer = 0.0f;
 
     // Start is called before the first frame update
@@ -66,7 +67,14 @@ public class OpenDoor : MonoBehaviour
         }
         else if(timer > openTime)
         {
+            completeOpenFg = true;
             timer = 0.0f;
         }
     }
+
+    public bool GetCompleteOpenFg()
+    {
+        return completeOpenFg;
+    }
+
 }

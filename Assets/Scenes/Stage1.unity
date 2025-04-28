@@ -2542,11 +2542,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target1: {fileID: 1615642871}
   target2: {fileID: 512581170}
-  minSize: 5
+  floorTransform:
+  - {fileID: 1662151178}
+  - {fileID: 1611347074}
+  - {fileID: 1224564349}
+  - {fileID: 396898885}
+  - {fileID: 1240502402}
+  - {fileID: 1354013561}
+  doorFlame:
+  - {fileID: 1643724582}
+  - {fileID: 1899288570}
+  - {fileID: 1222881762}
+  - {fileID: 1995270288}
+  - {fileID: 1441708390}
+  minSize: 8
   maxSize: 20
   zoomSpeed: 5
   padding: 2
-  initialOffset: {x: 9, y: 10, z: 9}
+  initialOffset: {x: 6, y: 10, z: 6}
 --- !u!114 &212960022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5199,6 +5212,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10.000001, y: 4.85157, z: 0.010857013}
   m_Center: {x: 0, y: 1.4257857, z: 4.994577}
+--- !u!4 &396898885 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6516482960483746615, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+  m_PrefabInstance: {fileID: 396898877}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &399060469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13471,6 +13489,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 5.3607106, z: 0}
   m_Center: {x: -0.0000020718967, y: 2.1803553, z: 4.9999824}
+--- !u!4 &1240502402 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6516482960483746615, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+  m_PrefabInstance: {fileID: 1240502395}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1243312460
 GameObject:
   m_ObjectHideFlags: 0
@@ -18605,6 +18628,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 5.384331, z: 0}
   m_Center: {x: 0.0000010660224, y: 2.1921656, z: -5.0000653}
+--- !u!4 &1611347074 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6516482960483746615, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+  m_PrefabInstance: {fileID: 1611347067}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1615642870 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1126505313533574759, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
