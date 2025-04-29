@@ -59,7 +59,7 @@ using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
-    public int currentStage = 2; // 現在のステージ番号を管理する公開変数
+    public int currentStage = 1; // 現在のステージ番号を管理する公開変数
 
     //private static StageManager instance;
 
@@ -125,7 +125,7 @@ public class StageManager : MonoBehaviour
     // 初期ステージに戻る
     public void ResetToFirstStage()
     {
-        currentStage = 2; // ステージ番号を初期化
+        currentStage = 1; // ステージ番号を初期化
 
         string initialSceneName = "Stage" + currentStage; // 初期ステージ名を指定
         PlayerPrefs.SetInt("CurrentStage", currentStage); // ステージ番号を保存
