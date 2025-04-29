@@ -2490,6 +2490,7 @@ MonoBehaviour:
     - {fileID: 2136393277}
   magnet1: {fileID: 1071758029}
   magnet2: {fileID: 399700133}
+  startStage: 1
   resultSceneName: Result
   gameOverSceneName: GameOver
   pressurePlates: []
@@ -2555,11 +2556,13 @@ MonoBehaviour:
   - {fileID: 1222881762}
   - {fileID: 1995270288}
   - {fileID: 1441708390}
+  stageNum: 5
+  startStage: 1
   minSize: 8
   maxSize: 20
   zoomSpeed: 5
   padding: 2
-  initialOffset: {x: 6, y: 10, z: 6}
+  initialOffset: {x: 14, y: 20, z: 14}
 --- !u!114 &212960022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9819,7 +9822,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8098479354421041617, guid: 3012639544226d34c954f66e45d59602, type: 3}
       propertyPath: m_Center.x
-      value: 0.051622964
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8098479354421041617, guid: 3012639544226d34c954f66e45d59602, type: 3}
       propertyPath: m_Center.z
@@ -18515,6 +18518,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 419970047}
     m_Modifications:
+    - target: {fileID: 3029979902222530960, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3029979902222530960, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+      propertyPath: m_Center.x
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3029979902451416204, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+      propertyPath: m_Size.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3029979902451416204, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
+      propertyPath: m_Center.x
+      value: -0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 6238533149198676892, guid: 54ceda8a595d32b4b8594b71439b633d, type: 3}
       propertyPath: m_LocalScale.x
       value: 9.042033

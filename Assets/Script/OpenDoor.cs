@@ -57,7 +57,7 @@ public class OpenDoor : MonoBehaviour
         openFg = gameManager.GetStageClearFg(curStage - 1);
 
         // フラグが立っているかつ、開けるのにかかる秒数以内の時
-        if (openFg && timer <= openTime)
+        if (openFg && !completeOpenFg && timer <= openTime)
         {
             timer += Time.deltaTime;
             // 左のドアを移動

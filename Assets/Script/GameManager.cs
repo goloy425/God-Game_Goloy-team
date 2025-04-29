@@ -69,8 +69,8 @@ public class GameManager : MonoBehaviour
     public GameObject magnet1;
     public GameObject magnet2;
 
-    //[Header("各ステージのクリア判定オブジェクト")]
-    //public DetectArea[] detectAreas;    // すべての判定エリアを登録
+    [Header("開始ステージ")]
+    public int startStage;
 
     [Header("遷移先のシーン名")]
     public string resultSceneName = "Result";       // 遷移先のシーン名をInspectorで設定
@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
     private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
 
     private int curStage = 0;                 // 現在のステージ数
+    private int allStageNum = 0;              // 全ステージ数
 
     public PressurePlates01[] pressurePlates; // すべての感圧板を登録
     private int totalPressed = 0; // 押されている感圧板の数
@@ -124,6 +125,23 @@ public class GameManager : MonoBehaviour
             Debug.Log("ステージ" + (i + 1) + "初期化");
             SearchCanCarryMagObj(i);
         }
+
+        // 開始ステージが設定されている時、開始ステージより前のステージをクリア済みにする
+        if(startStage > 1)
+        {
+            int tempStageNum = startStage - 1;
+            for (int i = 0; i < tempStageNum; i++)
+            {
+                stageData[i].SetClearFg(true);  // クリアしたことにする
+
+                for (int j = 0; j < stageData[i].detectAreas.Count; j++)
+                {
+                    totalConnected++;           // 接続済みにする
+                }
+            }
+        }
+
+        if (startStage > 0) { curStage = startStage - 1; }     // 入力を添え字に合わせる
     }
 
     // Update is called once per frame
@@ -461,6 +479,11 @@ public class GameManager : MonoBehaviour
     public bool GetStageClearFg(int _stageNumber)
     {
         return stageData[_stageNumber].GetClearFg();
+    }
+
+    public int GetAllStageNum()
+    {
+        return allStageNum;
     }
 
     // ゲームクリアフラグを取得

@@ -500,6 +500,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 034c39c4e9513014ea17a5cca881d044, type: 3}
+--- !u!1 &315366895 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 34389d427d2b67c4590e956f4c0be07f, type: 3}
+  m_PrefabInstance: {fileID: 287641312}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &315366896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315366895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acad9e1603f98304485d89b14e7d0b36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1.8
+  openTime: 1
+  curStage: 1
 --- !u!1 &325554842 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bb2be52ae28ae9943b727e38889a7669, type: 3}
@@ -1213,6 +1233,7 @@ MonoBehaviour:
     - {fileID: 56163642}
   magnet1: {fileID: 808858098}
   magnet2: {fileID: 974590904}
+  startStage: 0
   resultSceneName: Result
   gameOverSceneName: GameOver
   pressurePlates: []
@@ -1583,6 +1604,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target1: {fileID: 748096988}
   target2: {fileID: 1417111810}
+  floorTransform:
+  - {fileID: 478689116}
+  doorFlame:
+  - {fileID: 315366895}
+  stageNum: 1
+  startStage: 1
   minSize: 5
   maxSize: 20
   zoomSpeed: 5
