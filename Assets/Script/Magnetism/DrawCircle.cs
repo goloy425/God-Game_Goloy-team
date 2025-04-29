@@ -35,18 +35,24 @@ public class DrawCircle : MonoBehaviour
 	// その他スクリプト
 	private AdjustMagnetism adjMag;		// 磁力調整
 	private SplitCube sCube;		// キューブ分割
+	private SwitchCircle circle;        // 円の表示・非表示切替 
 
 	// 座標調整用の変数ズ
-	private float thisPosX;		// アタッチされてるオブジェクトのx座標
-	private float thisPosZ;		//				〃				 z座標
-	private float floorPosY;	// 床のy座標
+	Ray ray;
+	RaycastHit hit;
 
-	private bool isPlayerMag = false;   // アタッチされているのがプレイヤーの磁石かどうか
+	private float rayDistance = 10f;    // レイを飛ばす距離
+
+	[Header("レイヤー：groundを設定")]
+	public LayerMask ground;		// レイを当てる対象のレイヤー
+
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
+		circle= GameObject.Find("Main Camera").GetComponent<SwitchCircle>();
+
 		//if (GameObject.Find("Connecter") != null)
 		//{
 		//	GameObject.Find("Connecter").TryGetComponent<SplitCube>(out sCube);
@@ -69,11 +75,7 @@ public class DrawCircle : MonoBehaviour
 		}
 
 		// Magnetismがアタッチされている（＝プレイヤーの磁石である）場合
-		if (TryGetComponent<Magnetism>(out mag))
-		{
-			isPlayerMag = true;
-			return;
-		}
+		if (TryGetComponent<Magnetism>(out mag)){ return; }
 
 		// 後はオブジェクトのタグによって分岐
 		if (gameObject.CompareTag("MagObj_Sphere"))
@@ -89,23 +91,15 @@ public class DrawCircle : MonoBehaviour
 			TryGetComponent<HCubeMagnetism>(out hcMag);
 			isHCube = true;
 		}
-
-		// 床のy座標を取得
-		floorPosY = floor.transform.position.y + 0.02f;
 	}
 
 	private void FixedUpdate()
 	{
-		UpdateCircles();
+		UpdateCircles();    // 位置・角度の更新
 	}
 
 	void UpdateCircles()
-	{
-		// アタッチされてるオブジェクトの座標を取得
-		thisPosX = this.transform.position.x;
-		thisPosZ = this.transform.position.z;
-
-
+	{ 
 		//--- 表示条件の分岐 ---//
 		if (adjMag.Adjusted)
 		{
@@ -127,74 +121,121 @@ public class DrawCircle : MonoBehaviour
 			}
 		}
 
-		//--- 範囲表示の円 ---//
+		// SwitchCircleによる表示・非表示切替
+		if (circle.isInactive)
+		{
+			Circles.SetActive(false);
+		}
+		else
+		{
+			if (!isHCube)	// 半キューブでなければ非表示解除
+			{
+				Circles.SetActive(true);
+			}
+		}
+
+		//--- 円の更新 ---//	磁力範囲更新の中のreturnを正常に通すために別関数にした
 		// 磁力範囲
 		if (magnetismCircle != null)
 		{
-			if (mag != null)	// magnetism付き（=プレイヤーの磁石）の場合
-			{
-				// サイズ更新（*1.2の理由：ないのがリアル範囲だけど視覚的にはこんな感じ）
-				magnetismCircle.localScale = new Vector3(mag.magnetismRange * 1.2f, 0.01f, mag.magnetismRange * 1.2f);
-			}
-			else	// magnetismが付いてない（=磁力オブジェクト）の場合
-			{
-				if (sMag != null)	// 球
-				{
-					magnetismCircle.localScale = new Vector3(sMag.MagnetismRange * 1.2f, 0.01f, sMag.MagnetismRange * 1.2f);
-				}
-				else if (!sCube.splited && cMag != null)	// キューブ
-				{
-					magnetismCircle.localScale = new Vector3(cMag.MagnetismRange * 2, 0.01f, cMag.MagnetismRange * 2);
-				}
-				else if (sCube.splited && hcMag != null)	// 半キューブ
-				{
-					magnetismCircle.localScale = new Vector3(hcMag.MagnetismRange * 2, 0.01f, hcMag.MagnetismRange * 2);
-				}
-			}
-
-			// 位置の追従＆回転を固定
-			if (isPlayerMag)		// プレイヤーの磁石の円なら磁石にくっついていく
-			{
-				magnetismCircle.SetPositionAndRotation(this.transform.position, Quaternion.identity);
-			}
-			else
-			{
-				magnetismCircle.SetPositionAndRotation(new Vector3(thisPosX, floorPosY, thisPosZ), Quaternion.identity);
-			}
+			UpdateMagCircle();
 		}
 
 		// くっつく範囲
 		if (deadCircle != null)
 		{
-			if (mag != null)
-			{
-				deadCircle.localScale = new Vector3(mag.deadRange * 1.1f, 0.01f, mag.deadRange * 1.1f);
-			}
-			else
-			{
-				if (sMag != null)	// 球
-				{
-					deadCircle.localScale = new Vector3(sMag.DeadRange * 3.0f, 0.01f, sMag.DeadRange * 3.0f);
-				}
-				else if (!sCube.splited && cMag != null)	// キューブ
-				{
-					deadCircle.localScale = new Vector3(cMag.DeadRange * 4.0f, 0.01f, cMag.DeadRange * 4.0f);
-				}
-				else if (sCube.splited && hcMag != null)	// 半キューブ
-				{
-					magnetismCircle.localScale = new Vector3(hcMag.DeadRange * 1.5f, 0.01f, hcMag.DeadRange * 1.5f);
-				}
-			}
+			UpdateDeadCircle();
+		}
+	}
 
-			if (isPlayerMag)
+	//=================================================
+	// 磁力範囲の更新
+	//=================================================
+	public void UpdateMagCircle()
+	{
+        if (mag != null)	// magnetism付き（=プレイヤーの磁石）の場合
+		{
+			// サイズ更新（*1.2の理由：ないのがリアル範囲だけど視覚的にはこんな感じ）
+			magnetismCircle.localScale = new Vector3(mag.magnetismRange * 1.2f, 0.01f, mag.magnetismRange * 1.2f);
+
+			// レイが当たった点をpositionとする
+			if (Physics.Raycast(ray, out hit, rayDistance, ground))
 			{
-				deadCircle.SetPositionAndRotation(this.transform.position, Quaternion.identity);
+				// 位置の追従＆回転を固定
+				magnetismCircle.SetPositionAndRotation(hit.point, Quaternion.identity);
 			}
-			else
+			return;
+		}
+		else	// magnetismが付いてない（=磁力オブジェクト）の場合
+		{
+            ray = new Ray(this.transform.position, Vector3.down);   // オブジェクトの直下にレイを投げる
+
+            if (sMag != null)	// 球
 			{
-				float newFloorPosY = floorPosY + 0.02f;
-				deadCircle.SetPositionAndRotation(new Vector3(thisPosX, newFloorPosY, thisPosZ), Quaternion.identity);
+				magnetismCircle.localScale = new Vector3(sMag.MagnetismRange * 1.2f, 0.01f, sMag.MagnetismRange * 1.2f);
 			}
+			else if (!sCube.splited && cMag != null)	// キューブ
+			{
+				magnetismCircle.localScale = new Vector3(cMag.MagnetismRange * 2, 0.01f, cMag.MagnetismRange * 2);
+			}
+			else if (sCube.splited && hcMag != null)	// 半キューブ
+			{
+				magnetismCircle.localScale = new Vector3(hcMag.MagnetismRange * 2, 0.01f, hcMag.MagnetismRange * 2);
+			}
+		}
+
+		if (Physics.Raycast(ray, out hit, rayDistance, ground))
+		{
+			// 位置の追従＆回転を固定
+			magnetismCircle.SetPositionAndRotation(hit.point, Quaternion.identity);
+		}
+	}
+
+
+	//=================================================
+	// くっつく範囲の更新
+	//=================================================
+	private void UpdateDeadCircle()
+	{
+        ray = new Ray(baseObj.transform.position, Vector3.down);
+
+        if (mag != null)
+		{
+			// サイズ更新
+			deadCircle.localScale = new Vector3(mag.deadRange, 0.01f, mag.deadRange);
+
+			// レイが当たった点をpositionとする
+			if (Physics.Raycast(ray, out hit, rayDistance, ground))
+			{
+				float posY = hit.point.y + 0.1f;
+
+				// 位置の追従＆回転を固定
+				deadCircle.SetPositionAndRotation(new Vector3(hit.point.x, posY, hit.point.z), Quaternion.identity);
+			}
+			return;
+		}
+		else
+		{
+			if (sMag != null)	// 球
+			{
+				deadCircle.localScale = new Vector3(sMag.DeadRange * 3.0f, 0.01f, sMag.DeadRange * 3.0f);
+			}
+			else if (!sCube.splited && cMag != null)	// キューブ
+			{
+				deadCircle.localScale = new Vector3(cMag.DeadRange * 4.0f, 0.01f, cMag.DeadRange * 4.0f);
+			}
+			else if (sCube.splited && hcMag != null)	// 半キューブ
+			{
+				deadCircle.localScale = new Vector3(hcMag.DeadRange * 1.5f, 0.01f, hcMag.DeadRange * 1.5f);
+			}
+		}
+
+		if (Physics.Raycast(ray, out hit, rayDistance, ground))
+		{
+			float posY = hit.point.y + 0.1f;
+
+			// 位置の追従＆回転を固定
+			deadCircle.SetPositionAndRotation(new Vector3(hit.point.x, posY, hit.point.z), Quaternion.identity);
 		}
 	}
 }

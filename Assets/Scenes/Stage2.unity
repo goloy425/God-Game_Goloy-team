@@ -536,6 +536,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.7730954, y: 1, z: 1}
   m_Center: {x: -0.13380836, y: 0, z: 0.000000016449674}
+--- !u!1 &439846640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 34389d427d2b67c4590e956f4c0be07f, type: 3}
+  m_PrefabInstance: {fileID: 287641312}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &444726096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -707,7 +712,7 @@ GameObject:
   - component: {fileID: 478689113}
   - component: {fileID: 478689117}
   - component: {fileID: 478689118}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1126,6 +1131,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 478689112}
+    - target: {fileID: 6645266099146840925, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
 --- !u!4 &748096984 stripped
@@ -1213,6 +1222,7 @@ MonoBehaviour:
     - {fileID: 56163642}
   magnet1: {fileID: 808858098}
   magnet2: {fileID: 974590904}
+  startStage: 1
   resultSceneName: Result
   gameOverSceneName: GameOver
   pressurePlates: []
@@ -1482,6 +1492,7 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1583,11 +1594,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target1: {fileID: 748096988}
   target2: {fileID: 1417111810}
-  minSize: 5
+  floorTransform:
+  - {fileID: 478689116}
+  doorFlame:
+  - {fileID: 439846640}
+  stageNum: 1
+  startStage: 1
+  minSize: 8
   maxSize: 20
   zoomSpeed: 5
   padding: 2
   initialOffset: {x: 9, y: 10, z: 9}
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3775ab2c498276447ac6e21b870e6fb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInactive: 0
 --- !u!1 &974590904 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4801164836941916783, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
@@ -2051,6 +2081,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 478689112}
+    - target: {fileID: 8739186073179222220, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 8739186073179222221, guid: 7cf352c99528b8848ac2b5e510b4bef0, type: 3}
       propertyPath: targetPlate
       value: 
@@ -2952,6 +2986,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 478689112}
+    - target: {fileID: 2093772769, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
+      propertyPath: ground.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 2093772770, guid: 2016844f5b2d53940b99e211e5f5a1e9, type: 3}
       propertyPath: magnet1
       value: 
