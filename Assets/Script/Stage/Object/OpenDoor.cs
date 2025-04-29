@@ -21,7 +21,8 @@ public class OpenDoor : MonoBehaviour
     private GameManager gameManager;    // ゲームマネージャー
     private GameObject leftDoor;
     private GameObject rightDoor;
-    private bool openFg = false;        // 開けるかどうかのフラグ
+    private bool openFg = false;            // 開けるかどうかのフラグ
+    private bool completeOpenFg = false;    // 開いたかどうかのフラグ
     private float timer = 0.0f;
 
     // Start is called before the first frame update
@@ -56,7 +57,7 @@ public class OpenDoor : MonoBehaviour
         openFg = gameManager.GetStageClearFg(curStage - 1);
 
         // フラグが立っているかつ、開けるのにかかる秒数以内の時
-        if (openFg && timer <= openTime)
+        if (openFg && !completeOpenFg && timer <= openTime)
         {
             timer += Time.deltaTime;
             // 左のドアを移動
@@ -66,7 +67,14 @@ public class OpenDoor : MonoBehaviour
         }
         else if(timer > openTime)
         {
+            completeOpenFg = true;
             timer = 0.0f;
         }
+    }
+
+    // 開いたかどうかのゲッター
+    public bool GetCompleteOpenFg()
+    {
+        return completeOpenFg;
     }
 }
