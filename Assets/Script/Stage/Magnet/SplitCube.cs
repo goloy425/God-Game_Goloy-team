@@ -106,7 +106,6 @@ public class SplitCube : MonoBehaviour
 		Vector3 toRight = magnet2.transform.position - transform.position;
 
 		float angle = Vector3.Angle(toLeft, -toRight);
-		Debug.Log("movedL:" + movedL + " movedR" + movedR);
 
 		if (movedL > requiredDistance && movedR > requiredDistance && Mathf.Abs(angle - 180f) > alignThreshold)
 		{
@@ -126,7 +125,6 @@ public class SplitCube : MonoBehaviour
 		cMag1.enabled = true;
 		cMag2.enabled = true;
 
-		Debug.Log("キューブまっぷたつ！");
 		this.gameObject.SetActive(false);
 	}
 }

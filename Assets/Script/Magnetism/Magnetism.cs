@@ -165,8 +165,6 @@ public class Magnetism : MonoBehaviour
 		float distance = Vector3.Distance(myPlate.position, targetPlate.position);
 		Vector3 direction = (targetPlate.position - myPlate.position).normalized;
 
-		Debug.Log(distance);
-
 		// プレイヤーごとの判定
 		// アタッチされているオブジェクトがmagnet1(true)かmagnet2(false)か判定
 		bool isSelfL = gameObject.name == "magnet1";
