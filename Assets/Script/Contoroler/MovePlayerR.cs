@@ -22,6 +22,7 @@ public class MovePlayerR : MonoBehaviour
     private Rigidbody ropeRb;                   // 紐のRigidbody
     private GameInputs inputs;                  // GameInputsクラス
     private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
+    private Animator animator;
 
     private Vector2 moveInputValue;     // スティックの入力を受け取る
     private Vector3 moveForward;        // カメラ基準の移動方向
@@ -33,6 +34,8 @@ public class MovePlayerR : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         // PlaySEAtRegularIntervalsコンポーネントを取得
         playSE = GetComponent<PlaySEAtRegularIntervals>();
+        // アニメーターを取得
+        animator = GameObject.Find("Female_Idling").GetComponent<Animator>();
         // GameInputsクラスのインスタンスを作成
         inputs = new GameInputs();
 
@@ -72,6 +75,10 @@ public class MovePlayerR : MonoBehaviour
             playSE.SetPlayCnt(0);		// SE再生スクリプトの再生回数をリセット
             playSE.enabled = false;     // SE再生スクリプトを無効化
         }
+
+        //------ アニメーション切り替え ------// 
+        if (rb.velocity == Vector3.zero) { animator.SetBool("moveFg", false); }  // アニメーションを待機状態に切り替え
+        else { animator.SetBool("moveFg", true); }                              // アニメーションを移動状態に切り替え
     }
 
 
