@@ -536,6 +536,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.7730954, y: 1, z: 1}
   m_Center: {x: -0.13380836, y: 0, z: 0.000000016449674}
+--- !u!1 &439846640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 34389d427d2b67c4590e956f4c0be07f, type: 3}
+  m_PrefabInstance: {fileID: 287641312}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &444726096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1217,6 +1222,7 @@ MonoBehaviour:
     - {fileID: 56163642}
   magnet1: {fileID: 808858098}
   magnet2: {fileID: 974590904}
+  startStage: 1
   resultSceneName: Result
   gameOverSceneName: GameOver
   pressurePlates: []
@@ -1588,7 +1594,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target1: {fileID: 748096988}
   target2: {fileID: 1417111810}
-  minSize: 5
+  floorTransform:
+  - {fileID: 478689116}
+  doorFlame:
+  - {fileID: 439846640}
+  stageNum: 1
+  startStage: 1
+  minSize: 8
   maxSize: 20
   zoomSpeed: 5
   padding: 2
