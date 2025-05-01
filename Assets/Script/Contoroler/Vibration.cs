@@ -22,8 +22,8 @@ public class Vibration : MonoBehaviour
 	public Magnetism magnet1;
 	public Magnetism magnet2;
 
-	[Header("磁力オブジェクトを登録")]
-	public GameObject[] magObjs;
+	//[Header("磁力オブジェクトを登録")]
+	//public GameObject[] magObjs;
 
 	[Header("チェックで振動オフ")]
 	public bool notVibration = false;   // デバッグ中振動がうざくなったらチェック
@@ -45,15 +45,15 @@ public class Vibration : MonoBehaviour
 	private bool prevAugL = false;
 	private bool prevAugR = false;
 
-	// 磁力スクリプトの取得用
-	private SphereMagnetism[] sMag;
-	private CubeMagnetism[] cMag;
-	private HCubeMagnetism[] hcMag;
+	//// 磁力スクリプトの取得用
+	//private SphereMagnetism[] sMag;
+	//private CubeMagnetism[] cMag;
+	//private HCubeMagnetism[] hcMag;
 
-	// 要素数管理
-	private int sMagCnt = 0;
-	private int cMagCnt = 0;
-	private int hcMagCnt = 0;
+	//// 要素数管理
+	//private int sMagCnt = 0;
+	//private int cMagCnt = 0;
+	//private int hcMagCnt = 0;
 
 	// Start is called before the first frame update
 	void Start()
@@ -72,25 +72,25 @@ public class Vibration : MonoBehaviour
 			Debug.Log("接続されているコントローラー:"+gamepad.displayName);
 		}
 
-		// シーン内にある磁力オブジェクトを格納していく
-		foreach (GameObject obj in magObjs)
-		{
-			if (gameObject.CompareTag("MagObj_Sphere"))
-			{
-				TryGetComponent<SphereMagnetism>(out sMag[sMagCnt]);
-				sMagCnt++;
-			}
-			else if (gameObject.CompareTag("MagObj_Cube"))
-			{
-				TryGetComponent<CubeMagnetism>(out cMag[cMagCnt]);
-				cMagCnt++;
-			}
-			else if (gameObject.CompareTag("MagObj_HCube"))
-			{
-				TryGetComponent<HCubeMagnetism>(out hcMag[hcMagCnt]);
-				hcMagCnt++;
-			}
-		}
+		//// シーン内にある磁力オブジェクトを格納していく
+		//foreach (GameObject obj in magObjs)
+		//{
+		//	if (gameObject.CompareTag("MagObj_Sphere"))
+		//	{
+		//		TryGetComponent<SphereMagnetism>(out sMag[sMagCnt]);
+		//		sMagCnt++;
+		//	}
+		//	else if (gameObject.CompareTag("MagObj_Cube"))
+		//	{
+		//		TryGetComponent<CubeMagnetism>(out cMag[cMagCnt]);
+		//		cMagCnt++;
+		//	}
+		//	else if (gameObject.CompareTag("MagObj_HCube"))
+		//	{
+		//		TryGetComponent<HCubeMagnetism>(out hcMag[hcMagCnt]);
+		//		hcMagCnt++;
+		//	}
+		//}
 
 		if (!notVibration)
 		{
