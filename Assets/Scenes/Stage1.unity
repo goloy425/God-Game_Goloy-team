@@ -5200,7 +5200,7 @@ MonoBehaviour:
   target1: {fileID: 1615642871}
   target2: {fileID: 512581170}
   floorTransform:
-  - {fileID: 1662151178}
+  - {fileID: 912672553}
   - {fileID: 1611347074}
   - {fileID: 1224564349}
   - {fileID: 396898885}
@@ -18160,6 +18160,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: floor_simple_rend (49)
       objectReference: {fileID: 0}
+    - target: {fileID: 2900311281575059530, guid: 2d9a61f695a9fcb48a6fe8572f0307f2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d9a61f695a9fcb48a6fe8572f0307f2, type: 3}
 --- !u!4 &912672553 stripped
@@ -21370,6 +21374,14 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 2043838868384187407, guid: eaa3e5788fa7bfa4795b5061c0aaed46, type: 3}
+      propertyPath: rotationY
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2043838868384187407, guid: eaa3e5788fa7bfa4795b5061c0aaed46, type: 3}
+      propertyPath: rotationSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8443181081307351225, guid: eaa3e5788fa7bfa4795b5061c0aaed46, type: 3}
       propertyPath: m_Name
       value: MagObj_Sphere (1)
