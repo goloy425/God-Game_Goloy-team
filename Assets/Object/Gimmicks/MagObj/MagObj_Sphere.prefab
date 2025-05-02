@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 382899266129232200}
   - component: {fileID: 382899266129232183}
   - component: {fileID: 382899266129232180}
+  - component: {fileID: 2043838868384187407}
   m_Layer: 0
   m_Name: MagObj_Sphere
   m_TagString: MagObj_Sphere
@@ -320,6 +321,22 @@ MonoBehaviour:
   second: 2
   inOrderFg: 1
   playOnAwakeFg: 1
+--- !u!114 &2043838868384187407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8443181081307351225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e53dc01ab597514c91e77f85f45599e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1.8
+  openTime: 0.5
+  rotationSpeed: 3
+  rotationY: 90
 --- !u!1001 &382899265759741740
 PrefabInstance:
   m_ObjectHideFlags: 0
