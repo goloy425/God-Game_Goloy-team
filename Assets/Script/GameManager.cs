@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // 制作者　ゴロイヒデキ   本田洸都
 
-
+//--------------------------------------------------------------
 // 外部から設定可能なステージのデータクラス
+//--------------------------------------------------------------
 [System.Serializable]
 public class StageData
 {
@@ -15,6 +17,10 @@ public class StageData
     public List<GameObject> magObjSplit2 = new List<GameObject>();              // 分裂物体の右側の磁力オブジェクト
     public List<GameObject> magObjConnecter = new List<GameObject>();           // 分裂物体を接続する磁力オブジェクト
     public List<DetectArea> detectAreas = new List<DetectArea>();               // クリア判定オブジェクト
+    public Vector3 playerLPos;
+    public Vector3 playerRPos; 
+    public Quaternion playerLRotation;
+    public Quaternion playerRRotation;
 
     private List<SphereMagnetism> sphereMagCS = new List<SphereMagnetism>();    // 球体の磁力スクリプト
     private List<HCubeMagnetism> split1HCubeMagCS = new List<HCubeMagnetism>(); // 分裂物体の左側の磁力スクリプト
@@ -79,6 +85,33 @@ public class StageData
     }
 }
 
+//----------------------------------------------------------------
+// ゲームオーバー時の磁力オブジェクトの位置を保存するクラス
+//----------------------------------------------------------------
+[System.Serializable]
+public class MagObjPosition
+{
+    public List<float> posX;
+    public List<float> posY;
+    public List<float> posZ;
+}
+
+//------------------------------------------------------------------------------
+// JSON形式内でリスト構造を維持するためのクラス
+// リストをラッパークラス (MagObjPositionWrapper) のプロパティとして格納
+// JsonUtility に「これはオブジェクトの一部」と認識させる
+//------------------------------------------------------------------------------
+[System.Serializable]
+public class MagObjPositionWrapper
+{
+    public List<MagObjPosition> magObjPositions;
+
+    public MagObjPositionWrapper(List<MagObjPosition> positions)
+    {
+        magObjPositions = positions;
+    }
+}
+
 
 public class GameManager : MonoBehaviour
 {
@@ -105,11 +138,14 @@ public class GameManager : MonoBehaviour
     private float clearTime = 4.0f;           // 接続されている秒数がこの秒数を超えるとクリアとみなす
     private float changeSceneTime = 1.0f;     // 何秒後にリザルトシーンに遷移するか
 
+    private GameObject playerL = null;        // プレイヤーL
+    private GameObject playerR = null;        // プレイヤーR
     private Magnetism magnetism1 = null;      // プレイヤーLのマグネティズム
     private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
 
     private int curStage = 0;                 // 現在のステージ数
     private string lastStageName;             // ゲームオーバーになる前のステージ名
+    private string json;                      // リトライ時に磁石の位置を移動させるための位置データ
 
     public PressurePlates01[] pressurePlates; // すべての感圧板を登録
     private int totalPressed = 0; // 押されている感圧板の数
@@ -122,7 +158,7 @@ public class GameManager : MonoBehaviour
             plate.OnPressurePlateChanged += OnPlateStateChanged; // イベント登録
         }
 
-        for(int i = 0; i < stageData.Count; i++)
+        for (int i = 0; i < stageData.Count; i++)
         {
             foreach (DetectArea detectArea in stageData[i].detectAreas)
             {
@@ -134,6 +170,9 @@ public class GameManager : MonoBehaviour
         // プレイヤーの磁石の磁力スクリプトを取得
         magnetism1 = magnet1.GetComponent<Magnetism>();
         magnetism2 = magnet2.GetComponent<Magnetism>();
+        // プレイヤーを取得
+        playerL = magnet1.transform.parent.gameObject;
+        playerR = magnet2.transform.parent.gameObject;
 
         // 設定された全ての磁力オブジェクトにアタッチされた各スクリプトをリストに追加
         AddAllMagCSList();
@@ -151,14 +190,13 @@ public class GameManager : MonoBehaviour
         {
             startStage = PlayerPrefs.GetInt("CurrentStageNum", 0) + 1;
             //if (curStage > 0) { ChangeClearState(curStage - 1); }    // ステージをクリアしている時、以前のステージをクリア済みにする
-            Debug.Log("Stage" + (startStage) + "を再読み込み");
+            Debug.Log("Stage" + (startStage) + "からスタート");
         }
-        // ステージをクリアしていない時、入力を添え字に合わせる
-        else
-        //if (startStage > 0)
-        { 
+        // 開始ステージ数を添え字に合わせて現在のステージにする
+        if (startStage > 0)
+        {
             curStage = startStage - 1;
-        }  
+        }
 
         lastStageName = SceneManager.GetActiveScene().name;         // シーン名を取得
         lastStageName = lastStageName + startStage;                 // ステージ1の名前を記録
@@ -170,12 +208,20 @@ public class GameManager : MonoBehaviour
             ChangeClearState(tempStageNum);
         }
 
+        // プレイヤーの位置をステージごとに設定された位置と回転に合わせる
+        playerL.transform.position = stageData[curStage].playerLPos;
+        playerR.transform.position = stageData[curStage].playerRPos;
+        playerL.transform.rotation = stageData[curStage].playerLRotation;
+        playerR.transform.rotation = stageData[curStage].playerRRotation;
+
+        // 磁力オブジェクトの位置を帆算された位置に移動
+        LoadMagObjPositions();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void FixedUpdate()
@@ -491,20 +537,131 @@ public class GameManager : MonoBehaviour
         return surfaceDistance;
     }
 
-    // リスト内の要素を削除
-    private void OnDestroy()
-    {
-        for (int i = 0; i < stageData.Count; i++)
-        {
-            stageData[i].ResetList();
-        }
-    }
-
     // アプリ終了時にリトライ用のデータを消す
     private void OnApplicationQuit()
     {
         PlayerPrefs.DeleteKey("CurrentStageNum");
         PlayerPrefs.DeleteKey("CurrentScene");
+        PlayerPrefs.DeleteKey("MagObjPositions");
+    }
+
+    private void SaveMagObjPositions()
+    {
+        List<MagObjPosition> magObjPosition = new List<MagObjPosition>();
+
+        // 各ステージごとに位置を格納
+        for (int i = 0; i < stageData.Count; i++)
+        {
+            // ステージごとに要素を追加して初期化
+            magObjPosition.Add(new MagObjPosition());
+            magObjPosition[i].posX = new List<float>();
+            magObjPosition[i].posY = new List<float>();
+            magObjPosition[i].posZ = new List<float>();
+
+            // 球体の磁力オブジェクト
+            foreach (GameObject magObj in stageData[i].magObjSphere)
+            {
+                if (magObj != null)
+                {
+                    magObjPosition[i].posX.Add(magObj.transform.position.x);
+                    magObjPosition[i].posY.Add(magObj.transform.position.y);
+                    magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                }
+            }
+
+            // 分裂物体の左側の磁力オブジェクト
+            foreach (GameObject magObj in stageData[i].magObjSplit1)
+            {
+                if (magObj != null)
+                {
+                    magObjPosition[i].posX.Add(magObj.transform.position.x);
+                    magObjPosition[i].posY.Add(magObj.transform.position.y);
+                    magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                }
+            }
+
+            // 分裂物体の右側の磁力オブジェクト
+            foreach (GameObject magObj in stageData[i].magObjSplit2)
+            {
+                if (magObj != null)
+                {
+                    magObjPosition[i].posX.Add(magObj.transform.position.x);
+                    magObjPosition[i].posY.Add(magObj.transform.position.y);
+                    magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                }
+            }
+
+            // 分裂物体を接続する磁力オブジェクト
+            foreach (GameObject magObj in stageData[i].magObjConnecter)
+            {
+                if (magObj != null)
+                {
+                    magObjPosition[i].posX.Add(magObj.transform.position.x);
+                    magObjPosition[i].posY.Add(magObj.transform.position.y);
+                    magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                }
+            }
+        }
+
+        // JSONにして保存
+        // MagObjPositionWrapperクラスを使用してシリアライズ化することでJSON化可能にしている
+        json = JsonUtility.ToJson(new MagObjPositionWrapper(magObjPosition));   // リストの構造を維持
+        PlayerPrefs.SetString("MagObjPositions", json);
+        PlayerPrefs.Save();
+        Debug.Log("磁力オブジェクトの位置を保存しました");
+        Debug.Log(json);
+    }
+
+
+    private void LoadMagObjPositions()
+    {
+        if(PlayerPrefs.HasKey("MagObjPositions"))
+        {
+            List<MagObjPosition> magObjPosition = new List<MagObjPosition>();   // リロード用のリスト
+            string json = PlayerPrefs.GetString("MagObjPositions");
+            MagObjPositionWrapper dataWrapper = JsonUtility.FromJson<MagObjPositionWrapper>(json);
+            magObjPosition = dataWrapper.magObjPositions;
+
+            for(int i = 0; i < magObjPosition.Count; i++)
+            {
+                for (int j = 0; j < magObjPosition[i].posX.Count; j++)
+                {
+                    // 取得した各成分からVector3を作成
+                    Vector3 position = new Vector3
+                    (
+                        magObjPosition[i].posX[j],
+                        magObjPosition[i].posY[j],
+                        magObjPosition[i].posZ[j]
+                    );
+
+                    // 球体の磁力オブジェクト
+                    if (j < stageData[i].magObjSphere.Count)
+                    {
+                        stageData[i].magObjSphere[j].transform.position = position;
+                    }
+                    // 分裂物体の左側の磁力オブジェクト
+                    if (j < stageData[i].magObjSplit1.Count)
+                    {
+                        stageData[i].magObjSplit1[j].transform.position = position;
+                    }
+                    // 分裂物体の右側の磁力オブジェクト
+                    if (j < stageData[i].magObjSplit2.Count)
+                    {
+                        stageData[i].magObjSplit2[j].transform.position = position;
+                    }
+                    // 分裂物体を接続する磁力オブジェクト
+                    if (j < stageData[i].magObjConnecter.Count)
+                    {
+                        stageData[i].magObjConnecter[j].transform.position = position;
+                    }
+                }
+            }
+            Debug.Log("磁力オブジェクトの位置を読み込みました");
+        }
+        else
+        {
+            Debug.Log("磁力オブジェクトの位置データがありません");
+        }
     }
 
     // 指定したステージ番号までをクリア済みにする
@@ -530,14 +687,13 @@ public class GameManager : MonoBehaviour
     // ゲームオーバーシーンに遷移
     private void MoveGameOverScene()
     {
-        PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("CurrentStageNum", curStage);    // CurrentStageキーとして現在のステージを保存
         PlayerPrefs.Save();
         PlayerPrefs.SetString("CurrentScene", SceneManager.GetActiveScene().name);    // CurrentStageキーとして現在のシーンを保存
         PlayerPrefs.Save();
+        SaveMagObjPositions();  // 磁力オブジェクトの位置を保存
         SceneManager.LoadScene(gameOverSceneName);
     }
-
 
     // 指定したステージのクリアフラグを取得
     public bool GetStageClearFg(int _stageNumber)

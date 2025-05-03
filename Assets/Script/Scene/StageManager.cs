@@ -136,4 +136,12 @@ public class StageManager : MonoBehaviour
         PlayerPrefs.SetInt("CurrentStage", currentStage); // ステージ番号を保存
         SceneManager.LoadScene(initialSceneName); // 最初のシーンを読み込む
     }
+
+    // アプリ終了時にリトライ用のデータを消す
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteKey("CurrentStageNum");
+        PlayerPrefs.DeleteKey("CurrentScene");
+        PlayerPrefs.DeleteKey("MagObjPositions");
+    }
 }
