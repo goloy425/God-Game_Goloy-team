@@ -293,4 +293,11 @@ public class Magnetism : MonoBehaviour
 			}
 		}
 	}
+
+	// スクリプトが削除される時に生存関係のフラグをfalseにしておく
+    private void OnDestroy()
+    {
+        inPlayerMagArea = false;
+		inObjMagArea = false;
+    }
 }

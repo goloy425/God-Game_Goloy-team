@@ -135,8 +135,8 @@ public class GameManager : MonoBehaviour
     private int totalAreas = 0;               // 設定された判定エリアの数
     private int totalConnected = 0;           // 接続された判定エリアの数
     private float clearTimer = 0.0f;          // 接続され続けている秒数
-    private float clearTime = 4.0f;           // 接続されている秒数がこの秒数を超えるとクリアとみなす
-    private float changeSceneTime = 1.0f;     // 何秒後にリザルトシーンに遷移するか
+    private float clearTime = 1.0f;           // 接続されている秒数がこの秒数を超えるとクリアとみなす
+    private float changeSceneTime = 1.5f;     // 何秒後にリザルトシーンに遷移するか
 
     private GameObject playerL = null;        // プレイヤーL
     private GameObject playerR = null;        // プレイヤーR
@@ -144,7 +144,6 @@ public class GameManager : MonoBehaviour
     private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
 
     private int curStage = 0;                 // 現在のステージ数
-    private string lastStageName;             // ゲームオーバーになる前のステージ名
     private string json;                      // リトライ時に磁石の位置を移動させるための位置データ
 
     public PressurePlates01[] pressurePlates; // すべての感圧板を登録
@@ -174,17 +173,7 @@ public class GameManager : MonoBehaviour
         playerL = magnet1.transform.parent.gameObject;
         playerR = magnet2.transform.parent.gameObject;
 
-        // 設定された全ての磁力オブジェクトにアタッチされた各スクリプトをリストに追加
-        AddAllMagCSList();
-
-        //Debug.Log("ステージ数 : " + stageData.Count);
-        //// 全ステージの移動できる磁力オブジェクトの探索
-        //for (int i = 0; i < stageData.Count; i++)
-        //{
-        //    Debug.Log("ステージ" + (i + 1) + "初期化");
-        //    SearchCanCarryMagObj(i);
-        //}
-
+        //------ 開始ステージ数と現在のステージ数の決定 ------//
         // CurrentStageに保存されたステージ数を取得
         if (PlayerPrefs.HasKey("CurrentStageNum"))
         {
@@ -197,9 +186,6 @@ public class GameManager : MonoBehaviour
         {
             curStage = startStage - 1;
         }
-
-        lastStageName = SceneManager.GetActiveScene().name;         // シーン名を取得
-        lastStageName = lastStageName + startStage;                 // ステージ1の名前を記録
 
         // 開始ステージが設定されている時、開始ステージより前のステージをクリア済みにする
         if (startStage > 1)
@@ -214,8 +200,20 @@ public class GameManager : MonoBehaviour
         playerL.transform.rotation = stageData[curStage].playerLRotation;
         playerR.transform.rotation = stageData[curStage].playerRRotation;
 
-        // 磁力オブジェクトの位置を帆算された位置に移動
+        // 磁力オブジェクトの位置を保存された位置に移動
         LoadMagObjPositions();
+        // 設定された全ての磁力オブジェクトにアタッチされた各スクリプトをリストに追加
+        AddAllMagCSList();
+
+        ////------ ステージの磁力オブジェクトの状態を初期化 ------//
+        //Debug.Log("ステージ数 : " + stageData.Count);
+        //// 全ステージの移動できる磁力オブジェクトの探索
+        //for (int i = 0; i < stageData.Count; i++)
+        //{
+        //    Debug.Log("ステージ" + (i + 1) + "初期化");
+        //    SearchCanCarryMagObj(i);
+        //}
+        Debug.Log(totalAreas);
     }
 
     // Update is called once per frame
@@ -226,13 +224,13 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // ----- 移動できる磁力オブジェクトの探索 ----- //
+        //------ 移動できる磁力オブジェクトの探索 ------//
         for (int i = 0; i < stageData.Count; i++)
         {
             SearchCanCarryMagObj(i);
         }
 
-        // ----- ステージのクリア処理 ----- //
+        //------ ステージのクリア処理 ------//
         int connectCount = 0;  // 繋がっている判定エリア
 
         // 現在のステージの判定エリアが繋がっているかを調べる
@@ -251,6 +249,8 @@ public class GameManager : MonoBehaviour
                     // クリアとみなす秒数を超えたらクリア
                     if (clearTimer > clearTime)
                     {
+                        totalConnected += connectCount;
+                        Debug.Log(totalConnected);
                         stageData[curStage].SetClearFg(true);
                         clearTimer = 0.0f;   // タイマーリセット
                         Debug.Log("ステージ" + (curStage + 1) + "クリア");
@@ -263,12 +263,19 @@ public class GameManager : MonoBehaviour
         if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
         {
             curStage++;
-            lastStageName = SceneManager.GetActiveScene().name + curStage;  // 現在のステージ名を記録
             Debug.Log("現在のステージ :" + (curStage + 1));
         }
 
+        // 全ての回路が接続された時、ゲームクリア
+        if(totalConnected == totalAreas)
+        {
+            gameClearFg = true; // ゲームクリア
+            Debug.Log("全ての回路が接続されています！ゲームクリア！Result画面に移ります");
+            Invoke("MoveResultScene", changeSceneTime);     // changeSceneTime秒後にリザルトシーンに遷移
+        }
 
-        // ----- ゲームオーバーの判定処理 ----- //
+
+        //------ ゲームオーバーの判定処理 ------//
         // プレイヤーの磁石に何かがくっついた時
         if (magnetism1.isSnapping || magnetism2.isSnapping)
         {
@@ -293,18 +300,18 @@ public class GameManager : MonoBehaviour
     // 判定エリアオブジェクトの状態を検知
     void OnDetectionStateChanged(bool isConnected)
     {
-        totalConnected += isConnected ? 1 : -1; // 接続されている数を増減
-        Debug.Log(totalConnected);
+        //totalConnected += isConnected ? 1 : -1; // 接続されている数を増減
+        //Debug.Log(totalConnected);
 
-        if (totalConnected == totalAreas)
-        {
-            gameClearFg = true; // ゲームクリア
-            Debug.Log("全ての回路が接続されています！ゲームクリア！Result画面に移ります");
-            // ここにゲームクリア処理を書く
+        //if (totalConnected == totalAreas)
+        //{
+        //    gameClearFg = true; // ゲームクリア
+        //    Debug.Log("全ての回路が接続されています！ゲームクリア！Result画面に移ります");
+        //    // ここにゲームクリア処理を書く
 
-            // changeSceneTime秒後にリザルトシーンに遷移
-            Invoke("MoveResultScene", changeSceneTime);
-        }
+        //    // changeSceneTime秒後にリザルトシーンに遷移
+        //    Invoke("MoveResultScene", changeSceneTime);
+        //}
     }
 
     // 設定された磁力オブジェクトにアタッチされている各スクリプトをリストに格納する
@@ -497,11 +504,10 @@ public class GameManager : MonoBehaviour
     private float GetDistancePlayerMagToMagObj(int _index, int _playerMagNumber, int _magObjNumber, GameObject _magObj)
     {
         Vector3 playerMagPos = (_playerMagNumber == 1) ? magnetism1.myPlate.transform.position : magnetism2.myPlate.transform.position;   // プレイヤーの磁石の位置
-        Vector3 magObjPos = _magObj.transform.position;     // 磁力オブジェクトの位置
 
         // 種類別で磁力範囲の距離を取得（各Magnetism.csと同じ処理で距離を求める）
         float surfaceDistance = 0.0f;
-        switch (_magObj.name)
+        switch (_magObj.tag)
         {
             case "MagObj_Sphere":
                 // Colliderを利用して一番近い表面の座標を取得
@@ -509,19 +515,25 @@ public class GameManager : MonoBehaviour
                 // 球の表面と磁石の距離を計算
                 surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
                 break;
-            case "MagObj_split1":
-                // Colliderを利用して一番近い表面の座標を取得
-                surfacePoint = stageData[_index].GetSplit1HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
-                // 分裂後の左側の表面と磁石の距離を計算
-                surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
+            case "MagObj_HCube":
+                // 分裂後の左側
+                if (_magObj.name == "MagObj_split1")
+                {
+                    // Colliderを利用して一番近い表面の座標を取得
+                    surfacePoint = stageData[_index].GetSplit1HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
+                    // 分裂後の左側の表面と磁石の距離を計算
+                    surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
+                }
+                // 分裂後の右側
+                else
+                {
+                    // Colliderを利用して一番近い表面の座標を取得
+                    surfacePoint = stageData[_index].GetSplit2HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
+                    // 分裂後の右側の表面と磁石の距離を計算
+                    surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
+                }
                 break;
-            case "MagObj_split2":
-                // Colliderを利用して一番近い表面の座標を取得
-                surfacePoint = stageData[_index].GetSplit2HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
-                // 分裂後の右側の表面と磁石の距離を計算
-                surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
-                break;
-            case "Connecter":
+            case "MagObj_Cube":
                 // Colliderを利用して一番近い表面の座標を取得
                 Vector3 surface1 = stageData[_index].GetCubeMagCS()[_magObjNumber].GetCube1Collider().ClosestPoint(playerMagPos);
                 Vector3 surface2 = stageData[_index].GetCubeMagCS()[_magObjNumber].GetCube2Collider().ClosestPoint(playerMagPos);
@@ -530,7 +542,6 @@ public class GameManager : MonoBehaviour
                 float distance1 = Vector3.Distance(surface1, playerMagPos);
                 float distance2 = Vector3.Distance(surface2, playerMagPos);
 
-                Vector3 targetSurface = (distance1 < distance2) ? surface1 : surface2;
                 surfaceDistance = Mathf.Min(distance1, distance2);
                 break;
         }
@@ -558,47 +569,51 @@ public class GameManager : MonoBehaviour
             magObjPosition[i].posY = new List<float>();
             magObjPosition[i].posZ = new List<float>();
 
-            // 球体の磁力オブジェクト
-            foreach (GameObject magObj in stageData[i].magObjSphere)
+            // クリア済みのステージの磁力オブジェクトのみ保存
+            if (stageData[i].GetClearFg())
             {
-                if (magObj != null)
+                // 球体の磁力オブジェクト
+                foreach (GameObject magObj in stageData[i].magObjSphere)
                 {
-                    magObjPosition[i].posX.Add(magObj.transform.position.x);
-                    magObjPosition[i].posY.Add(magObj.transform.position.y);
-                    magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    if (magObj != null)
+                    {
+                        magObjPosition[i].posX.Add(magObj.transform.position.x);
+                        magObjPosition[i].posY.Add(magObj.transform.position.y);
+                        magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    }
                 }
-            }
 
-            // 分裂物体の左側の磁力オブジェクト
-            foreach (GameObject magObj in stageData[i].magObjSplit1)
-            {
-                if (magObj != null)
+                // 分裂物体の左側の磁力オブジェクト
+                foreach (GameObject magObj in stageData[i].magObjSplit1)
                 {
-                    magObjPosition[i].posX.Add(magObj.transform.position.x);
-                    magObjPosition[i].posY.Add(magObj.transform.position.y);
-                    magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    if (magObj != null)
+                    {
+                        magObjPosition[i].posX.Add(magObj.transform.position.x);
+                        magObjPosition[i].posY.Add(magObj.transform.position.y);
+                        magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    }
                 }
-            }
 
-            // 分裂物体の右側の磁力オブジェクト
-            foreach (GameObject magObj in stageData[i].magObjSplit2)
-            {
-                if (magObj != null)
+                // 分裂物体の右側の磁力オブジェクト
+                foreach (GameObject magObj in stageData[i].magObjSplit2)
                 {
-                    magObjPosition[i].posX.Add(magObj.transform.position.x);
-                    magObjPosition[i].posY.Add(magObj.transform.position.y);
-                    magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    if (magObj != null)
+                    {
+                        magObjPosition[i].posX.Add(magObj.transform.position.x);
+                        magObjPosition[i].posY.Add(magObj.transform.position.y);
+                        magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    }
                 }
-            }
 
-            // 分裂物体を接続する磁力オブジェクト
-            foreach (GameObject magObj in stageData[i].magObjConnecter)
-            {
-                if (magObj != null)
+                // 分裂物体を接続する磁力オブジェクト
+                foreach (GameObject magObj in stageData[i].magObjConnecter)
                 {
-                    magObjPosition[i].posX.Add(magObj.transform.position.x);
-                    magObjPosition[i].posY.Add(magObj.transform.position.y);
-                    magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    if (magObj != null)
+                    {
+                        magObjPosition[i].posX.Add(magObj.transform.position.x);
+                        magObjPosition[i].posY.Add(magObj.transform.position.y);
+                        magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    }
                 }
             }
         }
@@ -723,13 +738,6 @@ public class GameManager : MonoBehaviour
     public void SetGameOverFg(bool _gameOverFg)
     {
         gameOverFg = _gameOverFg;
-    }
-
-
-    // ゲームオーバー直前のステージ名をゲット
-    public string GetLastStageName()
-    {
-        return lastStageName;
     }
 
     // 開始するステージ数をゲット
