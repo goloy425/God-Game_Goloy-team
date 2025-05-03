@@ -17,9 +17,6 @@ public class CustomCameraController : MonoBehaviour
     [Header("ステージ数")]
     public int stageNum;
 
-    [Header("開始ステージ")]
-    public int startStage;
-
     [Header("カメラ設定")]
     public float minSize = 5f;          // 最小サイズ
     public float maxSize = 15f;         // 最大サイズを15に制限
@@ -33,6 +30,7 @@ public class CustomCameraController : MonoBehaviour
     private Vector3 midPoint;
 
     private int curStage = 0;                   // 現在のステージ
+    private int startStage;                     // 開始ステージ
     private float startMinSize = 20.0f;         // 最初にステージの全体を写してから戻す
     bool[] completeDirectionFg = { };           // ステージクリア後演出が終わったかどうか
     private float timer = 0.0f;
@@ -65,7 +63,8 @@ public class CustomCameraController : MonoBehaviour
         completeDirectionFg = new bool[stageNum];   // 演出完了フラグを初期化
         startMinSize = maxSize - 1.0f;              // 0除算回避のため最大サイズと同じにしない
 
-        // ----- 開始ステージが2以上で設定されている時 ----- //
+        startStage = gameManager.GetStartStage();
+        // 開始ステージが2以上で設定されている時
         if (startStage > 0)
         {
             // 入力を添え字に合わせる

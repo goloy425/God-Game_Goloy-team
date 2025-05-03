@@ -57,6 +57,26 @@ public class StageData
 
     // 分裂物体の右側の動作スクリプトリストのゲッター
     public List<SplitCube> GetSplitCubeCS() { return splitCubeCS; }
+
+    // リストのリセット
+    public void ResetList()
+    {
+        magObjSphere.Clear();
+        magObjSplit1.Clear();       // 分裂物体の左側の磁力オブジェクト
+        magObjSplit2.Clear();       // 分裂物体の右側の磁力オブジェクト
+        magObjConnecter.Clear();    // 分裂物体を接続する磁力オブジェクト
+        detectAreas.Clear();        // クリア判定オブジェクト
+
+        sphereMagCS.Clear();        // 球体の磁力スクリプト
+        split1HCubeMagCS.Clear();   // 分裂物体の左側の磁力スクリプト
+        split2HCubeMagCS.Clear();   // 分裂物体の右側の磁力スクリプト
+        cubeMagCS.Clear();          // コネクターの磁力スクリプト
+
+        moveSphereCS.Clear();       // 球体の動作スクリプト
+        moveHCubeLCS.Clear();       // 分裂物体の左側の動作スクリプト
+        moveHCubeRCS.Clear();       // 分裂物体の右側の動作スクリプト
+        splitCubeCS.Clear();        // 分裂スクリプト
+    }
 }
 
 
@@ -89,6 +109,7 @@ public class GameManager : MonoBehaviour
     private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
 
     private int curStage = 0;                 // 現在のステージ数
+    private string lastStageName;             // ゲームオーバーになる前のステージ名
 
     public PressurePlates01[] pressurePlates; // すべての感圧板を登録
     private int totalPressed = 0; // 押されている感圧板の数
@@ -117,30 +138,38 @@ public class GameManager : MonoBehaviour
         // 設定された全ての磁力オブジェクトにアタッチされた各スクリプトをリストに追加
         AddAllMagCSList();
 
-        Debug.Log("ステージ数 : " + stageData.Count);
-        // 全ステージの移動できる磁力オブジェクトの探索
-        for (int i = 0; i < stageData.Count; i++)
+        //Debug.Log("ステージ数 : " + stageData.Count);
+        //// 全ステージの移動できる磁力オブジェクトの探索
+        //for (int i = 0; i < stageData.Count; i++)
+        //{
+        //    Debug.Log("ステージ" + (i + 1) + "初期化");
+        //    SearchCanCarryMagObj(i);
+        //}
+
+        // CurrentStageに保存されたステージ数を取得
+        if (PlayerPrefs.HasKey("CurrentStageNum"))
         {
-            Debug.Log("ステージ" + (i + 1) + "初期化");
-            SearchCanCarryMagObj(i);
+            startStage = PlayerPrefs.GetInt("CurrentStageNum", 0) + 1;
+            //if (curStage > 0) { ChangeClearState(curStage - 1); }    // ステージをクリアしている時、以前のステージをクリア済みにする
+            Debug.Log("Stage" + (startStage) + "を再読み込み");
         }
+        // ステージをクリアしていない時、入力を添え字に合わせる
+        else
+        //if (startStage > 0)
+        { 
+            curStage = startStage - 1;
+        }  
+
+        lastStageName = SceneManager.GetActiveScene().name;         // シーン名を取得
+        lastStageName = lastStageName + startStage;                 // ステージ1の名前を記録
 
         // 開始ステージが設定されている時、開始ステージより前のステージをクリア済みにする
         if (startStage > 1)
         {
             int tempStageNum = startStage - 1;
-            for (int i = 0; i < tempStageNum; i++)
-            {
-                stageData[i].SetClearFg(true);  // クリアしたことにする
-
-                for (int j = 0; j < stageData[i].detectAreas.Count; j++)
-                {
-                    totalConnected++;           // 接続済みにする
-                }
-            }
+            ChangeClearState(tempStageNum);
         }
 
-        if (startStage > 0) { curStage = startStage - 1; }     // 入力を添え字に合わせる
     }
 
     // Update is called once per frame
@@ -178,6 +207,7 @@ public class GameManager : MonoBehaviour
                     {
                         stageData[curStage].SetClearFg(true);
                         clearTimer = 0.0f;   // タイマーリセット
+                        Debug.Log("ステージ" + (curStage + 1) + "クリア");
                     }
                 }
             }
@@ -187,6 +217,7 @@ public class GameManager : MonoBehaviour
         if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
         {
             curStage++;
+            lastStageName = SceneManager.GetActiveScene().name + curStage;  // 現在のステージ名を記録
             Debug.Log("現在のステージ :" + (curStage + 1));
         }
 
@@ -460,6 +491,36 @@ public class GameManager : MonoBehaviour
         return surfaceDistance;
     }
 
+    // リスト内の要素を削除
+    private void OnDestroy()
+    {
+        for (int i = 0; i < stageData.Count; i++)
+        {
+            stageData[i].ResetList();
+        }
+    }
+
+    // アプリ終了時にリトライ用のデータを消す
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteKey("CurrentStageNum");
+        PlayerPrefs.DeleteKey("CurrentScene");
+    }
+
+    // 指定したステージ番号までをクリア済みにする
+    private void ChangeClearState(int _stageNum)
+    {
+        for (int i = 0; i < _stageNum; i++)
+        {
+            stageData[i].SetClearFg(true);  // クリアしたことにする
+
+            for (int j = 0; j < stageData[i].detectAreas.Count; j++)
+            {
+                totalConnected++;           // 接続済みにする
+            }
+        }
+    }
+
     // リザルトシーンに遷移
     private void MoveResultScene()
     {
@@ -469,6 +530,11 @@ public class GameManager : MonoBehaviour
     // ゲームオーバーシーンに遷移
     private void MoveGameOverScene()
     {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt("CurrentStageNum", curStage);    // CurrentStageキーとして現在のステージを保存
+        PlayerPrefs.Save();
+        PlayerPrefs.SetString("CurrentScene", SceneManager.GetActiveScene().name);    // CurrentStageキーとして現在のシーンを保存
+        PlayerPrefs.Save();
         SceneManager.LoadScene(gameOverSceneName);
     }
 
@@ -503,6 +569,18 @@ public class GameManager : MonoBehaviour
         gameOverFg = _gameOverFg;
     }
 
+
+    // ゲームオーバー直前のステージ名をゲット
+    public string GetLastStageName()
+    {
+        return lastStageName;
+    }
+
+    // 開始するステージ数をゲット
+    public int GetStartStage()
+    {
+        return startStage;
+    }
 
     void OnPlateStateChanged(bool isPressed)
     {
