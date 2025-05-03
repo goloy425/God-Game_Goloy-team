@@ -60,6 +60,7 @@ using UnityEngine.SceneManagement;
 public class StageManager : MonoBehaviour
 {
     public int currentStage = 1; // 現在のステージ番号を管理する公開変数
+    private string currentScene = ""; // 現在のステージシーン
 
     //private static StageManager instance;
 
@@ -82,7 +83,8 @@ public class StageManager : MonoBehaviour
         // PlayerPrefsから現在のステージを読み込む
         if (PlayerPrefs.HasKey("CurrentStage"))
         {
-            currentStage = PlayerPrefs.GetInt("CurrentStage");
+            //currentStage = PlayerPrefs.GetInt("CurrentStage");
+            currentScene = PlayerPrefs.GetString("CurrentScene");
         }
     }
 
@@ -111,14 +113,17 @@ public class StageManager : MonoBehaviour
     public void RetryStage()
     {
         currentStage = PlayerPrefs.GetInt("CurrentStage", currentStage); // 保存されたステージ番号を取得
+        currentScene = PlayerPrefs.GetString("CurrentScene", currentScene); // 保存されたステージシーンを取得
         string retrySceneName = "Stage" + currentStage; // 現在のステージ名を生成
-        if (Application.CanStreamedLevelBeLoaded(retrySceneName)) // シーンが存在するか確認
+
+        //if (Application.CanStreamedLevelBeLoaded(retrySceneName)) // シーンが存在するか確認
+        if (Application.CanStreamedLevelBeLoaded(currentScene)) // シーンが存在するか確認
         {
-            SceneManager.LoadScene(retrySceneName); // 現在のシーンを再読み込み
+            SceneManager.LoadScene(currentScene); // 現在のシーンを再読み込み
         }
         else
         {
-            Debug.LogWarning("リトライ先のシーンが見つかりません: " + retrySceneName);
+            Debug.LogWarning("リトライ先のシーンが見つかりません: " + currentScene);
         }
     }
 
@@ -130,5 +135,13 @@ public class StageManager : MonoBehaviour
         string initialSceneName = "Stage" + currentStage; // 初期ステージ名を指定
         PlayerPrefs.SetInt("CurrentStage", currentStage); // ステージ番号を保存
         SceneManager.LoadScene(initialSceneName); // 最初のシーンを読み込む
+    }
+
+    // アプリ終了時にリトライ用のデータを消す
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteKey("CurrentStageNum");
+        PlayerPrefs.DeleteKey("CurrentScene");
+        PlayerPrefs.DeleteKey("MagObjPositions");
     }
 }

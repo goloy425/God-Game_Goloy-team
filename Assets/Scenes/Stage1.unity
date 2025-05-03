@@ -5124,6 +5124,10 @@ MonoBehaviour:
     magObjConnecter: []
     detectAreas:
     - {fileID: 949911382}
+    playerLPos: {x: 11.4, y: 1.06, z: -5.03}
+    playerRPos: {x: 11.4, y: 1.06, z: 5.99}
+    playerLRotation: {x: 0, y: 0, z: 0, w: 0}
+    playerRRotation: {x: 0, y: 0, z: 0, w: 0}
   - magObjSphere:
     - {fileID: 680986288}
     magObjSplit1: []
@@ -5131,6 +5135,10 @@ MonoBehaviour:
     magObjConnecter: []
     detectAreas:
     - {fileID: 1396389884}
+    playerLPos: {x: -25, y: 1.06, z: -3}
+    playerRPos: {x: -25, y: 1.06, z: 3}
+    playerLRotation: {x: 0, y: 0, z: 0, w: 0}
+    playerRRotation: {x: 0, y: 0, z: 0, w: 0}
   - magObjSphere: []
     magObjSplit1:
     - {fileID: 1657536365}
@@ -5141,6 +5149,10 @@ MonoBehaviour:
     detectAreas:
     - {fileID: 699902082}
     - {fileID: 1115684026}
+    playerLPos: {x: -60, y: 1.06, z: -19}
+    playerRPos: {x: -60, y: 1.06, z: -13}
+    playerLRotation: {x: 0, y: 0, z: 0, w: 1}
+    playerRRotation: {x: 0, y: 0, z: 0, w: 1}
   - magObjSphere: []
     magObjSplit1:
     - {fileID: 602652729}
@@ -5151,6 +5163,10 @@ MonoBehaviour:
     detectAreas:
     - {fileID: 466888510}
     - {fileID: 64156479}
+    playerLPos: {x: -57, y: 1.06, z: 22}
+    playerRPos: {x: -51, y: 1.06, z: 22}
+    playerLRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    playerRRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
   - magObjSphere: []
     magObjSplit1:
     - {fileID: 375775286}
@@ -5166,6 +5182,10 @@ MonoBehaviour:
     - {fileID: 1985422839}
     - {fileID: 1183568547}
     - {fileID: 2136393277}
+    playerLPos: {x: -118, y: 1.06, z: 40}
+    playerRPos: {x: -118, y: 1.06, z: 46}
+    playerLRotation: {x: 0, y: 0, z: 0, w: 0}
+    playerRRotation: {x: 0, y: 0, z: 0, w: 0}
   magnet1: {fileID: 1071758029}
   magnet2: {fileID: 399700133}
   startStage: 1
@@ -5308,7 +5328,6 @@ MonoBehaviour:
   - {fileID: 1995270288}
   - {fileID: 1441708390}
   stageNum: 5
-  startStage: 1
   minSize: 8
   maxSize: 20
   zoomSpeed: 5
