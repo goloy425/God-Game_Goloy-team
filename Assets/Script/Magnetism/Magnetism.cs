@@ -191,8 +191,6 @@ public class Magnetism : MonoBehaviour
 
 			SnapToTarget();
 			AttachToTarget();
-
-			isSnapping = true;
 		}
 	}
 
@@ -230,6 +228,8 @@ public class Magnetism : MonoBehaviour
 		{
 			audioSource.PlayOneShot(magnetSE);
 		}
+
+		isSnapping = true;
 	}
 
 

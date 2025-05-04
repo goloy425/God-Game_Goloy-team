@@ -9,12 +9,6 @@ using UnityEngine.InputSystem;
 // 制作者　宮本和音
 //=================================================
 
-// ↓振動の強さを調整する時の目安
-// 0.002が最小値 それ以上低くすると振動しない（コントローラーによって差あり？分からん）
-// 1.0が最大値（たぶん）だがか～～なり強かったのでもっと数値小さい方がちょうどいい、というか手がしんどくない
-
-// 3/29追記　コントローラーによって同じ数値でも振動の強さに差がある可能性が高い
-// 授業内で皆で作業できるようになったら手持ちのコントローラー持ち寄って数値調整するのがいいかも
 
 public class Vibration : MonoBehaviour
 {
@@ -28,8 +22,16 @@ public class Vibration : MonoBehaviour
 	[Header("チェックで振動オフ")]
 	public bool notVibration = false;   // デバッグ中振動がうざくなったらチェック
 
+	[Header("シーン中のドアを登録")]
+	public OpenDoor[] doors;    // ドアが動いているかどうかを取得してくる用
+	private bool isMoving = false;
+
 	private Gamepad gamepad;
 	private AdjustMagnetism adjMag;
+	private GameManager gameManager;
+
+	// 磁石がくっついたり離れたりしたら振動オフにする用のフラグ
+	private bool gameOver = false;
 
 	// 強化中かどうか取得する用
 	private AugMagL playerL;
@@ -45,24 +47,23 @@ public class Vibration : MonoBehaviour
 	private bool prevAugL = false;
 	private bool prevAugR = false;
 
-	//// 磁力スクリプトの取得用
-	//private SphereMagnetism[] sMag;
-	//private CubeMagnetism[] cMag;
-	//private HCubeMagnetism[] hcMag;
+	private AudioSource audiosource;
+	private bool playing = false;
 
-	//// 要素数管理
-	//private int sMagCnt = 0;
-	//private int cMagCnt = 0;
-	//private int hcMagCnt = 0;
+	public int startStage;
+	public bool getStartStage = false;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		gamepad = Gamepad.current;
 		adjMag = GameObject.Find("Main Camera").GetComponent<AdjustMagnetism>();
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 		playerL = GameObject.Find("PlayerL_Controller").GetComponent<AugMagL>();
 		playerR = GameObject.Find("PlayerR_Controller").GetComponent<AugMagR>();
+
+		audiosource = magnet1.GetComponent<AudioSource>();
 
 		if (gamepad == null) { return; }	// コントローラーがない時はスルー
 		else	// 起動時に謎の振動が起こるのを抑制
@@ -72,30 +73,8 @@ public class Vibration : MonoBehaviour
 			Debug.Log("接続されているコントローラー:"+gamepad.displayName);
 		}
 
-		//// シーン内にある磁力オブジェクトを格納していく
-		//foreach (GameObject obj in magObjs)
-		//{
-		//	if (gameObject.CompareTag("MagObj_Sphere"))
-		//	{
-		//		TryGetComponent<SphereMagnetism>(out sMag[sMagCnt]);
-		//		sMagCnt++;
-		//	}
-		//	else if (gameObject.CompareTag("MagObj_Cube"))
-		//	{
-		//		TryGetComponent<CubeMagnetism>(out cMag[cMagCnt]);
-		//		cMagCnt++;
-		//	}
-		//	else if (gameObject.CompareTag("MagObj_HCube"))
-		//	{
-		//		TryGetComponent<HCubeMagnetism>(out hcMag[hcMagCnt]);
-		//		hcMagCnt++;
-		//	}
-		//}
-
 		if (!notVibration)
 		{
-			//--- ここに足していけば複数の振動をコントロールできる？ ---//
-
 			// 磁石の距離に応じた振動
 			if (gamepad.displayName == "Xbox Controller")	// Xbox
 			{
@@ -110,8 +89,56 @@ public class Vibration : MonoBehaviour
 
 	private void Update()
 	{
-		if (notVibration) { return; }	// 振動無しの場合はスキップ
+		if (notVibration) { return; }	// 振動無しの時はスキップ
 
+		// 磁石がくっついた時のSEが再生されているかどうか…なんだけど磁石にアタッチされてるAudioSourceが
+		// 再生されていればなので他のSEが追加されたら使えない、もうちょっとどうにかできないか考える
+		if (audiosource.isPlaying) { playing = true; }
+		else { playing = false; }
+
+
+		//--- ゲームオーバー時周りの処理 ---//
+		if (gameOver)	// ゲームオーバー時は継続する振動をオフ
+		{
+			gamepad.SetMotorSpeeds(0, 0);
+			return;
+		}
+
+		// 磁石が磁力エリアから離れた時
+		if (!magnet1.inMagnetismArea || !magnet2.inMagnetismArea)
+		{
+			gameOver = true;
+			return;
+		}
+
+		// 磁石が何かしらにくっついた時
+		if (!gameOver && (magnet1.isSnapping || magnet2.isSnapping) && playing)
+		{
+			StartCoroutine(VibAttached());
+			return;
+		}
+
+
+		//--- ドアが開いた時周りの処理 ---//
+		if(!getStartStage)
+		{
+            startStage = gameManager.GetStartStage();   // 開始ステージを取得
+			getStartStage = true;
+        }
+
+        for (int i = startStage - 1; i < doors.Length; i++)
+		{
+			isMoving = doors[i].GetDoorMovingFg();
+
+			if (isMoving)
+			{
+				StartCoroutine(VibOpenDoor());
+				return;
+			}
+		}
+
+
+		//--- 強化時の振動周りの処理 ---//
 		// 強化状態の更新
 		bool nowAugL = playerL.isAugmenting;
 		bool nowAugR = playerR.isAugmenting;
@@ -141,7 +168,7 @@ public class Vibration : MonoBehaviour
 			if (gamepad.displayName == "Xbox Controller")
 			{
 				StartCoroutine(VibAugment_X(0.1f, 0.1f, 0.1f, false));
-            }
+			}
 			else
 			{
 				StartCoroutine(VibAugment(false));
@@ -250,6 +277,25 @@ public class Vibration : MonoBehaviour
 		{
 			isVibratingR = false;
 		}
+	}
+
+	// ③ 磁石がくっついた時の振動
+	IEnumerator VibAttached()
+	{
+		gamepad.SetMotorSpeeds(0.5f, 0.5f);
+		yield return new WaitForSeconds(0.06f);
+
+		gameOver = true;
+		yield return null;
+	}
+
+	// ④ 扉があいた時の振動
+	IEnumerator VibOpenDoor()
+	{
+		gamepad.SetMotorSpeeds(0.004f, 0.004f);
+		yield return new WaitForSeconds(0.7f);
+		gamepad.SetMotorSpeeds(0.0f, 0.0f);
+		yield return null;
 	}
 
 
@@ -364,20 +410,13 @@ public class Vibration : MonoBehaviour
 	}
 
 
-	//================================================================
-	// プレイヤーの磁石と磁力オブジェクトの距離に応じて振動させる関数
-	//================================================================
-	IEnumerator Vibration_MagObj()
-	{
-		yield return new WaitForSeconds(0);     // とりあえずのやつ そのうち実装する
-	}
-
-
 	void OnDestroy()
 	{
 		if (gamepad != null)
 		{
-			gamepad.SetMotorSpeeds(0, 0);	// ゲーム終了時に振動を止める
+			gamepad.SetMotorSpeeds(0, 0);   // ゲーム終了時に振動を止める
+			gameOver = false;
+			getStartStage = false;
 		}
 	}
 }
