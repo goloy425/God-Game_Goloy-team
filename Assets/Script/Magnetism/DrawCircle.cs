@@ -153,24 +153,26 @@ public class DrawCircle : MonoBehaviour
 	//=================================================
 	public void UpdateMagCircle()
 	{
-        if (mag != null)	// magnetism付き（=プレイヤーの磁石）の場合
+		if (mag != null)	// magnetism付き（=プレイヤーの磁石）の場合
 		{
 			// サイズ更新（*1.2の理由：ないのがリアル範囲だけど視覚的にはこんな感じ）
 			magnetismCircle.localScale = new Vector3(mag.magnetismRange * 1.2f, 0.01f, mag.magnetismRange * 1.2f);
 
-			// レイが当たった点をpositionとする
+			// レイが当たった点よりちょっと上をpositionとする
 			if (Physics.Raycast(ray, out hit, rayDistance, ground))
 			{
+				float posY = hit.point.y + 0.06f;
+
 				// 位置の追従＆回転を固定
-				magnetismCircle.SetPositionAndRotation(hit.point, Quaternion.identity);
+				magnetismCircle.SetPositionAndRotation(new Vector3(hit.point.x, posY, hit.point.z), Quaternion.identity);
 			}
 			return;
 		}
 		else	// magnetismが付いてない（=磁力オブジェクト）の場合
 		{
-            ray = new Ray(this.transform.position, Vector3.down);   // オブジェクトの直下にレイを投げる
+			ray = new Ray(this.transform.position, Vector3.down);   // オブジェクトの直下にレイを投げる
 
-            if (sMag != null)	// 球
+			if (sMag != null)	// 球
 			{
 				magnetismCircle.localScale = new Vector3(sMag.MagnetismRange * 1.2f, 0.01f, sMag.MagnetismRange * 1.2f);
 			}
@@ -186,9 +188,11 @@ public class DrawCircle : MonoBehaviour
 
 		if (Physics.Raycast(ray, out hit, rayDistance, ground))
 		{
-			// 位置の追従＆回転を固定
-			magnetismCircle.SetPositionAndRotation(hit.point, Quaternion.identity);
-		}
+            float posY = hit.point.y + 0.02f;
+
+            // 位置の追従＆回転を固定
+            magnetismCircle.SetPositionAndRotation(new Vector3(hit.point.x, posY, hit.point.z), Quaternion.identity);
+        }
 	}
 
 
@@ -197,9 +201,9 @@ public class DrawCircle : MonoBehaviour
 	//=================================================
 	private void UpdateDeadCircle()
 	{
-        ray = new Ray(baseObj.transform.position, Vector3.down);
+		ray = new Ray(baseObj.transform.position, Vector3.down);
 
-        if (mag != null)
+		if (mag != null)
 		{
 			// サイズ更新
 			deadCircle.localScale = new Vector3(mag.deadRange, 0.01f, mag.deadRange);

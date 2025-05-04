@@ -9,12 +9,6 @@ using UnityEngine.InputSystem;
 // 制作者　宮本和音
 //=================================================
 
-// ↓振動の強さを調整する時の目安
-// 0.002が最小値 それ以上低くすると振動しない（コントローラーによって差あり？分からん）
-// 1.0が最大値（たぶん）だがか～～なり強かったのでもっと数値小さい方がちょうどいい、というか手がしんどくない
-
-// 3/29追記　コントローラーによって同じ数値でも振動の強さに差がある可能性が高い
-// 授業内で皆で作業できるようになったら手持ちのコントローラー持ち寄って数値調整するのがいいかも
 
 public class Vibration : MonoBehaviour
 {
@@ -30,6 +24,9 @@ public class Vibration : MonoBehaviour
 
 	private Gamepad gamepad;
 	private AdjustMagnetism adjMag;
+
+	// 磁石がくっついたり離れたりしたら振動オフにする用のフラグ
+	private bool gameOver = false;
 
 	// 強化中かどうか取得する用
 	private AugMagL playerL;
@@ -55,6 +52,9 @@ public class Vibration : MonoBehaviour
 	//private int cMagCnt = 0;
 	//private int hcMagCnt = 0;
 
+	private AudioSource audiosource;
+	public bool playing = false;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -63,6 +63,8 @@ public class Vibration : MonoBehaviour
 
 		playerL = GameObject.Find("PlayerL_Controller").GetComponent<AugMagL>();
 		playerR = GameObject.Find("PlayerR_Controller").GetComponent<AugMagR>();
+
+		audiosource = magnet1.GetComponent<AudioSource>();
 
 		if (gamepad == null) { return; }	// コントローラーがない時はスルー
 		else	// 起動時に謎の振動が起こるのを抑制
@@ -94,8 +96,6 @@ public class Vibration : MonoBehaviour
 
 		if (!notVibration)
 		{
-			//--- ここに足していけば複数の振動をコントロールできる？ ---//
-
 			// 磁石の距離に応じた振動
 			if (gamepad.displayName == "Xbox Controller")	// Xbox
 			{
@@ -110,8 +110,33 @@ public class Vibration : MonoBehaviour
 
 	private void Update()
 	{
-		if (notVibration) { return; }	// 振動無しの場合はスキップ
+		if (notVibration) { return; }   // 振動無しの時はスキップ
 
+		if (audiosource.isPlaying) { playing = true; }
+		else { playing = false; }
+
+		if (gameOver)	// ゲームオーバー時は継続する振動をオフ
+		{
+			gamepad.SetMotorSpeeds(0, 0);
+			return;
+		}
+
+		// 磁石が磁力エリアから離れた時
+		if (!magnet1.inMagnetismArea || !magnet2.inMagnetismArea)
+		{
+			gameOver = true;
+			return;
+		}
+
+		// 磁石が何かしらにくっついた時
+		if (!gameOver && (magnet1.isSnapping || magnet2.isSnapping))
+		{
+			StartCoroutine(VibAttached());
+			return;
+		}
+
+
+		//--- 強化時の振動周りの処理 ---//
 		// 強化状態の更新
 		bool nowAugL = playerL.isAugmenting;
 		bool nowAugR = playerR.isAugmenting;
@@ -141,7 +166,7 @@ public class Vibration : MonoBehaviour
 			if (gamepad.displayName == "Xbox Controller")
 			{
 				StartCoroutine(VibAugment_X(0.1f, 0.1f, 0.1f, false));
-            }
+			}
 			else
 			{
 				StartCoroutine(VibAugment(false));
@@ -250,6 +275,16 @@ public class Vibration : MonoBehaviour
 		{
 			isVibratingR = false;
 		}
+	}
+
+	// ③ 磁石がくっついた時の振動
+	IEnumerator VibAttached()
+	{
+		gamepad.SetMotorSpeeds(0.5f, 0.5f);
+		yield return new WaitForSeconds(0.06f);
+
+		gameOver = true;
+		yield return null;  // 次のフレームまで待つ
 	}
 
 
@@ -367,17 +402,18 @@ public class Vibration : MonoBehaviour
 	//================================================================
 	// プレイヤーの磁石と磁力オブジェクトの距離に応じて振動させる関数
 	//================================================================
-	IEnumerator Vibration_MagObj()
-	{
-		yield return new WaitForSeconds(0);     // とりあえずのやつ そのうち実装する
-	}
+	//IEnumerator Vibration_MagObj()
+	//{
+	//	yield return new WaitForSeconds(0);
+	//}
 
 
 	void OnDestroy()
 	{
 		if (gamepad != null)
 		{
-			gamepad.SetMotorSpeeds(0, 0);	// ゲーム終了時に振動を止める
+			gamepad.SetMotorSpeeds(0, 0);   // ゲーム終了時に振動を止める
+			gameOver = false;
 		}
 	}
 }
