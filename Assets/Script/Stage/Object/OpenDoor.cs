@@ -34,8 +34,8 @@ public class OpenDoor : MonoBehaviour
 		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 		// 左右のドアオブジェクトを取得
-		leftDoor = transform.Find("doorL_low").gameObject;
-		rightDoor = transform.Find("doorR_low").gameObject;
+		leftDoor = transform.Find("doorL_rend").gameObject;
+		rightDoor = transform.Find("doorR_rend").gameObject;
 
 		openFg = false;
 	}
