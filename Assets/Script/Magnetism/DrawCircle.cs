@@ -13,16 +13,13 @@ public class DrawCircle : MonoBehaviour
 	public GameObject Circles;  // 円のグループ
 
 	[Header("範囲表示の円")]
-	public Transform magnetismCircle;   // 磁力範囲の方
-	public Transform deadCircle;        // くっつく範囲の方
+	public Transform magnetismCircle;	// 磁力範囲の方
+	public Transform deadCircle;		// くっつく範囲の方
 
 	[Header("表示基準：plate（もしくはオブジェクト自身）")]
 	public GameObject baseObj;
 	// ↑deadRangeは基本的にオブジェクトの中心から生えてる方が自然
 	// でもプレイヤーの磁石の場合はplateに追従する方が自然
-
-	[Header("床を設定")]
-	public GameObject floor;
 
 	// 各オブジェクトの磁力スクリプト
 	private Magnetism mag;
@@ -41,7 +38,7 @@ public class DrawCircle : MonoBehaviour
 	Ray ray;
 	RaycastHit hit;
 
-	private float rayDistance = 10f;    // レイを飛ばす距離
+	private float rayDistance = 10f;	// レイを飛ばす距離
 
 	[Header("レイヤー：groundを設定")]
 	public LayerMask ground;		// レイを当てる対象のレイヤー
@@ -188,7 +185,7 @@ public class DrawCircle : MonoBehaviour
 
 		if (Physics.Raycast(ray, out hit, rayDistance, ground))
 		{
-            float posY = hit.point.y + 0.02f;
+            float posY = hit.point.y + 0.06f;
 
             // 位置の追従＆回転を固定
             magnetismCircle.SetPositionAndRotation(new Vector3(hit.point.x, posY, hit.point.z), Quaternion.identity);
