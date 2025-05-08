@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,13 +17,19 @@ public class MovingFloor : MonoBehaviour
 
 	[Header("始点・終点で止まる時間")]
 	public float stayTime = 2.0f;
-	private float stayTimer;	// 計測用
+	private float stayTimer;    // 計測用
+
+	[Header("経由点がある時：経由点でも止めるかどうか")]
+	public bool stopAtCorner = false;
+
+	private float stayTime_corner = 0.05f;	// 経由点がある場合、経由点で止まる時間
+											// （1回止まらないと終点に向けて弧を描くみたいに丸く進むのでキモい）
 
 	private NavMeshAgent nma;
-	public int currentWaypNum;
+	private int currentWaypNum;
 
-	public bool isCorner = false;	// 角があるかどうか
-	public bool isGoing = false;	// 配列管理　数字が進んでるかどうか
+	private bool isCorner = false;	// 角（ただの経由点でも問題ないけど）があるかどうか
+	private bool isGoing = false;	// 配列管理　数字が進んでるかどうか
 
 	// Start is called before the first frame update
 	void Start()
@@ -36,11 +43,6 @@ public class MovingFloor : MonoBehaviour
 			isCorner = true;
 			isGoing = true;
 		}
-
-		if (isCorner)
-		{
-			nma.autoBraking = false;
-		}
 	}
 
 	// Update is called once per frame
@@ -53,11 +55,35 @@ public class MovingFloor : MonoBehaviour
 		{
 			if (isCorner)	// 曲がり角がある場合(0→1→2→1→0→1→…)
 			{
-				if (isGoing)
+				// 始点でも終点でもない時
+				if (currentWaypNum != 0 && currentWaypNum != waypArray.Length - 1)
+				{
+					stayTimer += Time.deltaTime;
+
+					if (stopAtCorner)
+					{
+						if (stayTimer < stayTime) { return; }	// 規定の時間以内なら後の処理（次の目的地の設定）をスルー
+						else { stayTimer = 0.0f; }  // タイマーをリセット
+					}
+					else
+					{
+						if (stayTimer < stayTime_corner) { return; }
+						else { stayTimer = 0.0f; }
+					}
+				}
+				else
+				{
+					stayTimer += Time.deltaTime;
+					if (stayTimer < stayTime) { return; }
+					// 上と違ってタイマーのリセットをここでやるとタイマーが2回通っちゃう
+				}
+
+				if (isGoing)	// 前進中
 				{
 					if (currentWaypNum < (waypArray.Length - 1))
 					{
 						currentWaypNum++;
+						stayTimer = 0.0f;
 					}
 					else
 					{
@@ -65,11 +91,12 @@ public class MovingFloor : MonoBehaviour
 						return;
 					}
 				}
-				else
+				else	// 後退中
 				{
 					if (currentWaypNum > 0)
 					{
 						currentWaypNum--;
+						stayTimer = 0.0f;
 					}
 					else
 					{
@@ -78,6 +105,7 @@ public class MovingFloor : MonoBehaviour
 					}
 				}
 
+				// 目的地セット
 				nma.SetDestination(waypArray[currentWaypNum].position);
 			}
 
@@ -85,7 +113,7 @@ public class MovingFloor : MonoBehaviour
 			{
 				stayTimer += Time.deltaTime;
 
-				// 一定時間経ったら次の目的地を設定する
+				// 目的地に止まって一定時間経ったら次の目的地を設定する
 				if(stayTimer > stayTime) 
 				{
 					stayTimer = 0f;
@@ -99,6 +127,7 @@ public class MovingFloor : MonoBehaviour
 						currentWaypNum = 0;
 					}
 
+					// 目的地セット
 					nma.SetDestination(waypArray[currentWaypNum].position);
 				}
 			}

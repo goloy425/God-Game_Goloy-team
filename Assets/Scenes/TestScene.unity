@@ -263,10 +263,9 @@ MonoBehaviour:
   waypArray:
   - {fileID: 1711304992}
   - {fileID: 597764526}
+  - {fileID: 264060097}
   stayTime: 2
-  currentWaypNum: 0
-  isCorner: 0
-  isGoing: 0
+  stopAtCorner: 0
 --- !u!195 &231984038
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -309,7 +308,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &264060097
 Transform:
   m_ObjectHideFlags: 0
@@ -1396,6 +1395,10 @@ PrefabInstance:
     - target: {fileID: 632146294883812610, guid: c389c21688cccc84ba354d529aadb88c, type: 3}
       propertyPath: m_Name
       value: VibrationManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 632146294883812610, guid: c389c21688cccc84ba354d529aadb88c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c389c21688cccc84ba354d529aadb88c, type: 3}
