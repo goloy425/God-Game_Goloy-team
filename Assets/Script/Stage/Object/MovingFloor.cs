@@ -10,6 +10,14 @@ using UnityEngine.AI;
 // 移動床のスクリプト
 //=================================================
 
+// 備忘録　移動床の作り方
+// 用意するもの：MovingFloor（prefab）、移動エリアを示す平たいキューブ、Waypointと名付けた空オブジェクト最低2つ
+// ①Waypointは移動床の通る座標を示すもの、座標調整気を付けること
+// ②移動エリアの座標調整してNavigationタブでBake→移動エリアの生成
+// ！ 移動エリアのサイズはWaypointの位置を覆えるくらいのサイズにすること
+// ！ 座標調整する場合は移動エリアを動かしたあとBakeし直さないと反映されない
+// ③InspecterタブでWaypointの登録すれば動き出すはず　あとは細かく座標の調整、プレイヤーが引っ掛からない位置
+
 public class MovingFloor : MonoBehaviour
 {
 	[Header("シーン中のWaypointを設定")]
@@ -20,15 +28,15 @@ public class MovingFloor : MonoBehaviour
 	private float stayTimer;    // 計測用
 
 	[Header("経由点がある時：経由点でも止めるかどうか")]
-	public bool stopAtCorner = false;
+	public bool stopAtViaP = false;
 
-	private float stayTime_corner = 0.05f;	// 経由点がある場合、経由点で止まる時間
+	private float stayTime_ViaP = 0.05f;	// 経由点がある場合、経由点で止まる時間
 											// （1回止まらないと終点に向けて弧を描くみたいに丸く進むのでキモい）
 
 	private NavMeshAgent nma;
-	private int currentWaypNum;
+	private int currentWaypNum;		// 目的とするWaypointを管理する
 
-	private bool isCorner = false;	// 角（ただの経由点でも問題ないけど）があるかどうか
+	private bool isViaP = false;	// 経由点があるかどうか
 	private bool isGoing = false;	// 配列管理　数字が進んでるかどうか
 
 	// Start is called before the first frame update
@@ -40,7 +48,7 @@ public class MovingFloor : MonoBehaviour
 		// waypArrayの要素数が3以上＝始点・終点以外にwaypointがある
 		if (waypArray.Length >= 3)
 		{
-			isCorner = true;
+			isViaP = true;
 			isGoing = true;
 		}
 	}
@@ -53,21 +61,21 @@ public class MovingFloor : MonoBehaviour
 		// 目的地点までの距離が目的地の手前までの距離以下になったら
 		if (nma.remainingDistance <= nma.stoppingDistance)
 		{
-			if (isCorner)	// 曲がり角がある場合(0→1→2→1→0→1→…)
+			if (isViaP)	// 曲がり角がある場合(0→1→2→1→0→1→…)
 			{
 				// 始点でも終点でもない時
 				if (currentWaypNum != 0 && currentWaypNum != waypArray.Length - 1)
 				{
 					stayTimer += Time.deltaTime;
 
-					if (stopAtCorner)
+					if (stopAtViaP)		// 経由点で
 					{
 						if (stayTimer < stayTime) { return; }	// 規定の時間以内なら後の処理（次の目的地の設定）をスルー
 						else { stayTimer = 0.0f; }  // タイマーをリセット
 					}
 					else
 					{
-						if (stayTimer < stayTime_corner) { return; }
+						if (stayTimer < stayTime_ViaP) { return; }
 						else { stayTimer = 0.0f; }
 					}
 				}
@@ -78,7 +86,7 @@ public class MovingFloor : MonoBehaviour
 					// 上と違ってタイマーのリセットをここでやるとタイマーが2回通っちゃう
 				}
 
-				if (isGoing)	// 前進中
+				if (isGoing)	// 前進中なら数字を進めていく
 				{
 					if (currentWaypNum < (waypArray.Length - 1))
 					{
@@ -87,11 +95,11 @@ public class MovingFloor : MonoBehaviour
 					}
 					else
 					{
-						isGoing = false;
+						isGoing = false;	// 後退中に切り替え
 						return;
 					}
 				}
-				else	// 後退中
+				else	// 後退中なら数字を戻していく
 				{
 					if (currentWaypNum > 0)
 					{
@@ -100,7 +108,7 @@ public class MovingFloor : MonoBehaviour
 					}
 					else
 					{
-						isGoing = true;
+						isGoing = true;		// 前進中に切り替え
 						return;
 					}
 				}
