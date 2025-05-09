@@ -3,7 +3,6 @@
 // クリア時のドアが開く処理
 // doorFlameオブジェクトにアタッチする
 //--------------------------------------------------------
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,11 +25,6 @@ public class OpenDoor : MonoBehaviour
 	private bool completeOpenFg = false;    // 開いたかどうかのフラグ
 	private float timer = 0.0f;
 
-	Material mat;
-    private Color emissionColor = new Color(0.24f, 0.75f, 0.39f, 1.0f);
-    private float intensity = 3.5f;
-    private Color finalEmissionColor;
-
 	private bool isMoving = false;  // ドアが動いているかどうか（Vibrationスクリプトにて使用）
 
 	// Start is called before the first frame update
@@ -40,20 +34,14 @@ public class OpenDoor : MonoBehaviour
 		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 		// 左右のドアオブジェクトを取得
-		leftDoor = transform.Find("doorL_rend").gameObject;
-		rightDoor = transform.Find("doorR_rend").gameObject;
+		leftDoor = transform.Find("doorL_low").gameObject;
+		rightDoor = transform.Find("doorR_low").gameObject;
 
 		openFg = false;
+	}
 
-		//------ ドアが開いた後のライトの色 ------//
-        // マテリアルを取得
-        mat = transform.Find("doorframe_render").GetComponent<Renderer>().material;
-        // HDRの強度を適用（Color * 強度）
-        finalEmissionColor = emissionColor * intensity;
-    }
-
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
 	{
 		
 	}
@@ -72,13 +60,8 @@ public class OpenDoor : MonoBehaviour
 
 		// フラグが立っているかつ、開けるのにかかる秒数以内の時
 		if (openFg && !completeOpenFg && timer <= openTime)
-        {
-            // Emissionを有効化
-            mat.SetColor("_EmissionColor", finalEmissionColor);
-            // Emissionを適用するためのフラグを設定
-            mat.EnableKeyword("_EMISSION");
-
-            timer += Time.deltaTime;
+		{
+			timer += Time.deltaTime;
 			// 左のドアを移動
 			leftDoor.transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.Self);
 			// 右のドアを移動

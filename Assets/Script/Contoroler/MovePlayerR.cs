@@ -21,7 +21,7 @@ public class MovePlayerR : MonoBehaviour
     private Rigidbody rb;                       // Rigidbody
     private Rigidbody ropeRb;                   // 紐のRigidbody
     private GameInputs inputs;                  // GameInputsクラス
-    //private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
+    private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
     private Animator animator;
 
     private Vector2 moveInputValue;     // スティックの入力を受け取る
@@ -32,8 +32,8 @@ public class MovePlayerR : MonoBehaviour
     {
         // Rigidbodyコンポーネントを取得
         rb = GetComponent<Rigidbody>();
-        //// PlaySEAtRegularIntervalsコンポーネントを取得
-        //playSE = GetComponent<PlaySEAtRegularIntervals>();
+        // PlaySEAtRegularIntervalsコンポーネントを取得
+        playSE = GetComponent<PlaySEAtRegularIntervals>();
         // アニメーターを取得
         animator = GameObject.Find("Female_Idling").GetComponent<Animator>();
         // GameInputsクラスのインスタンスを作成
@@ -64,17 +64,17 @@ public class MovePlayerR : MonoBehaviour
         // 移動方向がゼロベクトルでない時
         if (moveForward != Vector3.zero)
         {
-            //playSE.enabled = true;      // SE再生スクリプトを有効化
+            playSE.enabled = true;      // SE再生スクリプトを有効化
             // キャラクターの向きを徐々に移動方向に向ける
             transform.forward = Vector3.Slerp(transform.forward, moveForward, rotationSpeed * Time.deltaTime);
         }
-        //// 移動方向がゼロベクトルの時
-        //else
-        //{
-        //    playSE.SetElapsedTime(0);   // SE再生スクリプトの経過時間をリセット
-        //    playSE.SetPlayCnt(0);		// SE再生スクリプトの再生回数をリセット
-        //    playSE.enabled = false;     // SE再生スクリプトを無効化
-        //}
+        // 移動方向がゼロベクトルの時
+        else
+        {
+            playSE.SetElapsedTime(0);   // SE再生スクリプトの経過時間をリセット
+            playSE.SetPlayCnt(0);		// SE再生スクリプトの再生回数をリセット
+            playSE.enabled = false;     // SE再生スクリプトを無効化
+        }
 
         //------ アニメーション切り替え ------// 
         if (rb.velocity == Vector3.zero) { animator.SetBool("moveFg", false); }  // アニメーションを待機状態に切り替え
