@@ -179,7 +179,7 @@ public class DrawCircle : MonoBehaviour
 			}
 			else if (sCube.splited && hcMag != null)	// îºÉLÉÖÅ[Éu
 			{
-				magnetismCircle.localScale = new Vector3(hcMag.MagnetismRange * 2, 0.01f, hcMag.MagnetismRange * 2);
+				magnetismCircle.localScale = new Vector3(hcMag.MagnetismRange * 1.1f, 0.01f, hcMag.MagnetismRange * 1.1f);
 			}
 		}
 

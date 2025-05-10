@@ -540,7 +540,7 @@ MonoBehaviour:
     playerRRotation: {x: 0, y: 0, z: 0, w: 0}
   magnet1: {fileID: 1071758029}
   magnet2: {fileID: 399700133}
-  startStage: 1
+  startStage: 3
   resultSceneName: Result
   gameOverSceneName: GameOver
   pressurePlates: []
@@ -1010,7 +1010,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4818044768426091767, guid: b537f7ec15b996b4d9ead3234cf2ddb2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7511234
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 4818044768426091767, guid: b537f7ec15b996b4d9ead3234cf2ddb2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3889,6 +3889,14 @@ PrefabInstance:
       propertyPath: detectedObjects.Array.data[1]
       value: 
       objectReference: {fileID: 514954139}
+    - target: {fileID: 7544758033917954019, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: m_Size.y
+      value: 1.038969
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544758033917954019, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: m_Center.y
+      value: 8.418792
+      objectReference: {fileID: 0}
     - target: {fileID: 7544758033958442943, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
       propertyPath: detectedObjects.Array.data[0]
       value: 
@@ -4120,7 +4128,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4818044768426091767, guid: b537f7ec15b996b4d9ead3234cf2ddb2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.140186
+      value: 10.24
       objectReference: {fileID: 0}
     - target: {fileID: 4818044768426091767, guid: b537f7ec15b996b4d9ead3234cf2ddb2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4170,6 +4178,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 6579957677123115588, guid: b537f7ec15b996b4d9ead3234cf2ddb2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.64
+      objectReference: {fileID: 0}
     - target: {fileID: 8279080328298538898, guid: b537f7ec15b996b4d9ead3234cf2ddb2, type: 3}
       propertyPath: magnet2
       value: 
