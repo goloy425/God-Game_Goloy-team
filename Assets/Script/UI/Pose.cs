@@ -62,9 +62,9 @@ public class Pose : MonoBehaviour
 
 
             // 〇ボタン（XBOXのBボタン）の入力検出
-            if (Input.GetKeyDown(KeyCode.JoystickButton1))
+            if (Input.GetKeyDown(KeyCode.JoystickButton2))
             {
-                myButton[num].onClick.AddListener(OnButtonClicked);
+                OnButtonClicked();
             }
         }
 
