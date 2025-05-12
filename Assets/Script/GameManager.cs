@@ -149,9 +149,14 @@ public class GameManager : MonoBehaviour
     public PressurePlates01[] pressurePlates; // すべての感圧板を登録
     private int totalPressed = 0; // 押されている感圧板の数
 
+    Pose pose;          // Poseの状態を受け取る
+
     // Start is called before the first frame update
     void Start()
     {
+        // Poseオブジェクトを取得
+        pose = GameObject.Find("Pose").GetComponent<Pose>();
+
         foreach (PressurePlates01 plate in pressurePlates)
         {
             plate.OnPressurePlateChanged += OnPlateStateChanged; // イベント登録
@@ -224,6 +229,12 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // Pose画面を表示しているなら
+        if (pose.GetPose())
+        {
+            return;
+        }
+
         //------ 移動できる磁力オブジェクトの探索 ------//
         for (int i = 0; i < stageData.Count; i++)
         {
