@@ -16,6 +16,8 @@ public class Pose : MonoBehaviour
 
     bool _pose = false;
 
+    bool select = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,31 +35,36 @@ public class Pose : MonoBehaviour
             DisplayPose(_pose);
             num = 1;
         }
-        
 
-        if(_pose)
+
+        if (_pose)
         {
-            // 上ボタンの入力検出
-            if (Input.GetKeyDown(KeyCode.JoystickButton13) || Input.GetAxis("DPadVertical") > 0)
+            float move = Input.GetAxis("Vertical");
+
+            if (select)
             {
-                myButton[num].GetComponent<Image>().color = Color.white;
 
-                --num;
-                num = Mathf.Clamp(num, 0, 3);
+                // 上ボタンの入力検出
+                if (move > 0.4)
+                {
+                    --num;
+                    num = Mathf.Clamp(num, 0, 3);
 
-                myButton[num].GetComponent<Image>().color = Color.yellow;
+                    select = false;
+                }
+                else if (move < -0.4)
+                {
+                    ++num;
+                    num = Mathf.Clamp(num, 0, 3);
+
+                    select = false;
+                }
+            }
+            else if (move > -0.1 && move < 0.1)
+            {
+                select = true;
             }
 
-            // 下ボタンの入力検出
-            if (Input.GetKeyDown(KeyCode.JoystickButton14) || Input.GetAxis("DPadVertical") < 0)
-            {
-                myButton[num].GetComponent<Image>().color = Color.white;
-
-                ++num;
-                num = Mathf.Clamp(num, 0, 3);
-
-                myButton[num].GetComponent<Image>().color = Color.yellow;
-            }
 
 
 
@@ -67,7 +74,6 @@ public class Pose : MonoBehaviour
                 OnButtonClicked();
             }
         }
-
         Debug.Log(num);
     }
 
@@ -111,5 +117,10 @@ public class Pose : MonoBehaviour
                 SceneManager.LoadScene("Title");
                 break;
         }
+    }
+
+    public bool GetPose()
+    {
+        return _pose;
     }
 }
