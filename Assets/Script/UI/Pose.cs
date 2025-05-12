@@ -34,6 +34,8 @@ public class Pose : MonoBehaviour
 
             DisplayPose(_pose);
             num = 1;
+
+            myButton[num].image.color = Color.red;
         }
 
 
@@ -41,21 +43,30 @@ public class Pose : MonoBehaviour
         {
             float move = Input.GetAxis("Vertical");
 
+
             if (select)
             {
 
                 // 上ボタンの入力検出
                 if (move > 0.4)
                 {
+                    myButton[num].image.color = Color.white;
+
                     --num;
                     num = Mathf.Clamp(num, 0, 3);
+
+                    myButton[num].image.color = Color.red;
 
                     select = false;
                 }
                 else if (move < -0.4)
                 {
+                    myButton[num].image.color = Color.white;
+
                     ++num;
                     num = Mathf.Clamp(num, 0, 3);
+
+                    myButton[num].image.color = Color.red;
 
                     select = false;
                 }
@@ -66,11 +77,11 @@ public class Pose : MonoBehaviour
             }
 
 
-
-
             // 〇ボタン（XBOXのBボタン）の入力検出
             if (Input.GetKeyDown(KeyCode.JoystickButton2))
             {
+                myButton[num].image.color = Color.white;
+
                 OnButtonClicked();
             }
         }
@@ -106,7 +117,8 @@ public class Pose : MonoBehaviour
                 break;
 
             case 1:
-                Canvas.alpha = 0.0f;
+                _pose = false;
+                DisplayPose(_pose);
                 break;
 
             case 2:
