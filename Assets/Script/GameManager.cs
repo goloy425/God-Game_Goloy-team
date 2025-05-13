@@ -142,6 +142,8 @@ public class GameManager : MonoBehaviour
     private GameObject playerR = null;        // プレイヤーR
     private Magnetism magnetism1 = null;      // プレイヤーLのマグネティズム
     private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
+    private GameObject playerLController = null;           
+    private GameObject playerRController = null;            
 
     private int curStage = 0;                 // 現在のステージ数
     private string json;                      // リトライ時に磁石の位置を移動させるための位置データ
@@ -177,6 +179,9 @@ public class GameManager : MonoBehaviour
         // プレイヤーを取得
         playerL = magnet1.transform.parent.gameObject;
         playerR = magnet2.transform.parent.gameObject;
+        // プレイヤーのコントローラーを取得
+        playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
+        playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
 
         //------ 開始ステージ数と現在のステージ数の決定 ------//
         // CurrentStageに保存されたステージ数を取得
@@ -222,9 +227,26 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
+        // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
+        if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
+        {
+            curStage++;
 
+            // プレイヤーの位置をステージごとに設定された位置と回転に合わせる
+            playerL.transform.position = stageData[curStage].playerLPos;
+            playerR.transform.position = stageData[curStage].playerRPos;
+            playerL.transform.rotation = stageData[curStage].playerLRotation;
+            playerR.transform.rotation = stageData[curStage].playerRRotation;
+            // 子オブジェクトのずれを修正する
+            playerLController.transform.localPosition = new Vector3(0.0f, playerLController.transform.position.y, 0.0f);
+            playerRController.transform.localPosition = new Vector3(0.0f, playerRController.transform.position.y, 0.0f);
+
+            Debug.Log("PlayerName :" + playerL.name);
+            Debug.Log("PlayerPos :" + stageData[curStage].playerLPos);
+            Debug.Log("現在のステージ :" + (curStage + 1));
+        }
     }
 
     private void FixedUpdate()
@@ -270,12 +292,21 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
-        if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
-        {
-            curStage++;
-            Debug.Log("現在のステージ :" + (curStage + 1));
-        }
+        //// 現在のステージをクリアした時、次のステージがあれば次のステージに進む
+        //if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
+        //{
+        //    curStage++;
+
+        //    // プレイヤーの位置をステージごとに設定された位置と回転に合わせる
+        //    playerL.transform.position = stageData[curStage].playerLPos;
+        //    playerR.transform.position = stageData[curStage].playerRPos;
+        //    playerL.transform.rotation = stageData[curStage].playerLRotation;
+        //    playerR.transform.rotation = stageData[curStage].playerRRotation;
+
+        //    Debug.Log("PlayerName :" + playerL.name);
+        //    Debug.Log("PlayerPos :" + stageData[curStage].playerLPos);
+        //    Debug.Log("現在のステージ :" + (curStage + 1));
+        //}
 
         // 全ての回路が接続された時、ゲームクリア
         if(totalConnected == totalAreas)
