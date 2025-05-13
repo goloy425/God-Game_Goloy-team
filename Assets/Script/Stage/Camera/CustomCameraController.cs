@@ -94,10 +94,12 @@ public class CustomCameraController : MonoBehaviour
                     StartDirection(curStage);
                     timer += Time.deltaTime;
                 }
+                // 演出時間経過後タイマーリセット
                 else if (timer > startDirectionTime)
                 {
                     timer = 0.0f;
                     completeDirectionFg[curStage] = true;
+                    Debug.Log("ステージ" + (curStage + 1) + "の演出：" + completeDirectionFg[curStage]);
                     curStage++;
                 }
                 // プレイヤーに追従するカメラ処理に戻す
@@ -116,11 +118,12 @@ public class CustomCameraController : MonoBehaviour
                 StartDirection(curStage);
                 timer += Time.deltaTime;
             }
-            // 演出時間経過後かつ、ドアが開ききった後にタイマーリセット
-            else if (timer > startDirectionTime && openDoor[curStage].GetCompleteOpenFg())
+            // 演出時間経過後タイマーリセット
+            else if (timer > startDirectionTime)
             {
                 timer = 0.0f;
                 completeDirectionFg[curStage] = true;
+                Debug.Log("ステージ" + (curStage + 1) + "の演出：" + completeDirectionFg[curStage]);
                 curStage++;
             }
             else
@@ -184,5 +187,11 @@ public class CustomCameraController : MonoBehaviour
         dynamicOffset = new Vector3(initialOffset.x, initialOffset.y, Mathf.Lerp(initialOffset.z, initialOffset.z * 2f, zoomFactor)); // ズームレベルに応じてカメラの奥行き方向のオフセットを動的に調整
 
         transform.position = midPoint + dynamicOffset; // カメラを中間点とオフセットを考慮した位置に移動
+    }
+
+    // 指定されたステージのカメラ演出完了フラグをゲット
+    public bool GetCompleteDiretionFg(int _stageNum)
+    {
+        return completeDirectionFg[_stageNum];
     }
 }

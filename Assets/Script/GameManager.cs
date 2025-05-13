@@ -131,6 +131,7 @@ public class GameManager : MonoBehaviour
 
     private bool gameClearFg = false;         // ゲームクリアしたかどうか
     private bool gameOverFg = false;          // ゲームオーバーしたかどうか
+    private bool augMagFg = false;            // 磁力強化できるかどうか
 
     private int totalAreas = 0;               // 設定された判定エリアの数
     private int totalConnected = 0;           // 接続された判定エリアの数
@@ -138,6 +139,8 @@ public class GameManager : MonoBehaviour
     private float clearTime = 1.0f;           // 接続されている秒数がこの秒数を超えるとクリアとみなす
     private float changeSceneTime = 1.5f;     // 何秒後にリザルトシーンに遷移するか
 
+    private GameObject ropeL = null;          // プレイヤーLのロープ
+    private GameObject ropeR = null;          // プレイヤーRのロープ
     private GameObject playerL = null;        // プレイヤーL
     private GameObject playerR = null;        // プレイヤーR
     private Magnetism magnetism1 = null;      // プレイヤーLのマグネティズム
@@ -145,6 +148,7 @@ public class GameManager : MonoBehaviour
     private GameObject playerLController = null;           
     private GameObject playerRController = null;            
 
+    private CustomCameraController customCameraController = null;   // カメラの処理
     private int curStage = 0;                 // 現在のステージ数
     private string json;                      // リトライ時に磁石の位置を移動させるための位置データ
 
@@ -173,12 +177,19 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // カメラ処理のスクリプトを取得
+        customCameraController = GameObject.Find("Main Camera").GetComponent<CustomCameraController>();
+
+        //------ プレイヤー関係のオブジェクト、スクリプトを取得 ------//
         // プレイヤーの磁石の磁力スクリプトを取得
         magnetism1 = magnet1.GetComponent<Magnetism>();
         magnetism2 = magnet2.GetComponent<Magnetism>();
         // プレイヤーを取得
         playerL = magnet1.transform.parent.gameObject;
         playerR = magnet2.transform.parent.gameObject;
+        // プレイヤーのロープを取得
+        ropeL = playerL.transform.Find("Rope").gameObject;
+        ropeR = playerR.transform.Find("Rope").gameObject;
         // プレイヤーのコントローラーを取得
         playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
         playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
@@ -229,24 +240,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
-        if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
-        {
-            curStage++;
 
-            // プレイヤーの位置をステージごとに設定された位置と回転に合わせる
-            playerL.transform.position = stageData[curStage].playerLPos;
-            playerR.transform.position = stageData[curStage].playerRPos;
-            playerL.transform.rotation = stageData[curStage].playerLRotation;
-            playerR.transform.rotation = stageData[curStage].playerRRotation;
-            // 子オブジェクトのずれを修正する
-            playerLController.transform.localPosition = new Vector3(0.0f, playerLController.transform.position.y, 0.0f);
-            playerRController.transform.localPosition = new Vector3(0.0f, playerRController.transform.position.y, 0.0f);
-
-            Debug.Log("PlayerName :" + playerL.name);
-            Debug.Log("PlayerPos :" + stageData[curStage].playerLPos);
-            Debug.Log("現在のステージ :" + (curStage + 1));
-        }
     }
 
     private void FixedUpdate()
@@ -316,26 +310,46 @@ public class GameManager : MonoBehaviour
             Invoke("MoveResultScene", changeSceneTime);     // changeSceneTime秒後にリザルトシーンに遷移
         }
 
-
-        //------ ゲームオーバーの判定処理 ------//
-        // プレイヤーの磁石に何かがくっついた時
-        if (magnetism1.isSnapping || magnetism2.isSnapping)
+        // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
+        if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
         {
-            Debug.Log("磁石がくっつきました！ゲームオーバー！Result画面に移ります");
-            // ここにゲームオーバー処理を書く
-
-            // changeSceneTime秒後にゲームオーバーシーンに遷移
-            Invoke("MoveGameOverScene", changeSceneTime);
+            curStage++;
+            ResetPlayerPos();   // プレイヤーの位置を現在ステージの初期位置にする
+            Debug.Log("現在のステージ :" + (curStage + 1));
         }
 
-        // 磁力範囲外に出た時
-        if (!magnetism1.inMagnetismArea || !magnetism2.inMagnetismArea)
+        // ステージ開始直後のカメラ演出が終わっていない間はゲームオーバーにならないようにする
+        if (!customCameraController.GetCompleteDiretionFg(curStage))
         {
-            Debug.Log("磁力範囲外に出ました！ゲームオーバー！Result画面に移ります");
-            // ここにゲームオーバー処理を書く
+            augMagFg = false;
+        }
+        else
+        {
+            augMagFg = true;
 
-            // changeSceneTime秒後にゲームオーバーシーンに遷移
-            Invoke("MoveGameOverScene", changeSceneTime);
+            //------ ゲームオーバーの判定処理 ------//
+            // プレイヤーの磁石に何かがくっついた時
+            if (magnetism1.isSnapping || magnetism2.isSnapping)
+            {
+                gameOverFg = true;
+                Debug.Log("磁石がくっつきました！");
+            }
+
+            // 磁力範囲外に出た時
+            if (!magnetism1.inMagnetismArea || !magnetism2.inMagnetismArea)
+            {
+                gameOverFg = true;
+                Debug.Log("磁力範囲外に出ました！");
+
+            }
+
+            // フラグからゲームオーバーに遷移
+            if (gameOverFg)
+            {
+                // changeSceneTime秒後にゲームオーバーシーンに遷移
+                Invoke("MoveGameOverScene", changeSceneTime);
+                Debug.Log("ゲームオーバー！Result画面に移ります");
+            }
         }
     }
 
@@ -598,6 +612,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteKey("MagObjPositions");
     }
 
+    // 磁力オブジェクトの位置を保存する
     private void SaveMagObjPositions()
     {
         List<MagObjPosition> magObjPosition = new List<MagObjPosition>();
@@ -669,7 +684,7 @@ public class GameManager : MonoBehaviour
         Debug.Log(json);
     }
 
-
+    // 磁力オブジェクトの位置を読み込む
     private void LoadMagObjPositions()
     {
         if(PlayerPrefs.HasKey("MagObjPositions"))
@@ -735,6 +750,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // プレイヤーの位置を現在ステージの初期位置にする
+    private void ResetPlayerPos()
+    {
+        // プレイヤーの位置をステージごとに設定された位置と回転に合わせる
+        playerL.transform.position = stageData[curStage].playerLPos;
+        playerR.transform.position = stageData[curStage].playerRPos;
+        playerL.transform.rotation = stageData[curStage].playerLRotation;
+        playerR.transform.rotation = stageData[curStage].playerRRotation;
+        // 子オブジェクトのずれを修正する
+        playerLController.transform.localPosition = new Vector3(0.0f, playerLController.transform.position.y, 0.0f);
+        playerRController.transform.localPosition = new Vector3(0.0f, playerRController.transform.position.y, 0.0f);
+        //ropeL.transform.position = playerLController.transform.localPosition;
+        //ropeR.transform.position = playerRController.transform.localPosition;
+    }
+
     // リザルトシーンに遷移
     private void MoveResultScene()
     {
@@ -768,6 +798,12 @@ public class GameManager : MonoBehaviour
     public bool GetGameOverFg()
     {
         return gameOverFg;
+    }
+
+    // 磁力強化フラグを取得
+    public bool GetAugMagFg()
+    {
+        return augMagFg;
     }
 
     // ゲームクリアフラグをセット

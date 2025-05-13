@@ -32,6 +32,8 @@ public class AugMagL : MonoBehaviour
 	private Color defaultColor;
 	private Color poweredColor = Color.green;   // 強化中の色
 
+	private GameManager gameManager;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -56,13 +58,20 @@ public class AugMagL : MonoBehaviour
 		}
 
 		audioSource = GetComponent<AudioSource>();	// AudioSource取得
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		// ボタンを押されてる強さの取得
-		float LValue = inputs.PlayerL.AugmentMag.ReadValue<float>();
+		// カメラ演出中は強化できないようにする
+        if (!gameManager.GetAugMagFg())
+        {
+            return;
+        }
+
+        // ボタンを押されてる強さの取得
+        float LValue = inputs.PlayerL.AugmentMag.ReadValue<float>();
 
 		// オブジェクトの磁力範囲内にいる時、一定以上の強さでキーが押されたら磁力強化
 		if (LValue > 0.3f && mag.inObjMagArea)
