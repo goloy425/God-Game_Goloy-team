@@ -12,15 +12,18 @@ public class Magnetism : MonoBehaviour
 {
 	[Header("plate(Magnetの直下)の設定")]
 	public Magnetism targetMagnet;	// 対になる磁石
-	public Transform myPlate;	// 自分のBottomPlate
-	public Transform targetPlate;	// くっつける相手のBottomPlate
+	public Transform myPlate;		// 自分のBottomPlate
+	public Transform targetPlate;   // くっつける相手のBottomPlate
 
 	[Header("磁力・範囲の設定")]
-	public float magnetismRange= 10.0f;	// 引き寄せ合う距離
-	public float deadRange = 1.0f;	// 近づきすぎるとくっつく、の距離
-	public float magnetism = 200.0f;	// 磁力
-	public float strongMagnetism = 999.0f;	// 磁力
+	public float magnetismRange = 10.0f;	// 引き寄せ合う距離
+	public float deadRange = 1.0f;			// 近づきすぎるとくっつく、の距離
+	public float magnetism = 200.0f;		// 磁力
+	public float strongMagnetism = 999.0f;	// 磁力（近づきすぎの方）
 	public float snapDistance = 0.07f;		// くっつく距離の閾値
+
+	public float dangerZone;   // 危険範囲
+	public float safeZone;		// 安全範囲
 
 	//--- magnetismRangeとdeadRangeの設定 ---//
 	// とりあえずこの2つだけ、もし他の変数も同じようにする場合は↓
@@ -58,6 +61,14 @@ public class Magnetism : MonoBehaviour
 	[Header("磁力範囲内かどうかのフラグ")]
 	public bool inPlayerMagArea = true;		// プレイヤーの磁石の磁力範囲内かどうか
 	public bool inObjMagArea = true;		// オブジェクトの磁力範囲内かどうか
+
+	// プレイヤー同士
+	public bool inDangerZone = false;		// 危険範囲内かどうか
+	public bool inSafeZone = true;			// 安全　　　〃
+
+	// 対オブジェクト
+	public bool inDangerZone_obj = false;		// 危険範囲内かどうか
+	public bool inSafeZone_obj = true;			// 安全　　　〃
 
 	[Header("磁石がくっついた時のSE")]
 	public AudioClip magnetSE;
@@ -132,6 +143,9 @@ public class Magnetism : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 		audioSource = GetComponent<AudioSource>();
 
+		dangerZone = deadRange + 0.3f;  // 危険範囲の設定
+		safeZone = dangerZone + 0.25f;	// 安全　　〃
+
 		// 成否に関わるフラグを初期化しておく
 		isSnapping = false;
 		inMagnetismArea = true;
@@ -171,16 +185,32 @@ public class Magnetism : MonoBehaviour
 		// 自分が強化しているか相手が強化しているか判定
 		bool isSelfAugmenting = isSelfL ? L_isAugmenting : R_isAugmenting;
 
+		// 時間補正倍率（スロー中だけ強めに引き寄せる）
+		float timeScaleFactor = Time.timeScale < 1f ? 1f / Time.timeScale : 0.4f;
+
 		// 片方の磁石に引き寄せられるのは強化中でない時だけ
 		if (distance < magnetismRange && !isSelfAugmenting)
 		{
 			inPlayerMagArea = true;
 			float force = (distance < deadRange) ? strongMagnetism : magnetism;
-			rb.AddForce(direction * force, ForceMode.Acceleration);
+			rb.WakeUp();	// スリープ対策
+			rb.AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
 		}
 		else
 		{
 			inPlayerMagArea = false;
+		}
+
+		// スローモーション切替用フラグの管理
+		if (distance <= dangerZone && !inDangerZone)
+		{
+			inDangerZone = true;
+			inSafeZone = false;
+		}
+		if (distance > safeZone)
+		{
+			inSafeZone = true;
+			inDangerZone = false;
 		}
 
 		// くっつく処理：両方が強化状態にある時は無視
@@ -295,9 +325,9 @@ public class Magnetism : MonoBehaviour
 	}
 
 	// スクリプトが削除される時に生存関係のフラグをfalseにしておく
-    private void OnDestroy()
-    {
-        inPlayerMagArea = false;
+	private void OnDestroy()
+	{
+		inPlayerMagArea = false;
 		inObjMagArea = false;
-    }
+	}
 }

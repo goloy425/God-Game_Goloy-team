@@ -116,7 +116,7 @@ public class SphereMagnetism : MonoBehaviour
 			if (surfaceDistance > magnetismRange)
 			{
 				magnet.inObjMagArea = false;
-				continue;   // 磁力範囲外ならスキップ
+				continue;	// 磁力範囲外ならスキップ
 			}
 
 			magnet.inObjMagArea = true;	// フラグを立てておく
@@ -124,7 +124,11 @@ public class SphereMagnetism : MonoBehaviour
 			// 引き寄せる処理
 			Vector3 direction = (surfacePoint - magnetPos).normalized;
 			float force = (surfaceDistance < deadRange) ? strongMagnetism : magnetism;
-			magnet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Acceleration);
+
+            // 時間補正倍率（スロー中だけ強めに引き寄せる）
+            float timeScaleFactor = Time.timeScale < 1f ? 1f / Time.timeScale : 0.4f;
+
+			magnet.GetComponent<Rigidbody>().AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
 
 			// 近づきすぎるとくっつく
 			if (surfaceDistance < magnet.snapDistance)
@@ -135,6 +139,17 @@ public class SphereMagnetism : MonoBehaviour
 
 				AttachToSurface(magnet);
 				magnet.isSnapping = true;
+			}
+
+			if (surfaceDistance <= magnet.dangerZone)
+			{
+				magnet.inDangerZone_obj = true;
+				magnet.inSafeZone_obj = false;
+			}
+			if (surfaceDistance > magnet.safeZone)
+			{
+				magnet.inSafeZone_obj = true;
+				magnet.inDangerZone_obj = false;
 			}
 		}
 	}
