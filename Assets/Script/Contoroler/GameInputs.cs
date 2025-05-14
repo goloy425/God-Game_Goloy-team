@@ -124,7 +124,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
 			""id"": ""d753af44-db13-4c53-b3ec-e2a23f970391"",
 			""actions"": [
 				{
-					""name"": ""Inactive Circle"",
+					""name"": ""SwitchCircle"",
 					""type"": ""Button"",
 					""id"": ""c6474103-da59-4b32-9472-b3943c9fced5"",
 					""expectedControlType"": ""Button"",
@@ -141,7 +141,35 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
 					""interactions"": """",
 					""processors"": """",
 					""groups"": """",
-					""action"": ""Inactive Circle"",
+					""action"": ""SwitchCircle"",
+					""isComposite"": false,
+					""isPartOfComposite"": false
+				}
+			]
+		},
+		{
+			""name"": ""Pose"",
+			""id"": ""5e33eae9-4adb-4cc3-b220-8b0d7c3d0aab"",
+			""actions"": [
+				{
+					""name"": ""Pose"",
+					""type"": ""Button"",
+					""id"": ""652c5116-1111-481b-8bc8-611c720601bf"",
+					""expectedControlType"": ""Button"",
+					""processors"": """",
+					""interactions"": """",
+					""initialStateCheck"": false
+				}
+			],
+			""bindings"": [
+				{
+					""name"": """",
+					""id"": ""1177327d-9a77-4a38-8471-29354ba539c1"",
+					""path"": ""<Gamepad>/start"",
+					""interactions"": """",
+					""processors"": """",
+					""groups"": """",
+					""action"": ""Pose"",
 					""isComposite"": false,
 					""isPartOfComposite"": false
 				}
@@ -160,7 +188,10 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
 		m_PlayerR_AugmentMag = m_PlayerR.FindAction("AugmentMag", throwIfNotFound: true);
 		// Other Key
 		m_OtherKey = asset.FindActionMap("Other Key", throwIfNotFound: true);
-		m_OtherKey_InactiveCircle = m_OtherKey.FindAction("Inactive Circle", throwIfNotFound: true);
+		m_OtherKey_SwitchCircle = m_OtherKey.FindAction("SwitchCircle", throwIfNotFound: true);
+		// Pose
+		m_Pose = asset.FindActionMap("Pose", throwIfNotFound: true);
+		m_Pose_Pose = m_Pose.FindAction("Pose", throwIfNotFound: true);
 	}
 
 	public void Dispose()
@@ -330,12 +361,12 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
 	// Other Key
 	private readonly InputActionMap m_OtherKey;
 	private List<IOtherKeyActions> m_OtherKeyActionsCallbackInterfaces = new List<IOtherKeyActions>();
-	private readonly InputAction m_OtherKey_InactiveCircle;
+	private readonly InputAction m_OtherKey_SwitchCircle;
 	public struct OtherKeyActions
 	{
 		private @GameInputs m_Wrapper;
 		public OtherKeyActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
-		public InputAction @InactiveCircle => m_Wrapper.m_OtherKey_InactiveCircle;
+		public InputAction @SwitchCircle => m_Wrapper.m_OtherKey_SwitchCircle;
 		public InputActionMap Get() { return m_Wrapper.m_OtherKey; }
 		public void Enable() { Get().Enable(); }
 		public void Disable() { Get().Disable(); }
@@ -345,16 +376,16 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
 		{
 			if (instance == null || m_Wrapper.m_OtherKeyActionsCallbackInterfaces.Contains(instance)) return;
 			m_Wrapper.m_OtherKeyActionsCallbackInterfaces.Add(instance);
-			@InactiveCircle.started += instance.OnInactiveCircle;
-			@InactiveCircle.performed += instance.OnInactiveCircle;
-			@InactiveCircle.canceled += instance.OnInactiveCircle;
+			@SwitchCircle.started += instance.OnSwitchCircle;
+			@SwitchCircle.performed += instance.OnSwitchCircle;
+			@SwitchCircle.canceled += instance.OnSwitchCircle;
 		}
 
 		private void UnregisterCallbacks(IOtherKeyActions instance)
 		{
-			@InactiveCircle.started -= instance.OnInactiveCircle;
-			@InactiveCircle.performed -= instance.OnInactiveCircle;
-			@InactiveCircle.canceled -= instance.OnInactiveCircle;
+			@SwitchCircle.started -= instance.OnSwitchCircle;
+			@SwitchCircle.performed -= instance.OnSwitchCircle;
+			@SwitchCircle.canceled -= instance.OnSwitchCircle;
 		}
 
 		public void RemoveCallbacks(IOtherKeyActions instance)
@@ -372,6 +403,52 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
 		}
 	}
 	public OtherKeyActions @OtherKey => new OtherKeyActions(this);
+
+	// Pose
+	private readonly InputActionMap m_Pose;
+	private List<IPoseActions> m_PoseActionsCallbackInterfaces = new List<IPoseActions>();
+	private readonly InputAction m_Pose_Pose;
+	public struct PoseActions
+	{
+		private @GameInputs m_Wrapper;
+		public PoseActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+		public InputAction @Pose => m_Wrapper.m_Pose_Pose;
+		public InputActionMap Get() { return m_Wrapper.m_Pose; }
+		public void Enable() { Get().Enable(); }
+		public void Disable() { Get().Disable(); }
+		public bool enabled => Get().enabled;
+		public static implicit operator InputActionMap(PoseActions set) { return set.Get(); }
+		public void AddCallbacks(IPoseActions instance)
+		{
+			if (instance == null || m_Wrapper.m_PoseActionsCallbackInterfaces.Contains(instance)) return;
+			m_Wrapper.m_PoseActionsCallbackInterfaces.Add(instance);
+			@Pose.started += instance.OnPose;
+			@Pose.performed += instance.OnPose;
+			@Pose.canceled += instance.OnPose;
+		}
+
+		private void UnregisterCallbacks(IPoseActions instance)
+		{
+			@Pose.started -= instance.OnPose;
+			@Pose.performed -= instance.OnPose;
+			@Pose.canceled -= instance.OnPose;
+		}
+
+		public void RemoveCallbacks(IPoseActions instance)
+		{
+			if (m_Wrapper.m_PoseActionsCallbackInterfaces.Remove(instance))
+				UnregisterCallbacks(instance);
+		}
+
+		public void SetCallbacks(IPoseActions instance)
+		{
+			foreach (var item in m_Wrapper.m_PoseActionsCallbackInterfaces)
+				UnregisterCallbacks(item);
+			m_Wrapper.m_PoseActionsCallbackInterfaces.Clear();
+			AddCallbacks(instance);
+		}
+	}
+	public PoseActions @Pose => new PoseActions(this);
 	public interface IPlayerLActions
 	{
 		void OnMove(InputAction.CallbackContext context);
@@ -384,6 +461,10 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
 	}
 	public interface IOtherKeyActions
 	{
-		void OnInactiveCircle(InputAction.CallbackContext context);
+		void OnSwitchCircle(InputAction.CallbackContext context);
+	}
+	public interface IPoseActions
+	{
+		void OnPose(InputAction.CallbackContext context);
 	}
 }

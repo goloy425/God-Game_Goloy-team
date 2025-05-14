@@ -102,7 +102,7 @@
             "id": "d753af44-db13-4c53-b3ec-e2a23f970391",
             "actions": [
                 {
-                    "name": "Inactive Circle",
+                    "name": "SwitchCircle",
                     "type": "Button",
                     "id": "c6474103-da59-4b32-9472-b3943c9fced5",
                     "expectedControlType": "Button",
@@ -119,7 +119,35 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Inactive Circle",
+                    "action": "SwitchCircle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Pose",
+            "id": "5e33eae9-4adb-4cc3-b220-8b0d7c3d0aab",
+            "actions": [
+                {
+                    "name": "Pose",
+                    "type": "Button",
+                    "id": "652c5116-1111-481b-8bc8-611c720601bf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1177327d-9a77-4a38-8471-29354ba539c1",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pose",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
