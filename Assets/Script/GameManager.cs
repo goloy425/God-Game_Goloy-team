@@ -316,26 +316,26 @@ public class GameManager : MonoBehaviour
         }
 
         // ステージ開始直後のカメラ演出が終わっていない間はゲームオーバーにならないようにする
-        if (!customCameraController.GetCompleteDiretionFg(curStage))
+        if (!customCameraController.GetCompleteDiretionFg(curStage) && curStage > 0)
         {
             // 一定秒間プレイヤーをドアの位置まで移動させる
             if(moveTimer < moveTime && stageData[curStage - 1].GetClearFg())
             {
                 Vector3 playerPosL = playerL.transform.position;
-                Vector3 playerPosR = playerL.transform.position;
+                Vector3 playerPosR = playerR.transform.position;
                 Vector3 doorPos = stageData[curStage].doorFlame.transform.position;
 
                 if (Mathf.Abs(playerPosL.x - doorPos.x) > Mathf.Abs(playerPosL.z - doorPos.z))
                 {
                     // プレイヤーをドア方向にX軸方向へ移動
-                    playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(doorPos.x, playerPosL.y, playerPosL.z), 0.05f * Time.deltaTime);
-                    playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(doorPos.x, playerPosR.y, playerPosR.z), 0.05f * Time.deltaTime);
+                    playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(doorPos.x, playerPosL.y, playerPosL.z), 0.1f * Time.deltaTime);
+                    playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(doorPos.x, playerPosR.y, playerPosR.z), 0.1f * Time.deltaTime);
                 }
                 else
                 {
                     // プレイヤーをドア方向にZ軸方向へ移動
-                    playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(playerPosL.x, playerPosL.y, doorPos.z), 0.05f * Time.deltaTime);
-                    playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(playerPosR.x, playerPosR.y, doorPos.z), 0.05f * Time.deltaTime);
+                    playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(playerPosL.x, playerPosL.y, doorPos.z), 0.1f * Time.deltaTime);
+                    playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(playerPosR.x, playerPosR.y, doorPos.z), 0.1f * Time.deltaTime);
                 }
                 moveTimer += Time.deltaTime;
             }
@@ -775,8 +775,8 @@ public class GameManager : MonoBehaviour
         // プレイヤーの位置をステージごとに設定された位置と回転に合わせる
         playerL.transform.position = stageData[curStage].playerLPos;
         playerR.transform.position = stageData[curStage].playerRPos;
-        playerL.transform.rotation = stageData[curStage].playerLRotation;
-        playerR.transform.rotation = stageData[curStage].playerRRotation;
+        playerLController.transform.rotation = stageData[curStage].playerLRotation;
+        playerRController.transform.rotation = stageData[curStage].playerRRotation;
         // 子オブジェクトのずれを修正する
         playerLController.transform.localPosition = new Vector3(0.0f, playerLController.transform.position.y, 0.0f);
         playerRController.transform.localPosition = new Vector3(0.0f, playerRController.transform.position.y, 0.0f);
