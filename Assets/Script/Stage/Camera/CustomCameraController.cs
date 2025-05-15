@@ -11,9 +11,6 @@ public class CustomCameraController : MonoBehaviour
     [Header("各ステージの中心位置（床オブジェクト）")]
     public List<Transform> floorTransform;
 
-    [Header("各ステージのドアオブジェクト")]
-    public List<GameObject> doorFlame;
-
     [Header("ステージ数")]
     public int stageNum;
 
@@ -53,12 +50,6 @@ public class CustomCameraController : MonoBehaviour
         movePlayerR = target2.gameObject.GetComponent<MovePlayerR>();
         rbL = target1.gameObject.GetComponent<Rigidbody>();
         rbR = target2.gameObject.GetComponent<Rigidbody>();
-
-        // スクリプトを取得
-        foreach (GameObject door in doorFlame)
-        {
-            openDoor.Add(door.GetComponent<OpenDoor>());
-        }
 
         completeDirectionFg = new bool[stageNum];   // 演出完了フラグを初期化
         startMinSize = maxSize - 1.0f;              // 0除算回避のため最大サイズと同じにしない

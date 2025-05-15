@@ -400,6 +400,7 @@ MonoBehaviour:
     magObjConnecter: []
     detectAreas:
     - {fileID: 440031805}
+    doorFlame: {fileID: 1800708486}
     playerLPos: {x: 11.4, y: 1.06, z: -5.03}
     playerRPos: {x: 11.4, y: 1.06, z: 5.99}
     playerLRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -411,6 +412,7 @@ MonoBehaviour:
     magObjConnecter: []
     detectAreas:
     - {fileID: 380513789}
+    doorFlame: {fileID: 614473587}
     playerLPos: {x: -25, y: 1.06, z: -3}
     playerRPos: {x: -25, y: 1.06, z: 3}
     playerLRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -425,6 +427,7 @@ MonoBehaviour:
     detectAreas:
     - {fileID: 780991593}
     - {fileID: 1867327265}
+    doorFlame: {fileID: 1091705293}
     playerLPos: {x: -60, y: 1.06, z: -19}
     playerRPos: {x: -60, y: 1.06, z: -13}
     playerLRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -439,6 +442,7 @@ MonoBehaviour:
     detectAreas:
     - {fileID: 305636242}
     - {fileID: 1022615153}
+    doorFlame: {fileID: 610440725}
     playerLPos: {x: -57, y: 1.06, z: 22}
     playerRPos: {x: -51, y: 1.06, z: 22}
     playerLRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -458,6 +462,7 @@ MonoBehaviour:
     - {fileID: 402410632}
     - {fileID: 1556020338}
     - {fileID: 1000089842}
+    doorFlame: {fileID: 217370596}
     playerLPos: {x: -118, y: 1.06, z: 40}
     playerRPos: {x: -118, y: 1.06, z: 46}
     playerLRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -536,12 +541,6 @@ MonoBehaviour:
   - {fileID: 1018635854}
   - {fileID: 270893490}
   - {fileID: 236965590}
-  doorFlame:
-  - {fileID: 1800708486}
-  - {fileID: 614473587}
-  - {fileID: 1091705293}
-  - {fileID: 610440725}
-  - {fileID: 217370596}
   stageNum: 5
   minSize: 8
   maxSize: 20

@@ -17,6 +17,7 @@ public class StageData
     public List<GameObject> magObjSplit2 = new List<GameObject>();              // 分裂物体の右側の磁力オブジェクト
     public List<GameObject> magObjConnecter = new List<GameObject>();           // 分裂物体を接続する磁力オブジェクト
     public List<DetectArea> detectAreas = new List<DetectArea>();               // クリア判定オブジェクト
+    public GameObject doorFlame;                                                // ドアオブジェクト
     public Vector3 playerLPos;
     public Vector3 playerRPos; 
     public Quaternion playerLRotation;
@@ -146,7 +147,9 @@ public class GameManager : MonoBehaviour
     private Magnetism magnetism1 = null;      // プレイヤーLのマグネティズム
     private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
     private GameObject playerLController = null;           
-    private GameObject playerRController = null;            
+    private GameObject playerRController = null;
+    private float moveTime = 1.0f;            // プレイヤーの移動演出の秒数
+    private float moveTimer = 0.0f;           // プレイヤーの移動演出の計測
 
     private CustomCameraController customCameraController = null;   // カメラの処理
     private int curStage = 0;                 // 現在のステージ数
@@ -237,12 +240,6 @@ public class GameManager : MonoBehaviour
         Debug.Log(totalAreas);
     }
 
-    // Update is called once per frame
-    void LateUpdate()
-    {
-
-    }
-
     private void FixedUpdate()
     {
         // Pose画面を表示しているなら
@@ -314,17 +311,39 @@ public class GameManager : MonoBehaviour
         if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
         {
             curStage++;
-            ResetPlayerPos();   // プレイヤーの位置を現在ステージの初期位置にする
+            Invoke("ResetPlayerPos", moveTime);   // プレイヤーの位置を現在ステージの初期位置にする
             Debug.Log("現在のステージ :" + (curStage + 1));
         }
 
         // ステージ開始直後のカメラ演出が終わっていない間はゲームオーバーにならないようにする
         if (!customCameraController.GetCompleteDiretionFg(curStage))
         {
+            // 一定秒間プレイヤーをドアの位置まで移動させる
+            if(moveTimer < moveTime && stageData[curStage - 1].GetClearFg())
+            {
+                Vector3 playerPosL = playerL.transform.position;
+                Vector3 playerPosR = playerL.transform.position;
+                Vector3 doorPos = stageData[curStage].doorFlame.transform.position;
+
+                if (Mathf.Abs(playerPosL.x - doorPos.x) > Mathf.Abs(playerPosL.z - doorPos.z))
+                {
+                    // プレイヤーをドア方向にX軸方向へ移動
+                    playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(doorPos.x, playerPosL.y, playerPosL.z), 0.05f * Time.deltaTime);
+                    playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(doorPos.x, playerPosR.y, playerPosR.z), 0.05f * Time.deltaTime);
+                }
+                else
+                {
+                    // プレイヤーをドア方向にZ軸方向へ移動
+                    playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(playerPosL.x, playerPosL.y, doorPos.z), 0.05f * Time.deltaTime);
+                    playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(playerPosR.x, playerPosR.y, doorPos.z), 0.05f * Time.deltaTime);
+                }
+                moveTimer += Time.deltaTime;
+            }
             augMagFg = false;
         }
         else
         {
+            moveTimer = 0.0f;
             augMagFg = true;
 
             //------ ゲームオーバーの判定処理 ------//
