@@ -6,121 +6,190 @@ using UnityEngine.UI;
 
 public class Pose : MonoBehaviour
 {
-    CanvasGroup Canvas;         // CanvasGroupコンポーネントを取得
-    public Canvas pose;
-    public Image targetImage;   // 操作するImage
+	CanvasGroup Canvas;		// CanvasGroupコンポーネントを取得
+	public Canvas pose;
+	public Image targetImage;	// 操作するImage
 
-    public Button[] myButton;
+	public Button[] myButton;
 
-    int num = 1;
+	int num = 1;
 
-    bool _pose = false;
+	bool _pose = false;
+	bool select = true;
 
-    bool select = true;
+	private GameInputs inputs;	// GameInputsクラス
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Canvas = this.GetComponent<CanvasGroup>();
-    }
+	// キー入力取得用
+	private bool nowFg;
+	private bool prevFg;
 
-    // Update is called once per frame
-    void Update()
-    {
-        // OPTIONボタン（PSコントローラーまたはXBOXコントローラー）の入力検出
-        if (Input.GetKeyDown(KeyCode.JoystickButton9) || Input.GetKeyDown(KeyCode.JoystickButton7))
-        {
-            _pose = !_pose;
+	// 点滅周りの変数
+	private float time = 0.0f;
+	private bool activeCanvas = false;
+	private bool blinking = false;
 
-            DisplayPose(_pose);
-            num = 1;
-        }
+	[Header("キャンバスを点滅させる時間")]
+	public float blinkCanvasTime = 0.3f;
 
+	// Start is called before the first frame update
+	void Start()
+	{
+		Canvas = this.GetComponent<CanvasGroup>();
+		Canvas.alpha = 0.0f;		// あらかじめ透明化
 
-        if (_pose)
-        {
-            float move = Input.GetAxis("Vertical");
+		inputs = new GameInputs();
+		inputs.Enable();
+	}
 
-            if (select)
-            {
+	// Update is called once per frame
+	void Update()
+	{
+		bool key = inputs.Pose.SwitchPose.IsPressed();	// オプションボタン（右側）の入力取得
+		nowFg = key;	// フラグの反映
 
-                // 上ボタンの入力検出
-                if (move > 0.4)
-                {
-                    --num;
-                    num = Mathf.Clamp(num, 0, 3);
+		// キー入力でフラグの切り替え
+		if (nowFg && !prevFg)
+		{
+			if (!_pose)
+			{
+				// ポーズ画面を開く＆コマンドを初期化
+				_pose = true;
+				num = 1;
+			}
+			else
+			{
+				// ポーズ画面を閉じる
+				_pose = false;
+			}
 
-                    select = false;
-                }
-                else if (move < -0.4)
-                {
-                    ++num;
-                    num = Mathf.Clamp(num, 0, 3);
+			time = 0.0f;
+			blinking = true;
+		}
 
-                    select = false;
-                }
-            }
-            else if (move > -0.1 && move < 0.1)
-            {
-                select = true;
-            }
+		if (blinking && time < blinkCanvasTime)
+		{
+			time += Time.deltaTime;
+			BrinkPoseCanvas();  // 点滅の演出
+		}
+		else if (blinking && time >= blinkCanvasTime)
+		{
+			DisplayPose(_pose);		// フラグに応じてキャンバスの表示・非表示を確定させる
+			activeCanvas = _pose;	// フラグの反映
+		}
 
+		prevFg = nowFg;		// フラグ更新
 
+		//--- ポーズ画面の操作 ---//
+		// 実装終わったらこの行と以下4行のコメント消して大丈夫です
+		// inputs.Pose.SelectUp.IsPressed()で十字上
+		// 　　〃　   .SelectDown.IsPressed()で十字下
+		// 　　〃　   .Decide.IsPressed()で○ボタンの入力取得ができます
 
+		if (_pose)
+		{
+			float move = Input.GetAxis("Vertical");
 
-            // 〇ボタン（XBOXのBボタン）の入力検出
-            if (Input.GetKeyDown(KeyCode.JoystickButton2))
-            {
-                OnButtonClicked();
-            }
-        }
-        Debug.Log(num);
-    }
+			if (select)
+			{
+				// 上ボタンの入力検出
+				if (move > 0.4)
+				{
+					--num;
+					num = Mathf.Clamp(num, 0, 3);
 
-    void DisplayPose(bool pose)
-    {
-        if (pose)
-        {
-            Canvas.alpha = 1.0f;
+					select = false;
+				}
+				else if (move < -0.4)
+				{
+					++num;
+					num = Mathf.Clamp(num, 0, 3);
 
-            Color newColor = targetImage.color;
-            newColor.a = 0.5f;
-            targetImage.color = newColor;
-        }
-        else
-        {
-            Canvas.alpha = 0.0f;
+					select = false;
+				}
+			}
+			else if (move > -0.1 && move < 0.1)
+			{
+				select = true;
+			}
 
-            Color newColor = targetImage.color;
-            newColor.a = 0.0f;
-            targetImage.color = newColor;
-        }
-    }
+			// 〇ボタン（XBOXのBボタン）の入力検出
+			if (Input.GetKeyDown(KeyCode.JoystickButton2))
+			{
+				OnButtonClicked();
+			}
+		}
+		Debug.Log(num);
+	}
 
-    void OnButtonClicked()
-    {
-        switch (num)
-        {
-            case 0:
-                SceneManager.LoadScene("MainMenu");
-                break;
+	//--- ポーズを開く・閉じる時にキャンバスを点滅させる演出用の関数 ---//
+	void BrinkPoseCanvas()
+	{
+		if (activeCanvas)
+		{
+			Canvas.alpha = 1.0f;
 
-            case 1:
-                Canvas.alpha = 0.0f;
-                break;
+			Color newColor = targetImage.color;
+			newColor.a = 0.5f;
+			targetImage.color = newColor;
 
-            case 2:
+			activeCanvas = false;
+		}
+		else
+		{
+			Canvas.alpha = 0.0f;
 
-                break;
+			Color newColor = targetImage.color;
+			newColor.a = 0.0f;
+			targetImage.color = newColor;
 
-            case 3:
-                SceneManager.LoadScene("Title");
-                break;
-        }
-    }
+			activeCanvas = true;
+		}
+	}
 
-    public bool GetPose()
-    {
-        return _pose;
-    }
+	//--- 点滅後キャンバスを表示するかしないかを確定させる関数 ---//
+	void DisplayPose(bool pose)
+	{
+		if (pose)
+		{
+			Canvas.alpha = 1.0f;
+		}
+		else
+		{
+			Canvas.alpha = 0.0f;
+		}
+
+		blinking = false;	// 点滅終了
+	}
+
+	void OnButtonClicked()
+	{
+		switch (num)
+		{
+			case 0:
+				SceneManager.LoadScene("MainMenu");
+				break;
+
+			case 1:
+				Canvas.alpha = 0.0f;
+				break;
+
+			case 2:
+
+				break;
+
+			case 3:
+				SceneManager.LoadScene("Title");
+				break;
+		}
+	}
+
+	public bool GetPose()
+	{
+		return _pose;
+	}
+
+	private void OnDestroy()
+	{
+		inputs?.Dispose();
+	}
 }

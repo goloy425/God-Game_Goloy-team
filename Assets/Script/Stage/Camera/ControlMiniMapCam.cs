@@ -49,21 +49,21 @@ public class ControlMiniMapCam : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		curStage = gm.GetCurStage() - 1;
+		curStage = gm.GetCurStage();
 
 		// カメラの切り替え
 		if (curStage != prevStage)
 		{
-			SwitchminiMapCam();
+			SwitchMiniMapCam();
 		}
 
 		prevStage = curStage;
 	}
 
 	//--- ミニマップカメラの切り替え ---//
-	private void SwitchminiMapCam()
+	private void SwitchMiniMapCam()
 	{
-		miniMapCams[prevStage - 1].gameObject.SetActive(false);
-		miniMapCams[curStage - 1].gameObject.SetActive(true);
+		miniMapCams[prevStage].gameObject.SetActive(false);
+		miniMapCams[curStage].gameObject.SetActive(true);
 	}
 }

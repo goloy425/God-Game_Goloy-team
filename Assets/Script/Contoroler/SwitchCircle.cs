@@ -27,7 +27,7 @@ public class SwitchCircle : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		bool key = inputs.OtherKey.SwitchCircle.IsPressed();  // キー入力取得
+		bool key = inputs.OtherKey.SwitchCircle.IsPressed();	// キー入力取得
 		nowFg = key;	// フラグ反映
 
 		// キー入力でフラグの切り替え
