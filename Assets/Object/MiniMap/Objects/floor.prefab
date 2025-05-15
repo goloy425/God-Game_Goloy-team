@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8934994482664953590}
   - component: {fileID: 5505336114745103881}
   - component: {fileID: 2318410871098127090}
-  - component: {fileID: 2610000674888105433}
   m_Layer: 23
   m_Name: floor
   m_TagString: Untagged
@@ -27,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6218742020687596855}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.30000305, y: 10.6, z: 3.4}
+  m_LocalPosition: {x: -0.30000305, y: 21.8, z: 3.4}
   m_LocalScale: {x: 3.6, y: 1, z: 3.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -84,17 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2610000674888105433
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6218742020687596855}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
