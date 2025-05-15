@@ -151,6 +151,9 @@ public class GameManager : MonoBehaviour
     private float moveTime = 1.0f;            // プレイヤーの移動演出の秒数
     private float moveTimer = 0.0f;           // プレイヤーの移動演出の計測
 
+    private bool fadeInFg = false;            // フェードイン中かどうか
+    private bool fadeOutFg = false;           // フェードアウト中かどうか
+    private FadeController fadeController;    // ステージクリア時のフェード処理
     private CustomCameraController customCameraController = null;   // カメラの処理
     private int curStage = 0;                 // 現在のステージ数
     private string json;                      // リトライ時に磁石の位置を移動させるための位置データ
@@ -180,6 +183,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // フェード処理のスクリプトを取得
+        fadeController = GameObject.Find("FadeImage").GetComponent<FadeController>();
         // カメラ処理のスクリプトを取得
         customCameraController = GameObject.Find("Main Camera").GetComponent<CustomCameraController>();
 
@@ -310,6 +315,7 @@ public class GameManager : MonoBehaviour
         // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
         if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
         {
+            fadeOutFg = true;
             curStage++;
             Invoke("ResetPlayerPos", moveTime);   // プレイヤーの位置を現在ステージの初期位置にする
             Debug.Log("現在のステージ :" + (curStage + 1));
@@ -370,6 +376,29 @@ public class GameManager : MonoBehaviour
                 Debug.Log("ゲームオーバー！Result画面に移ります");
             }
         }
+
+        //------ フェード処理 ------//
+        // フェードイン
+        if (fadeInFg)
+        {
+            fadeController.StartFadeIn();
+            fadeInFg = false;
+        }
+
+        //    // フェードインが完了したらフェードイン中でないにする
+        //    if (fadeController.GetCompleteFdeInFg()) { fadeInFg = false; }
+        //}
+
+        // フェードアウト
+        if (fadeOutFg)
+        {
+            fadeController.StartFadeOut();
+            fadeOutFg = false;
+        }
+
+        //    // フェードインが完了したらフェードイン中でないにする
+        //    if (fadeController.GetCompleteFdeOutFg()) { fadeOutFg = false; }
+        //}
     }
 
     // 判定エリアオブジェクトの状態を検知
@@ -782,6 +811,7 @@ public class GameManager : MonoBehaviour
         playerRController.transform.localPosition = new Vector3(0.0f, playerRController.transform.position.y, 0.0f);
         //ropeL.transform.position = playerLController.transform.localPosition;
         //ropeR.transform.position = playerRController.transform.localPosition;
+        fadeInFg = true;
     }
 
     // リザルトシーンに遷移
