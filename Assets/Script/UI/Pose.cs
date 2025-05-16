@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class Pose : MonoBehaviour
 {
-	CanvasGroup Canvas;		// CanvasGroupƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾
+
+	CanvasGroup Canvas;		// CanvasGroupã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—
 	public Canvas pose;
-	public Image targetImage;	// ‘€ì‚·‚éImage
+	public Image targetImage;	// æ“ä½œã™ã‚‹Image
 
 	public Button[] myButton;
 
@@ -17,25 +18,25 @@ public class Pose : MonoBehaviour
 	bool _pose = false;
 	bool select = true;
 
-	private GameInputs inputs;	// GameInputsƒNƒ‰ƒX
+	private GameInputs inputs;	// GameInputsã‚¯ãƒ©ã‚¹
 
-	// ƒL[“ü—Íæ“¾—p
+	// ã‚­ãƒ¼å…¥åŠ›å–å¾—ç”¨
 	private bool nowFg;
 	private bool prevFg;
 
-	// “_–Åü‚è‚Ì•Ï”
+	// ç‚¹æ»…å‘¨ã‚Šã®å¤‰æ•°
 	private float time = 0.0f;
 	private bool activeCanvas = false;
 	private bool blinking = false;
 
-	[Header("ƒLƒƒƒ“ƒoƒX‚ğ“_–Å‚³‚¹‚éŠÔ")]
+	[Header("ã‚­ãƒ£ãƒ³ãƒã‚¹ã‚’ç‚¹æ»…ã•ã›ã‚‹æ™‚é–“")]
 	public float blinkCanvasTime = 0.3f;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		Canvas = this.GetComponent<CanvasGroup>();
-		Canvas.alpha = 0.0f;		// ‚ ‚ç‚©‚¶‚ß“§–¾‰»
+		Canvas.alpha = 0.0f;		// ã‚ã‚‰ã‹ã˜ã‚é€æ˜åŒ–
 
 		inputs = new GameInputs();
 		inputs.Enable();
@@ -44,21 +45,21 @@ public class Pose : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		bool key = inputs.Pose.SwitchPose.IsPressed();	// ƒIƒvƒVƒ‡ƒ“ƒ{ƒ^ƒ“i‰E‘¤j‚Ì“ü—Íæ“¾
-		nowFg = key;	// ƒtƒ‰ƒO‚Ì”½‰f
+		bool key = inputs.Pose.SwitchPose.IsPressed();	// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒœã‚¿ãƒ³ï¼ˆå³å´ï¼‰ã®å…¥åŠ›å–å¾—
+		nowFg = key;	// ãƒ•ãƒ©ã‚°ã®åæ˜ 
 
-		// ƒL[“ü—Í‚Åƒtƒ‰ƒO‚ÌØ‚è‘Ö‚¦
+		// ã‚­ãƒ¼å…¥åŠ›ã§ãƒ•ãƒ©ã‚°ã®åˆ‡ã‚Šæ›¿ãˆ
 		if (nowFg && !prevFg)
 		{
 			if (!_pose)
 			{
-				// ƒ|[ƒY‰æ–Ê‚ğŠJ‚­•ƒRƒ}ƒ“ƒh‚ğ‰Šú‰»
+				// ãƒãƒ¼ã‚ºç”»é¢ã‚’é–‹ãï¼†ã‚³ãƒãƒ³ãƒ‰ã‚’åˆæœŸåŒ–
 				_pose = true;
 				num = 1;
 			}
 			else
 			{
-				// ƒ|[ƒY‰æ–Ê‚ğ•Â‚¶‚é
+				// ãƒãƒ¼ã‚ºç”»é¢ã‚’é–‰ã˜ã‚‹
 				_pose = false;
 			}
 
@@ -69,21 +70,21 @@ public class Pose : MonoBehaviour
 		if (blinking && time < blinkCanvasTime)
 		{
 			time += Time.deltaTime;
-			BrinkPoseCanvas();  // “_–Å‚Ì‰‰o
+			BrinkPoseCanvas();  // ç‚¹æ»…ã®æ¼”å‡º
 		}
 		else if (blinking && time >= blinkCanvasTime)
 		{
-			DisplayPose(_pose);		// ƒtƒ‰ƒO‚É‰‚¶‚ÄƒLƒƒƒ“ƒoƒX‚Ì•\¦E”ñ•\¦‚ğŠm’è‚³‚¹‚é
-			activeCanvas = _pose;	// ƒtƒ‰ƒO‚Ì”½‰f
+			DisplayPose(_pose);		// ãƒ•ãƒ©ã‚°ã«å¿œã˜ã¦ã‚­ãƒ£ãƒ³ãƒã‚¹ã®è¡¨ç¤ºãƒ»éè¡¨ç¤ºã‚’ç¢ºå®šã•ã›ã‚‹
+			activeCanvas = _pose;	// ãƒ•ãƒ©ã‚°ã®åæ˜ 
 		}
 
-		prevFg = nowFg;		// ƒtƒ‰ƒOXV
+		prevFg = nowFg;		// ãƒ•ãƒ©ã‚°æ›´æ–°
 
-		//--- ƒ|[ƒY‰æ–Ê‚Ì‘€ì ---//
-		// À‘•I‚í‚Á‚½‚ç‚±‚Ìs‚ÆˆÈ‰º4s‚ÌƒRƒƒ“ƒgÁ‚µ‚Ä‘åä•v‚Å‚·
-		// inputs.Pose.SelectUp.IsPressed()‚Å\šã
-		// @@V@   .SelectDown.IsPressed()‚Å\š‰º
-		// @@V@   .Decide.IsPressed()‚Å›ƒ{ƒ^ƒ“‚Ì“ü—Íæ“¾‚ª‚Å‚«‚Ü‚·
+		//--- ãƒãƒ¼ã‚ºç”»é¢ã®æ“ä½œ ---//
+		// å®Ÿè£…çµ‚ã‚ã£ãŸã‚‰ã“ã®è¡Œã¨ä»¥ä¸‹4è¡Œã®ã‚³ãƒ¡ãƒ³ãƒˆæ¶ˆã—ã¦å¤§ä¸ˆå¤«ã§ã™
+		// inputs.Pose.SelectUp.IsPressed()ã§åå­—ä¸Š
+		// ã€€ã€€ã€ƒã€€   .SelectDown.IsPressed()ã§åå­—ä¸‹
+		// ã€€ã€€ã€ƒã€€   .Decide.IsPressed()ã§â—‹ãƒœã‚¿ãƒ³ã®å…¥åŠ›å–å¾—ãŒã§ãã¾ã™
 
 		if (_pose)
 		{
@@ -91,7 +92,7 @@ public class Pose : MonoBehaviour
 
 			if (select)
 			{
-				// ãƒ{ƒ^ƒ“‚Ì“ü—ÍŒŸo
+				// ä¸Šãƒœã‚¿ãƒ³ã®å…¥åŠ›æ¤œå‡º
 				if (move > 0.4)
 				{
 					--num;
@@ -112,7 +113,7 @@ public class Pose : MonoBehaviour
 				select = true;
 			}
 
-			// Zƒ{ƒ^ƒ“iXBOX‚ÌBƒ{ƒ^ƒ“j‚Ì“ü—ÍŒŸo
+			// ã€‡ãƒœã‚¿ãƒ³ï¼ˆXBOXã®Bãƒœã‚¿ãƒ³ï¼‰ã®å…¥åŠ›æ¤œå‡º
 			if (Input.GetKeyDown(KeyCode.JoystickButton2))
 			{
 				OnButtonClicked();
@@ -121,7 +122,7 @@ public class Pose : MonoBehaviour
 		Debug.Log(num);
 	}
 
-	//--- ƒ|[ƒY‚ğŠJ‚­E•Â‚¶‚é‚ÉƒLƒƒƒ“ƒoƒX‚ğ“_–Å‚³‚¹‚é‰‰o—p‚ÌŠÖ” ---//
+	//--- ãƒãƒ¼ã‚ºã‚’é–‹ããƒ»é–‰ã˜ã‚‹æ™‚ã«ã‚­ãƒ£ãƒ³ãƒã‚¹ã‚’ç‚¹æ»…ã•ã›ã‚‹æ¼”å‡ºç”¨ã®é–¢æ•° ---//
 	void BrinkPoseCanvas()
 	{
 		if (activeCanvas)
@@ -146,7 +147,7 @@ public class Pose : MonoBehaviour
 		}
 	}
 
-	//--- “_–ÅŒãƒLƒƒƒ“ƒoƒX‚ğ•\¦‚·‚é‚©‚µ‚È‚¢‚©‚ğŠm’è‚³‚¹‚éŠÖ” ---//
+	//--- ç‚¹æ»…å¾Œã‚­ãƒ£ãƒ³ãƒã‚¹ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã—ãªã„ã‹ã‚’ç¢ºå®šã•ã›ã‚‹é–¢æ•° ---//
 	void DisplayPose(bool pose)
 	{
 		if (pose)
@@ -158,7 +159,7 @@ public class Pose : MonoBehaviour
 			Canvas.alpha = 0.0f;
 		}
 
-		blinking = false;	// “_–ÅI—¹
+		blinking = false;	// ç‚¹æ»…çµ‚äº†
 	}
 
 	void OnButtonClicked()
@@ -192,4 +193,5 @@ public class Pose : MonoBehaviour
 	{
 		inputs?.Dispose();
 	}
+
 }
