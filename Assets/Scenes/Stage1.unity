@@ -212,6 +212,10 @@ PrefabInstance:
       propertyPath: ground.m_Bits
       value: 16384
       objectReference: {fileID: 0}
+    - target: {fileID: 8973404442596820897, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bdd1ca4aa270234799b80371a521b76, type: 3}
 --- !u!4 &56990288 stripped
@@ -413,7 +417,7 @@ MonoBehaviour:
     detectAreas:
     - {fileID: 380513789}
     doorFlame: {fileID: 614473587}
-    playerLPos: {x: -25, y: 1.06, z: -3}
+    playerLPos: {x: -25, y: 1.06, z: -2}
     playerRPos: {x: -25, y: 1.06, z: 3}
     playerLRotation: {x: 0, y: 0, z: 0, w: 0}
     playerRRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -428,7 +432,7 @@ MonoBehaviour:
     - {fileID: 780991593}
     - {fileID: 1867327265}
     doorFlame: {fileID: 1091705293}
-    playerLPos: {x: -60, y: 1.06, z: -19}
+    playerLPos: {x: -60, y: 1.06, z: -18}
     playerRPos: {x: -60, y: 1.06, z: -13}
     playerLRotation: {x: 0, y: 0, z: 0, w: 1}
     playerRRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -443,7 +447,7 @@ MonoBehaviour:
     - {fileID: 305636242}
     - {fileID: 1022615153}
     doorFlame: {fileID: 610440725}
-    playerLPos: {x: -57, y: 1.06, z: 22}
+    playerLPos: {x: -56, y: 1.06, z: 22}
     playerRPos: {x: -51, y: 1.06, z: 22}
     playerLRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     playerRRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -463,7 +467,7 @@ MonoBehaviour:
     - {fileID: 1556020338}
     - {fileID: 1000089842}
     doorFlame: {fileID: 217370596}
-    playerLPos: {x: -118, y: 1.06, z: 40}
+    playerLPos: {x: -118, y: 1.06, z: 41}
     playerRPos: {x: -118, y: 1.06, z: 46}
     playerLRotation: {x: 0, y: 0, z: 0, w: 0}
     playerRRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -542,6 +546,7 @@ MonoBehaviour:
   - {fileID: 270893490}
   - {fileID: 236965590}
   stageNum: 5
+  startDirectionTime: 2.5
   minSize: 8
   maxSize: 20
   zoomSpeed: 5

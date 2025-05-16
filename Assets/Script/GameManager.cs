@@ -140,8 +140,8 @@ public class GameManager : MonoBehaviour
     private float clearTime = 1.0f;           // 接続されている秒数がこの秒数を超えるとクリアとみなす
     private float changeSceneTime = 1.5f;     // 何秒後にリザルトシーンに遷移するか
 
-    private GameObject ropeL = null;          // プレイヤーLのロープ
-    private GameObject ropeR = null;          // プレイヤーRのロープ
+    private Rigidbody ropeLRb = null;         // プレイヤーLのロープのRigidbody
+    private Rigidbody ropeRRb = null;         // プレイヤーRのロープのRigidbody
     private GameObject playerL = null;        // プレイヤーL
     private GameObject playerR = null;        // プレイヤーR
     private Magnetism magnetism1 = null;      // プレイヤーLのマグネティズム
@@ -196,8 +196,12 @@ public class GameManager : MonoBehaviour
         playerL = magnet1.transform.parent.gameObject;
         playerR = magnet2.transform.parent.gameObject;
         // プレイヤーのロープを取得
-        ropeL = playerL.transform.Find("Rope").gameObject;
-        ropeR = playerR.transform.Find("Rope").gameObject;
+        ropeLRb = playerL.transform.Find("Rope").gameObject.GetComponent<Rigidbody>();
+        ropeRRb = playerR.transform.Find("Rope").gameObject.GetComponent<Rigidbody>();
+        if(ropeLRb == null)
+        {
+            Debug.LogError("Rope is null");
+        }
         // プレイヤーのコントローラーを取得
         playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
         playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
@@ -801,16 +805,17 @@ public class GameManager : MonoBehaviour
     // プレイヤーの位置を現在ステージの初期位置にする
     private void ResetPlayerPos()
     {
+        // 子オブジェクトのずれを修正する
+        playerLController.transform.localPosition = new Vector3(0.0f, playerLController.transform.position.y, 0.0f);
+        playerRController.transform.localPosition = new Vector3(0.0f, playerRController.transform.position.y, 0.0f);
+        ropeLRb.MovePosition(playerLController.transform.localPosition);
+        ropeRRb.MovePosition(playerRController.transform.localPosition);
         // プレイヤーの位置をステージごとに設定された位置と回転に合わせる
         playerL.transform.position = stageData[curStage].playerLPos;
         playerR.transform.position = stageData[curStage].playerRPos;
         playerLController.transform.rotation = stageData[curStage].playerLRotation;
         playerRController.transform.rotation = stageData[curStage].playerRRotation;
-        // 子オブジェクトのずれを修正する
-        playerLController.transform.localPosition = new Vector3(0.0f, playerLController.transform.position.y, 0.0f);
-        playerRController.transform.localPosition = new Vector3(0.0f, playerRController.transform.position.y, 0.0f);
-        //ropeL.transform.position = playerLController.transform.localPosition;
-        //ropeR.transform.position = playerRController.transform.localPosition;
+
         fadeInFg = true;
     }
 

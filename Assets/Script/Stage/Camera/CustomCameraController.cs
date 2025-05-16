@@ -14,13 +14,15 @@ public class CustomCameraController : MonoBehaviour
     [Header("ステージ数")]
     public int stageNum;
 
+    [Header("開始時の演出にかける秒数")]
+    public float startDirectionTime = 2.0f;
+
     [Header("カメラ設定")]
     public float minSize = 5f;          // 最小サイズ
     public float maxSize = 15f;         // 最大サイズを15に制限
     public float zoomSpeed = 5f;        // 拡大速度
     public float padding = 2f;          // 対象物間の距離に余裕を持たせるための調節値
     public Vector3 initialOffset = new Vector3(0, 5, -10); // カメラの初期位置を指定し、ズームによって変化させる基本的なオフセット値
-    private float startDirectionTime = 2.0f;    // 最初の演出にかける秒数
 
     private Camera cam;                 // メインカメラへの参照を保持
     private Vector3 dynamicOffset;      // 動的に変化するカメラオフセットを保持
