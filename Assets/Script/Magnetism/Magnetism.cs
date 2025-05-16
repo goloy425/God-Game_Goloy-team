@@ -6,24 +6,27 @@ using UnityEngine;
 
 //=================================================
 // 制作者　宮本和音
-// プレイヤーの磁石のスクリプト
 //=================================================
 
 public class Magnetism : MonoBehaviour
 {
 	[Header("plate(Magnetの直下)の設定")]
 	public Magnetism targetMagnet;	// 対になる磁石
-	public Transform myPlate;		// 自分のBottomPlate
+	public Transform myPlate;	// 自分のBottomPlate
 	public Transform targetPlate;	// くっつける相手のBottomPlate
 
 	[Header("磁力・範囲の設定")]
-	public float magnetismRange= 10.0f;		// 引き寄せ合う距離
-	public float deadRange = 1.0f;			// 近づきすぎるとくっつく、の距離
-	public float magnetism = 200.0f;		// 磁力
-	public float strongMagnetism = 999.0f;	// 近づきすぎるとこっちの磁力で引き寄せ
+	public float magnetismRange= 10.0f;	// 引き寄せ合う距離
+	public float deadRange = 1.0f;	// 近づきすぎるとくっつく、の距離
+	public float magnetism = 200.0f;	// 磁力
+	public float strongMagnetism = 999.0f;	// 磁力
 	public float snapDistance = 0.07f;		// くっつく距離の閾値
 
 	//--- magnetismRangeとdeadRangeの設定 ---//
+	// とりあえずこの2つだけ、もし他の変数も同じようにする場合は↓
+	// 上の「public」を「[SerializeField] private」にしたうえで↓
+	// 下のと同じやつを変数名のとこだけ変えて付け足してやればいける
+
 	// 特定のスクリプトを除いて外部から書き換えできないようにする（アクセスはできる）
 	public float MagnetismRange { get; private set; }
 	public float DeadRange { get; private set; }

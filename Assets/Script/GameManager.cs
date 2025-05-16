@@ -757,12 +757,6 @@ public class GameManager : MonoBehaviour
         return startStage;
     }
 
-    // 現在ステージをゲット
-    public int GetCurStage()
-    {
-        return curStage;
-    }
-
     void OnPlateStateChanged(bool isPressed)
     {
         totalPressed += isPressed ? 1 : -1; // 押されている数を増減
