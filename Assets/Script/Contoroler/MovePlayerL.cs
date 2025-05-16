@@ -58,7 +58,6 @@ public class MovePlayerL : MonoBehaviour
         // Pose‰æ–Ê‚ð•\Ž¦‚µ‚Ä‚¢‚é‚È‚ç
         if(pose.GetPose())
         {
-            rb.velocity = Vector3.zero;
             return;
         }
 
