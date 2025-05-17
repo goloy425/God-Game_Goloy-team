@@ -64,9 +64,12 @@ public class AugMagL : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		Debug.Log("AugMagFg:" + gameManager.GetAugMagFg());
+
 		// カメラ演出中は強化できないようにする
         if (!gameManager.GetAugMagFg())
         {
+            ResetPlayerLMagnet();   // 色やら何やらを元に戻す
             return;
         }
 

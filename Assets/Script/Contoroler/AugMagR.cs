@@ -65,6 +65,7 @@ public class AugMagR : MonoBehaviour
         // ƒJƒƒ‰‰‰o’†‚Í‹­‰»‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
         if (!gameManager.GetAugMagFg())
         {
+            ResetPlayerRMagnet();   // F‚â‚ç‰½‚â‚ç‚ğŒ³‚É–ß‚·
             return;
         }
 

@@ -334,30 +334,34 @@ public class GameManager : MonoBehaviour
         }
 
         // ステージ開始直後のカメラ演出が終わっていない間はゲームオーバーにならないようにする
-        if (!customCameraController.GetCompleteDiretionFg(curStage) && curStage > 0)
+        if (!customCameraController.GetCompleteDiretionFg(curStage))
         {
-            // 一定秒間プレイヤーをドアの位置まで移動させる
-            if (moveTimer < moveTime && stageData[curStage - 1].GetClearFg() && curStage != startStage - 1)
-            {
-                Vector3 playerPosL = playerL.transform.position;
-                Vector3 playerPosR = playerR.transform.position;
-                Vector3 doorPos = stageData[curStage].doorFlame.transform.position;
-
-                if (Mathf.Abs(playerPosL.x - doorPos.x) > Mathf.Abs(playerPosL.z - doorPos.z))
-                {
-                    // プレイヤーをドア方向にX軸方向へ移動
-                    playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(doorPos.x, playerPosL.y, playerPosL.z), 0.1f * Time.deltaTime);
-                    playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(doorPos.x, playerPosR.y, playerPosR.z), 0.1f * Time.deltaTime);
-                }
-                else
-                {
-                    // プレイヤーをドア方向にZ軸方向へ移動
-                    playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(playerPosL.x, playerPosL.y, doorPos.z), 0.1f * Time.deltaTime);
-                    playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(playerPosR.x, playerPosR.y, doorPos.z), 0.1f * Time.deltaTime);
-                }
-                moveTimer += Time.deltaTime;
-            }
             augMagFg = false;
+            // 次の条件での範囲外の参照を防ぐ
+            if (curStage > 0)
+            {
+                // 一定秒間プレイヤーをドアの位置まで移動させる
+                if (moveTimer < moveTime && stageData[curStage - 1].GetClearFg() && curStage != startStage - 1)
+                {
+                    Vector3 playerPosL = playerL.transform.position;
+                    Vector3 playerPosR = playerR.transform.position;
+                    Vector3 doorPos = stageData[curStage].doorFlame.transform.position;
+
+                    if (Mathf.Abs(playerPosL.x - doorPos.x) > Mathf.Abs(playerPosL.z - doorPos.z))
+                    {
+                        // プレイヤーをドア方向にX軸方向へ移動
+                        playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(doorPos.x, playerPosL.y, playerPosL.z), 0.1f * Time.deltaTime);
+                        playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(doorPos.x, playerPosR.y, playerPosR.z), 0.1f * Time.deltaTime);
+                    }
+                    else
+                    {
+                        // プレイヤーをドア方向にZ軸方向へ移動
+                        playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(playerPosL.x, playerPosL.y, doorPos.z), 0.1f * Time.deltaTime);
+                        playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(playerPosR.x, playerPosR.y, doorPos.z), 0.1f * Time.deltaTime);
+                    }
+                    moveTimer += Time.deltaTime;
+                }
+            }
         }
         else
         {
@@ -397,20 +401,12 @@ public class GameManager : MonoBehaviour
             fadeInFg = false;
         }
 
-        //    // フェードインが完了したらフェードイン中でないにする
-        //    if (fadeController.GetCompleteFdeInFg()) { fadeInFg = false; }
-        //}
-
         // フェードアウト
         if (fadeOutFg)
         {
             fadeController.StartFadeOut();
             fadeOutFg = false;
         }
-
-        //    // フェードインが完了したらフェードイン中でないにする
-        //    if (fadeController.GetCompleteFdeOutFg()) { fadeOutFg = false; }
-        //}
     }
 
     // 判定エリアオブジェクトの状態を検知
