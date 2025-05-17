@@ -50,8 +50,8 @@ public class CustomCameraController : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         movePlayerL = target1.gameObject.GetComponent<MovePlayerL>();
         movePlayerR = target2.gameObject.GetComponent<MovePlayerR>();
-        rbL = target1.gameObject.GetComponent<Rigidbody>();
-        rbR = target2.gameObject.GetComponent<Rigidbody>();
+        rbL = target1.transform.parent.GetComponent<Rigidbody>();
+        rbR = target2.transform.parent.GetComponent<Rigidbody>();
 
         completeDirectionFg = new bool[stageNum];   // 演出完了フラグを初期化
         startMinSize = maxSize - 1.0f;              // 0除算回避のため最大サイズと同じにしない
