@@ -16,7 +16,8 @@ public class StageData
     public List<GameObject> magObjSplit1 = new List<GameObject>();              // 分裂物体の左側の磁力オブジェクト
     public List<GameObject> magObjSplit2 = new List<GameObject>();              // 分裂物体の右側の磁力オブジェクト
     public List<GameObject> magObjConnecter = new List<GameObject>();           // 分裂物体を接続する磁力オブジェクト
-    public List<DetectArea> detectAreas = new List<DetectArea>();               // クリア判定オブジェクト
+    public List<DetectArea> detectAreas = new List<DetectArea>();               // クリア判定オブジェクト              // クリア判定オブジェクト
+    public GameObject doorFlame;
     public Vector3 playerLPos;
     public Vector3 playerRPos; 
     public Quaternion playerLRotation;
@@ -131,6 +132,7 @@ public class GameManager : MonoBehaviour
 
     private bool gameClearFg = false;         // ゲームクリアしたかどうか
     private bool gameOverFg = false;          // ゲームオーバーしたかどうか
+    private bool augMagFg = false;            // 磁力強化できるかどうか
 
     private int totalAreas = 0;               // 設定された判定エリアの数
     private int totalConnected = 0;           // 接続された判定エリアの数
@@ -142,7 +144,15 @@ public class GameManager : MonoBehaviour
     private GameObject playerR = null;        // プレイヤーR
     private Magnetism magnetism1 = null;      // プレイヤーLのマグネティズム
     private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
+    private GameObject playerLController = null;
+    private GameObject playerRController = null;
+    private float moveTime = 1.0f;            // プレイヤーの移動演出の秒数
+    //private float moveTimer = 0.0f;           // プレイヤーの移動演出の計測
 
+    private bool fadeInFg = false;            // フェードイン中かどうか
+    private bool fadeOutFg = false;           // フェードアウト中かどうか
+    private FadeController fadeController;    // ステージクリア時のフェード処理
+    private CustomCameraController customCameraController = null;   // カメラの処理
     private int curStage = 0;                 // 現在のステージ数
     private string json;                      // リトライ時に磁石の位置を移動させるための位置データ
 
@@ -171,12 +181,21 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // フェード処理のスクリプトを取得
+        fadeController = GameObject.Find("FadeImage").GetComponent<FadeController>();
+        // カメラ処理のスクリプトを取得
+        customCameraController = GameObject.Find("Main Camera").GetComponent<CustomCameraController>();
+
+        //------ プレイヤー関係のオブジェクト、スクリプトを取得 ------//
         // プレイヤーの磁石の磁力スクリプトを取得
         magnetism1 = magnet1.GetComponent<Magnetism>();
         magnetism2 = magnet2.GetComponent<Magnetism>();
         // プレイヤーを取得
         playerL = magnet1.transform.parent.gameObject;
         playerR = magnet2.transform.parent.gameObject;
+        // プレイヤーコントローラーを取得
+        playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
+        playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
 
         //------ 開始ステージ数と現在のステージ数の決定 ------//
         // CurrentStageに保存されたステージ数を取得
@@ -221,12 +240,6 @@ public class GameManager : MonoBehaviour
         Debug.Log(totalAreas);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void FixedUpdate()
     {
         // Pose画面を表示しているなら
@@ -242,77 +255,142 @@ public class GameManager : MonoBehaviour
         }
 
         //------ ステージのクリア処理 ------//
-        int connectCount = 0;  // 繋がっている判定エリア
-
+        int connectCount = 0;             // 各ステージの繋がっている判定エリアの数
         // 現在のステージの判定エリアが繋がっているかを調べる
         for (int i = 0; i < stageData[curStage].detectAreas.Count; i++)
         {
             // 繋がっている時、その数をカウント
-            if (stageData[curStage].detectAreas[i].GetIsConnectFg())
+            if (stageData[curStage].detectAreas[i].GetIsConnectFg()) { connectCount++; }
+            //// 繋がっていない時は減らす
+            //else {  connectCount--; }
+            Debug.Log("接続回路数:" + connectCount);
+
+            // すべての判定エリアが繋がっている時、秒数によってクリアフラグを変更
+            if (connectCount == stageData[curStage].detectAreas.Count)
             {
-                connectCount++;
+                clearTimer += Time.deltaTime;   // 繋がっている秒数を計測
 
-                // すべての判定エリアが繋がっている時、秒数によってクリアフラグを変更
-                if (connectCount == stageData[curStage].detectAreas.Count)
+                // クリアとみなす秒数を超えたらクリア
+                if (clearTimer > clearTime)
                 {
-                    clearTimer += Time.deltaTime;   // 繋がっている秒数を計測
-
-                    // クリアとみなす秒数を超えたらクリア
-                    if (clearTimer > clearTime)
-                    {
-                        totalConnected += connectCount;
-                        Debug.Log(totalConnected);
-                        stageData[curStage].SetClearFg(true);
-                        clearTimer = 0.0f;   // タイマーリセット
-                        Debug.Log("ステージ" + (curStage + 1) + "クリア");
-                    }
+                    totalConnected += connectCount;
+                    Debug.Log("総合接続回路数:" + totalConnected);
+                    stageData[curStage].SetClearFg(true);
+                    clearTimer = 0.0f;   // タイマーリセット
+                    Debug.Log("ステージ" + (curStage + 1) + "クリア");
                 }
             }
         }
 
-        // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
-        if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
-        {
-            curStage++;
-            Debug.Log("現在のステージ :" + (curStage + 1));
-        }
-
         // 全ての回路が接続された時、ゲームクリア
-        if(totalConnected == totalAreas)
+        if (totalConnected == totalAreas)
         {
             gameClearFg = true; // ゲームクリア
             Debug.Log("全ての回路が接続されています！ゲームクリア！Result画面に移ります");
             Invoke("MoveResultScene", changeSceneTime);     // changeSceneTime秒後にリザルトシーンに遷移
         }
 
-
-        //------ ゲームオーバーの判定処理 ------//
-        // プレイヤーの磁石に何かがくっついた時
-        if (magnetism1.isSnapping || magnetism2.isSnapping)
+        // 現在のステージをクリアした時、次のステージがあれば次のステージに進む
+        if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
         {
-            Debug.Log("磁石がくっつきました！ゲームオーバー！Result画面に移ります");
-            // ここにゲームオーバー処理を書く
-
-            // changeSceneTime秒後にゲームオーバーシーンに遷移
-            Invoke("MoveGameOverScene", changeSceneTime);
+            fadeOutFg = true;
+            connectCount = 0;
+            curStage++;
+            Invoke("ResetPlayerPos", moveTime);   // プレイヤーの位置を現在ステージの初期位置にする
+            Debug.Log("現在のステージ :" + (curStage + 1));
         }
 
-        // 磁力範囲外に出た時
-        if (!magnetism1.inMagnetismArea || !magnetism2.inMagnetismArea)
+        // ステージ開始直後のカメラ演出が終わっていない間はゲームオーバーにならないようにする
+        if (!customCameraController.GetCompleteDiretionFg(curStage))
         {
-            Debug.Log("磁力範囲外に出ました！ゲームオーバー！Result画面に移ります");
-            // ここにゲームオーバー処理を書く
+            augMagFg = false;
+            //// 次の条件での範囲外の参照を防ぐ
+            //if (curStage > 0)
+            //{
+            //    // 一定秒間プレイヤーをドアの位置まで移動させる
+            //    if (moveTimer < moveTime && stageData[curStage - 1].GetClearFg() && curStage != startStage - 1)
+            //    {
+            //        Vector3 playerPosL = playerL.transform.position;
+            //        Vector3 playerPosR = playerR.transform.position;
+            //        Vector3 doorPos = stageData[curStage].doorFlame.transform.position;
 
-            // changeSceneTime秒後にゲームオーバーシーンに遷移
-            Invoke("MoveGameOverScene", changeSceneTime);
+            //        // プレイヤーL
+            //        if (Mathf.Abs(playerPosL.x - doorPos.x) > Mathf.Abs(playerPosL.z - doorPos.z))
+            //        {
+            //            // プレイヤーをドア方向にX軸方向へ移動
+            //            playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(doorPos.x, playerPosL.y, playerPosL.z), 0.1f * Time.deltaTime);
+            //        }
+            //        else
+            //        {
+            //            // プレイヤーをドア方向にZ軸方向へ移動
+            //            playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(playerPosL.x, playerPosL.y, doorPos.z), 0.1f * Time.deltaTime);
+            //        }
+            //        // プレイヤーR
+            //        if (Mathf.Abs(playerPosR.x - doorPos.x) > Mathf.Abs(playerPosR.z - doorPos.z))
+            //        {
+            //            // プレイヤーをドア方向にX軸方向へ移動
+            //            playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(doorPos.x, playerPosR.y, playerPosR.z), 0.1f * Time.deltaTime);
+            //        }
+            //        else
+            //        {
+            //            // プレイヤーをドア方向にZ軸方向へ移動
+            //            playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(playerPosR.x, playerPosR.y, doorPos.z), 0.1f * Time.deltaTime);
+            //        }
+            //        moveTimer += Time.deltaTime;
+            //    }
+            //}
+        }
+        else
+        {
+            //moveTimer = 0.0f;
+            augMagFg = true;
+
+            //------ ゲームオーバーの判定処理 ------//
+            // プレイヤーの磁石に何かがくっついた時
+            if (magnetism1.isSnapping || magnetism2.isSnapping)
+            {
+                gameOverFg = true;
+                Debug.Log("磁石がくっつきました！");
+            }
+
+            // 磁力範囲外に出た時
+            if (!magnetism1.inMagnetismArea || !magnetism2.inMagnetismArea)
+            {
+                gameOverFg = true;
+                Debug.Log("磁力範囲外に出ました！");
+
+            }
+
+            // フラグからゲームオーバーに遷移
+            if (gameOverFg)
+            {
+                // changeSceneTime秒後にゲームオーバーシーンに遷移
+                Invoke("MoveGameOverScene", changeSceneTime);
+                Debug.Log("ゲームオーバー！Result画面に移ります");
+            }
+        }
+
+        //------ フェード処理 ------//
+        // フェードイン
+        if (fadeInFg)
+        {
+            fadeController.StartFadeIn();
+            fadeInFg = false;
+        }
+
+        // フェードアウト
+        if (fadeOutFg)
+        {
+            fadeController.StartFadeOut();
+            fadeOutFg = false;
         }
     }
 
     // 判定エリアオブジェクトの状態を検知
     void OnDetectionStateChanged(bool isConnected)
     {
-        //totalConnected += isConnected ? 1 : -1; // 接続されている数を増減
-        //Debug.Log(totalConnected);
+        //connectCount += isConnected ? 1 : -1; // 接続されている数を増減
+        //Debug.Log("接続回路数:" + connectCount);
 
         //if (totalConnected == totalAreas)
         //{
@@ -704,6 +782,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // プレイヤーの位置を現在ステージの初期位置にする
+    private void ResetPlayerPos()
+    {
+        // 子オブジェクトの回転をリセットしておく
+        playerLController.transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+        playerRController.transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+        // プレイヤーの位置をステージごとに設定された位置と回転に合わせる
+        playerL.transform.position = stageData[curStage].playerLPos;
+        playerR.transform.position = stageData[curStage].playerRPos;
+        playerL.transform.rotation = stageData[curStage].playerLRotation;
+        playerR.transform.rotation = stageData[curStage].playerRRotation;
+
+        fadeInFg = true;
+    }
+
     // リザルトシーンに遷移
     private void MoveResultScene()
     {
@@ -737,6 +830,12 @@ public class GameManager : MonoBehaviour
     public bool GetGameOverFg()
     {
         return gameOverFg;
+    }
+
+    // 磁力強化フラグを取得
+    public bool GetAugMagFg()
+    {
+        return augMagFg;
     }
 
     // ゲームクリアフラグをセット

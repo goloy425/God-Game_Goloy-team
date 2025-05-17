@@ -11,9 +11,6 @@ public class DetectArea : MonoBehaviour
 {
     [Header("ゲーム開始時の色")]
     public Color color;
-    [Header("判定エリアの中心からの大きさ")]
-    public float sizeZ = 0.0f;
-    public float sizeX = 0.0f;
     [Header("判定を取る磁力オブジェクト")]
     public GameObject[] detectedObjects;
     [Header("接続前の回路の色")]
@@ -59,86 +56,80 @@ public class DetectArea : MonoBehaviour
         Vector3 thisPos = this.transform.position;      // 判定エリアの座標
         Vector3 otherPos = other.transform.position;    // 衝突した磁力オブジェクトの座標
 
-        // 衝突した磁力オブジェクトが判定エリア内にいる時
-        if (thisPos.x - sizeX <= otherPos.x && otherPos.x <= thisPos.x + sizeX &&
-            thisPos.z - sizeZ <= otherPos.z && otherPos.z <= thisPos.z + sizeZ)
-        {
-            // 指定された全磁力オブジェクトを検索
-            for (int i = 0; i < detectedObjects.Length; i++)
-            {
-                // 判定エリア内のオブジェクトが指定された磁力オブジェクトと同じ時、接続
-                if (other.gameObject == detectedObjects[i])
-                {
-                    freezeMagObj = other.gameObject;    // 動きを止める自欲オブジェクトを登録
-
-                    // 判定エリア内にオブジェクトが存在しない時に実行
-                    if (objNum < 1)
-                    {
-                        // 固定位置を取得
-                        Vector3 fixedPos = transform.position;
-
-                        // 判定エリアと繋がっている回路の色を変更
-                        for (int j = 0; j < circuitsRenderer.Length; j++)
-                        {
-                            circuitsRenderer[j].material.color = circuitColor;
-                        }
-
-                        audioSource.PlayOneShot(audioClip);  // SE再生
-                        isConnectFg = true;
-                        OnDetectAreaChanged?.Invoke(true);   // 判定を通知
-                        Invoke("NoMoveMagObj", 0.5f);        // 動かなくする
-                        Debug.Log("接続 isConnectFg:" + isConnectFg); 
-
-                        // 球体の磁力オブジェクトの時、開くフラグをオン
-                        if (other.CompareTag("MagObj_Sphere")) 
-                        {
-                            openMagnet = other.GetComponent<OpenMagnet>();
-                            if(openMagnet != null) { openMagnet.SetOpenFg(true); }
-                        }
-                    }
-                    objNum++;
-                }
-            }
-
-        }
-    }
-
-    // オブジェクトがすり抜けた時の処理
-    private void OnTriggerExit(Collider other)
-    {
-            Vector3 thisPos = this.transform.position;      // 判定エリアの座標
-            Vector3 otherPos = other.transform.position;    // 衝突した磁力オブジェクトの座標
-
         // 指定された全磁力オブジェクトを検索
         for (int i = 0; i < detectedObjects.Length; i++)
         {
-            // 判定エリア外のオブジェクトが指定された磁力オブジェクトと同じ時、切断
+            // 判定エリア内のオブジェクトが指定された磁力オブジェクトと同じ時、接続
             if (other.gameObject == detectedObjects[i])
             {
-                // 判定エリア内に一個以下存在する時に実行
-                if (objNum <= 1)
+                freezeMagObj = other.gameObject;    // 動きを止める磁力オブジェクトを登録
+
+                // 判定エリア内にオブジェクトが存在しない時に実行
+                if (objNum < 1)
                 {
+                    // 固定位置を取得
+                    Vector3 fixedPos = transform.position;
+
                     // 判定エリアと繋がっている回路の色を変更
                     for (int j = 0; j < circuitsRenderer.Length; j++)
                     {
-                        circuitsRenderer[j].material.color = initCircuitColor;
+                        circuitsRenderer[j].material.color = circuitColor;
                     }
-                    // audioSource.PlayOneShot(audioClip);     // SE再生
-                    isConnectFg = false;
-                    OnDetectAreaChanged?.Invoke(false);   // 判定を通知
-                    Debug.Log("切断 isConnectFg:" + isConnectFg);
 
-                    // 球体の磁力オブジェクトの時、開くフラグをオフ
+                    audioSource.PlayOneShot(audioClip);  // SE再生
+                    isConnectFg = true;
+                    OnDetectAreaChanged?.Invoke(true);   // 判定を通知
+                    Invoke("NoMoveMagObj", 0.5f);        // 動かなくする
+                    Debug.Log("接続 isConnectFg:" + isConnectFg);
+
+                    // 球体の磁力オブジェクトの時、開くフラグをオン
                     if (other.CompareTag("MagObj_Sphere"))
                     {
                         openMagnet = other.GetComponent<OpenMagnet>();
-                        if (openMagnet != null) { openMagnet.SetOpenFg(false); }
+                        if (openMagnet != null) { openMagnet.SetOpenFg(true); }
                     }
                 }
-                objNum--;
+                objNum++;
             }
         }
     }
+
+    //// オブジェクトがすり抜けた時の処理
+    //private void OnTriggerExit(Collider other)
+    //{
+    //        Vector3 thisPos = this.transform.position;      // 判定エリアの座標
+    //        Vector3 otherPos = other.transform.position;    // 衝突した磁力オブジェクトの座標
+
+    //    // 指定された全磁力オブジェクトを検索
+    //    for (int i = 0; i < detectedObjects.Length; i++)
+    //    {
+    //        // 判定エリア外のオブジェクトが指定された磁力オブジェクトと同じ時、切断
+    //        if (other.gameObject == detectedObjects[i])
+    //        {
+    //            // 判定エリア内に一個以下存在する時に実行
+    //            if (objNum <= 1)
+    //            {
+    //                // 判定エリアと繋がっている回路の色を変更
+    //                for (int j = 0; j < circuitsRenderer.Length; j++)
+    //                {
+    //                    circuitsRenderer[j].material.color = initCircuitColor;
+    //                }
+    //                // audioSource.PlayOneShot(audioClip);     // SE再生
+    //                isConnectFg = false;
+    //                OnDetectAreaChanged?.Invoke(false);   // 判定を通知
+    //                Debug.Log("切断 isConnectFg:" + isConnectFg);
+
+    //                // 球体の磁力オブジェクトの時、開くフラグをオフ
+    //                if (other.CompareTag("MagObj_Sphere"))
+    //                {
+    //                    openMagnet = other.GetComponent<OpenMagnet>();
+    //                    if (openMagnet != null) { openMagnet.SetOpenFg(false); }
+    //                }
+    //            }
+    //            objNum--;
+    //        }
+    //    }
+    //}
 
     // 繋がったかどうかのフラグを取得
     public bool GetIsConnectFg()

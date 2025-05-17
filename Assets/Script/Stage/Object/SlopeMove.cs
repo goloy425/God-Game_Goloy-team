@@ -12,7 +12,7 @@ public class SlopeMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = transform.parent.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -61,7 +61,7 @@ public class SlopeMove : MonoBehaviour
             Vector3 slopeDirection = Vector3.ProjectOnPlane(moveDirection, normal);
             Debug.Log(slopeDirection);
 
-            transform.position += (slopeDirection * moveSlopeSpeed * Time.deltaTime);
+            transform.parent.position += (slopeDirection * moveSlopeSpeed * Time.deltaTime);
 
             //rb.MovePosition(transform.position + slopeDirection * moveSlopeSpeed /** Time.deltaTime*/);
 
