@@ -140,14 +140,18 @@ public class GameManager : MonoBehaviour
     private float clearTime = 1.0f;           // 接続されている秒数がこの秒数を超えるとクリアとみなす
     private float changeSceneTime = 1.5f;     // 何秒後にリザルトシーンに遷移するか
 
-    private Rigidbody ropeLRb = null;         // プレイヤーLのロープのRigidbody
-    private Rigidbody ropeRRb = null;         // プレイヤーRのロープのRigidbody
     private GameObject playerL = null;        // プレイヤーL
     private GameObject playerR = null;        // プレイヤーR
     private Magnetism magnetism1 = null;      // プレイヤーLのマグネティズム
     private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
     private GameObject playerLController = null;           
     private GameObject playerRController = null;
+    private Rigidbody playerLRb = null;       // プレイヤーLのRigidbody
+    private Rigidbody playerRRb = null;       // プレイヤーRのRigidbody
+    private Rigidbody ropeLRb = null;         // プレイヤーLのロープのRigidbody
+    private Rigidbody ropeRRb = null;         // プレイヤーRのロープのRigidbody
+    private Rigidbody magnet1Rb = null;       // プレイヤーLの磁石のRigidbody
+    private Rigidbody magnet2Rb = null;       // プレイヤーRの磁石のRigidbody
     private float moveTime = 1.0f;            // プレイヤーの移動演出の秒数
     private float moveTimer = 0.0f;           // プレイヤーの移動演出の計測
 
@@ -192,6 +196,8 @@ public class GameManager : MonoBehaviour
         // プレイヤーの磁石の磁力スクリプトを取得
         magnetism1 = magnet1.GetComponent<Magnetism>();
         magnetism2 = magnet2.GetComponent<Magnetism>();
+        magnet1Rb = magnet1.GetComponent<Rigidbody>();
+        magnet2Rb = magnet2.GetComponent<Rigidbody>();
         // プレイヤーを取得
         playerL = magnet1.transform.parent.gameObject;
         playerR = magnet2.transform.parent.gameObject;
@@ -205,6 +211,8 @@ public class GameManager : MonoBehaviour
         // プレイヤーのコントローラーを取得
         playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
         playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
+        playerLRb = playerLController.GetComponent<Rigidbody>();
+        playerRRb = playerRController.GetComponent<Rigidbody>();
 
         //------ 開始ステージ数と現在のステージ数の決定 ------//
         // CurrentStageに保存されたステージ数を取得
@@ -329,7 +337,7 @@ public class GameManager : MonoBehaviour
         if (!customCameraController.GetCompleteDiretionFg(curStage) && curStage > 0)
         {
             // 一定秒間プレイヤーをドアの位置まで移動させる
-            if(moveTimer < moveTime && stageData[curStage - 1].GetClearFg())
+            if (moveTimer < moveTime && stageData[curStage - 1].GetClearFg() && curStage != startStage - 1)
             {
                 Vector3 playerPosL = playerL.transform.position;
                 Vector3 playerPosR = playerR.transform.position;
@@ -353,6 +361,14 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            // プレイヤー関係の衝突判定をデフォルトにする
+            playerLRb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            playerRRb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            ropeLRb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            ropeRRb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            magnet1Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            magnet2Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+
             moveTimer = 0.0f;
             augMagFg = true;
 
@@ -805,16 +821,26 @@ public class GameManager : MonoBehaviour
     // プレイヤーの位置を現在ステージの初期位置にする
     private void ResetPlayerPos()
     {
-        // 子オブジェクトのずれを修正する
-        playerLController.transform.localPosition = new Vector3(0.0f, playerLController.transform.position.y, 0.0f);
-        playerRController.transform.localPosition = new Vector3(0.0f, playerRController.transform.position.y, 0.0f);
-        ropeLRb.MovePosition(playerLController.transform.localPosition);
-        ropeRRb.MovePosition(playerRController.transform.localPosition);
+        // プレイヤー関係の衝突判定を高精度にする
+        playerLRb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        playerRRb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        ropeLRb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        ropeRRb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        magnet1Rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        magnet2Rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
         // プレイヤーの位置をステージごとに設定された位置と回転に合わせる
         playerL.transform.position = stageData[curStage].playerLPos;
         playerR.transform.position = stageData[curStage].playerRPos;
         playerLController.transform.rotation = stageData[curStage].playerLRotation;
         playerRController.transform.rotation = stageData[curStage].playerRRotation;
+        // 子オブジェクトのずれを修正する
+        playerLController.transform.localPosition = new Vector3(0.0f, playerLController.transform.position.y + 0.1f, 0.0f);
+        playerRController.transform.localPosition = new Vector3(0.0f, playerRController.transform.position.y + 0.1f, 0.0f);
+        ropeLRb.MovePosition(playerLController.transform.localPosition);
+        ropeRRb.MovePosition(playerRController.transform.localPosition);
+        magnet1Rb.MovePosition(ropeLRb.transform.localPosition);
+        magnet2Rb.MovePosition(ropeRRb.transform.localPosition);
 
         fadeInFg = true;
     }

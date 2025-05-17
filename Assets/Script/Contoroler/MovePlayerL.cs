@@ -35,7 +35,7 @@ public class MovePlayerL : MonoBehaviour
         pose = GameObject.Find("Pose").GetComponent<Pose>();
 
         // Rigidbodyコンポーネントを取得
-        rb = GetComponent<Rigidbody>();
+        rb = transform.parent.GetComponent<Rigidbody>();
         //// PlaySEAtRegularIntervalsコンポーネントを取得
         //playSE = GetComponent<PlaySEAtRegularIntervals>();
         // アニメーターを取得
