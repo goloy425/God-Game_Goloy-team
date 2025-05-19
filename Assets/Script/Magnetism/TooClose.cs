@@ -1,77 +1,170 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-//=============================================================
-// ì¬ÒF‹{–{˜a‰¹
-// ¥Î‚ª‹ß‚Ã‚«‚·‚¬‚½‚ÉƒXƒ[ƒ‚[ƒVƒ‡ƒ“‚É‚È‚é‚â‚ÂiƒeƒXƒgj
-//=============================================================
+//=====================================================================
+// ï¿½ì¬ï¿½ÒFï¿½{ï¿½{ï¿½aï¿½ï¿½
+// ï¿½ï¿½ï¿½Î‚Æï¿½ï¿½ÎAï¿½ï¿½ï¿½Î‚Æï¿½ï¿½ÍƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ì‹ß‚Ã‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mï¿½ï¿½ï¿½ï¿½Xï¿½Nï¿½ï¿½ï¿½vï¿½g
+//=====================================================================
 
 public class TooClose : MonoBehaviour
-{
-	[Header("ƒvƒŒƒCƒ„[‚Ì¥Î‚ğİ’è")]
+{ 
+	[Header("GameManagerï¿½ï¿½İ’ï¿½")]
+	public GameManager gm;
+
+	[Header("ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìï¿½ï¿½Î‚ï¿½İ’ï¿½")]
 	public Magnetism magnet1;
 	public Magnetism magnet2;
 
-	[Header("Plate‚ğİ’è")]
+	[Header("Plateï¿½ï¿½İ’ï¿½")]
 	public GameObject plate1;
 	public GameObject plate2;
 
-	private float distance;	// ¥Î“¯m‚Ì‹——£
-	private bool isSlow;	// ƒXƒ[ƒ‚[ƒVƒ‡ƒ“‚©‚Ç‚¤‚©
+	public bool stopSlow = false;
 
-	//private float dangerDistance;	// ‚±‚êˆÈã‹ß‚Ã‚«‚·‚¬‚é‚Æƒ„ƒo‚¢I‚Ì‹——£
-	//private float safetyDistance;	// ƒXƒ[ƒ‚[ƒVƒ‡ƒ“‚ğ‰ğœ‚·‚é‹——£
-	
+	private float dangerDist;	// ï¿½ï¿½ï¿½ï¿½Èï¿½ß‚Ã‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æƒï¿½ï¿½oï¿½ï¿½ï¿½Iï¿½Ì‹ï¿½ï¿½ï¿½
+	private float safetyDist;	// ï¿½Xï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‹—ï¿½ï¿½ï¿½AdangerDistnï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½Æï¿½ï¿½İ’è‚·ï¿½ï¿½
+
 	// Start is called before the first frame update
 	void Start()
 	{
-
+		// ï¿½eï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
+		dangerDist = magnet1.deadRange + 1.0f;
+		safetyDist = dangerDist + 0.3f;
 	}
 
-
-	private void FixedUpdate()
+	// Update is called once per frame
+	void Update()
 	{
-		// ŠëŒ¯‹——£‚É“ü‚Á‚½‚çƒXƒ[ƒ‚[ƒVƒ‡ƒ“
-		if ((magnet1.inDangerZone || (magnet1.inDangerZone_obj || magnet2.inDangerZone)) && !isSlow)
+		if (magnet1.isSlow || magnet2.isSlow)
 		{
 			StartCoroutine(TriggerSlowMotionEffect());
 		}
+		else
+		{
+			StopCoroutine(TriggerSlowMotionEffect());
+		}
 	}
 
-	//--- ƒXƒ[ƒ‚[ƒVƒ‡ƒ“‚Ìˆ— ---//
+	////--- ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìï¿½ï¿½Î‘ÎƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ÌÚ‹ß”ï¿½ï¿½ï¿½ ---//
+	//private void CheckTooClose()
+	//{
+	//	// ï¿½ï¿½ï¿½ï¿½ï¿½ÌŒvï¿½ï¿½
+	//	float dist = Vector3.Distance(plate1.transform.position, plate2.transform.position);
+
+	//	if (dist <= dangerDist)
+	//	{
+	//		magnet1.isSlow = true;
+	//	}
+
+	//	if (magnet1.isSlow && dist > safetyDist)
+	//	{
+	//		magnet1.isSlow = false;
+	//	}
+
+	//	// ï¿½eï¿½ï¿½Ş‚Ìï¿½ï¿½ÍƒXï¿½Nï¿½ï¿½ï¿½vï¿½gï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½Wï¿½jï¿½ï¿½ï¿½æ“¾
+	//	var sphereList = gm.GetCurrentStageSphereMagnetisms();
+	//	var split1List = gm.GetCurrentStageSplit1Magnetisms();
+	//	var split2List = gm.GetCurrentStageSplit2Magnetisms();
+	//	var connecterList = gm.GetCurrentStageConnecterMagnetisms();
+
+	//	//--- ï¿½ï¿½ï¿½ï¿½ï¿½ÌŒvï¿½ï¿½ ---//
+	//	// ï¿½ï¿½
+	//	foreach (var mag in sphereList)
+	//	{
+	//		// ï¿½Xï¿½eï¿½[ï¿½Wï¿½ï¿½ï¿½ÉŠYï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÍƒXï¿½Nï¿½ï¿½ï¿½vï¿½gï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ê‡ï¿½Xï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½
+	//		if (mag == null || !mag.enabled) continue;
+
+	//		// ï¿½ï¿½ï¿½ï¿½ï¿½ÌŒvï¿½ï¿½
+	//		dist1 = Vector3.Distance(plate1.transform.position, mag.transform.position);
+	//		dist2 = Vector3.Distance(plate2.transform.position, mag.transform.position);
+
+	//		// ï¿½ëŒ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//		if (dist1 <= dangerDist || dist2 <= dangerDist)
+	//		{
+	//			if (dist1 <= dangerDist) { magnet1.isSlow = true; }	// magnet1
+	//			if (dist2 <= dangerDist) { magnet2.isSlow = true; }	// magnet2
+	//		}
+	//		// ï¿½ëŒ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½ï¿½Ô‚Åˆï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Å—ï¿½ï¿½ê‚½ï¿½ï¿½
+	//		else if ((magnet1.isSlow && dist1 > safetyDist) || (magnet2.isSlow && dist2 > safetyDist))
+	//		{
+	//			if (magnet1.isSlow) { magnet1.isSlow = false; }			// magnet1
+	//			else if (magnet2.isSlow) { magnet2.isSlow = false; }	// magnet2
+	//		}
+	//	}
+
+	//	// 2ï¿½Â‚É•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(1)
+	//	foreach (var mag in split1List)
+	//	{
+	//		if (mag == null || !mag.enabled) continue;
+
+	//		dist1 = Vector3.Distance(plate1.transform.position, mag.transform.position);
+
+	//		if (dist1 < dangerDist)
+	//		{
+	//			Debug.Log("ï¿½ß‚ï¿½ï¿½ï¿½ï¿½isplit1Magnetismï¿½j");
+	//		}
+	//	}
+
+	//	// 2ï¿½Â‚É•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(1)
+	//	foreach (var mag in split2List)
+	//	{
+	//		if (mag == null || !mag.enabled) continue;
+
+	//		dist2 = Vector3.Distance(plate2.transform.position, mag.transform.position);
+
+	//		if (dist2 < dangerDist)
+	//		{
+	//			Debug.Log("ï¿½ß‚ï¿½ï¿½ï¿½ï¿½isplit2Magnetismï¿½j");
+	//			// ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½È‚ï¿½
+	//		}
+	//	}
+
+	//	// 2ï¿½Â‚É•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½Ì‚ï¿½ï¿½
+	//	foreach (var mag in connecterList)
+	//	{
+	//		if (mag == null || !mag.enabled) continue;
+
+	//		dist1 = Vector3.Distance(plate1.transform.position, mag.transform.position);
+	//		dist2 = Vector3.Distance(plate2.transform.position, mag.transform.position);
+
+	//		if (dist1 < dangerDist || dist2 < dangerDist)
+	//		{
+	//			Debug.Log("ï¿½ß‚ï¿½ï¿½ï¿½ï¿½iconnecterMagnetismï¿½j");
+	//			// ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½È‚ï¿½
+	//		}
+	//	}
+	//}
+
+	//--- ï¿½Xï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ ---//
 	IEnumerator TriggerSlowMotionEffect()
 	{
-		isSlow = true;
-
-		// ƒXƒ[ƒ‚[ƒVƒ‡ƒ“
+		// ï¿½Xï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
 		Time.timeScale = 0.2f;
 		Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
-		// ¥Î‚Ì—h‚ê‚Å’ZŠÔ‚ÌŠÔ‚ÉƒXƒ[‚ª“ü‚Á‚½‚è‰ğ‚¯‚½‚è‚·‚é‚Ì‚ğ–h‚®
-		if (!magnet1.isSnapping && !magnet2.isSnapping &&
-			magnet1.inMagnetismArea && magnet2.inMagnetismArea &&
-			magnet1.inObjMagArea && magnet2.inObjMagArea)
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Sï¿½É‚È‚é‚©ï¿½ï¿½ï¿½Î‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½Ü‚Å‘Ò‚Âiï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½^ï¿½Cï¿½ï¿½ï¿½ÅŠÄï¿½ï¿½j
+		while ((magnet1.isSlow || magnet2.isSlow) &&
+			   !magnet1.isSnapping && !magnet2.isSnapping)
 		{
-			yield return new WaitForSeconds(0.15f);
+			yield return null;  // ï¿½ï¿½ï¿½Ìƒtï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ü‚Å‘Ò‹@
 		}
 
-		// ‹——£‚ªˆÀ‘S‚É‚È‚é‚©¥Î‚ª‚­‚Á‚Â‚­‚Ü‚Å‘Ò‚ÂiƒŠƒAƒ‹ƒ^ƒCƒ€‚ÅŠÄ‹j
-		while (!magnet1.inSafeZone && !magnet2.inSafeZone && !magnet1.isSnapping && !magnet2.isSnapping)
-		{
-			yield return null;  // Ÿ‚ÌƒtƒŒ[ƒ€‚Ü‚Å‘Ò‹@
-		}
-
-		// ƒXƒ[ƒ‚[ƒVƒ‡ƒ“‰ğœ
+		// ï¿½Xï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Time.timeScale = 1f;
 		Time.fixedDeltaTime = 0.02f;
 
-		isSlow = false;
+		stopSlow = false;
 	}
 
-	//--- ƒXƒ[ƒ‚[ƒVƒ‡ƒ“‚©‚Ç‚¤‚©‚ğ•Ô‚·ŠÖ” ---//
-	public bool GetIsSlow()
+	//--- ï¿½ëŒ¯ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½ÌƒQï¿½bï¿½^ï¿½[ ---//
+	public float GetDangerDist()
 	{
-		return isSlow;
+		return dangerDist;
+	}
+	public float GetSafetyDist()
+	{
+		return safetyDist;
 	}
 }

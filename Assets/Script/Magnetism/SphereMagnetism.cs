@@ -125,8 +125,8 @@ public class SphereMagnetism : MonoBehaviour
 			Vector3 direction = (surfacePoint - magnetPos).normalized;
 			float force = (surfaceDistance < deadRange) ? strongMagnetism : magnetism;
 
-            // 時間補正倍率（スロー中だけ強めに引き寄せる）
-            float timeScaleFactor = Time.timeScale < 1f ? 1f / Time.timeScale : 0.4f;
+			// 時間補正倍率（スロー中だけ強めに引き寄せ）
+			float timeScaleFactor = Time.timeScale < 1f ? 2f / Time.timeScale : 1.0f;
 
 			magnet.GetComponent<Rigidbody>().AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
 
@@ -168,25 +168,25 @@ public class SphereMagnetism : MonoBehaviour
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);    // SE再生
 	}
 
-    // このスクリプトが無効になる瞬間に磁力範囲エリアに入っているかのフラグを無効にする
-    private void OnDisable()
-    {
-        foreach (var magnet in registeredMagnets)
-        {
-            if (magnet == null) continue;
-            magnet.inObjMagArea = false;
-        }
-    }
+	// このスクリプトが無効になる瞬間に磁力範囲エリアに入っているかのフラグを無効にする
+	private void OnDisable()
+	{
+		foreach (var magnet in registeredMagnets)
+		{
+			if (magnet == null) continue;
+			magnet.inObjMagArea = false;
+		}
+	}
 
-    // 磁力範囲のゲッター
-    public float GetMagnetismRange()
-    {
-        return magnetismRange;
-    }
+	// 磁力範囲のゲッター
+	public float GetMagnetismRange()
+	{
+		return magnetismRange;
+	}
 
-    // コライダーのゲッター
-    public SphereCollider GetSphereCollider()
-    {
-        return sCollider;
-    }
+	// コライダーのゲッター
+	public SphereCollider GetSphereCollider()
+	{
+		return sCollider;
+	}
 }

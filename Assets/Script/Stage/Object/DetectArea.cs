@@ -30,7 +30,8 @@ public class DetectArea : MonoBehaviour
     private AudioSource audioSource;
     private bool isConnectFg = false; // 回路が繋がったかどうか
     private int objNum = 0;           // 判定エリア内にいるオブジェクトの数
-    public OpenMagnet openMagnet;     // 磁石を開くスクリプト（球体のみ）
+    private OpenMagnet openMagnet;    // 磁石を開くスクリプト（球体のみ）
+    private GameObject freezeMagObj;  // 動きを止める磁力オブジェクト
 
     // Start is called before the first frame update
     void Start()
@@ -68,18 +69,25 @@ public class DetectArea : MonoBehaviour
                 // 判定エリア内のオブジェクトが指定された磁力オブジェクトと同じ時、接続
                 if (other.gameObject == detectedObjects[i])
                 {
+                    freezeMagObj = other.gameObject;    // 動きを止める自欲オブジェクトを登録
+
                     // 判定エリア内にオブジェクトが存在しない時に実行
                     if (objNum < 1)
                     {
+                        // 固定位置を取得
+                        Vector3 fixedPos = transform.position;
+
                         // 判定エリアと繋がっている回路の色を変更
                         for (int j = 0; j < circuitsRenderer.Length; j++)
                         {
                             circuitsRenderer[j].material.color = circuitColor;
                         }
+
                         audioSource.PlayOneShot(audioClip);  // SE再生
                         isConnectFg = true;
                         OnDetectAreaChanged?.Invoke(true);   // 判定を通知
-                        Debug.Log("接続 isConnectFg:" + isConnectFg);
+                        Invoke("NoMoveMagObj", 0.5f);        // 動かなくする
+                        Debug.Log("接続 isConnectFg:" + isConnectFg); 
 
                         // 球体の磁力オブジェクトの時、開くフラグをオン
                         if (other.CompareTag("MagObj_Sphere")) 
@@ -136,5 +144,10 @@ public class DetectArea : MonoBehaviour
     public bool GetIsConnectFg()
     {
         return isConnectFg;
+    }
+
+    private void NoMoveMagObj()
+    {
+        freezeMagObj.GetComponent<Rigidbody>().isKinematic = true; // 動かなくする
     }
 }

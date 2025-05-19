@@ -27,9 +27,14 @@ public class MovePlayerR : MonoBehaviour
     private Vector2 moveInputValue;     // スティックの入力を受け取る
     private Vector3 moveForward;        // カメラ基準の移動方向
 
+    Pose pose;          // Poseの状態を受け取る
+
     // Start is called before the first frame update
     void Start()
     {
+        // Poseオブジェクトを取得
+        pose = GameObject.Find("Pose").GetComponent<Pose>();
+
         // Rigidbodyコンポーネントを取得
         rb = GetComponent<Rigidbody>();
         //// PlaySEAtRegularIntervalsコンポーネントを取得
@@ -51,6 +56,12 @@ public class MovePlayerR : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Pose画面を表示しているなら
+        if (pose.GetPose())
+        {
+            return;
+        }
+
         // カメラの方向から、X-Z平面の単位ベクトルを取得
         Vector3 cameraForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 cameraRight = Vector3.Scale(cameraTransform.right, new Vector3(1, 0, 1)).normalized;

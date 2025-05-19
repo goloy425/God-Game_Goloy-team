@@ -102,7 +102,7 @@
             "id": "d753af44-db13-4c53-b3ec-e2a23f970391",
             "actions": [
                 {
-                    "name": "Inactive Circle",
+                    "name": "SwitchCircle",
                     "type": "Button",
                     "id": "c6474103-da59-4b32-9472-b3943c9fced5",
                     "expectedControlType": "Button",
@@ -119,7 +119,95 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Inactive Circle",
+                    "action": "SwitchCircle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Pose",
+            "id": "5e33eae9-4adb-4cc3-b220-8b0d7c3d0aab",
+            "actions": [
+                {
+                    "name": "SwitchPose",
+                    "type": "Button",
+                    "id": "652c5116-1111-481b-8bc8-611c720601bf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectUp",
+                    "type": "Button",
+                    "id": "5f792602-fbe5-4a6a-a6b9-aa711c9825d7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectDown",
+                    "type": "Button",
+                    "id": "4cb457f6-b7c5-49b1-b497-a75964ef5ca2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Decide",
+                    "type": "Button",
+                    "id": "4d6641e3-f059-4427-bea0-e6f6d5b6cf39",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1177327d-9a77-4a38-8471-29354ba539c1",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchPose",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b5909d78-8e5c-4563-a866-5b786b474961",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d89a3cc8-53d0-4386-a8de-1dd1430e8b79",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Decide",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2da86acb-183e-467c-bc0a-cd343eaa4794",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
