@@ -138,11 +138,11 @@ public class CustomCameraController : MonoBehaviour
 			MoveCamera();
 		}
 
-		// 近づきすぎのスローになったら磁石にカメラをフォーカス
-		if (distManager.GetIsSlow())
-		{
-			FocusOnMagnets();
-		}
+		//// 近づきすぎのスローになったら磁石にカメラをフォーカス
+		//if (distManager.GetIsSlow())
+		//{
+		//	FocusOnMagnets();
+		//}
 	}
 
 	// 必要なカメラサイズを計算する補助関数
@@ -197,19 +197,19 @@ public class CustomCameraController : MonoBehaviour
 		transform.position = midPoint + dynamicOffset; // カメラを中間点とオフセットを考慮した位置に移動
 	}
 
-	//--- 磁石にカメラをフォーカスする関数 ---//
-	private void FocusOnMagnets()
-	{
-		Vector3 targetPos = (target1.position + target2.position) / 2f;
-		midPoint = Vector3.Lerp(midPoint, targetPos, Time.deltaTime * focusSpeed);
+	////--- 磁石にカメラをフォーカスする関数 ---//
+	//private void FocusOnMagnets()
+	//{
+	//	Vector3 targetPos = (target1.position + target2.position) / 2f;
+	//	midPoint = Vector3.Lerp(midPoint, targetPos, Time.deltaTime * focusSpeed);
 
-		// カメラサイズをフォーカス用サイズにスムーズに変更
-		cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, focusSize, Time.deltaTime * zoomSpeed);
+	//	// カメラサイズをフォーカス用サイズにスムーズに変更
+	//	cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, focusSize, Time.deltaTime * zoomSpeed);
 
-		// フォーカス用のズームに合わせて奥行きを調整（より近づける）
-		float zoomFactor = Mathf.Clamp01((cam.orthographicSize - minSize) / (maxSize - minSize));
-		dynamicOffset = new Vector3(initialOffset.x, initialOffset.y, Mathf.Lerp(initialOffset.z, initialOffset.z * 0.5f, zoomFactor));
+	//	// フォーカス用のズームに合わせて奥行きを調整（より近づける）
+	//	float zoomFactor = Mathf.Clamp01((cam.orthographicSize - minSize) / (maxSize - minSize));
+	//	dynamicOffset = new Vector3(initialOffset.x, initialOffset.y, Mathf.Lerp(initialOffset.z, initialOffset.z * 0.5f, zoomFactor));
 
-		transform.position = midPoint + dynamicOffset;
-	}
+	//	transform.position = midPoint + dynamicOffset;
+	//}
 }
