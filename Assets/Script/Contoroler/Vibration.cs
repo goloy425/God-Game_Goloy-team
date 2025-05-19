@@ -247,9 +247,9 @@ public class Vibration : MonoBehaviour
 
 			// コントローラーを振動させる
 			gamepad.SetMotorSpeeds(vibStrength, vibStrength);
-			yield return new WaitForSeconds(0.05f);
+			yield return new WaitForSecondsRealtime(0.05f);
 			gamepad.SetMotorSpeeds(0.0f, 0.0f);
-			yield return new WaitForSeconds(vibInterval);
+			yield return new WaitForSecondsRealtime(vibInterval);
 		}
 	}
 
@@ -354,9 +354,9 @@ public class Vibration : MonoBehaviour
 
 			// コントローラーを振動させる
 			gamepad.SetMotorSpeeds(vibStrength, vibStrength);
-			yield return new WaitForSeconds(0.1f);
+			yield return new WaitForSecondsRealtime(0.1f);
 			gamepad.SetMotorSpeeds(0.0f, 0.0f);
-			yield return new WaitForSeconds(vibInterval);
+			yield return new WaitForSecondsRealtime(vibInterval);
 		}
 	}
 

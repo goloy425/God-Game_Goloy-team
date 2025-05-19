@@ -61,6 +61,7 @@ public class Magnetism : MonoBehaviour
 	private AudioSource audioSource;
 
 	private Rigidbody rb;
+	private TooClose tooClose;
 
 	// 強化常態かどうか確認するためのやつ
 	private AugMagL playerL;
@@ -68,6 +69,8 @@ public class Magnetism : MonoBehaviour
 
 	private bool L_isAugmenting;
 	private bool R_isAugmenting;
+
+	public bool isSlow = false;	// スローかどうか
 
 	void Awake()
 	{
@@ -128,6 +131,7 @@ public class Magnetism : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody>();
 		audioSource = GetComponent<AudioSource>();
+		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
 
 		// 成否に関わるフラグを初期化しておく
 		isSnapping = false;
@@ -168,12 +172,26 @@ public class Magnetism : MonoBehaviour
 		// 自分が強化しているか相手が強化しているか判定
 		bool isSelfAugmenting = isSelfL ? L_isAugmenting : R_isAugmenting;
 
+		// 時間補正倍率（スロー中だけ強めに引き寄せ）
+		float timeScaleFactor = Time.timeScale < 1f ? 3f / Time.timeScale : 1.0f;
+
+		// 危険距離内ならスローにする
+		if (distance <= tooClose.GetDangerDist())
+		{
+			isSlow = true;
+		}
+		else if (distance > tooClose.GetSafetyDist())
+		{
+			isSlow = false;
+		}
+
 		// 片方の磁石に引き寄せられるのは強化中でない時だけ
 		if (distance < magnetismRange && !isSelfAugmenting)
 		{
 			inPlayerMagArea = true;
 			float force = (distance < deadRange) ? strongMagnetism : magnetism;
-			rb.AddForce(direction * force, ForceMode.Acceleration);
+			rb.WakeUp();	// スリープ対策
+			rb.AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
 		}
 		else
 		{
@@ -292,9 +310,9 @@ public class Magnetism : MonoBehaviour
 	}
 
 	// スクリプトが削除される時に生存関係のフラグをfalseにしておく
-    private void OnDestroy()
-    {
-        inPlayerMagArea = false;
+	private void OnDestroy()
+	{
+		inPlayerMagArea = false;
 		inObjMagArea = false;
-    }
+	}
 }
