@@ -181,7 +181,7 @@ public class Magnetism : MonoBehaviour
 		bool isSelfAugmenting = isSelfL ? L_isAugmenting : R_isAugmenting;
 
 		// 時間補正倍率（スロー中だけ強めに引き寄せる）
-		float timeScaleFactor = Time.timeScale < 1f ? 2.2f / Time.timeScale : 1.0f;
+		float timeScaleFactor = Time.timeScale < 1f ? 3f / Time.timeScale : 1.0f;
 
 		// 片方の磁石に引き寄せられるのは強化中でない時だけ
 		if (distance < magnetismRange && !isSelfAugmenting)
