@@ -17,10 +17,10 @@ public class HCubeMagnetism : MonoBehaviour
 	public GameObject playerL;
 	public GameObject playerR;
 
-    private SphereCollider hCubeCollider;
+	private SphereCollider hCubeCollider;
 
-    //--- 磁石のリスト管理 ---//
-    private static List<Magnetism> registeredMagnets = new();
+	//--- 磁石のリスト管理 ---//
+	private static List<Magnetism> registeredMagnets = new();
 
 	public static void Register(Magnetism magnet)
 	{
@@ -40,9 +40,9 @@ public class HCubeMagnetism : MonoBehaviour
 		// 半分になる前は非アクティブにしておく
 		enabled = false;
 
-        // コライダーを取得
-        hCubeCollider = GetComponent<SphereCollider>();
-    }
+		// コライダーを取得
+		hCubeCollider = GetComponent<SphereCollider>();
+	}
 
 
 	private void FixedUpdate()
@@ -110,25 +110,30 @@ public class HCubeMagnetism : MonoBehaviour
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
 	}
 
-    // このスクリプトが無効になる瞬間に磁力範囲エリアに入っているかのフラグを無効にする
-    private void OnDisable()
-    {
-        foreach (var magnet in registeredMagnets)
-        {
-            if (magnet == null) continue;
-            magnet.inObjMagArea = false;
-        }
-    }
+	// このスクリプトが無効になる瞬間に磁力範囲エリアに入っているかのフラグを無効にする
+	private void OnDisable()
+	{
+		foreach (var magnet in registeredMagnets)
+		{
+			if (magnet == null) continue;
+			magnet.inObjMagArea = false;
+		}
+	}
 
-    // 磁力範囲のゲッター
-    public float GetMagnetismRange()
-    {
-        return magnetismRange;
-    }
+	private void OnDestroy()
+	{
+		registeredMagnets.Clear();		// リストのクリア
+	}
 
-    // コライダーのゲッター
-    public SphereCollider GetHCubeCollider()
-    {
-        return hCubeCollider;
-    }
+	// 磁力範囲のゲッター
+	public float GetMagnetismRange()
+	{
+		return magnetismRange;
+	}
+
+	// コライダーのゲッター
+	public SphereCollider GetHCubeCollider()
+	{
+		return hCubeCollider;
+	}
 }

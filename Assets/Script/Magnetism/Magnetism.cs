@@ -5,30 +5,36 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 //=================================================
-// §ìÒ@‹{–{˜a‰¹
-// ƒvƒŒƒCƒ„[‚Ì¥Î‚ÌƒXƒNƒŠƒvƒg
+// åˆ¶ä½œè€…ã€€å®®æœ¬å’ŒéŸ³
 //=================================================
 
 public class Magnetism : MonoBehaviour
 {
-	[Header("plate(Magnet‚Ì’¼‰º)‚Ìİ’è")]
-	public Magnetism targetMagnet;	// ‘Î‚É‚È‚é¥Î
-	public Transform myPlate;		// ©•ª‚ÌBottomPlate
-	public Transform targetPlate;	// ‚­‚Á‚Â‚¯‚é‘Šè‚ÌBottomPlate
+	[Header("plate(Magnetã®ç›´ä¸‹)ã®è¨­å®š")]
+	public Magnetism targetMagnet;	// å¯¾ã«ãªã‚‹ç£çŸ³
+	public Transform myPlate;		// è‡ªåˆ†ã®BottomPlate
+	public Transform targetPlate;   // ãã£ã¤ã‘ã‚‹ç›¸æ‰‹ã®BottomPlate
 
-	[Header("¥—ÍE”ÍˆÍ‚Ìİ’è")]
-	public float magnetismRange= 10.0f;		// ˆø‚«Šñ‚¹‡‚¤‹——£
-	public float deadRange = 1.0f;			// ‹ß‚Ã‚«‚·‚¬‚é‚Æ‚­‚Á‚Â‚­A‚Ì‹——£
-	public float magnetism = 200.0f;		// ¥—Í
-	public float strongMagnetism = 999.0f;	// ‹ß‚Ã‚«‚·‚¬‚é‚Æ‚±‚Á‚¿‚Ì¥—Í‚Åˆø‚«Šñ‚¹
-	public float snapDistance = 0.07f;		// ‚­‚Á‚Â‚­‹——£‚Ìè‡’l
+	[Header("ç£åŠ›ãƒ»ç¯„å›²ã®è¨­å®š")]
+	public float magnetismRange = 10.0f;	// å¼•ãå¯„ã›åˆã†è·é›¢
+	public float deadRange = 1.0f;			// è¿‘ã¥ãã™ãã‚‹ã¨ãã£ã¤ãã€ã®è·é›¢
+	public float magnetism = 200.0f;		// ç£åŠ›
+	public float strongMagnetism = 999.0f;	// ç£åŠ›ï¼ˆè¿‘ã¥ãã™ãã®æ–¹ï¼‰
+	public float snapDistance = 0.07f;		// ãã£ã¤ãè·é›¢ã®é–¾å€¤
 
-	//--- magnetismRange‚ÆdeadRange‚Ìİ’è ---//
-	// “Á’è‚ÌƒXƒNƒŠƒvƒg‚ğœ‚¢‚ÄŠO•”‚©‚ç‘‚«Š·‚¦‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚éiƒAƒNƒZƒX‚Í‚Å‚«‚éj
+	public float dangerZone;   // å±é™ºç¯„å›²
+	public float safeZone;		// å®‰å…¨ç¯„å›²
+
+	//--- magnetismRangeã¨deadRangeã®è¨­å®š ---//
+	// ã¨ã‚Šã‚ãˆãšã“ã®2ã¤ã ã‘ã€ã‚‚ã—ä»–ã®å¤‰æ•°ã‚‚åŒã˜ã‚ˆã†ã«ã™ã‚‹å ´åˆã¯â†“
+	// ä¸Šã®ã€Œpublicã€ã‚’ã€Œ[SerializeField] privateã€ã«ã—ãŸã†ãˆã§â†“
+	// ä¸‹ã®ã¨åŒã˜ã‚„ã¤ã‚’å¤‰æ•°åã®ã¨ã“ã ã‘å¤‰ãˆã¦ä»˜ã‘è¶³ã—ã¦ã‚„ã‚Œã°ã„ã‘ã‚‹
+
+	// ç‰¹å®šã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’é™¤ã„ã¦å¤–éƒ¨ã‹ã‚‰æ›¸ãæ›ãˆã§ããªã„ã‚ˆã†ã«ã™ã‚‹ï¼ˆã‚¢ã‚¯ã‚»ã‚¹ã¯ã§ãã‚‹ï¼‰
 	public float MagnetismRange { get; private set; }
 	public float DeadRange { get; private set; }
 
-	// magnetismRange‚ÍAdjustMagnetism‚©‚ç‚Ì‚İ‘‚«Š·‚¦‰Â‚É‚·‚é
+	// magnetismRangeã¯AdjustMagnetismã‹ã‚‰ã®ã¿æ›¸ãæ›ãˆå¯ã«ã™ã‚‹
 	public void SetMagnetismRange(float newRange,object caller)
 	{
 		if (caller is AdjustMagnetism)
@@ -37,7 +43,7 @@ public class Magnetism : MonoBehaviour
 		}
 	}
 
-	// deadRange‚ÍSphereMagnetism‚©‚ç‚Ì‚İ‘‚«Š·‚¦‰Â‚É‚·‚é
+	// deadRangeã¯SphereMagnetismã‹ã‚‰ã®ã¿æ›¸ãæ›ãˆå¯ã«ã™ã‚‹
 	public void SetDeadRange(float newRange,object caller)
 	{
 		if (caller is SphereMagnetism)
@@ -46,33 +52,38 @@ public class Magnetism : MonoBehaviour
 		}
 	}
 
-	[Header("ƒQ[ƒ€‚Ì¬”Û‚ÉŠÖ‚í‚éƒtƒ‰ƒO")]
-	public bool inMagnetismArea = true;		// ‰½‚©‚µ‚ç‚Ì¥—Í”ÍˆÍ“à‚©‚Ç‚¤‚©
-	// ‰º‚Ìu¥—Í”ÍˆÍ“à‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒOv2‚Â‚ª‚Ç‚¿‚ç‚Æ‚àfalse‚É‚È‚Á‚½‚çª‚ªfalse‚É‚È‚éƒQ[ƒ€ƒI[ƒo[
-	public bool isSnapping = false;		// ‚­‚Á‚Â‚¢‚Ä‚é‚©‚Ç‚¤‚©
-	// ‚±‚ê‚ªtrue‚É‚È‚é¥Î‚ª‰½‚©‚µ‚ç‚Æ‚­‚Á‚Â‚¢‚½ƒQ[ƒ€ƒI[ƒo[
+	[Header("ã‚²ãƒ¼ãƒ ã®æˆå¦ã«é–¢ã‚ã‚‹ãƒ•ãƒ©ã‚°")]
+	public bool inMagnetismArea = true;		// ä½•ã‹ã—ã‚‰ã®ç£åŠ›ç¯„å›²å†…ã‹ã©ã†ã‹
+	// ä¸‹ã®ã€Œç£åŠ›ç¯„å›²å†…ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã€2ã¤ãŒã©ã¡ã‚‰ã¨ã‚‚falseã«ãªã£ãŸã‚‰â†‘ãŒfalseã«ãªã‚‹ï¼ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
+	public bool isSnapping = false;		// ãã£ã¤ã„ã¦ã‚‹ã‹ã©ã†ã‹
+	// ã“ã‚ŒãŒtrueã«ãªã‚‹ï¼ç£çŸ³ãŒä½•ã‹ã—ã‚‰ã¨ãã£ã¤ã„ãŸï¼ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
 
-	[Header("¥—Í”ÍˆÍ“à‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO")]
-	public bool inPlayerMagArea = true;		// ƒvƒŒƒCƒ„[‚Ì¥Î‚Ì¥—Í”ÍˆÍ“à‚©‚Ç‚¤‚©
-	public bool inObjMagArea = true;		// ƒIƒuƒWƒFƒNƒg‚Ì¥—Í”ÍˆÍ“à‚©‚Ç‚¤‚©
+	[Header("ç£åŠ›ç¯„å›²å†…ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°")]
+	public bool inPlayerMagArea = true;		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³ã®ç£åŠ›ç¯„å›²å†…ã‹ã©ã†ã‹
+	public bool inObjMagArea = true;		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç£åŠ›ç¯„å›²å†…ã‹ã©ã†ã‹
 
-	[Header("¥Î‚ª‚­‚Á‚Â‚¢‚½‚ÌSE")]
+	[Header("ç£çŸ³ãŒãã£ã¤ã„ãŸæ™‚ã®SE")]
 	public AudioClip magnetSE;
 	private AudioSource audioSource;
 
 	private Rigidbody rb;
+	private TooClose tooClose;
 
-	// ‹­‰»í‘Ô‚©‚Ç‚¤‚©Šm”F‚·‚é‚½‚ß‚Ì‚â‚Â
+	// å¼·åŒ–çŠ¶æ…‹ã‹ã©ã†ã‹ç¢ºèªã™ã‚‹ãŸã‚ã®ã‚„ã¤
 	private AugMagL playerL;
 	private AugMagR playerR;
 
 	private bool L_isAugmenting;
 	private bool R_isAugmenting;
 
+	// ã‚¹ãƒ­ãƒ¼ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ç®¡ç†
+	public bool isSlow_pMag;		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³ã¨è¿‘ä»˜ãã™ããŸ
+	public bool isSlow_magObj;		// ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€€ã€€ã€€ã€ƒ
+
 	void Awake()
 	{
-		//--- ¥—ÍE”ÍˆÍ‚ÌƒfƒoƒbƒO—p ---//
-		// ¥Î“¯m‚ÅŠe•Ï”‚ªˆê’v‚µ‚Ä‚¢‚é‚©ƒ`ƒFƒbƒNA•sˆê’v‚È‚çÀs‚Å‚«‚È‚¢
+		//--- ç£åŠ›ãƒ»ç¯„å›²ã®ãƒ‡ãƒãƒƒã‚°ç”¨ ---//
+		// ç£çŸ³åŒå£«ã§å„å¤‰æ•°ãŒä¸€è‡´ã—ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã€ä¸ä¸€è‡´ãªã‚‰å®Ÿè¡Œã§ããªã„
 
 		Magnetism mag1 = GameObject.Find("Magnet1").GetComponent<Magnetism>();
 		Magnetism mag2 = GameObject.Find("Magnet2").GetComponent<Magnetism>();
@@ -83,43 +94,43 @@ public class Magnetism : MonoBehaviour
 		{
 			if (mag1.magnetismRange != mag2.MagnetismRange)
 			{
-				Debug.LogError("ErrorF•Ï”•sˆê’v@[magnetismRange]‚ªˆê’v‚µ‚Ä‚¢‚Ü‚¹‚ñ@" +
-					"magnet1F" + mag1.magnetismRange + "@magnet2F" + mag2.magnetismRange);
+				Debug.LogError("Errorï¼šå¤‰æ•°ä¸ä¸€è‡´ã€€[magnetismRange]ãŒä¸€è‡´ã—ã¦ã„ã¾ã›ã‚“ã€€" +
+					"magnet1ï¼š" + mag1.magnetismRange + "ã€€magnet2ï¼š" + mag2.magnetismRange);
 			}
 			if (mag1.deadRange != mag2.deadRange)
 			{
-				Debug.LogError("ErrorF•Ï”•sˆê’v@[deadRange]‚ªˆê’v‚µ‚Ä‚¢‚Ü‚¹‚ñ@" +
-					"magnet1F" + mag1.deadRange + "@magnet2F" + mag2.deadRange);
+				Debug.LogError("Errorï¼šå¤‰æ•°ä¸ä¸€è‡´ã€€[deadRange]ãŒä¸€è‡´ã—ã¦ã„ã¾ã›ã‚“ã€€" +
+					"magnet1ï¼š" + mag1.deadRange + "ã€€magnet2ï¼š" + mag2.deadRange);
 			}
 			if (mag1.magnetism != mag2.magnetism)
 			{
-				Debug.LogError("ErrorF•Ï”•sˆê’v@[magnetism]‚ªˆê’v‚µ‚Ä‚¢‚Ü‚¹‚ñ@" +
-					"magnet1F" + mag1.magnetism + "@magnet2F" + mag2.magnetism);
+				Debug.LogError("Errorï¼šå¤‰æ•°ä¸ä¸€è‡´ã€€[magnetism]ãŒä¸€è‡´ã—ã¦ã„ã¾ã›ã‚“ã€€" +
+					"magnet1ï¼š" + mag1.magnetism + "ã€€magnet2ï¼š" + mag2.magnetism);
 			}
 			if (mag1.strongMagnetism != mag2.strongMagnetism)
 			{
-				Debug.LogError("ErrorF•Ï”•sˆê’v@[strongMagnetism]‚ªˆê’v‚µ‚Ä‚¢‚Ü‚¹‚ñ@" +
-					"magnet1F" + mag1.strongMagnetism + "@magnet2F" + mag2.strongMagnetism);
+				Debug.LogError("Errorï¼šå¤‰æ•°ä¸ä¸€è‡´ã€€[strongMagnetism]ãŒä¸€è‡´ã—ã¦ã„ã¾ã›ã‚“ã€€" +
+					"magnet1ï¼š" + mag1.strongMagnetism + "ã€€magnet2ï¼š" + mag2.strongMagnetism);
 			}
 			if (mag1.snapDistance != mag2.snapDistance)
 			{
-				Debug.LogError("ErrorF•Ï”•sˆê’v@[snapDistance]‚ªˆê’v‚µ‚Ä‚¢‚Ü‚¹‚ñ@" +
-					"magnet1F" + mag1.snapDistance + "@magnet2F" + mag2.snapDistance);
+				Debug.LogError("Errorï¼šå¤‰æ•°ä¸ä¸€è‡´ã€€[snapDistance]ãŒä¸€è‡´ã—ã¦ã„ã¾ã›ã‚“ã€€" +
+					"magnet1ï¼š" + mag1.snapDistance + "ã€€magnet2ï¼š" + mag2.snapDistance);
 			}
 
-			//UnityEditor.EditorApplication.isPlaying = false;	// ƒQ[ƒ€‚ÌÀs‚ğ’â~
+			//UnityEditor.EditorApplication.isPlaying = false;	// ã‚²ãƒ¼ãƒ ã®å®Ÿè¡Œã‚’åœæ­¢
 		}
 	}
 
 	void OnEnable()
 	{
-		// ¥ÎƒŒƒWƒXƒgƒŠ‚ÉƒvƒŒƒCƒ„[‚Ì¥Î‚ğ’Ç‰Á‚·‚é
+		// ç£çŸ³ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³ã‚’è¿½åŠ ã™ã‚‹
 		RegisterToAllMagnets();
 	}
 
 	void OnDisable()
 	{
-		// ¥ÎƒŒƒWƒXƒgƒŠ‚ğƒNƒŠƒA‚·‚é
+		// ç£çŸ³ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 		UnregisterFromAllMagnets();
 	}
 
@@ -128,26 +139,27 @@ public class Magnetism : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody>();
 		audioSource = GetComponent<AudioSource>();
+		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
 
-		// ¬”Û‚ÉŠÖ‚í‚éƒtƒ‰ƒO‚ğ‰Šú‰»‚µ‚Ä‚¨‚­
+		// æˆå¦ã«é–¢ã‚ã‚‹ãƒ•ãƒ©ã‚°ã‚’åˆæœŸåŒ–ã—ã¦ãŠã
 		isSnapping = false;
 		inMagnetismArea = true;
 
-		// ‹­‰»ƒtƒ‰ƒO‚Ìæ“¾
+		// å¼·åŒ–ãƒ•ãƒ©ã‚°ã®å–å¾—
 		playerL = GameObject.Find("PlayerL_Controller").GetComponent<AugMagL>();
 		playerR = GameObject.Find("PlayerR_Controller").GetComponent<AugMagR>();
 	}
 
 	private void Update()
 	{
-		// ƒtƒ‰ƒO‚Ìó‹µ‚Íí‚ÉXV‚µ‚Ä‚¨‚­
+		// ãƒ•ãƒ©ã‚°ã®çŠ¶æ³ã¯å¸¸ã«æ›´æ–°ã—ã¦ãŠã
 		L_isAugmenting = playerL.isAugmenting;
 		R_isAugmenting = playerR.isAugmenting;
 	}
 
 	void FixedUpdate()
 	{
-		//--- ¥—Í”ÍˆÍ“à‚©ŠO‚©‚ğí‚É”»’è‚·‚é ---//
+		//--- ç£åŠ›ç¯„å›²å†…ã‹å¤–ã‹ã‚’å¸¸ã«åˆ¤å®šã™ã‚‹ ---//
 		if (inPlayerMagArea || inObjMagArea)
 		{
 			inMagnetismArea = true;
@@ -157,30 +169,44 @@ public class Magnetism : MonoBehaviour
 			inMagnetismArea = false;
 		}
 
-		//--- ƒvƒŒƒCƒ„[‚Ì¥Î“¯m‚Ìˆø‚«Šñ‚¹ˆ— ---//
-		// ‹——£‚ğŒvZ
+		//--- ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³åŒå£«ã®å¼•ãå¯„ã›å‡¦ç† ---//
+		// è·é›¢ã‚’è¨ˆç®—
 		float distance = Vector3.Distance(myPlate.position, targetPlate.position);
 		Vector3 direction = (targetPlate.position - myPlate.position).normalized;
 
-		// ƒvƒŒƒCƒ„[‚²‚Æ‚Ì”»’è
-		// ƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ªmagnet1(true)‚©magnet2(false)‚©”»’è
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã”ã¨ã®åˆ¤å®š
+		// ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒmagnet1(true)ã‹magnet2(false)ã‹åˆ¤å®š
 		bool isSelfL = gameObject.name == "magnet1";
-		// ©•ª‚ª‹­‰»‚µ‚Ä‚¢‚é‚©‘Šè‚ª‹­‰»‚µ‚Ä‚¢‚é‚©”»’è
+		// è‡ªåˆ†ãŒå¼·åŒ–ã—ã¦ã„ã‚‹ã‹ç›¸æ‰‹ãŒå¼·åŒ–ã—ã¦ã„ã‚‹ã‹åˆ¤å®š
 		bool isSelfAugmenting = isSelfL ? L_isAugmenting : R_isAugmenting;
 
-		// •Ğ•û‚Ì¥Î‚Éˆø‚«Šñ‚¹‚ç‚ê‚é‚Ì‚Í‹­‰»’†‚Å‚È‚¢‚¾‚¯
+		// æ™‚é–“è£œæ­£å€ç‡ï¼ˆã‚¹ãƒ­ãƒ¼ä¸­ã ã‘å¼·ã‚ã«å¼•ãå¯„ã›ã‚‹ï¼‰
+		float timeScaleFactor = Time.timeScale < 1f ? 2.2f / Time.timeScale : 1.0f;
+
+		// ç‰‡æ–¹ã®ç£çŸ³ã«å¼•ãå¯„ã›ã‚‰ã‚Œã‚‹ã®ã¯å¼·åŒ–ä¸­ã§ãªã„æ™‚ã ã‘
 		if (distance < magnetismRange && !isSelfAugmenting)
 		{
 			inPlayerMagArea = true;
 			float force = (distance < deadRange) ? strongMagnetism : magnetism;
-			rb.AddForce(direction * force, ForceMode.Acceleration);
+			rb.WakeUp();	// ã‚¹ãƒªãƒ¼ãƒ—å¯¾ç­–
+			rb.AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
 		}
 		else
 		{
 			inPlayerMagArea = false;
 		}
 
-		// ‚­‚Á‚Â‚­ˆ—F—¼•û‚ª‹­‰»ó‘Ô‚É‚ ‚é‚Í–³‹
+		// ã‚¹ãƒ­ãƒ¼ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³åˆ‡æ›¿ç”¨ãƒ•ãƒ©ã‚°ã®ç®¡ç†
+		if (distance <= tooClose.GetDangerDist())
+		{
+			isSlow_pMag = true;
+		}
+		else if (isSlow_pMag && distance > tooClose.GetSafetyDist())
+		{
+            isSlow_pMag = false;
+		}
+
+		// ãã£ã¤ãå‡¦ç†ï¼šä¸¡æ–¹ãŒå¼·åŒ–çŠ¶æ…‹ã«ã‚ã‚‹æ™‚ã¯ç„¡è¦–
 		if (distance < snapDistance && !L_isAugmenting && !R_isAugmenting)
 		{
 			rb.velocity = Vector3.zero;
@@ -198,17 +224,17 @@ public class Magnetism : MonoBehaviour
 		Collider myCollider = myPlate.GetComponent<BoxCollider>();
 		Collider targetCollider = targetPlate.GetComponent<BoxCollider>();
 
-		// Collider‚Ì’†S‚ğæ“¾
+		// Colliderã®ä¸­å¿ƒã‚’å–å¾—
 		Vector3 myCenter = myCollider.bounds.center;
 		Vector3 targetCenter = targetCollider.bounds.center;
 
-		// ’†S“_‚Ì·•ª‚ğ‹‚ß‚é
+		// ä¸­å¿ƒç‚¹ã®å·®åˆ†ã‚’æ±‚ã‚ã‚‹
 		Vector3 offset = targetCenter - myCenter;
 
-		// ·•ª‚¾‚¯Plate‚ğ“®‚©‚·
+		// å·®åˆ†ã ã‘Plateã‚’å‹•ã‹ã™
 		myPlate.position += offset;
 
-		// ‰ñ“]‚à‡‚í‚¹‚éi•K—v‚È‚çj
+		// å›è»¢ã‚‚åˆã‚ã›ã‚‹ï¼ˆå¿…è¦ãªã‚‰ï¼‰
 		myPlate.rotation = targetPlate.rotation;
 	}
 
@@ -216,11 +242,11 @@ public class Magnetism : MonoBehaviour
 	{
 		if (isSnapping) return;
 
-		// ‚­‚Á‚Â‚¯‚éiFixedJoint‚Ìì¬j
+		// ãã£ã¤ã‘ã‚‹ï¼ˆï¼FixedJointã®ä½œæˆï¼‰
 		FixedJoint joint = gameObject.AddComponent<FixedJoint>();
 		joint.connectedBody = targetPlate.GetComponentInParent<Rigidbody>();
 
-		// AudioSource‚ª‘¶İ‚·‚éASEÄ¶
+		// AudioSourceãŒå­˜åœ¨ã™ã‚‹æ™‚ã€SEå†ç”Ÿ
 		if (audioSource != null)
 		{
 			audioSource.PlayOneShot(magnetSE);
@@ -230,11 +256,11 @@ public class Magnetism : MonoBehaviour
 	}
 
 
-	//--- ¥—ÍƒIƒuƒWƒFƒNƒg‚ª¥Î‚ğˆø‚«Šñ‚¹‚é‚½‚ß‚ÌƒŠƒXƒg‚É“o˜^ ---//
+	//--- ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç£çŸ³ã‚’å¼•ãå¯„ã›ã‚‹ãŸã‚ã®ãƒªã‚¹ãƒˆã«ç™»éŒ² ---//
 	private void RegisterToAllMagnets()
 	{
-		// ƒ^ƒO‚ğ’²‚×‚ÄŠY“–‚Ì‚à‚Ì‚ª‚ ‚ê‚Î’Ç‰Á
-		// ‹…
+		// ã‚¿ã‚°ã‚’èª¿ã¹ã¦è©²å½“ã®ã‚‚ã®ãŒã‚ã‚Œã°è¿½åŠ 
+		// çƒ
 		foreach (var sphere in GameObject.FindGameObjectsWithTag("MagObj_Sphere"))
 		{
 			if (sphere.GetComponent<SphereMagnetism>())
@@ -243,7 +269,7 @@ public class Magnetism : MonoBehaviour
 			}
 		}
 
-		// ƒLƒ…[ƒu
+		// ã‚­ãƒ¥ãƒ¼ãƒ–
 		foreach (var cube in GameObject.FindGameObjectsWithTag("MagObj_Cube"))
 		{
 			if (cube.GetComponent<CubeMagnetism>())
@@ -251,7 +277,7 @@ public class Magnetism : MonoBehaviour
 				CubeMagnetism.Register(this);
 			}
 		}
-		// ”¼ƒLƒ…[ƒu
+		// åŠã‚­ãƒ¥ãƒ¼ãƒ–
 		foreach (var hCube in GameObject.FindGameObjectsWithTag("MagObj_HCube"))
 		{
 			if (hCube.GetComponent<HCubeMagnetism>())
@@ -263,8 +289,8 @@ public class Magnetism : MonoBehaviour
 
 	private void UnregisterFromAllMagnets()
 	{
-		// ‚±‚Á‚¿‚à’Ç‰Á‚Ì‚Æˆê‚Åƒ^ƒO‚ğ—˜—p‚·‚é•û®
-		// ‹…
+		// ã“ã£ã¡ã‚‚è¿½åŠ ã®æ™‚ã¨ä¸€ç·’ã§ã‚¿ã‚°ã‚’åˆ©ç”¨ã™ã‚‹æ–¹å¼
+		// çƒ
 		foreach (var sphere in GameObject.FindGameObjectsWithTag("MagObj_Sphere"))
 		{
 			if (sphere.GetComponent<SphereMagnetism>())
@@ -273,7 +299,7 @@ public class Magnetism : MonoBehaviour
 			}
 		}
 
-		// ƒLƒ…[ƒu
+		// ã‚­ãƒ¥ãƒ¼ãƒ–
 		foreach (var cube in GameObject.FindGameObjectsWithTag("MagObj_Cube"))
 		{
 			if (cube.GetComponent<CubeMagnetism>())
@@ -281,7 +307,7 @@ public class Magnetism : MonoBehaviour
 				CubeMagnetism.Unregister(this);
 			}
 		}
-		// ”¼ƒLƒ…[ƒu
+		// åŠã‚­ãƒ¥ãƒ¼ãƒ–
 		foreach (var hCube in GameObject.FindGameObjectsWithTag("MagObj_HCube"))
 		{
 			if (hCube.GetComponent<HCubeMagnetism>())
@@ -291,10 +317,10 @@ public class Magnetism : MonoBehaviour
 		}
 	}
 
-	// ƒXƒNƒŠƒvƒg‚ªíœ‚³‚ê‚é‚É¶‘¶ŠÖŒW‚Ìƒtƒ‰ƒO‚ğfalse‚É‚µ‚Ä‚¨‚­
-    private void OnDestroy()
-    {
-        inPlayerMagArea = false;
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒå‰Šé™¤ã•ã‚Œã‚‹æ™‚ã«ç”Ÿå­˜é–¢ä¿‚ã®ãƒ•ãƒ©ã‚°ã‚’falseã«ã—ã¦ãŠã
+	private void OnDestroy()
+	{
+		inPlayerMagArea = false;
 		inObjMagArea = false;
-    }
+	}
 }

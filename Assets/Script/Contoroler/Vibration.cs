@@ -122,11 +122,11 @@ public class Vibration : MonoBehaviour
 		//--- ドアが開いた時周りの処理 ---//
 		if(!getStartStage)
 		{
-            startStage = gameManager.GetStartStage();   // 開始ステージを取得
+			startStage = gameManager.GetStartStage();   // 開始ステージを取得
 			getStartStage = true;
-        }
+		}
 
-        for (int i = startStage - 1; i < doors.Length; i++)
+		for (int i = startStage - 1; i < doors.Length; i++)
 		{
 			isMoving = doors[i].GetDoorMovingFg();
 
@@ -220,7 +220,7 @@ public class Vibration : MonoBehaviour
 
 			// 振動の強さ
 			float minVibStrength = 0.001f;	// 遠い
-			float maxVibStrength = 0.03f;   // 近い
+			float maxVibStrength = 0.05f;   // 近い
 
 
 			if (distance <= minDistance)	// 近すぎる→最大振動
@@ -247,9 +247,9 @@ public class Vibration : MonoBehaviour
 
 			// コントローラーを振動させる
 			gamepad.SetMotorSpeeds(vibStrength, vibStrength);
-			yield return new WaitForSeconds(0.05f);
+			yield return new WaitForSecondsRealtime(0.05f);
 			gamepad.SetMotorSpeeds(0.0f, 0.0f);
-			yield return new WaitForSeconds(vibInterval);
+			yield return new WaitForSecondsRealtime(vibInterval);
 		}
 	}
 
@@ -354,9 +354,9 @@ public class Vibration : MonoBehaviour
 
 			// コントローラーを振動させる
 			gamepad.SetMotorSpeeds(vibStrength, vibStrength);
-			yield return new WaitForSeconds(0.1f);
+			yield return new WaitForSecondsRealtime(0.1f);
 			gamepad.SetMotorSpeeds(0.0f, 0.0f);
-			yield return new WaitForSeconds(vibInterval);
+			yield return new WaitForSecondsRealtime(vibInterval);
 		}
 	}
 

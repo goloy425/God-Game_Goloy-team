@@ -21,14 +21,14 @@ public class CubeMagnetism : MonoBehaviour
 	public Transform cube1;
 	public Transform cube2;
 
-    // くっついているキューブの各コライダー
-    private SphereCollider cube1Collider;
-    private SphereCollider cube2Collider;
+	// くっついているキューブの各コライダー
+	private SphereCollider cube1Collider;
+	private SphereCollider cube2Collider;
 
-    //--- 磁石のリスト管理 ---//
-    private static List<Magnetism> registeredMagnets = new();
+	//--- 磁石のリスト管理 ---//
+	private static List<Magnetism> registeredMagnets = new();
 
-    public static void Register(Magnetism magnet)
+	public static void Register(Magnetism magnet)
 	{
 		if (!registeredMagnets.Contains(magnet))
 		{
@@ -41,14 +41,14 @@ public class CubeMagnetism : MonoBehaviour
 	}
 
 
-    private void Start()
-    {
-        // コライダーを取得
-        cube1Collider = cube1.GetComponent<SphereCollider>();
-        cube2Collider = cube2.GetComponent<SphereCollider>();
-    }
+	private void Start()
+	{
+		// コライダーを取得
+		cube1Collider = cube1.GetComponent<SphereCollider>();
+		cube2Collider = cube2.GetComponent<SphereCollider>();
+	}
 
-    private void FixedUpdate()
+	private void FixedUpdate()
 	{
 		//--- 磁石の引き寄せ処理 ---//
 		foreach (var magnet in registeredMagnets)
@@ -68,6 +68,7 @@ public class CubeMagnetism : MonoBehaviour
 			Vector3 targetSurface = (distance1 < distance2) ? surface1 : surface2;
 			float surfaceDistance = Mathf.Min(distance1, distance2);
 
+			// 磁力範囲外の場合移以降の処理をスルー
 			if (surfaceDistance > MagnetismRange)
 			{
 				magnet.inObjMagArea = false;
@@ -76,10 +77,12 @@ public class CubeMagnetism : MonoBehaviour
 
 			magnet.inObjMagArea = true;
 
+			// 引き寄せ処理
 			Vector3 direction = (targetSurface - magnetPos).normalized;
 			float force = (surfaceDistance < deadRange) ? strongMagnetism : magnetism;
 			magnet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Acceleration);
 
+			// 近付きすぎるとくっつく
 			if (surfaceDistance < magnet.snapDistance)
 			{
 				Rigidbody rb = magnet.GetComponent<Rigidbody>();
@@ -102,23 +105,29 @@ public class CubeMagnetism : MonoBehaviour
 		magnet.myPlate.position = snapPosition;
 
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
-    }
+	}
 
-    // 磁力範囲のゲッター
-    public float GetMagnetismRange()
-    {
-        return magnetismRange;
-    }
 
-    // くっついている左側のオブジェクトのコライダーのゲッター
-    public SphereCollider GetCube1Collider()
-    {
-        return cube1Collider;
-    }
+	private void OnDestroy()
+	{
+		registeredMagnets.Clear();	// リストのクリア
+	}
 
-    // くっついている右側のオブジェクトのコライダーのゲッター
-    public SphereCollider GetCube2Collider()
-    {
-        return cube2Collider;
-    }
+	// 磁力範囲のゲッター
+	public float GetMagnetismRange()
+	{
+		return magnetismRange;
+	}
+
+	// くっついている左側のオブジェクトのコライダーのゲッター
+	public SphereCollider GetCube1Collider()
+	{
+		return cube1Collider;
+	}
+
+	// くっついている右側のオブジェクトのコライダーのゲッター
+	public SphereCollider GetCube2Collider()
+	{
+		return cube2Collider;
+	}
 }
