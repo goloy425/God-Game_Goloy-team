@@ -27,6 +27,9 @@ public class SplitCube : MonoBehaviour
 	public float requiredDistance = 2.0f;	// 磁石がある程度離れてるか
 	public float alignThreshold = 180.0f;   // プレイヤー磁石とCubeの位置がほぼ一直線ならOK
 
+	[Header("分裂時のエフェクト")]
+	public GameObject splitEffect;
+
 	// 分離判定に使う用
 	private Vector3 initialL;
 	private Vector3 initialR;
@@ -115,6 +118,9 @@ public class SplitCube : MonoBehaviour
 
 	void BreakCube()
 	{
+		// 分裂エフェクト
+		CreateSplitEffect();
+
 		splited = true;
 
 		// キューブのFixedJointを解除する
@@ -126,5 +132,12 @@ public class SplitCube : MonoBehaviour
 		cMag2.enabled = true;
 
 		this.gameObject.SetActive(false);
+	}
+
+	// 分裂エフェクトの作成
+	private void CreateSplitEffect()
+	{
+		GameObject _splitEffect = Instantiate(splitEffect, transform.position, Quaternion.identity);
+		Destroy(_splitEffect, 5.0f);    // 削除
 	}
 }
