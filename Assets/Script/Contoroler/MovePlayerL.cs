@@ -35,7 +35,7 @@ public class MovePlayerL : MonoBehaviour
         pose = GameObject.Find("Pose").GetComponent<Pose>();
 
         // Rigidbodyコンポーネントを取得
-        rb = GetComponent<Rigidbody>();
+        rb = transform.parent.GetComponent<Rigidbody>();
         //// PlaySEAtRegularIntervalsコンポーネントを取得
         //playSE = GetComponent<PlaySEAtRegularIntervals>();
         // アニメーターを取得
@@ -68,8 +68,8 @@ public class MovePlayerL : MonoBehaviour
         moveForward = cameraForward * moveInputValue.y + cameraRight * moveInputValue.x;
         // 移動させる
         rb.velocity = moveForward * moveSpeed;
-        // 紐の位置を合わせる
-        rope.transform.position = this.transform.position;
+        // PlayerControllerの位置を合わせる
+        transform.position = rb.transform.position;
 
         // 移動方向がゼロベクトルでない時
         if (moveForward != Vector3.zero)

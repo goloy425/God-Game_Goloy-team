@@ -4,89 +4,90 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// §ìÒ@ƒSƒƒCƒqƒfƒL   –{“cŸ©“s
+// åˆ¶ä½œè€…ã€€ã‚´ãƒ­ã‚¤ãƒ’ãƒ‡ã‚­   æœ¬ç”°æ´¸éƒ½
 
 //--------------------------------------------------------------
-// ŠO•”‚©‚çİ’è‰Â”\‚ÈƒXƒe[ƒW‚Ìƒf[ƒ^ƒNƒ‰ƒX
+// å¤–éƒ¨ã‹ã‚‰è¨­å®šå¯èƒ½ãªã‚¹ãƒ†ãƒ¼ã‚¸ã®ãƒ‡ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹
 //--------------------------------------------------------------
 [System.Serializable]
 public class StageData
 {
-	public List<GameObject> magObjSphere = new List<GameObject>();              // ‹…‘Ì‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-	public List<GameObject> magObjSplit1 = new List<GameObject>();              // •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-	public List<GameObject> magObjSplit2 = new List<GameObject>();              // •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-	public List<GameObject> magObjConnecter = new List<GameObject>();           // •ª—ô•¨‘Ì‚ğÚ‘±‚·‚é¥—ÍƒIƒuƒWƒFƒNƒg
-	public List<DetectArea> detectAreas = new List<DetectArea>();               // ƒNƒŠƒA”»’èƒIƒuƒWƒFƒNƒg
-	public Vector3 playerLPos;
-	public Vector3 playerRPos; 
-	public Quaternion playerLRotation;
-	public Quaternion playerRRotation;
+    public List<GameObject> magObjSphere = new List<GameObject>();              // çƒä½“ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    public List<GameObject> magObjSplit1 = new List<GameObject>();              // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    public List<GameObject> magObjSplit2 = new List<GameObject>();              // åˆ†è£‚ç‰©ä½“ã®å³å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    public List<GameObject> magObjConnecter = new List<GameObject>();           // åˆ†è£‚ç‰©ä½“ã‚’æ¥ç¶šã™ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    public List<DetectArea> detectAreas = new List<DetectArea>();               // ã‚¯ãƒªã‚¢åˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ              // ã‚¯ãƒªã‚¢åˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    public GameObject doorFlame;
+    public Vector3 playerLPos;
+    public Vector3 playerRPos; 
+    public Quaternion playerLRotation;
+    public Quaternion playerRRotation;
 
-	private List<SphereMagnetism> sphereMagCS = new List<SphereMagnetism>();    // ‹…‘Ì‚Ì¥—ÍƒXƒNƒŠƒvƒg
-	private List<HCubeMagnetism> split1HCubeMagCS = new List<HCubeMagnetism>(); // •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì¥—ÍƒXƒNƒŠƒvƒg
-	private List<HCubeMagnetism> split2HCubeMagCS = new List<HCubeMagnetism>(); // •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì¥—ÍƒXƒNƒŠƒvƒg
-	private List<CubeMagnetism> cubeMagCS = new List<CubeMagnetism>();          // ƒRƒlƒNƒ^[‚Ì¥—ÍƒXƒNƒŠƒvƒg
+    private List<SphereMagnetism> sphereMagCS = new List<SphereMagnetism>();    // çƒä½“ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+    private List<HCubeMagnetism> split1HCubeMagCS = new List<HCubeMagnetism>(); // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+    private List<HCubeMagnetism> split2HCubeMagCS = new List<HCubeMagnetism>(); // åˆ†è£‚ç‰©ä½“ã®å³å´ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+    private List<CubeMagnetism> cubeMagCS = new List<CubeMagnetism>();          // ã‚³ãƒã‚¯ã‚¿ãƒ¼ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
 
-	private List<MoveSphere> moveSphereCS = new List<MoveSphere>();             // ‹…‘Ì‚Ì“®ìƒXƒNƒŠƒvƒg
-	private List<MoveHCubeL> moveHCubeLCS = new List<MoveHCubeL>();             // •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì“®ìƒXƒNƒŠƒvƒg
-	private List<MoveHCubeR> moveHCubeRCS = new List<MoveHCubeR>();             // •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì“®ìƒXƒNƒŠƒvƒg
-	private List<SplitCube> splitCubeCS = new List<SplitCube>();                // •ª—ôƒXƒNƒŠƒvƒg
+    private List<MoveSphere> moveSphereCS = new List<MoveSphere>();             // çƒä½“ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+    private List<MoveHCubeL> moveHCubeLCS = new List<MoveHCubeL>();             // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+    private List<MoveHCubeR> moveHCubeRCS = new List<MoveHCubeR>();             // åˆ†è£‚ç‰©ä½“ã®å³å´ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+    private List<SplitCube> splitCubeCS = new List<SplitCube>();                // åˆ†è£‚ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
 
-	private bool clearFg = false;               // ƒNƒŠƒAƒtƒ‰ƒO
+    private bool clearFg = false;               // ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°
 
-	// ƒNƒŠƒAƒtƒ‰ƒO‚ÌƒQƒbƒ^[
-	public bool GetClearFg() { return clearFg; }
+    // ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°ã®ã‚²ãƒƒã‚¿ãƒ¼
+    public bool GetClearFg() { return clearFg; }
 
-	// ƒNƒŠƒAƒtƒ‰ƒO‚ÌƒZƒbƒ^[                   
-	public void SetClearFg(bool _clearFg) { clearFg = _clearFg; }
+    // ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°ã®ã‚»ãƒƒã‚¿ãƒ¼                   
+    public void SetClearFg(bool _clearFg) { clearFg = _clearFg; }
 
-	// ‹…‘Ì‚Ì¥—ÍƒXƒNƒŠƒvƒgƒŠƒXƒg‚ÌƒQƒbƒ^[
-	public List<SphereMagnetism> GetSphereMagCS() { return sphereMagCS; }
+    // çƒä½“ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒªã‚¹ãƒˆã®ã‚²ãƒƒã‚¿ãƒ¼
+    public List<SphereMagnetism> GetSphereMagCS() { return sphereMagCS; }
 
-	// •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì¥—ÍƒXƒNƒŠƒvƒgƒŠƒXƒg‚ÌƒQƒbƒ^[
-	public List<HCubeMagnetism> GetSplit1HCubeMagCS() { return split1HCubeMagCS; }
+    // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒªã‚¹ãƒˆã®ã‚²ãƒƒã‚¿ãƒ¼
+    public List<HCubeMagnetism> GetSplit1HCubeMagCS() { return split1HCubeMagCS; }
 
-	// •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì¥—ÍƒXƒNƒŠƒvƒgƒŠƒXƒg‚ÌƒQƒbƒ^[
-	public List<HCubeMagnetism> GetSplit2HCubeMagCS() { return split2HCubeMagCS; }
+    // åˆ†è£‚ç‰©ä½“ã®å³å´ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒªã‚¹ãƒˆã®ã‚²ãƒƒã‚¿ãƒ¼
+    public List<HCubeMagnetism> GetSplit2HCubeMagCS() { return split2HCubeMagCS; }
 
-	// ƒRƒlƒNƒ^[‚Ì¥—ÍƒXƒNƒŠƒvƒgƒŠƒXƒg‚ÌƒQƒbƒ^[
-	public List<CubeMagnetism> GetCubeMagCS() { return cubeMagCS; }
+    // ã‚³ãƒã‚¯ã‚¿ãƒ¼ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒªã‚¹ãƒˆã®ã‚²ãƒƒã‚¿ãƒ¼
+    public List<CubeMagnetism> GetCubeMagCS() { return cubeMagCS; }
 
-	// ‹…‘Ì‚Ì“®ìƒXƒNƒŠƒvƒgƒŠƒXƒg‚ÌƒQƒbƒ^[
-	public List<MoveSphere> GetMoveSphereCS() { return moveSphereCS; }
+    // çƒä½“ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒªã‚¹ãƒˆã®ã‚²ãƒƒã‚¿ãƒ¼
+    public List<MoveSphere> GetMoveSphereCS() { return moveSphereCS; }
 
-	// •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì“®ìƒXƒNƒŠƒvƒgƒŠƒXƒg‚ÌƒQƒbƒ^[
-	public List<MoveHCubeL> GetMoveHCubeLCS() { return moveHCubeLCS; }
+    // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒªã‚¹ãƒˆã®ã‚²ãƒƒã‚¿ãƒ¼
+    public List<MoveHCubeL> GetMoveHCubeLCS() { return moveHCubeLCS; }
 
-	// •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì“®ìƒXƒNƒŠƒvƒgƒŠƒXƒg‚ÌƒQƒbƒ^[
-	public List<MoveHCubeR> GetMoveHCubeRCS() { return moveHCubeRCS; }
+    // åˆ†è£‚ç‰©ä½“ã®å³å´ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒªã‚¹ãƒˆã®ã‚²ãƒƒã‚¿ãƒ¼
+    public List<MoveHCubeR> GetMoveHCubeRCS() { return moveHCubeRCS; }
 
-	// •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì“®ìƒXƒNƒŠƒvƒgƒŠƒXƒg‚ÌƒQƒbƒ^[
-	public List<SplitCube> GetSplitCubeCS() { return splitCubeCS; }
+    // åˆ†è£‚ç‰©ä½“ã®å³å´ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒªã‚¹ãƒˆã®ã‚²ãƒƒã‚¿ãƒ¼
+    public List<SplitCube> GetSplitCubeCS() { return splitCubeCS; }
 
-	// ƒŠƒXƒg‚ÌƒŠƒZƒbƒg
-	public void ResetList()
-	{
-		magObjSphere.Clear();
-		magObjSplit1.Clear();       // •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-		magObjSplit2.Clear();       // •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-		magObjConnecter.Clear();    // •ª—ô•¨‘Ì‚ğÚ‘±‚·‚é¥—ÍƒIƒuƒWƒFƒNƒg
-		detectAreas.Clear();        // ƒNƒŠƒA”»’èƒIƒuƒWƒFƒNƒg
+    // ãƒªã‚¹ãƒˆã®ãƒªã‚»ãƒƒãƒˆ
+    public void ResetList()
+    {
+        magObjSphere.Clear();
+        magObjSplit1.Clear();       // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+        magObjSplit2.Clear();       // åˆ†è£‚ç‰©ä½“ã®å³å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+        magObjConnecter.Clear();    // åˆ†è£‚ç‰©ä½“ã‚’æ¥ç¶šã™ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+        detectAreas.Clear();        // ã‚¯ãƒªã‚¢åˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-		sphereMagCS.Clear();        // ‹…‘Ì‚Ì¥—ÍƒXƒNƒŠƒvƒg
-		split1HCubeMagCS.Clear();   // •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì¥—ÍƒXƒNƒŠƒvƒg
-		split2HCubeMagCS.Clear();   // •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì¥—ÍƒXƒNƒŠƒvƒg
-		cubeMagCS.Clear();          // ƒRƒlƒNƒ^[‚Ì¥—ÍƒXƒNƒŠƒvƒg
+        sphereMagCS.Clear();        // çƒä½“ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+        split1HCubeMagCS.Clear();   // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+        split2HCubeMagCS.Clear();   // åˆ†è£‚ç‰©ä½“ã®å³å´ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+        cubeMagCS.Clear();          // ã‚³ãƒã‚¯ã‚¿ãƒ¼ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
 
-		moveSphereCS.Clear();       // ‹…‘Ì‚Ì“®ìƒXƒNƒŠƒvƒg
-		moveHCubeLCS.Clear();       // •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì“®ìƒXƒNƒŠƒvƒg
-		moveHCubeRCS.Clear();       // •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì“®ìƒXƒNƒŠƒvƒg
-		splitCubeCS.Clear();        // •ª—ôƒXƒNƒŠƒvƒg
-	}
+        moveSphereCS.Clear();       // çƒä½“ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+        moveHCubeLCS.Clear();       // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+        moveHCubeRCS.Clear();       // åˆ†è£‚ç‰©ä½“ã®å³å´ã®å‹•ä½œã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+        splitCubeCS.Clear();        // åˆ†è£‚ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+    }
 }
 
 //----------------------------------------------------------------
-// ƒQ[ƒ€ƒI[ƒo[‚Ì¥—ÍƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğ•Û‘¶‚·‚éƒNƒ‰ƒX
+// ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’ä¿å­˜ã™ã‚‹ã‚¯ãƒ©ã‚¹
 //----------------------------------------------------------------
 [System.Serializable]
 public class MagObjPosition
@@ -97,9 +98,9 @@ public class MagObjPosition
 }
 
 //------------------------------------------------------------------------------
-// JSONŒ`®“à‚ÅƒŠƒXƒg\‘¢‚ğˆÛ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
-// ƒŠƒXƒg‚ğƒ‰ƒbƒp[ƒNƒ‰ƒX (MagObjPositionWrapper) ‚ÌƒvƒƒpƒeƒB‚Æ‚µ‚ÄŠi”[
-// JsonUtility ‚Éu‚±‚ê‚ÍƒIƒuƒWƒFƒNƒg‚Ìˆê•”v‚Æ”F¯‚³‚¹‚é
+// JSONå½¢å¼å†…ã§ãƒªã‚¹ãƒˆæ§‹é€ ã‚’ç¶­æŒã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+// ãƒªã‚¹ãƒˆã‚’ãƒ©ãƒƒãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹ (MagObjPositionWrapper) ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã¨ã—ã¦æ ¼ç´
+// JsonUtility ã«ã€Œã“ã‚Œã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä¸€éƒ¨ã€ã¨èªè­˜ã•ã›ã‚‹
 //------------------------------------------------------------------------------
 [System.Serializable]
 public class MagObjPositionWrapper
@@ -115,685 +116,764 @@ public class MagObjPositionWrapper
 
 public class GameManager : MonoBehaviour
 {
-	[Header("ŠeƒXƒe[ƒW‚Ì¥—ÍƒIƒuƒWƒFƒNƒgiÅ‰‚ÉƒXƒe[ƒW”‚ğİ’èj")]
-	public List<StageData> stageData;
-
-	[Header("ƒvƒŒƒCƒ„[‚Ì¥Î")]
-	public GameObject magnet1;
-	public GameObject magnet2;
-
-	[Header("ŠJnƒXƒe[ƒW")]
-	public int startStage;
-
-	[Header("‘JˆÚæ‚ÌƒV[ƒ“–¼")]
-	public string resultSceneName = "Result";       // ‘JˆÚæ‚ÌƒV[ƒ“–¼‚ğInspector‚Åİ’è
-	public string gameOverSceneName = "GameOver";   // ‘JˆÚæ‚ÌƒV[ƒ“–¼‚ğInspector‚Åİ’è
-
-	private bool gameClearFg = false;         // ƒQ[ƒ€ƒNƒŠƒA‚µ‚½‚©‚Ç‚¤‚©
-	private bool gameOverFg = false;          // ƒQ[ƒ€ƒI[ƒo[‚µ‚½‚©‚Ç‚¤‚©
-
-	private int totalAreas = 0;               // İ’è‚³‚ê‚½”»’èƒGƒŠƒA‚Ì”
-	private int totalConnected = 0;           // Ú‘±‚³‚ê‚½”»’èƒGƒŠƒA‚Ì”
-	private float clearTimer = 0.0f;          // Ú‘±‚³‚ê‘±‚¯‚Ä‚¢‚é•b”
-	private float clearTime = 1.0f;           // Ú‘±‚³‚ê‚Ä‚¢‚é•b”‚ª‚±‚Ì•b”‚ğ’´‚¦‚é‚ÆƒNƒŠƒA‚Æ‚İ‚È‚·
-	private float changeSceneTime = 1.5f;     // ‰½•bŒã‚ÉƒŠƒUƒ‹ƒgƒV[ƒ“‚É‘JˆÚ‚·‚é‚©
-
-	private GameObject playerL = null;        // ƒvƒŒƒCƒ„[L
-	private GameObject playerR = null;        // ƒvƒŒƒCƒ„[R
-	private Magnetism magnetism1 = null;      // ƒvƒŒƒCƒ„[L‚Ìƒ}ƒOƒlƒeƒBƒYƒ€
-	private Magnetism magnetism2 = null;      // ƒvƒŒƒCƒ„[R‚Ìƒ}ƒOƒlƒeƒBƒYƒ€
-
-	private int curStage = 0;                 // Œ»İ‚ÌƒXƒe[ƒW”
-	private string json;                      // ƒŠƒgƒ‰ƒC‚É¥Î‚ÌˆÊ’u‚ğˆÚ“®‚³‚¹‚é‚½‚ß‚ÌˆÊ’uƒf[ƒ^
-
-	public PressurePlates01[] pressurePlates; // ‚·‚×‚Ä‚ÌŠ´ˆ³”Â‚ğ“o˜^
-	private int totalPressed = 0; // ‰Ÿ‚³‚ê‚Ä‚¢‚éŠ´ˆ³”Â‚Ì”
-
-	Pose pose;          // Pose‚Ìó‘Ô‚ğó‚¯æ‚é
-
-	// Start is called before the first frame update
-	void Start()
-	{
-		// PoseƒIƒuƒWƒFƒNƒg‚ğæ“¾
-		pose = GameObject.Find("Pose").GetComponent<Pose>();
-
-		foreach (PressurePlates01 plate in pressurePlates)
-		{
-			plate.OnPressurePlateChanged += OnPlateStateChanged; // ƒCƒxƒ“ƒg“o˜^
-		}
-
-		for (int i = 0; i < stageData.Count; i++)
-		{
-			foreach (DetectArea detectArea in stageData[i].detectAreas)
-			{
-				detectArea.OnDetectAreaChanged += OnDetectionStateChanged; // ƒCƒxƒ“ƒg“o˜^
-				totalAreas++;
-			}
-		}
-
-		// ƒvƒŒƒCƒ„[‚Ì¥Î‚Ì¥—ÍƒXƒNƒŠƒvƒg‚ğæ“¾
-		magnetism1 = magnet1.GetComponent<Magnetism>();
-		magnetism2 = magnet2.GetComponent<Magnetism>();
-		// ƒvƒŒƒCƒ„[‚ğæ“¾
-		playerL = magnet1.transform.parent.gameObject;
-		playerR = magnet2.transform.parent.gameObject;
-
-		//------ ŠJnƒXƒe[ƒW”‚ÆŒ»İ‚ÌƒXƒe[ƒW”‚ÌŒˆ’è ------//
-		// CurrentStage‚É•Û‘¶‚³‚ê‚½ƒXƒe[ƒW”‚ğæ“¾
-		if (PlayerPrefs.HasKey("CurrentStageNum"))
-		{
-			startStage = PlayerPrefs.GetInt("CurrentStageNum", 0) + 1;
-			//if (curStage > 0) { ChangeClearState(curStage - 1); }    // ƒXƒe[ƒW‚ğƒNƒŠƒA‚µ‚Ä‚¢‚éAˆÈ‘O‚ÌƒXƒe[ƒW‚ğƒNƒŠƒAÏ‚İ‚É‚·‚é
-			Debug.Log("Stage" + (startStage) + "‚©‚çƒXƒ^[ƒg");
-		}
-		// ŠJnƒXƒe[ƒW”‚ğ“Y‚¦š‚É‡‚í‚¹‚ÄŒ»İ‚ÌƒXƒe[ƒW‚É‚·‚é
-		if (startStage > 0)
-		{
-			curStage = startStage - 1;
-		}
-
-		// ŠJnƒXƒe[ƒW‚ªİ’è‚³‚ê‚Ä‚¢‚éAŠJnƒXƒe[ƒW‚æ‚è‘O‚ÌƒXƒe[ƒW‚ğƒNƒŠƒAÏ‚İ‚É‚·‚é
-		if (startStage > 1)
-		{
-			int tempStageNum = startStage - 1;
-			ChangeClearState(tempStageNum);
-		}
-
-		// ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ğƒXƒe[ƒW‚²‚Æ‚Éİ’è‚³‚ê‚½ˆÊ’u‚Æ‰ñ“]‚É‡‚í‚¹‚é
-		playerL.transform.position = stageData[curStage].playerLPos;
-		playerR.transform.position = stageData[curStage].playerRPos;
-		playerL.transform.rotation = stageData[curStage].playerLRotation;
-		playerR.transform.rotation = stageData[curStage].playerRRotation;
-
-		// ¥—ÍƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğ•Û‘¶‚³‚ê‚½ˆÊ’u‚ÉˆÚ“®
-		LoadMagObjPositions();
-		// İ’è‚³‚ê‚½‘S‚Ä‚Ì¥—ÍƒIƒuƒWƒFƒNƒg‚ÉƒAƒ^ƒbƒ`‚³‚ê‚½ŠeƒXƒNƒŠƒvƒg‚ğƒŠƒXƒg‚É’Ç‰Á
-		AddAllMagCSList();
-
-		////------ ƒXƒe[ƒW‚Ì¥—ÍƒIƒuƒWƒFƒNƒg‚Ìó‘Ô‚ğ‰Šú‰» ------//
-		//Debug.Log("ƒXƒe[ƒW” : " + stageData.Count);
-		//// ‘SƒXƒe[ƒW‚ÌˆÚ“®‚Å‚«‚é¥—ÍƒIƒuƒWƒFƒNƒg‚Ì’Tõ
-		//for (int i = 0; i < stageData.Count; i++)
-		//{
-		//    Debug.Log("ƒXƒe[ƒW" + (i + 1) + "‰Šú‰»");
-		//    SearchCanCarryMagObj(i);
-		//}
-		Debug.Log(totalAreas);
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
-
-	private void FixedUpdate()
-	{
-		// Pose‰æ–Ê‚ğ•\¦‚µ‚Ä‚¢‚é‚È‚ç
-		if (pose.GetPose())
-		{
-			return;
-		}
-
-		//------ ˆÚ“®‚Å‚«‚é¥—ÍƒIƒuƒWƒFƒNƒg‚Ì’Tõ ------//
-		for (int i = 0; i < stageData.Count; i++)
-		{
-			SearchCanCarryMagObj(i);
-		}
-
-		//------ ƒXƒe[ƒW‚ÌƒNƒŠƒAˆ— ------//
-		int connectCount = 0;  // Œq‚ª‚Á‚Ä‚¢‚é”»’èƒGƒŠƒA
-
-		// Œ»İ‚ÌƒXƒe[ƒW‚Ì”»’èƒGƒŠƒA‚ªŒq‚ª‚Á‚Ä‚¢‚é‚©‚ğ’²‚×‚é
-		for (int i = 0; i < stageData[curStage].detectAreas.Count; i++)
-		{
-			// Œq‚ª‚Á‚Ä‚¢‚éA‚»‚Ì”‚ğƒJƒEƒ“ƒg
-			if (stageData[curStage].detectAreas[i].GetIsConnectFg())
-			{
-				connectCount++;
-
-				// ‚·‚×‚Ä‚Ì”»’èƒGƒŠƒA‚ªŒq‚ª‚Á‚Ä‚¢‚éA•b”‚É‚æ‚Á‚ÄƒNƒŠƒAƒtƒ‰ƒO‚ğ•ÏX
-				if (connectCount == stageData[curStage].detectAreas.Count)
-				{
-					clearTimer += Time.deltaTime;   // Œq‚ª‚Á‚Ä‚¢‚é•b”‚ğŒv‘ª
-
-					// ƒNƒŠƒA‚Æ‚İ‚È‚·•b”‚ğ’´‚¦‚½‚çƒNƒŠƒA
-					if (clearTimer > clearTime)
-					{
-						totalConnected += connectCount;
-						Debug.Log(totalConnected);
-						stageData[curStage].SetClearFg(true);
-						clearTimer = 0.0f;   // ƒ^ƒCƒ}[ƒŠƒZƒbƒg
-						Debug.Log("ƒXƒe[ƒW" + (curStage + 1) + "ƒNƒŠƒA");
-					}
-				}
-			}
-		}
-
-		// Œ»İ‚ÌƒXƒe[ƒW‚ğƒNƒŠƒA‚µ‚½AŸ‚ÌƒXƒe[ƒW‚ª‚ ‚ê‚ÎŸ‚ÌƒXƒe[ƒW‚Éi‚Ş
-		if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
-		{
-			curStage++;
-			Debug.Log("Œ»İ‚ÌƒXƒe[ƒW :" + (curStage + 1));
-		}
-
-		// ‘S‚Ä‚Ì‰ñ˜H‚ªÚ‘±‚³‚ê‚½AƒQ[ƒ€ƒNƒŠƒA
-		if(totalConnected == totalAreas)
-		{
-			gameClearFg = true; // ƒQ[ƒ€ƒNƒŠƒA
-			Debug.Log("‘S‚Ä‚Ì‰ñ˜H‚ªÚ‘±‚³‚ê‚Ä‚¢‚Ü‚·IƒQ[ƒ€ƒNƒŠƒAIResult‰æ–Ê‚ÉˆÚ‚è‚Ü‚·");
-			Invoke("MoveResultScene", changeSceneTime);     // changeSceneTime•bŒã‚ÉƒŠƒUƒ‹ƒgƒV[ƒ“‚É‘JˆÚ
-		}
-
-
-		//------ ƒQ[ƒ€ƒI[ƒo[‚Ì”»’èˆ— ------//
-		// ƒvƒŒƒCƒ„[‚Ì¥Î‚É‰½‚©‚ª‚­‚Á‚Â‚¢‚½
-		if (magnetism1.isSnapping || magnetism2.isSnapping)
-		{
-			Debug.Log("¥Î‚ª‚­‚Á‚Â‚«‚Ü‚µ‚½IƒQ[ƒ€ƒI[ƒo[IResult‰æ–Ê‚ÉˆÚ‚è‚Ü‚·");
-			// ‚±‚±‚ÉƒQ[ƒ€ƒI[ƒo[ˆ—‚ğ‘‚­
-
-			// changeSceneTime•bŒã‚ÉƒQ[ƒ€ƒI[ƒo[ƒV[ƒ“‚É‘JˆÚ
-			Invoke("MoveGameOverScene", changeSceneTime);
-		}
-
-		// ¥—Í”ÍˆÍŠO‚Éo‚½
-		if (!magnetism1.inMagnetismArea || !magnetism2.inMagnetismArea)
-		{
-			Debug.Log("¥—Í”ÍˆÍŠO‚Éo‚Ü‚µ‚½IƒQ[ƒ€ƒI[ƒo[IResult‰æ–Ê‚ÉˆÚ‚è‚Ü‚·");
-			// ‚±‚±‚ÉƒQ[ƒ€ƒI[ƒo[ˆ—‚ğ‘‚­
-
-			// changeSceneTime•bŒã‚ÉƒQ[ƒ€ƒI[ƒo[ƒV[ƒ“‚É‘JˆÚ
-			Invoke("MoveGameOverScene", changeSceneTime);
-		}
-	}
-
-	// ”»’èƒGƒŠƒAƒIƒuƒWƒFƒNƒg‚Ìó‘Ô‚ğŒŸ’m
-	void OnDetectionStateChanged(bool isConnected)
-	{
-		//totalConnected += isConnected ? 1 : -1; // Ú‘±‚³‚ê‚Ä‚¢‚é”‚ğ‘Œ¸
-		//Debug.Log(totalConnected);
-
-		//if (totalConnected == totalAreas)
-		//{
-		//    gameClearFg = true; // ƒQ[ƒ€ƒNƒŠƒA
-		//    Debug.Log("‘S‚Ä‚Ì‰ñ˜H‚ªÚ‘±‚³‚ê‚Ä‚¢‚Ü‚·IƒQ[ƒ€ƒNƒŠƒAIResult‰æ–Ê‚ÉˆÚ‚è‚Ü‚·");
-		//    // ‚±‚±‚ÉƒQ[ƒ€ƒNƒŠƒAˆ—‚ğ‘‚­
-
-		//    // changeSceneTime•bŒã‚ÉƒŠƒUƒ‹ƒgƒV[ƒ“‚É‘JˆÚ
-		//    Invoke("MoveResultScene", changeSceneTime);
-		//}
-	}
-
-	// İ’è‚³‚ê‚½¥—ÍƒIƒuƒWƒFƒNƒg‚ÉƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éŠeƒXƒNƒŠƒvƒg‚ğƒŠƒXƒg‚ÉŠi”[‚·‚é
-	private void AddAllMagCSList()
-	{
-		for (int i = 0; i < stageData.Count; i++)
-		{
-			// ‹…‘Ì‚Ì¥—ÍƒIƒuƒWƒFƒNƒg‚ÌŠeƒXƒNƒŠƒvƒg‚ğƒŠƒXƒg‚É’Ç‰Á
-			foreach (GameObject magObj in stageData[i].magObjSphere)
-			{
-				if (magObj != null)
-				{
-					stageData[i].GetSphereMagCS().Add(magObj.GetComponent<SphereMagnetism>());
-					stageData[i].GetMoveSphereCS().Add(magObj.GetComponent<MoveSphere>());
-				}
-			}
-
-			// •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg‚ÌŠeƒXƒNƒŠƒvƒg‚ğƒŠƒXƒg‚É’Ç‰Á
-			foreach (GameObject magObj in stageData[i].magObjSplit1)
-			{
-				if (magObj != null)
-				{
-					stageData[i].GetSplit1HCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
-					stageData[i].GetMoveHCubeLCS().Add(magObj.GetComponent<MoveHCubeL>());
-				}
-			}
-
-			// •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg‚ÌŠeƒXƒNƒŠƒvƒg‚ğƒŠƒXƒg‚É’Ç‰Á
-			foreach (GameObject magObj in stageData[i].magObjSplit2)
-			{
-				if (magObj != null)
-				{
-					stageData[i].GetSplit2HCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
-					stageData[i].GetMoveHCubeRCS().Add(magObj.GetComponent<MoveHCubeR>());
-				}
-			}
-
-			// •ª—ô•¨‘Ì‚ğÚ‘±‚·‚é¥—ÍƒIƒuƒWƒFƒNƒg‚ÌŠeƒXƒNƒŠƒvƒg‚ğƒŠƒXƒg‚É’Ç‰Á
-			foreach (GameObject magObj in stageData[i].magObjConnecter)
-			{
-				if (magObj != null)
-				{
-					stageData[i].GetCubeMagCS().Add(magObj.GetComponent<CubeMagnetism>());
-					stageData[i].GetSplitCubeCS().Add(magObj.GetComponent<SplitCube>());
-				}
-			}
-		}
-	}
-
-	// w’è‚µ‚½ƒXƒe[ƒW‚ÌˆÚ“®‚Å‚«‚é¥—ÍƒIƒuƒWƒFƒNƒg‚ğ’Tõ‚µAƒXƒNƒŠƒvƒg‚Ì—LŒøó‘Ô‚ğ•ÏX
-	private void SearchCanCarryMagObj(int _index)
-	{
-		// ‹…‘Ì‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-		for (int i = 0; i < stageData[_index].magObjSphere.Count; i++)
-		{
-			GameObject magObj = stageData[_index].magObjSphere[i];
-
-			if (magObj != null)
-			{
-				// ƒvƒŒƒCƒ„[‚Ì¥—Í”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚é¥—ÍƒIƒuƒWƒFƒNƒg‚ÌƒXƒNƒŠƒvƒg‚Ì‚İ—LŒø‰»
-				if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSphereMagCS()[i].GetMagnetismRange() ||
-					GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSphereMagCS()[i].GetMagnetismRange())
-				{
-					Debug.Log(_index + 1 + ": Sphere —LŒø‰»");
-					stageData[_index].GetSphereMagCS()[i].enabled = true;
-					stageData[_index].GetMoveSphereCS()[i].enabled = true;
-				}
-				// “ü‚Á‚Ä‚¢‚È‚¢‚Í–³Œø‰»
-				else if (!magnetism1.inObjMagArea && !magnetism2.inObjMagArea)
-				{
-					Debug.Log(_index + 1 + ": Sphere –³Œø‰»");
-					stageData[_index].GetSphereMagCS()[i].enabled = false;
-					stageData[_index].GetMoveSphereCS()[i].enabled = false;
-				}
-			}
-		}
-
-		// •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-		for (int i = 0; i < stageData[_index].magObjSplit1.Count; i++)
-		{
-			GameObject magObj = stageData[_index].magObjSplit1[i];
-			GameObject connecter = stageData[_index].magObjConnecter[i];
-
-			if (magObj != null)
-			{
-				// •ªŠ„Œã‚ÅƒvƒŒƒCƒ„[L‚Ì¥—Í”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚é¥—ÍƒIƒuƒWƒFƒNƒg‚ÌƒXƒNƒŠƒvƒg‚Ì‚İ—LŒø‰»
-				if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
-					!connecter.activeSelf)
-				{
-					Debug.Log(_index + 1 + ": Split1 —LŒø‰»");
-					stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
-					stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
-				}
-				// •ªŠ„‘O‚Ü‚½‚ÍA“ü‚Á‚Ä‚¢‚È‚¢‚Í–³Œø‰»
-				else if (!magnetism1.inObjMagArea || connecter.activeSelf)
-				{
-					Debug.Log(_index + 1 + ": Split1 –³Œø‰»");
-					stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
-					stageData[_index].GetMoveHCubeLCS()[i].enabled = false;
-				}
-
-				// •ªŠ„Œã‚ÅƒvƒŒƒCƒ„[R‚Ì¥—Í”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚é¥—ÍƒIƒuƒWƒFƒNƒg‚ÌƒXƒNƒŠƒvƒg‚Ì‚İ—LŒø‰»
-				if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
-					!connecter.activeSelf)
-				{
-					Debug.Log(_index + 1 + ": Split1 —LŒø‰»");
-					stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
-					stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
-				}
-				// •ªŠ„‘O‚Ü‚½‚ÍA“ü‚Á‚Ä‚¢‚È‚¢‚Í–³Œø‰»
-				else if (!magnetism2.inObjMagArea || connecter.activeSelf)
-				{
-					Debug.Log(_index + 1 + ": Split1 –³Œø‰»");
-					stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
-					stageData[_index].GetMoveHCubeLCS()[i].enabled = false;
-				}
-			}
-		}
-
-		// •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-		for (int i = 0; i < stageData[_index].magObjSplit2.Count; i++)
-		{
-			GameObject magObj = stageData[_index].magObjSplit2[i];
-			GameObject connecter = stageData[_index].magObjConnecter[i];
-
-			if (magObj != null)
-			{
-				// •ªŠ„Œã‚ÅƒvƒŒƒCƒ„[L‚Ì¥—Í”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚é¥—ÍƒIƒuƒWƒFƒNƒg‚ÌƒXƒNƒŠƒvƒg‚Ì‚İ—LŒø‰»
-				if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
-					!connecter.activeSelf)
-				{
-					Debug.Log(_index + 1 + ": Split2 —LŒø‰»");
-					stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
-					stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
-				}
-				// •ªŠ„‘O‚Ü‚½‚ÍA“ü‚Á‚Ä‚¢‚È‚¢‚Í–³Œø‰»
-				else if (!magnetism1.inObjMagArea || connecter.activeSelf)
-				{
-					Debug.Log(_index + 1 + ": Split2 –³Œø‰»");
-					stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
-					stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
-				}
-
-				// •ªŠ„Œã‚ÅƒvƒŒƒCƒ„[R‚Ì¥—Í”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚é¥—ÍƒIƒuƒWƒFƒNƒg‚ÌƒXƒNƒŠƒvƒg‚Ì‚İ—LŒø‰»
-				// Split2‚ÍƒvƒŒƒCƒ„[R‚Å‚Ì‚İ“®‚©‚¹‚é‚Ì‚ÅA‚±‚±‚Å§Œä
-				if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
-					!connecter.activeSelf)
-				{
-					Debug.Log(_index + 1 + ": Split2 —LŒø‰»");
-					stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
-					stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
-				}
-				// •ªŠ„‘O‚Ü‚½‚ÍA“ü‚Á‚Ä‚¢‚È‚¢‚Í–³Œø‰»
-				else if (!magnetism2.inObjMagArea || connecter.activeSelf)
-				{
-					Debug.Log(_index + 1 + ": Split2 –³Œø‰»");
-					stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
-					stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
-				}
-			}
-		}
-
-		// •ª—ô•¨‘Ì‚ğÚ‘±‚·‚é¥—ÍƒIƒuƒWƒFƒNƒg
-		for (int i = 0; i < stageData[_index].magObjConnecter.Count; i++)
-		{
-			GameObject magObj = stageData[_index].magObjConnecter[i];
-
-			if (magObj != null)
-			{
-				// ƒvƒŒƒCƒ„[‚Ì¥—Í”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚é¥—ÍƒIƒuƒWƒFƒNƒg‚ÌƒXƒNƒŠƒvƒg‚Ì‚İ—LŒø‰»
-				if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetCubeMagCS()[i].GetMagnetismRange() ||
-					GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetCubeMagCS()[i].GetMagnetismRange())
-				{
-					Debug.Log(_index + 1 + ": Connecter —LŒø‰»");
-					stageData[_index].GetCubeMagCS()[i].enabled = true;
-					stageData[_index].GetSplitCubeCS()[i].enabled = true;
-				}
-				// “ü‚Á‚Ä‚¢‚È‚¢‚Í–³Œø‰»
-				else if (!magnetism1.inObjMagArea && !magnetism2.inObjMagArea)
-				{
-					Debug.Log(_index + 1 + ": Connecter –³Œø‰»");
-					stageData[_index].GetCubeMagCS()[i].enabled = false;
-					stageData[_index].GetSplitCubeCS()[i].enabled = false;
-				}
-			}
-		}
-	}
-
-	// ƒvƒŒƒCƒ„[‚Ì¥Î‚©‚ç¥—ÍƒIƒuƒWƒFƒNƒg‚Ü‚Å‚Ì‹——£‚ğæ“¾
-	private float GetDistancePlayerMagToMagObj(int _index, int _playerMagNumber, int _magObjNumber, GameObject _magObj)
-	{
-		Vector3 playerMagPos = (_playerMagNumber == 1) ? magnetism1.myPlate.transform.position : magnetism2.myPlate.transform.position;   // ƒvƒŒƒCƒ„[‚Ì¥Î‚ÌˆÊ’u
-
-		// í—Ş•Ê‚Å¥—Í”ÍˆÍ‚Ì‹——£‚ğæ“¾iŠeMagnetism.cs‚Æ“¯‚¶ˆ—‚Å‹——£‚ğ‹‚ß‚éj
-		float surfaceDistance = 0.0f;
-		switch (_magObj.tag)
-		{
-			case "MagObj_Sphere":
-				// Collider‚ğ—˜—p‚µ‚Äˆê”Ô‹ß‚¢•\–Ê‚ÌÀ•W‚ğæ“¾
-				Vector3 surfacePoint = stageData[_index].GetSphereMagCS()[_magObjNumber].GetSphereCollider().ClosestPoint(playerMagPos);
-				// ‹…‚Ì•\–Ê‚Æ¥Î‚Ì‹——£‚ğŒvZ
-				surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
-				break;
-			case "MagObj_HCube":
-				// •ª—ôŒã‚Ì¶‘¤
-				if (_magObj.name == "MagObj_split1")
-				{
-					// Collider‚ğ—˜—p‚µ‚Äˆê”Ô‹ß‚¢•\–Ê‚ÌÀ•W‚ğæ“¾
-					surfacePoint = stageData[_index].GetSplit1HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
-					// •ª—ôŒã‚Ì¶‘¤‚Ì•\–Ê‚Æ¥Î‚Ì‹——£‚ğŒvZ
-					surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
-				}
-				// •ª—ôŒã‚Ì‰E‘¤
-				else
-				{
-					// Collider‚ğ—˜—p‚µ‚Äˆê”Ô‹ß‚¢•\–Ê‚ÌÀ•W‚ğæ“¾
-					surfacePoint = stageData[_index].GetSplit2HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
-					// •ª—ôŒã‚Ì‰E‘¤‚Ì•\–Ê‚Æ¥Î‚Ì‹——£‚ğŒvZ
-					surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
-				}
-				break;
-			case "MagObj_Cube":
-				// Collider‚ğ—˜—p‚µ‚Äˆê”Ô‹ß‚¢•\–Ê‚ÌÀ•W‚ğæ“¾
-				Vector3 surface1 = stageData[_index].GetCubeMagCS()[_magObjNumber].GetCube1Collider().ClosestPoint(playerMagPos);
-				Vector3 surface2 = stageData[_index].GetCubeMagCS()[_magObjNumber].GetCube2Collider().ClosestPoint(playerMagPos);
-
-				// •\–ÊÀ•W‚Æ‚Ì‹——£‚ğŒvZ
-				float distance1 = Vector3.Distance(surface1, playerMagPos);
-				float distance2 = Vector3.Distance(surface2, playerMagPos);
-
-				surfaceDistance = Mathf.Min(distance1, distance2);
-				break;
-		}
-		return surfaceDistance;
-	}
-
-	// ƒAƒvƒŠI—¹‚ÉƒŠƒgƒ‰ƒC—p‚Ìƒf[ƒ^‚ğÁ‚·
-	private void OnApplicationQuit()
-	{
-		PlayerPrefs.DeleteKey("CurrentStageNum");
-		PlayerPrefs.DeleteKey("CurrentScene");
-		PlayerPrefs.DeleteKey("MagObjPositions");
-	}
-
-	private void SaveMagObjPositions()
-	{
-		List<MagObjPosition> magObjPosition = new List<MagObjPosition>();
-
-		// ŠeƒXƒe[ƒW‚²‚Æ‚ÉˆÊ’u‚ğŠi”[
-		for (int i = 0; i < stageData.Count; i++)
-		{
-			// ƒXƒe[ƒW‚²‚Æ‚É—v‘f‚ğ’Ç‰Á‚µ‚Ä‰Šú‰»
-			magObjPosition.Add(new MagObjPosition());
-			magObjPosition[i].posX = new List<float>();
-			magObjPosition[i].posY = new List<float>();
-			magObjPosition[i].posZ = new List<float>();
-
-			// ƒNƒŠƒAÏ‚İ‚ÌƒXƒe[ƒW‚Ì¥—ÍƒIƒuƒWƒFƒNƒg‚Ì‚İ•Û‘¶
-			if (stageData[i].GetClearFg())
-			{
-				// ‹…‘Ì‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-				foreach (GameObject magObj in stageData[i].magObjSphere)
-				{
-					if (magObj != null)
-					{
-						magObjPosition[i].posX.Add(magObj.transform.position.x);
-						magObjPosition[i].posY.Add(magObj.transform.position.y);
-						magObjPosition[i].posZ.Add(magObj.transform.position.z);
-					}
-				}
-
-				// •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-				foreach (GameObject magObj in stageData[i].magObjSplit1)
-				{
-					if (magObj != null)
-					{
-						magObjPosition[i].posX.Add(magObj.transform.position.x);
-						magObjPosition[i].posY.Add(magObj.transform.position.y);
-						magObjPosition[i].posZ.Add(magObj.transform.position.z);
-					}
-				}
-
-				// •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-				foreach (GameObject magObj in stageData[i].magObjSplit2)
-				{
-					if (magObj != null)
-					{
-						magObjPosition[i].posX.Add(magObj.transform.position.x);
-						magObjPosition[i].posY.Add(magObj.transform.position.y);
-						magObjPosition[i].posZ.Add(magObj.transform.position.z);
-					}
-				}
-
-				// •ª—ô•¨‘Ì‚ğÚ‘±‚·‚é¥—ÍƒIƒuƒWƒFƒNƒg
-				foreach (GameObject magObj in stageData[i].magObjConnecter)
-				{
-					if (magObj != null)
-					{
-						magObjPosition[i].posX.Add(magObj.transform.position.x);
-						magObjPosition[i].posY.Add(magObj.transform.position.y);
-						magObjPosition[i].posZ.Add(magObj.transform.position.z);
-					}
-				}
-			}
-		}
-
-		// JSON‚É‚µ‚Ä•Û‘¶
-		// MagObjPositionWrapperƒNƒ‰ƒX‚ğg—p‚µ‚ÄƒVƒŠƒAƒ‰ƒCƒY‰»‚·‚é‚±‚Æ‚ÅJSON‰»‰Â”\‚É‚µ‚Ä‚¢‚é
-		json = JsonUtility.ToJson(new MagObjPositionWrapper(magObjPosition));   // ƒŠƒXƒg‚Ì\‘¢‚ğˆÛ
-		PlayerPrefs.SetString("MagObjPositions", json);
-		PlayerPrefs.Save();
-		Debug.Log("¥—ÍƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğ•Û‘¶‚µ‚Ü‚µ‚½");
-		Debug.Log(json);
-	}
-
-
-	private void LoadMagObjPositions()
-	{
-		if(PlayerPrefs.HasKey("MagObjPositions"))
-		{
-			List<MagObjPosition> magObjPosition = new List<MagObjPosition>();   // ƒŠƒ[ƒh—p‚ÌƒŠƒXƒg
-			string json = PlayerPrefs.GetString("MagObjPositions");
-			MagObjPositionWrapper dataWrapper = JsonUtility.FromJson<MagObjPositionWrapper>(json);
-			magObjPosition = dataWrapper.magObjPositions;
-
-			for(int i = 0; i < magObjPosition.Count; i++)
-			{
-				for (int j = 0; j < magObjPosition[i].posX.Count; j++)
-				{
-					// æ“¾‚µ‚½Še¬•ª‚©‚çVector3‚ğì¬
-					Vector3 position = new Vector3
-					(
-						magObjPosition[i].posX[j],
-						magObjPosition[i].posY[j],
-						magObjPosition[i].posZ[j]
-					);
-
-					// ‹…‘Ì‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-					if (j < stageData[i].magObjSphere.Count)
-					{
-						stageData[i].magObjSphere[j].transform.position = position;
-					}
-					// •ª—ô•¨‘Ì‚Ì¶‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-					if (j < stageData[i].magObjSplit1.Count)
-					{
-						stageData[i].magObjSplit1[j].transform.position = position;
-					}
-					// •ª—ô•¨‘Ì‚Ì‰E‘¤‚Ì¥—ÍƒIƒuƒWƒFƒNƒg
-					if (j < stageData[i].magObjSplit2.Count)
-					{
-						stageData[i].magObjSplit2[j].transform.position = position;
-					}
-					// •ª—ô•¨‘Ì‚ğÚ‘±‚·‚é¥—ÍƒIƒuƒWƒFƒNƒg
-					if (j < stageData[i].magObjConnecter.Count)
-					{
-						stageData[i].magObjConnecter[j].transform.position = position;
-					}
-				}
-			}
-			Debug.Log("¥—ÍƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğ“Ç‚İ‚İ‚Ü‚µ‚½");
-		}
-		else
-		{
-			Debug.Log("¥—ÍƒIƒuƒWƒFƒNƒg‚ÌˆÊ’uƒf[ƒ^‚ª‚ ‚è‚Ü‚¹‚ñ");
-		}
-	}
-
-	// w’è‚µ‚½ƒXƒe[ƒW”Ô†‚Ü‚Å‚ğƒNƒŠƒAÏ‚İ‚É‚·‚é
-	private void ChangeClearState(int _stageNum)
-	{
-		for (int i = 0; i < _stageNum; i++)
-		{
-			stageData[i].SetClearFg(true);  // ƒNƒŠƒA‚µ‚½‚±‚Æ‚É‚·‚é
-
-			for (int j = 0; j < stageData[i].detectAreas.Count; j++)
-			{
-				totalConnected++;           // Ú‘±Ï‚İ‚É‚·‚é
-			}
-		}
-	}
-
-	// ƒŠƒUƒ‹ƒgƒV[ƒ“‚É‘JˆÚ
-	private void MoveResultScene()
-	{
-		SceneManager.LoadScene(resultSceneName);
-	}
-
-	// ƒQ[ƒ€ƒI[ƒo[ƒV[ƒ“‚É‘JˆÚ
-	private void MoveGameOverScene()
-	{
-		PlayerPrefs.SetInt("CurrentStageNum", curStage);    // CurrentStageƒL[‚Æ‚µ‚ÄŒ»İ‚ÌƒXƒe[ƒW‚ğ•Û‘¶
-		PlayerPrefs.Save();
-		PlayerPrefs.SetString("CurrentScene", SceneManager.GetActiveScene().name);    // CurrentStageƒL[‚Æ‚µ‚ÄŒ»İ‚ÌƒV[ƒ“‚ğ•Û‘¶
-		PlayerPrefs.Save();
-		SaveMagObjPositions();  // ¥—ÍƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğ•Û‘¶
-		SceneManager.LoadScene(gameOverSceneName);
-	}
-
-	// w’è‚µ‚½ƒXƒe[ƒW‚ÌƒNƒŠƒAƒtƒ‰ƒO‚ğæ“¾
-	public bool GetStageClearFg(int _stageNumber)
-	{
-		return stageData[_stageNumber].GetClearFg();
-	}
-
-	// ƒQ[ƒ€ƒNƒŠƒAƒtƒ‰ƒO‚ğæ“¾
-	public bool GetGameClearFg()
-	{
-		return gameClearFg;
-	}
-
-	// ƒQ[ƒ€ƒI[ƒo[ƒtƒ‰ƒO‚ğæ“¾
-	public bool GetGameOverFg()
-	{
-		return gameOverFg;
-	}
-
-	// ƒQ[ƒ€ƒNƒŠƒAƒtƒ‰ƒO‚ğƒZƒbƒg
-	public void SetGameClearFg(bool _gameClearFg)
-	{
-		gameClearFg = _gameClearFg;
-	}
-
-	// ƒQ[ƒ€ƒI[ƒo[ƒtƒ‰ƒO‚ğƒZƒbƒg
-	public void SetGameOverFg(bool _gameOverFg)
-	{
-		gameOverFg = _gameOverFg;
-	}
-
-	// ŠJn‚·‚éƒXƒe[ƒW”‚ğƒQƒbƒg
-	public int GetStartStage()
-	{
-		return startStage;
-	}
-
-	// Œ»İƒXƒe[ƒW‚ğƒQƒbƒg
-	public int GetCurStage()
-	{
-		return curStage;
-	}
-
-	void OnPlateStateChanged(bool isPressed)
-	{
-		totalPressed += isPressed ? 1 : -1; // ‰Ÿ‚³‚ê‚Ä‚¢‚é”‚ğ‘Œ¸
-
-		if (totalPressed == pressurePlates.Length) // ‚·‚×‚Ä‚ª‰Ÿ‚³‚ê‚½ê‡
-		{
-			gameClearFg = true; // ƒQ[ƒ€ƒNƒŠƒA
-			Debug.Log("‘S‚Ä‚ÌŠ´ˆ³”Â‚ª‰Ÿ‚³‚ê‚Ä‚¢‚Ü‚·IƒQ[ƒ€ƒNƒŠƒAIResult‰æ–Ê‚ÉˆÚ‚è‚Ü‚·");
-			// ‚±‚±‚ÉƒQ[ƒ€ƒNƒŠƒAˆ—‚ğ‘‚­
-
-			// changeSceneTime•bŒã‚ÉƒŠƒUƒ‹ƒgƒV[ƒ“‚É‘JˆÚ
-			Invoke("MoveResultScene", changeSceneTime);
-		}
-	}
-
-
-	//--- TooClose‚Åg—pFƒvƒŒƒCƒ„[‚ª¡‚¢‚éƒXƒe[ƒW‚Ì¥—ÍƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é---//
-	public List<SphereMagnetism> GetCurrentStageSphereMagnetisms()
-	{
-		return stageData[curStage].GetSphereMagCS();
-	}
-	public List<HCubeMagnetism> GetCurrentStageSplit1Magnetisms()
-	{
-		return stageData[curStage].GetSplit1HCubeMagCS();
-	}
-	public List<HCubeMagnetism> GetCurrentStageSplit2Magnetisms()
-	{
-		return stageData[curStage].GetSplit2HCubeMagCS();
-	}
-	public List<CubeMagnetism> GetCurrentStageConnecterMagnetisms()
-	{
-		return stageData[curStage].GetCubeMagCS();
-	}
+    [Header("å„ã‚¹ãƒ†ãƒ¼ã‚¸ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆæœ€åˆã«ã‚¹ãƒ†ãƒ¼ã‚¸æ•°ã‚’è¨­å®šï¼‰")]
+    public List<StageData> stageData;
+
+    [Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³")]
+    public GameObject magnet1;
+    public GameObject magnet2;
+
+    [Header("é–‹å§‹ã‚¹ãƒ†ãƒ¼ã‚¸")]
+    public int startStage;
+
+    [Header("é·ç§»å…ˆã®ã‚·ãƒ¼ãƒ³å")]
+    public string resultSceneName = "Result";       // é·ç§»å…ˆã®ã‚·ãƒ¼ãƒ³åã‚’Inspectorã§è¨­å®š
+    public string gameOverSceneName = "GameOver";   // é·ç§»å…ˆã®ã‚·ãƒ¼ãƒ³åã‚’Inspectorã§è¨­å®š
+
+    private bool gameClearFg = false;         // ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ã—ãŸã‹ã©ã†ã‹
+    private bool gameOverFg = false;          // ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã—ãŸã‹ã©ã†ã‹
+    private bool augMagFg = false;            // ç£åŠ›å¼·åŒ–ã§ãã‚‹ã‹ã©ã†ã‹
+
+    private int totalAreas = 0;               // è¨­å®šã•ã‚ŒãŸåˆ¤å®šã‚¨ãƒªã‚¢ã®æ•°
+    private int totalConnected = 0;           // æ¥ç¶šã•ã‚ŒãŸåˆ¤å®šã‚¨ãƒªã‚¢ã®æ•°
+    private float clearTimer = 0.0f;          // æ¥ç¶šã•ã‚Œç¶šã‘ã¦ã„ã‚‹ç§’æ•°
+    private float clearTime = 1.0f;           // æ¥ç¶šã•ã‚Œã¦ã„ã‚‹ç§’æ•°ãŒã“ã®ç§’æ•°ã‚’è¶…ãˆã‚‹ã¨ã‚¯ãƒªã‚¢ã¨ã¿ãªã™
+    private float changeSceneTime = 1.5f;     // ä½•ç§’å¾Œã«ãƒªã‚¶ãƒ«ãƒˆã‚·ãƒ¼ãƒ³ã«é·ç§»ã™ã‚‹ã‹
+
+    private GameObject playerL = null;        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼L
+    private GameObject playerR = null;        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼R
+    private Magnetism magnetism1 = null;      // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼Lã®ãƒã‚°ãƒãƒ†ã‚£ã‚ºãƒ 
+    private Magnetism magnetism2 = null;      // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼Rã®ãƒã‚°ãƒãƒ†ã‚£ã‚ºãƒ 
+    private GameObject playerLController = null;
+    private GameObject playerRController = null;
+    private float moveTime = 1.0f;            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•æ¼”å‡ºã®ç§’æ•°
+    //private float moveTimer = 0.0f;           // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•æ¼”å‡ºã®è¨ˆæ¸¬
+
+    private bool fadeInFg = false;            // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ä¸­ã‹ã©ã†ã‹
+    private bool fadeOutFg = false;           // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆä¸­ã‹ã©ã†ã‹
+    private FadeController fadeController;    // ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢æ™‚ã®ãƒ•ã‚§ãƒ¼ãƒ‰å‡¦ç†
+    private CustomCameraController customCameraController = null;   // ã‚«ãƒ¡ãƒ©ã®å‡¦ç†
+    private int curStage = 0;                 // ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸æ•°
+    private string json;                      // ãƒªãƒˆãƒ©ã‚¤æ™‚ã«ç£çŸ³ã®ä½ç½®ã‚’ç§»å‹•ã•ã›ã‚‹ãŸã‚ã®ä½ç½®ãƒ‡ãƒ¼ã‚¿
+
+    public PressurePlates01[] pressurePlates; // ã™ã¹ã¦ã®æ„Ÿåœ§æ¿ã‚’ç™»éŒ²
+    private int totalPressed = 0; // æŠ¼ã•ã‚Œã¦ã„ã‚‹æ„Ÿåœ§æ¿ã®æ•°
+
+    Pose pose;          // Poseã®çŠ¶æ…‹ã‚’å—ã‘å–ã‚‹
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        // Poseã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
+        pose = GameObject.Find("Pose").GetComponent<Pose>();
+
+        foreach (PressurePlates01 plate in pressurePlates)
+        {
+            plate.OnPressurePlateChanged += OnPlateStateChanged; // ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
+        }
+
+        for (int i = 0; i < stageData.Count; i++)
+        {
+            foreach (DetectArea detectArea in stageData[i].detectAreas)
+            {
+                detectArea.OnDetectAreaChanged += OnDetectionStateChanged; // ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
+                totalAreas++;
+            }
+        }
+
+        // ãƒ•ã‚§ãƒ¼ãƒ‰å‡¦ç†ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å–å¾—
+        fadeController = GameObject.Find("FadeImage").GetComponent<FadeController>();
+        // ã‚«ãƒ¡ãƒ©å‡¦ç†ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å–å¾—
+        customCameraController = GameObject.Find("Main Camera").GetComponent<CustomCameraController>();
+
+        //------ ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼é–¢ä¿‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å–å¾— ------//
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³ã®ç£åŠ›ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å–å¾—
+        magnetism1 = magnet1.GetComponent<Magnetism>();
+        magnetism2 = magnet2.GetComponent<Magnetism>();
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å–å¾—
+        playerL = magnet1.transform.parent.gameObject;
+        playerR = magnet2.transform.parent.gameObject;
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚’å–å¾—
+        playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
+        playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
+
+        //------ é–‹å§‹ã‚¹ãƒ†ãƒ¼ã‚¸æ•°ã¨ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸æ•°ã®æ±ºå®š ------//
+        // CurrentStageã«ä¿å­˜ã•ã‚ŒãŸã‚¹ãƒ†ãƒ¼ã‚¸æ•°ã‚’å–å¾—
+        if (PlayerPrefs.HasKey("CurrentStageNum"))
+        {
+            startStage = PlayerPrefs.GetInt("CurrentStageNum", 0) + 1;
+            //if (curStage > 0) { ChangeClearState(curStage - 1); }    // ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ã‚¯ãƒªã‚¢ã—ã¦ã„ã‚‹æ™‚ã€ä»¥å‰ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ã‚¯ãƒªã‚¢æ¸ˆã¿ã«ã™ã‚‹
+            Debug.Log("Stage" + (startStage) + "ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ");
+        }
+        // é–‹å§‹ã‚¹ãƒ†ãƒ¼ã‚¸æ•°ã‚’æ·»ãˆå­—ã«åˆã‚ã›ã¦ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã«ã™ã‚‹
+        if (startStage > 0)
+        {
+            curStage = startStage - 1;
+        }
+
+        // é–‹å§‹ã‚¹ãƒ†ãƒ¼ã‚¸ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹æ™‚ã€é–‹å§‹ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ˆã‚Šå‰ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ã‚¯ãƒªã‚¢æ¸ˆã¿ã«ã™ã‚‹
+        if (startStage > 1)
+        {
+            int tempStageNum = startStage - 1;
+            ChangeClearState(tempStageNum);
+        }
+
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã‚’ã‚¹ãƒ†ãƒ¼ã‚¸ã”ã¨ã«è¨­å®šã•ã‚ŒãŸä½ç½®ã¨å›è»¢ã«åˆã‚ã›ã‚‹
+        playerL.transform.position = stageData[curStage].playerLPos;
+        playerR.transform.position = stageData[curStage].playerRPos;
+        playerL.transform.rotation = stageData[curStage].playerLRotation;
+        playerR.transform.rotation = stageData[curStage].playerRRotation;
+
+        // ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’ä¿å­˜ã•ã‚ŒãŸä½ç½®ã«ç§»å‹•
+        LoadMagObjPositions();
+        // è¨­å®šã•ã‚ŒãŸå…¨ã¦ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚¢ã‚¿ãƒƒãƒã•ã‚ŒãŸå„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ 
+        AddAllMagCSList();
+
+        ////------ ã‚¹ãƒ†ãƒ¼ã‚¸ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çŠ¶æ…‹ã‚’åˆæœŸåŒ– ------//
+        //Debug.Log("ã‚¹ãƒ†ãƒ¼ã‚¸æ•° : " + stageData.Count);
+        //// å…¨ã‚¹ãƒ†ãƒ¼ã‚¸ã®ç§»å‹•ã§ãã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ¢ç´¢
+        //for (int i = 0; i < stageData.Count; i++)
+        //{
+        //    Debug.Log("ã‚¹ãƒ†ãƒ¼ã‚¸" + (i + 1) + "åˆæœŸåŒ–");
+        //    SearchCanCarryMagObj(i);
+        //}
+        Debug.Log(totalAreas);
+    }
+
+    private void FixedUpdate()
+    {
+        // Poseç”»é¢ã‚’è¡¨ç¤ºã—ã¦ã„ã‚‹ãªã‚‰
+        if (pose.GetPose())
+        {
+            return;
+        }
+
+        //------ ç§»å‹•ã§ãã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ¢ç´¢ ------//
+        for (int i = 0; i < stageData.Count; i++)
+        {
+            SearchCanCarryMagObj(i);
+        }
+
+        //------ ã‚¹ãƒ†ãƒ¼ã‚¸ã®ã‚¯ãƒªã‚¢å‡¦ç† ------//
+        int connectCount = 0;             // å„ã‚¹ãƒ†ãƒ¼ã‚¸ã®ç¹‹ãŒã£ã¦ã„ã‚‹åˆ¤å®šã‚¨ãƒªã‚¢ã®æ•°
+        // ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã®åˆ¤å®šã‚¨ãƒªã‚¢ãŒç¹‹ãŒã£ã¦ã„ã‚‹ã‹ã‚’èª¿ã¹ã‚‹
+        for (int i = 0; i < stageData[curStage].detectAreas.Count; i++)
+        {
+            // ç¹‹ãŒã£ã¦ã„ã‚‹æ™‚ã€ãã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+            if (stageData[curStage].detectAreas[i].GetIsConnectFg()) { connectCount++; }
+            //// ç¹‹ãŒã£ã¦ã„ãªã„æ™‚ã¯æ¸›ã‚‰ã™
+            //else {  connectCount--; }
+            Debug.Log("æ¥ç¶šå›è·¯æ•°:" + connectCount);
+
+            // ã™ã¹ã¦ã®åˆ¤å®šã‚¨ãƒªã‚¢ãŒç¹‹ãŒã£ã¦ã„ã‚‹æ™‚ã€ç§’æ•°ã«ã‚ˆã£ã¦ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°ã‚’å¤‰æ›´
+            if (connectCount == stageData[curStage].detectAreas.Count)
+            {
+                clearTimer += Time.deltaTime;   // ç¹‹ãŒã£ã¦ã„ã‚‹ç§’æ•°ã‚’è¨ˆæ¸¬
+
+                // ã‚¯ãƒªã‚¢ã¨ã¿ãªã™ç§’æ•°ã‚’è¶…ãˆãŸã‚‰ã‚¯ãƒªã‚¢
+                if (clearTimer > clearTime)
+                {
+                    totalConnected += connectCount;
+                    Debug.Log("ç·åˆæ¥ç¶šå›è·¯æ•°:" + totalConnected);
+                    stageData[curStage].SetClearFg(true);
+                    clearTimer = 0.0f;   // ã‚¿ã‚¤ãƒãƒ¼ãƒªã‚»ãƒƒãƒˆ
+                    Debug.Log("ã‚¹ãƒ†ãƒ¼ã‚¸" + (curStage + 1) + "ã‚¯ãƒªã‚¢");
+                }
+            }
+        }
+
+        // å…¨ã¦ã®å›è·¯ãŒæ¥ç¶šã•ã‚ŒãŸæ™‚ã€ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢
+        if (totalConnected == totalAreas)
+        {
+            gameClearFg = true; // ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢
+            Debug.Log("å…¨ã¦ã®å›è·¯ãŒæ¥ç¶šã•ã‚Œã¦ã„ã¾ã™ï¼ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ï¼Resultç”»é¢ã«ç§»ã‚Šã¾ã™");
+            Invoke("MoveResultScene", changeSceneTime);     // changeSceneTimeç§’å¾Œã«ãƒªã‚¶ãƒ«ãƒˆã‚·ãƒ¼ãƒ³ã«é·ç§»
+        }
+
+        // ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ã‚¯ãƒªã‚¢ã—ãŸæ™‚ã€æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ãŒã‚ã‚Œã°æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã«é€²ã‚€
+        if (stageData[curStage].GetClearFg() && curStage + 1 < stageData.Count)
+        {
+            fadeOutFg = true;
+            connectCount = 0;
+            curStage++;
+            Invoke("ResetPlayerPos", moveTime);   // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã‚’ç¾åœ¨ã‚¹ãƒ†ãƒ¼ã‚¸ã®åˆæœŸä½ç½®ã«ã™ã‚‹
+            Debug.Log("ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸ :" + (curStage + 1));
+        }
+
+        // ã‚¹ãƒ†ãƒ¼ã‚¸é–‹å§‹ç›´å¾Œã®ã‚«ãƒ¡ãƒ©æ¼”å‡ºãŒçµ‚ã‚ã£ã¦ã„ãªã„é–“ã¯ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã«ãªã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
+        if (!customCameraController.GetCompleteDiretionFg(curStage))
+        {
+            augMagFg = false;
+            //// æ¬¡ã®æ¡ä»¶ã§ã®ç¯„å›²å¤–ã®å‚ç…§ã‚’é˜²ã
+            //if (curStage > 0)
+            //{
+            //    // ä¸€å®šç§’é–“ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãƒ‰ã‚¢ã®ä½ç½®ã¾ã§ç§»å‹•ã•ã›ã‚‹
+            //    if (moveTimer < moveTime && stageData[curStage - 1].GetClearFg() && curStage != startStage - 1)
+            //    {
+            //        Vector3 playerPosL = playerL.transform.position;
+            //        Vector3 playerPosR = playerR.transform.position;
+            //        Vector3 doorPos = stageData[curStage].doorFlame.transform.position;
+
+            //        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼L
+            //        if (Mathf.Abs(playerPosL.x - doorPos.x) > Mathf.Abs(playerPosL.z - doorPos.z))
+            //        {
+            //            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãƒ‰ã‚¢æ–¹å‘ã«Xè»¸æ–¹å‘ã¸ç§»å‹•
+            //            playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(doorPos.x, playerPosL.y, playerPosL.z), 0.1f * Time.deltaTime);
+            //        }
+            //        else
+            //        {
+            //            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãƒ‰ã‚¢æ–¹å‘ã«Zè»¸æ–¹å‘ã¸ç§»å‹•
+            //            playerL.transform.position = Vector3.Lerp(playerPosL, new Vector3(playerPosL.x, playerPosL.y, doorPos.z), 0.1f * Time.deltaTime);
+            //        }
+            //        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼R
+            //        if (Mathf.Abs(playerPosR.x - doorPos.x) > Mathf.Abs(playerPosR.z - doorPos.z))
+            //        {
+            //            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãƒ‰ã‚¢æ–¹å‘ã«Xè»¸æ–¹å‘ã¸ç§»å‹•
+            //            playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(doorPos.x, playerPosR.y, playerPosR.z), 0.1f * Time.deltaTime);
+            //        }
+            //        else
+            //        {
+            //            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãƒ‰ã‚¢æ–¹å‘ã«Zè»¸æ–¹å‘ã¸ç§»å‹•
+            //            playerR.transform.position = Vector3.Lerp(playerPosR, new Vector3(playerPosR.x, playerPosR.y, doorPos.z), 0.1f * Time.deltaTime);
+            //        }
+            //        moveTimer += Time.deltaTime;
+            //    }
+            //}
+        }
+        else
+        {
+            //moveTimer = 0.0f;
+            augMagFg = true;
+
+            //------ ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã®åˆ¤å®šå‡¦ç† ------//
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³ã«ä½•ã‹ãŒãã£ã¤ã„ãŸæ™‚
+            if (magnetism1.isSnapping || magnetism2.isSnapping)
+            {
+                gameOverFg = true;
+                Debug.Log("ç£çŸ³ãŒãã£ã¤ãã¾ã—ãŸï¼");
+            }
+
+            // ç£åŠ›ç¯„å›²å¤–ã«å‡ºãŸæ™‚
+            if (!magnetism1.inMagnetismArea || !magnetism2.inMagnetismArea)
+            {
+                gameOverFg = true;
+                Debug.Log("ç£åŠ›ç¯„å›²å¤–ã«å‡ºã¾ã—ãŸï¼");
+
+            }
+
+            // ãƒ•ãƒ©ã‚°ã‹ã‚‰ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã«é·ç§»
+            if (gameOverFg)
+            {
+                // changeSceneTimeç§’å¾Œã«ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã‚·ãƒ¼ãƒ³ã«é·ç§»
+                Invoke("MoveGameOverScene", changeSceneTime);
+                Debug.Log("ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ï¼Resultç”»é¢ã«ç§»ã‚Šã¾ã™");
+            }
+        }
+
+        //------ ãƒ•ã‚§ãƒ¼ãƒ‰å‡¦ç† ------//
+        // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³
+        if (fadeInFg)
+        {
+            fadeController.StartFadeIn();
+            fadeInFg = false;
+        }
+
+        // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆ
+        if (fadeOutFg)
+        {
+            fadeController.StartFadeOut();
+            fadeOutFg = false;
+        }
+    }
+
+    // åˆ¤å®šã‚¨ãƒªã‚¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çŠ¶æ…‹ã‚’æ¤œçŸ¥
+    void OnDetectionStateChanged(bool isConnected)
+    {
+        //connectCount += isConnected ? 1 : -1; // æ¥ç¶šã•ã‚Œã¦ã„ã‚‹æ•°ã‚’å¢—æ¸›
+        //Debug.Log("æ¥ç¶šå›è·¯æ•°:" + connectCount);
+
+        //if (totalConnected == totalAreas)
+        //{
+        //    gameClearFg = true; // ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢
+        //    Debug.Log("å…¨ã¦ã®å›è·¯ãŒæ¥ç¶šã•ã‚Œã¦ã„ã¾ã™ï¼ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ï¼Resultç”»é¢ã«ç§»ã‚Šã¾ã™");
+        //    // ã“ã“ã«ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢å‡¦ç†ã‚’æ›¸ã
+
+        //    // changeSceneTimeç§’å¾Œã«ãƒªã‚¶ãƒ«ãƒˆã‚·ãƒ¼ãƒ³ã«é·ç§»
+        //    Invoke("MoveResultScene", changeSceneTime);
+        //}
+    }
+
+    // è¨­å®šã•ã‚ŒãŸç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹å„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ãƒªã‚¹ãƒˆã«æ ¼ç´ã™ã‚‹
+    private void AddAllMagCSList()
+    {
+        for (int i = 0; i < stageData.Count; i++)
+        {
+            // çƒä½“ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ 
+            foreach (GameObject magObj in stageData[i].magObjSphere)
+            {
+                if (magObj != null)
+                {
+                    stageData[i].GetSphereMagCS().Add(magObj.GetComponent<SphereMagnetism>());
+                    stageData[i].GetMoveSphereCS().Add(magObj.GetComponent<MoveSphere>());
+                }
+            }
+
+            // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ 
+            foreach (GameObject magObj in stageData[i].magObjSplit1)
+            {
+                if (magObj != null)
+                {
+                    stageData[i].GetSplit1HCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
+                    stageData[i].GetMoveHCubeLCS().Add(magObj.GetComponent<MoveHCubeL>());
+                }
+            }
+
+            // åˆ†è£‚ç‰©ä½“ã®å³å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ 
+            foreach (GameObject magObj in stageData[i].magObjSplit2)
+            {
+                if (magObj != null)
+                {
+                    stageData[i].GetSplit2HCubeMagCS().Add(magObj.GetComponent<HCubeMagnetism>());
+                    stageData[i].GetMoveHCubeRCS().Add(magObj.GetComponent<MoveHCubeR>());
+                }
+            }
+
+            // åˆ†è£‚ç‰©ä½“ã‚’æ¥ç¶šã™ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ 
+            foreach (GameObject magObj in stageData[i].magObjConnecter)
+            {
+                if (magObj != null)
+                {
+                    stageData[i].GetCubeMagCS().Add(magObj.GetComponent<CubeMagnetism>());
+                    stageData[i].GetSplitCubeCS().Add(magObj.GetComponent<SplitCube>());
+                }
+            }
+        }
+    }
+
+    // æŒ‡å®šã—ãŸã‚¹ãƒ†ãƒ¼ã‚¸ã®ç§»å‹•ã§ãã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¢ç´¢ã—ã€ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®æœ‰åŠ¹çŠ¶æ…‹ã‚’å¤‰æ›´
+    private void SearchCanCarryMagObj(int _index)
+    {
+        // çƒä½“ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+        for (int i = 0; i < stageData[_index].magObjSphere.Count; i++)
+        {
+            GameObject magObj = stageData[_index].magObjSphere[i];
+
+            if (magObj != null)
+            {
+                // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£åŠ›ç¯„å›²ã«å…¥ã£ã¦ã„ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ã¿æœ‰åŠ¹åŒ–
+                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSphereMagCS()[i].GetMagnetismRange() ||
+                    GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSphereMagCS()[i].GetMagnetismRange())
+                {
+                    Debug.Log(_index + 1 + ": Sphere æœ‰åŠ¹åŒ–");
+                    stageData[_index].GetSphereMagCS()[i].enabled = true;
+                    stageData[_index].GetMoveSphereCS()[i].enabled = true;
+                }
+                // å…¥ã£ã¦ã„ãªã„æ™‚ã¯ç„¡åŠ¹åŒ–
+                else if (!magnetism1.inObjMagArea && !magnetism2.inObjMagArea)
+                {
+                    Debug.Log(_index + 1 + ": Sphere ç„¡åŠ¹åŒ–");
+                    stageData[_index].GetSphereMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveSphereCS()[i].enabled = false;
+                }
+            }
+        }
+
+        // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+        for (int i = 0; i < stageData[_index].magObjSplit1.Count; i++)
+        {
+            GameObject magObj = stageData[_index].magObjSplit1[i];
+            GameObject connecter = stageData[_index].magObjConnecter[i];
+
+            if (magObj != null)
+            {
+                // åˆ†å‰²å¾Œã§ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼Lã®ç£åŠ›ç¯„å›²ã«å…¥ã£ã¦ã„ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ã¿æœ‰åŠ¹åŒ–
+                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split1 æœ‰åŠ¹åŒ–");
+                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
+                    stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
+                }
+                // åˆ†å‰²å‰ã¾ãŸã¯ã€å…¥ã£ã¦ã„ãªã„æ™‚ã¯ç„¡åŠ¹åŒ–
+                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split1 ç„¡åŠ¹åŒ–");
+                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveHCubeLCS()[i].enabled = false;
+                }
+
+                // åˆ†å‰²å¾Œã§ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼Rã®ç£åŠ›ç¯„å›²ã«å…¥ã£ã¦ã„ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ã¿æœ‰åŠ¹åŒ–
+                if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split1 æœ‰åŠ¹åŒ–");
+                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
+                    stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
+                }
+                // åˆ†å‰²å‰ã¾ãŸã¯ã€å…¥ã£ã¦ã„ãªã„æ™‚ã¯ç„¡åŠ¹åŒ–
+                else if (!magnetism2.inObjMagArea || connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split1 ç„¡åŠ¹åŒ–");
+                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveHCubeLCS()[i].enabled = false;
+                }
+            }
+        }
+
+        // åˆ†è£‚ç‰©ä½“ã®å³å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+        for (int i = 0; i < stageData[_index].magObjSplit2.Count; i++)
+        {
+            GameObject magObj = stageData[_index].magObjSplit2[i];
+            GameObject connecter = stageData[_index].magObjConnecter[i];
+
+            if (magObj != null)
+            {
+                // åˆ†å‰²å¾Œã§ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼Lã®ç£åŠ›ç¯„å›²ã«å…¥ã£ã¦ã„ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ã¿æœ‰åŠ¹åŒ–
+                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split2 æœ‰åŠ¹åŒ–");
+                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
+                    stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
+                }
+                // åˆ†å‰²å‰ã¾ãŸã¯ã€å…¥ã£ã¦ã„ãªã„æ™‚ã¯ç„¡åŠ¹åŒ–
+                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split2 ç„¡åŠ¹åŒ–");
+                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
+                }
+
+                // åˆ†å‰²å¾Œã§ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼Rã®ç£åŠ›ç¯„å›²ã«å…¥ã£ã¦ã„ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ã¿æœ‰åŠ¹åŒ–
+                // Split2ã¯ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼Rã§ã®ã¿å‹•ã‹ã›ã‚‹ã®ã§ã€ã“ã“ã§åˆ¶å¾¡
+                if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split2 æœ‰åŠ¹åŒ–");
+                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
+                    stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
+                }
+                // åˆ†å‰²å‰ã¾ãŸã¯ã€å…¥ã£ã¦ã„ãªã„æ™‚ã¯ç„¡åŠ¹åŒ–
+                else if (!magnetism2.inObjMagArea || connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split2 ç„¡åŠ¹åŒ–");
+                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
+                }
+            }
+        }
+
+        // åˆ†è£‚ç‰©ä½“ã‚’æ¥ç¶šã™ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+        for (int i = 0; i < stageData[_index].magObjConnecter.Count; i++)
+        {
+            GameObject magObj = stageData[_index].magObjConnecter[i];
+
+            if (magObj != null)
+            {
+                // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£åŠ›ç¯„å›²ã«å…¥ã£ã¦ã„ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ã¿æœ‰åŠ¹åŒ–
+                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetCubeMagCS()[i].GetMagnetismRange() ||
+                    GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetCubeMagCS()[i].GetMagnetismRange())
+                {
+                    Debug.Log(_index + 1 + ": Connecter æœ‰åŠ¹åŒ–");
+                    stageData[_index].GetCubeMagCS()[i].enabled = true;
+                    stageData[_index].GetSplitCubeCS()[i].enabled = true;
+                }
+                // å…¥ã£ã¦ã„ãªã„æ™‚ã¯ç„¡åŠ¹åŒ–
+                else if (!magnetism1.inObjMagArea && !magnetism2.inObjMagArea)
+                {
+                    Debug.Log(_index + 1 + ": Connecter ç„¡åŠ¹åŒ–");
+                    stageData[_index].GetCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetSplitCubeCS()[i].enabled = false;
+                }
+            }
+        }
+    }
+
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³ã‹ã‚‰ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¾ã§ã®è·é›¢ã‚’å–å¾—
+    private float GetDistancePlayerMagToMagObj(int _index, int _playerMagNumber, int _magObjNumber, GameObject _magObj)
+    {
+        Vector3 playerMagPos = (_playerMagNumber == 1) ? magnetism1.myPlate.transform.position : magnetism2.myPlate.transform.position;   // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç£çŸ³ã®ä½ç½®
+
+        // ç¨®é¡åˆ¥ã§ç£åŠ›ç¯„å›²ã®è·é›¢ã‚’å–å¾—ï¼ˆå„Magnetism.csã¨åŒã˜å‡¦ç†ã§è·é›¢ã‚’æ±‚ã‚ã‚‹ï¼‰
+        float surfaceDistance = 0.0f;
+        switch (_magObj.tag)
+        {
+            case "MagObj_Sphere":
+                // Colliderã‚’åˆ©ç”¨ã—ã¦ä¸€ç•ªè¿‘ã„è¡¨é¢ã®åº§æ¨™ã‚’å–å¾—
+                Vector3 surfacePoint = stageData[_index].GetSphereMagCS()[_magObjNumber].GetSphereCollider().ClosestPoint(playerMagPos);
+                // çƒã®è¡¨é¢ã¨ç£çŸ³ã®è·é›¢ã‚’è¨ˆç®—
+                surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
+                break;
+            case "MagObj_HCube":
+                // åˆ†è£‚å¾Œã®å·¦å´
+                if (_magObj.name == "MagObj_split1")
+                {
+                    // Colliderã‚’åˆ©ç”¨ã—ã¦ä¸€ç•ªè¿‘ã„è¡¨é¢ã®åº§æ¨™ã‚’å–å¾—
+                    surfacePoint = stageData[_index].GetSplit1HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
+                    // åˆ†è£‚å¾Œã®å·¦å´ã®è¡¨é¢ã¨ç£çŸ³ã®è·é›¢ã‚’è¨ˆç®—
+                    surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
+                }
+                // åˆ†è£‚å¾Œã®å³å´
+                else
+                {
+                    // Colliderã‚’åˆ©ç”¨ã—ã¦ä¸€ç•ªè¿‘ã„è¡¨é¢ã®åº§æ¨™ã‚’å–å¾—
+                    surfacePoint = stageData[_index].GetSplit2HCubeMagCS()[_magObjNumber].GetHCubeCollider().ClosestPoint(playerMagPos);
+                    // åˆ†è£‚å¾Œã®å³å´ã®è¡¨é¢ã¨ç£çŸ³ã®è·é›¢ã‚’è¨ˆç®—
+                    surfaceDistance = Vector3.Distance(surfacePoint, playerMagPos);
+                }
+                break;
+            case "MagObj_Cube":
+                // Colliderã‚’åˆ©ç”¨ã—ã¦ä¸€ç•ªè¿‘ã„è¡¨é¢ã®åº§æ¨™ã‚’å–å¾—
+                Vector3 surface1 = stageData[_index].GetCubeMagCS()[_magObjNumber].GetCube1Collider().ClosestPoint(playerMagPos);
+                Vector3 surface2 = stageData[_index].GetCubeMagCS()[_magObjNumber].GetCube2Collider().ClosestPoint(playerMagPos);
+
+                // è¡¨é¢åº§æ¨™ã¨ã®è·é›¢ã‚’è¨ˆç®—
+                float distance1 = Vector3.Distance(surface1, playerMagPos);
+                float distance2 = Vector3.Distance(surface2, playerMagPos);
+
+                surfaceDistance = Mathf.Min(distance1, distance2);
+                break;
+        }
+        return surfaceDistance;
+    }
+
+    // ã‚¢ãƒ—ãƒªçµ‚äº†æ™‚ã«ãƒªãƒˆãƒ©ã‚¤ç”¨ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ¶ˆã™
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteKey("CurrentStageNum");
+        PlayerPrefs.DeleteKey("CurrentScene");
+        PlayerPrefs.DeleteKey("MagObjPositions");
+    }
+
+    private void SaveMagObjPositions()
+    {
+        List<MagObjPosition> magObjPosition = new List<MagObjPosition>();
+
+        // å„ã‚¹ãƒ†ãƒ¼ã‚¸ã”ã¨ã«ä½ç½®ã‚’æ ¼ç´
+        for (int i = 0; i < stageData.Count; i++)
+        {
+            // ã‚¹ãƒ†ãƒ¼ã‚¸ã”ã¨ã«è¦ç´ ã‚’è¿½åŠ ã—ã¦åˆæœŸåŒ–
+            magObjPosition.Add(new MagObjPosition());
+            magObjPosition[i].posX = new List<float>();
+            magObjPosition[i].posY = new List<float>();
+            magObjPosition[i].posZ = new List<float>();
+
+            // ã‚¯ãƒªã‚¢æ¸ˆã¿ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã¿ä¿å­˜
+            if (stageData[i].GetClearFg())
+            {
+                // çƒä½“ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+                foreach (GameObject magObj in stageData[i].magObjSphere)
+                {
+                    if (magObj != null)
+                    {
+                        magObjPosition[i].posX.Add(magObj.transform.position.x);
+                        magObjPosition[i].posY.Add(magObj.transform.position.y);
+                        magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    }
+                }
+
+                // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+                foreach (GameObject magObj in stageData[i].magObjSplit1)
+                {
+                    if (magObj != null)
+                    {
+                        magObjPosition[i].posX.Add(magObj.transform.position.x);
+                        magObjPosition[i].posY.Add(magObj.transform.position.y);
+                        magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    }
+                }
+
+                // åˆ†è£‚ç‰©ä½“ã®å³å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+                foreach (GameObject magObj in stageData[i].magObjSplit2)
+                {
+                    if (magObj != null)
+                    {
+                        magObjPosition[i].posX.Add(magObj.transform.position.x);
+                        magObjPosition[i].posY.Add(magObj.transform.position.y);
+                        magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    }
+                }
+
+                // åˆ†è£‚ç‰©ä½“ã‚’æ¥ç¶šã™ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+                foreach (GameObject magObj in stageData[i].magObjConnecter)
+                {
+                    if (magObj != null)
+                    {
+                        magObjPosition[i].posX.Add(magObj.transform.position.x);
+                        magObjPosition[i].posY.Add(magObj.transform.position.y);
+                        magObjPosition[i].posZ.Add(magObj.transform.position.z);
+                    }
+                }
+            }
+        }
+
+        // JSONã«ã—ã¦ä¿å­˜
+        // MagObjPositionWrapperã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ã—ã¦ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºåŒ–ã™ã‚‹ã“ã¨ã§JSONåŒ–å¯èƒ½ã«ã—ã¦ã„ã‚‹
+        json = JsonUtility.ToJson(new MagObjPositionWrapper(magObjPosition));   // ãƒªã‚¹ãƒˆã®æ§‹é€ ã‚’ç¶­æŒ
+        PlayerPrefs.SetString("MagObjPositions", json);
+        PlayerPrefs.Save();
+        Debug.Log("ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’ä¿å­˜ã—ã¾ã—ãŸ");
+        Debug.Log(json);
+    }
+
+
+    private void LoadMagObjPositions()
+    {
+        if(PlayerPrefs.HasKey("MagObjPositions"))
+        {
+            List<MagObjPosition> magObjPosition = new List<MagObjPosition>();   // ãƒªãƒ­ãƒ¼ãƒ‰ç”¨ã®ãƒªã‚¹ãƒˆ
+            string json = PlayerPrefs.GetString("MagObjPositions");
+            MagObjPositionWrapper dataWrapper = JsonUtility.FromJson<MagObjPositionWrapper>(json);
+            magObjPosition = dataWrapper.magObjPositions;
+
+            for(int i = 0; i < magObjPosition.Count; i++)
+            {
+                for (int j = 0; j < magObjPosition[i].posX.Count; j++)
+                {
+                    // å–å¾—ã—ãŸå„æˆåˆ†ã‹ã‚‰Vector3ã‚’ä½œæˆ
+                    Vector3 position = new Vector3
+                    (
+                        magObjPosition[i].posX[j],
+                        magObjPosition[i].posY[j],
+                        magObjPosition[i].posZ[j]
+                    );
+
+                    // çƒä½“ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+                    if (j < stageData[i].magObjSphere.Count)
+                    {
+                        stageData[i].magObjSphere[j].transform.position = position;
+                    }
+                    // åˆ†è£‚ç‰©ä½“ã®å·¦å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+                    if (j < stageData[i].magObjSplit1.Count)
+                    {
+                        stageData[i].magObjSplit1[j].transform.position = position;
+                    }
+                    // åˆ†è£‚ç‰©ä½“ã®å³å´ã®ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+                    if (j < stageData[i].magObjSplit2.Count)
+                    {
+                        stageData[i].magObjSplit2[j].transform.position = position;
+                    }
+                    // åˆ†è£‚ç‰©ä½“ã‚’æ¥ç¶šã™ã‚‹ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+                    if (j < stageData[i].magObjConnecter.Count)
+                    {
+                        stageData[i].magObjConnecter[j].transform.position = position;
+                    }
+                }
+            }
+            Debug.Log("ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’èª­ã¿è¾¼ã¿ã¾ã—ãŸ");
+        }
+        else
+        {
+            Debug.Log("ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚Šã¾ã›ã‚“");
+        }
+    }
+
+    // æŒ‡å®šã—ãŸã‚¹ãƒ†ãƒ¼ã‚¸ç•ªå·ã¾ã§ã‚’ã‚¯ãƒªã‚¢æ¸ˆã¿ã«ã™ã‚‹
+    private void ChangeClearState(int _stageNum)
+    {
+        for (int i = 0; i < _stageNum; i++)
+        {
+            stageData[i].SetClearFg(true);  // ã‚¯ãƒªã‚¢ã—ãŸã“ã¨ã«ã™ã‚‹
+
+            for (int j = 0; j < stageData[i].detectAreas.Count; j++)
+            {
+                totalConnected++;           // æ¥ç¶šæ¸ˆã¿ã«ã™ã‚‹
+            }
+        }
+    }
+
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã‚’ç¾åœ¨ã‚¹ãƒ†ãƒ¼ã‚¸ã®åˆæœŸä½ç½®ã«ã™ã‚‹
+    private void ResetPlayerPos()
+    {
+        // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å›è»¢ã‚’ãƒªã‚»ãƒƒãƒˆã—ã¦ãŠã
+        playerLController.transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+        playerRController.transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã‚’ã‚¹ãƒ†ãƒ¼ã‚¸ã”ã¨ã«è¨­å®šã•ã‚ŒãŸä½ç½®ã¨å›è»¢ã«åˆã‚ã›ã‚‹
+        playerL.transform.position = stageData[curStage].playerLPos;
+        playerR.transform.position = stageData[curStage].playerRPos;
+        playerL.transform.rotation = stageData[curStage].playerLRotation;
+        playerR.transform.rotation = stageData[curStage].playerRRotation;
+
+        fadeInFg = true;
+    }
+
+    // ãƒªã‚¶ãƒ«ãƒˆã‚·ãƒ¼ãƒ³ã«é·ç§»
+    private void MoveResultScene()
+    {
+        SceneManager.LoadScene(resultSceneName);
+    }
+
+    // ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã‚·ãƒ¼ãƒ³ã«é·ç§»
+    private void MoveGameOverScene()
+    {
+        PlayerPrefs.SetInt("CurrentStageNum", curStage);    // CurrentStageã‚­ãƒ¼ã¨ã—ã¦ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ä¿å­˜
+        PlayerPrefs.Save();
+        PlayerPrefs.SetString("CurrentScene", SceneManager.GetActiveScene().name);    // CurrentStageã‚­ãƒ¼ã¨ã—ã¦ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚’ä¿å­˜
+        PlayerPrefs.Save();
+        SaveMagObjPositions();  // ç£åŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’ä¿å­˜
+        SceneManager.LoadScene(gameOverSceneName);
+    }
+
+    // æŒ‡å®šã—ãŸã‚¹ãƒ†ãƒ¼ã‚¸ã®ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°ã‚’å–å¾—
+    public bool GetStageClearFg(int _stageNumber)
+    {
+        return stageData[_stageNumber].GetClearFg();
+    }
+
+    // ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°ã‚’å–å¾—
+    public bool GetGameClearFg()
+    {
+        return gameClearFg;
+    }
+
+    // ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ©ã‚°ã‚’å–å¾—
+    public bool GetGameOverFg()
+    {
+        return gameOverFg;
+    }
+
+    // ç£åŠ›å¼·åŒ–ãƒ•ãƒ©ã‚°ã‚’å–å¾—
+    public bool GetAugMagFg()
+    {
+        return augMagFg;
+    }
+
+    // ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
+    public void SetGameClearFg(bool _gameClearFg)
+    {
+        gameClearFg = _gameClearFg;
+    }
+
+    // ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
+    public void SetGameOverFg(bool _gameOverFg)
+    {
+        gameOverFg = _gameOverFg;
+    }
+
+    // é–‹å§‹ã™ã‚‹ã‚¹ãƒ†ãƒ¼ã‚¸æ•°ã‚’ã‚²ãƒƒãƒˆ
+    public int GetStartStage()
+    {
+        return startStage;
+    }
+
+    // ç¾åœ¨ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ã‚²ãƒƒãƒˆ
+    public int GetCurStage()
+    {
+        return curStage;
+    }
+
+    void OnPlateStateChanged(bool isPressed)
+    {
+        totalPressed += isPressed ? 1 : -1; // æŠ¼ã•ã‚Œã¦ã„ã‚‹æ•°ã‚’å¢—æ¸›
+
+        if (totalPressed == pressurePlates.Length) // ã™ã¹ã¦ãŒæŠ¼ã•ã‚ŒãŸå ´åˆ
+        {
+            gameClearFg = true; // ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢
+            Debug.Log("å…¨ã¦ã®æ„Ÿåœ§æ¿ãŒæŠ¼ã•ã‚Œã¦ã„ã¾ã™ï¼ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ï¼Resultç”»é¢ã«ç§»ã‚Šã¾ã™");
+            // ã“ã“ã«ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢å‡¦ç†ã‚’æ›¸ã
+
+            // changeSceneTimeç§’å¾Œã«ãƒªã‚¶ãƒ«ãƒˆã‚·ãƒ¼ãƒ³ã«é·ç§»
+            Invoke("MoveResultScene", changeSceneTime);
+        }
+    }
 }
