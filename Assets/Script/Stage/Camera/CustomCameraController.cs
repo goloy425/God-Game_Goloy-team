@@ -47,6 +47,9 @@ public class CustomCameraController : MonoBehaviour
 	private Rigidbody rbR;
 	private List<OpenDoor> openDoor = new List<OpenDoor>();
 
+	private Magnetism mag1;
+	private Magnetism mag2;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -58,6 +61,9 @@ public class CustomCameraController : MonoBehaviour
 		movePlayerR = target2.gameObject.GetComponent<MovePlayerR>();
 		rbL = target1.gameObject.GetComponent<Rigidbody>();
 		rbR = target2.gameObject.GetComponent<Rigidbody>();
+
+		mag1 = GameObject.Find("Magnet1").GetComponent<Magnetism>();
+		mag2 = GameObject.Find("Magnet2").GetComponent<Magnetism>();
 
 		// スクリプトを取得
 		foreach (GameObject door in doorFlame)
@@ -138,11 +144,19 @@ public class CustomCameraController : MonoBehaviour
 			MoveCamera();
 		}
 
-		//// 近づきすぎのスローになったら磁石にカメラをフォーカス
-		//if (distManager.GetIsSlow())
-		//{
-		//	FocusOnMagnets();
-		//}
+		// スローになったら危ない方の磁石にカメラをフォーカス
+		if (mag1.isSlow_pMag && mag2.isSlow_pMag)
+		{
+			FocusOnMagnets();
+		}
+		else if (mag1.isSlow_pMag || mag1.isSlow_magObj)
+		{
+			FocusOnDangerPlayer(new Vector3(target1.position.x, target1.position.y, target1.position.z));
+		}
+		else if (mag2.isSlow_pMag || mag2.isSlow_magObj)
+		{
+			FocusOnDangerPlayer(new Vector3(target2.position.x, target2.position.y, target2.position.z));
+		}
 	}
 
 	// 必要なカメラサイズを計算する補助関数
@@ -197,19 +211,34 @@ public class CustomCameraController : MonoBehaviour
 		transform.position = midPoint + dynamicOffset; // カメラを中間点とオフセットを考慮した位置に移動
 	}
 
-	////--- 磁石にカメラをフォーカスする関数 ---//
-	//private void FocusOnMagnets()
-	//{
-	//	Vector3 targetPos = (target1.position + target2.position) / 2f;
-	//	midPoint = Vector3.Lerp(midPoint, targetPos, Time.deltaTime * focusSpeed);
+	//--- プレイヤーにカメラをフォーカスする関数 ---//
+	private void FocusOnMagnets()
+	{
+		Vector3 targetPos = (target1.position + target2.position) / 2f;
+		midPoint = Vector3.Lerp(midPoint, targetPos, Time.deltaTime * focusSpeed);
 
-	//	// カメラサイズをフォーカス用サイズにスムーズに変更
-	//	cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, focusSize, Time.deltaTime * zoomSpeed);
+		// カメラサイズをフォーカス用サイズにスムーズに変更
+		cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, focusSize, Time.deltaTime * zoomSpeed);
 
-	//	// フォーカス用のズームに合わせて奥行きを調整（より近づける）
-	//	float zoomFactor = Mathf.Clamp01((cam.orthographicSize - minSize) / (maxSize - minSize));
-	//	dynamicOffset = new Vector3(initialOffset.x, initialOffset.y, Mathf.Lerp(initialOffset.z, initialOffset.z * 0.5f, zoomFactor));
+		// フォーカス用のズームに合わせて奥行きを調整（より近づける）
+		float zoomFactor = Mathf.Clamp01((cam.orthographicSize - minSize) / (maxSize - minSize));
+		dynamicOffset = new Vector3(initialOffset.x, initialOffset.y, Mathf.Lerp(initialOffset.z, initialOffset.z * 0.5f, zoomFactor));
 
-	//	transform.position = midPoint + dynamicOffset;
-	//}
+		transform.position = midPoint + dynamicOffset;
+	}
+
+	//--- 危ない方のプレイヤーにフォーカスする関数 ---//
+	private void FocusOnDangerPlayer(Vector3 target)
+	{
+		midPoint = Vector3.Lerp(midPoint, target, Time.deltaTime * focusSpeed);
+
+		// カメラサイズをフォーカス用サイズにスムーズに変更
+		cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, focusSize, Time.deltaTime * zoomSpeed);
+
+		// フォーカス用のズームに合わせて奥行きを調整（より近づける）
+		float zoomFactor = Mathf.Clamp01((cam.orthographicSize - minSize) / (maxSize - minSize));
+		dynamicOffset = new Vector3(initialOffset.x, initialOffset.y, Mathf.Lerp(initialOffset.z, initialOffset.z * 0.5f, zoomFactor));
+
+		transform.position = midPoint + dynamicOffset;
+	}
 }

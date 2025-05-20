@@ -62,14 +62,6 @@ public class Magnetism : MonoBehaviour
 	public bool inPlayerMagArea = true;		// プレイヤーの磁石の磁力範囲内かどうか
 	public bool inObjMagArea = true;		// オブジェクトの磁力範囲内かどうか
 
-	// プレイヤー同士
-	public bool inDangerZone = false;		// 危険範囲内かどうか
-	public bool inSafeZone = true;			// 安全　　　〃
-
-	// 対オブジェクト
-	public bool inDangerZone_obj = false;		// 危険範囲内かどうか
-	public bool inSafeZone_obj = true;			// 安全　　　〃
-
 	[Header("磁石がくっついた時のSE")]
 	public AudioClip magnetSE;
 	private AudioSource audioSource;
@@ -84,7 +76,9 @@ public class Magnetism : MonoBehaviour
 	private bool L_isAugmenting;
 	private bool R_isAugmenting;
 
-	public bool isSlow;
+	// スローモーション管理
+	public bool isSlow_pMag;		// プレイヤーの磁石と近付きすぎた
+	public bool isSlow_magObj;		// 磁力オブジェクト　　　〃
 
 	void Awake()
 	{
@@ -145,9 +139,7 @@ public class Magnetism : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody>();
 		audioSource = GetComponent<AudioSource>();
-
-		dangerZone = deadRange + 0.3f;  // 危険範囲の設定
-		safeZone = dangerZone + 0.25f;	// 安全　　〃
+		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
 
 		// 成否に関わるフラグを初期化しておく
 		isSnapping = false;
@@ -189,7 +181,7 @@ public class Magnetism : MonoBehaviour
 		bool isSelfAugmenting = isSelfL ? L_isAugmenting : R_isAugmenting;
 
 		// 時間補正倍率（スロー中だけ強めに引き寄せる）
-		float timeScaleFactor = Time.timeScale < 1f ? 2f / Time.timeScale : 1.0f;
+		float timeScaleFactor = Time.timeScale < 1f ? 2.2f / Time.timeScale : 1.0f;
 
 		// 片方の磁石に引き寄せられるのは強化中でない時だけ
 		if (distance < magnetismRange && !isSelfAugmenting)
@@ -205,15 +197,13 @@ public class Magnetism : MonoBehaviour
 		}
 
 		// スローモーション切替用フラグの管理
-		if (distance <= dangerZone && !inDangerZone)
+		if (distance <= tooClose.GetDangerDist())
 		{
-			inDangerZone = true;
-			inSafeZone = false;
+			isSlow_pMag = true;
 		}
-		if (distance > safeZone)
+		else if (isSlow_pMag && distance > tooClose.GetSafetyDist())
 		{
-			inSafeZone = true;
-			inDangerZone = false;
+            isSlow_pMag = false;
 		}
 
 		// くっつく処理：両方が強化状態にある時は無視

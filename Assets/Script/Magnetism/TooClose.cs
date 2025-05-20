@@ -28,14 +28,14 @@ public class TooClose : MonoBehaviour
 	void Start()
 	{
 		// 各距離を設定
-		dangerDist = magnet1.deadRange + 1.0f;
+		dangerDist = magnet1.deadRange + 0.2f;
 		safetyDist = dangerDist + 0.3f;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		if (magnet1.isSlow || magnet2.isSlow)
+		if (magnet1.isSlow_pMag || magnet2.isSlow_pMag || magnet1.isSlow_magObj || magnet2.isSlow_magObj)
 		{
 			StartCoroutine(TriggerSlowMotionEffect());
 		}
@@ -53,10 +53,10 @@ public class TooClose : MonoBehaviour
 		Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
 		// 安全な距離まで離れるかくっつくかするまでスロー継続
-		while ((magnet1.isSlow || magnet2.isSlow) &&
+		while ((magnet1.isSlow_pMag || magnet2.isSlow_pMag || magnet1.isSlow_magObj || magnet2.isSlow_magObj) &&
 			   !magnet1.isSnapping && !magnet2.isSnapping)
 		{
-			yield return null;
+			yield return null;      // 次のフレームまで待つ
 		}
 
 		// スロー解除
