@@ -28,7 +28,9 @@ public class CubeMagnetism : MonoBehaviour
 	//--- 磁石のリスト管理 ---//
 	private static List<Magnetism> registeredMagnets = new();
 
-	public static void Register(Magnetism magnet)
+    private TooClose tooClose;
+
+    public static void Register(Magnetism magnet)
 	{
 		if (!registeredMagnets.Contains(magnet))
 		{
@@ -46,7 +48,9 @@ public class CubeMagnetism : MonoBehaviour
 		// コライダーを取得
 		cube1Collider = cube1.GetComponent<SphereCollider>();
 		cube2Collider = cube2.GetComponent<SphereCollider>();
-	}
+
+		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
+    }
 
 	private void FixedUpdate()
 	{
@@ -80,7 +84,21 @@ public class CubeMagnetism : MonoBehaviour
 			// 引き寄せ処理
 			Vector3 direction = (targetSurface - magnetPos).normalized;
 			float force = (surfaceDistance < deadRange) ? strongMagnetism : magnetism;
-			magnet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Acceleration);
+
+			// 時間補正倍率（スロー中だけ強めに引き寄せ）
+			float timeScaleFactor = Time.timeScale < 1f ? 3f / Time.timeScale : 1.0f;
+
+			magnet.GetComponent<Rigidbody>().AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
+
+			// 接近警告
+			if (surfaceDistance <= tooClose.GetDangerDist())
+			{
+				magnet.isSlow_magObj = true;
+			}
+			else if (magnet.isSlow_magObj && surfaceDistance > tooClose.GetSafetyDist())
+			{
+				magnet.isSlow_magObj = false;
+			}
 
 			// 近付きすぎるとくっつく
 			if (surfaceDistance < magnet.snapDistance)

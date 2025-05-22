@@ -18,6 +18,7 @@ public class HCubeMagnetism : MonoBehaviour
 	public GameObject playerR;
 
 	private SphereCollider hCubeCollider;
+	private TooClose tooClose;
 
 	//--- 磁石のリスト管理 ---//
 	private static List<Magnetism> registeredMagnets = new();
@@ -40,8 +41,9 @@ public class HCubeMagnetism : MonoBehaviour
 		// 半分になる前は非アクティブにしておく
 		enabled = false;
 
-		// コライダーを取得
+		// コンポーネントを取得
 		hCubeCollider = GetComponent<SphereCollider>();
+		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
 	}
 
 
@@ -84,7 +86,21 @@ public class HCubeMagnetism : MonoBehaviour
 		// 引き寄せ処理
 		Vector3 direction = (surface - nearestMagnet.myPlate.position).normalized;
 		float force = (minDistance < deadRange) ? strongMagnetism : magnetism;
-		nearestMagnet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Acceleration);
+
+		// 時間補正倍率（スロー中だけ強めに引き寄せ）
+		float timeScaleFactor = Time.timeScale < 1f ? 3f / Time.timeScale : 1.0f;
+
+		nearestMagnet.GetComponent<Rigidbody>().AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
+
+		// 接近警告
+		if (minDistance <= tooClose.GetDangerDist())
+		{
+			nearestMagnet.isSlow_magObj = true;
+		}
+		else if (nearestMagnet.isSlow_magObj && minDistance > tooClose.GetSafetyDist())
+		{
+			nearestMagnet.isSlow_magObj = false;
+		}
 
 		// 吸着処理
 		if (minDistance < nearestMagnet.snapDistance)
