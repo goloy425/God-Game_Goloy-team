@@ -30,8 +30,6 @@ public class SphereMagnetism : MonoBehaviour
 	private AugMagL magL_Aug;
 	private AugMagR magR_Aug;
 
-	private TooClose tooClose;
-
 	// DeadRangeを取得・設定する用
 	private Magnetism magnet1;
 	private Magnetism magnet2;
@@ -39,9 +37,10 @@ public class SphereMagnetism : MonoBehaviour
 
 	private SphereCollider sCollider;  // 磁石を引き寄せる頂点の計算用
 	private MoveSphere moveS;
+    private TooClose tooClose;
 
-	//--- 磁石のリスト管理 ---//
-	private static List<Magnetism> registeredMagnets = new();
+    //--- 磁石のリスト管理 ---//
+    private static List<Magnetism> registeredMagnets = new();
 
 	public static void Register(Magnetism magnet)
 	{
@@ -122,7 +121,7 @@ public class SphereMagnetism : MonoBehaviour
 
 			magnet.inObjMagArea = true;	// フラグを立てておく
 
-			// 引き寄せる処理
+			// 引き寄せ処理
 			Vector3 direction = (surfacePoint - magnetPos).normalized;
 			float force = (surfaceDistance < deadRange) ? strongMagnetism : magnetism;
 
