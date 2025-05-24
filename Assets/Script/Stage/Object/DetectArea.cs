@@ -21,6 +21,8 @@ public class DetectArea : MonoBehaviour
     public Renderer[] circuitsRenderer;
     [Header("接続時のSE")]
     public AudioClip audioClip;
+    [Header("接続時のエフェクト")]
+    public GameObject connectEffect;
 
     public Action<bool> OnDetectAreaChanged;    // 検知状態を通知するイベント
 
@@ -88,6 +90,7 @@ public class DetectArea : MonoBehaviour
                         openMagnet = other.GetComponent<OpenMagnet>();
                         if (openMagnet != null) { openMagnet.SetOpenFg(true); }
                     }
+                    CreateConnectEffect(fixedPos);       // 接続エフェクト
                 }
                 objNum++;
             }
@@ -137,8 +140,16 @@ public class DetectArea : MonoBehaviour
         return isConnectFg;
     }
 
+    // 磁力オブジェクトを動かなくする
     private void NoMoveMagObj()
     {
         freezeMagObj.GetComponent<Rigidbody>().isKinematic = true; // 動かなくする
+    }
+
+    // 接続時のエフェクトを作成
+    private void CreateConnectEffect(Vector3 createPos)
+    {
+        GameObject _connectEffect = Instantiate(connectEffect, createPos, Quaternion.identity);
+        _connectEffect.transform.localScale = new Vector3(4.0f, 4.0f, 4.0f);
     }
 }
