@@ -1340,6 +1340,8 @@ MonoBehaviour:
     playerRRotation: {x: 0, y: 0, z: 0, w: 0}
   magnet1: {fileID: 1071758029}
   magnet2: {fileID: 399700133}
+  gameOverEffectL: {fileID: 2866261753732326601, guid: 0bead49cc8de38444a5e74daff638456, type: 3}
+  gameOverEffectR: {fileID: 8693479264715462332, guid: b1598d29b49c0b743a999479a35282fd, type: 3}
   startStage: 1
   resultSceneName: Result
   gameOverSceneName: GameOver
@@ -12794,6 +12796,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1276880213}
     - target: {fileID: 7544758033144934127, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: connectEffect
+      value: 
+      objectReference: {fileID: 5628505803797406075, guid: ed1aaed4a4199fb428ea0174de490db4, type: 3}
+    - target: {fileID: 7544758033144934127, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
       propertyPath: detectedObjects.Array.data[0]
       value: 
       objectReference: {fileID: 1774822232}
@@ -12821,6 +12827,10 @@ PrefabInstance:
       propertyPath: magnet2
       value: 
       objectReference: {fileID: 1602353201}
+    - target: {fileID: 7544758033223456876, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: connectEffect
+      value: 
+      objectReference: {fileID: 5628505803797406075, guid: ed1aaed4a4199fb428ea0174de490db4, type: 3}
     - target: {fileID: 7544758033223456876, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
       propertyPath: detectedObjects.Array.data[0]
       value: 
@@ -12913,6 +12923,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7544758033770441379, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: connectEffect
+      value: 
+      objectReference: {fileID: 5628505803797406075, guid: ed1aaed4a4199fb428ea0174de490db4, type: 3}
     - target: {fileID: 7544758033770668960, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
       propertyPath: playerL
       value: 
@@ -12929,6 +12943,10 @@ PrefabInstance:
       propertyPath: playerR
       value: 
       objectReference: {fileID: 512581169}
+    - target: {fileID: 7544758033833753622, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: connectEffect
+      value: 
+      objectReference: {fileID: 5628505803797406075, guid: ed1aaed4a4199fb428ea0174de490db4, type: 3}
     - target: {fileID: 7544758033833753622, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
       propertyPath: detectedObjects.Array.data[0]
       value: 
@@ -13001,6 +13019,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -2.26
       objectReference: {fileID: 0}
+    - target: {fileID: 7544758033847229795, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: connectEffect
+      value: 
+      objectReference: {fileID: 5628505803797406075, guid: ed1aaed4a4199fb428ea0174de490db4, type: 3}
+    - target: {fileID: 7544758033904341772, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: connectEffect
+      value: 
+      objectReference: {fileID: 5628505803797406075, guid: ed1aaed4a4199fb428ea0174de490db4, type: 3}
     - target: {fileID: 7544758033904341772, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
       propertyPath: detectedObjects.Array.size
       value: 2
@@ -13033,6 +13059,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -17.97
       objectReference: {fileID: 0}
+    - target: {fileID: 7544758033958442943, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: connectEffect
+      value: 
+      objectReference: {fileID: 5628505803797406075, guid: ed1aaed4a4199fb428ea0174de490db4, type: 3}
     - target: {fileID: 7544758033958442943, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
       propertyPath: detectedObjects.Array.data[0]
       value: 
@@ -13126,6 +13156,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1615642870}
     - target: {fileID: 7544758034442059809, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: connectEffect
+      value: 
+      objectReference: {fileID: 5628505803797406075, guid: ed1aaed4a4199fb428ea0174de490db4, type: 3}
+    - target: {fileID: 7544758034442059809, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
       propertyPath: detectedObjects.Array.data[0]
       value: 
       objectReference: {fileID: 869058017}
@@ -13209,6 +13243,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 2.08
       objectReference: {fileID: 0}
+    - target: {fileID: 7544758034752195820, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
+      propertyPath: connectEffect
+      value: 
+      objectReference: {fileID: 5628505803797406075, guid: ed1aaed4a4199fb428ea0174de490db4, type: 3}
     - target: {fileID: 7544758034752195820, guid: 7adb20afb828b5a43b40e542119504c4, type: 3}
       propertyPath: detectedObjects.Array.data[0]
       value: 

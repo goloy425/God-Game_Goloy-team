@@ -123,6 +123,10 @@ public class GameManager : MonoBehaviour
     public GameObject magnet1;
     public GameObject magnet2;
 
+    [Header("ゲームオーバー時のプレイヤーのエフェクト")]
+    public GameObject gameOverEffectL;
+    public GameObject gameOverEffectR;
+
     [Header("開始ステージ")]
     public int startStage;
 
@@ -133,6 +137,7 @@ public class GameManager : MonoBehaviour
     private bool gameClearFg = false;         // ゲームクリアしたかどうか
     private bool gameOverFg = false;          // ゲームオーバーしたかどうか
     private bool augMagFg = false;            // 磁力強化できるかどうか
+    private int effectCnt = 0;                // ゲームオーバーエフェクトの作成回数
 
     private int totalAreas = 0;               // 設定された判定エリアの数
     private int totalConnected = 0;           // 接続された判定エリアの数
@@ -364,6 +369,13 @@ public class GameManager : MonoBehaviour
             // フラグからゲームオーバーに遷移
             if (gameOverFg)
             {
+                // ゲームオーバーエフェクトを生成
+                if (effectCnt == 0)
+                {
+                    Invoke("CreateGameOverEffet", 0.5f);
+                    effectCnt++;
+                }
+
                 // changeSceneTime秒後にゲームオーバーシーンに遷移
                 Invoke("MoveGameOverScene", changeSceneTime);
                 Debug.Log("ゲームオーバー！Result画面に移ります");
@@ -795,6 +807,13 @@ public class GameManager : MonoBehaviour
         playerR.transform.rotation = stageData[curStage].playerRRotation;
 
         fadeInFg = true;
+    }
+
+    // ゲームオーバー時のエフェクトをする処理
+    private void CreateGameOverEffet()
+    {
+        Instantiate(gameOverEffectL, playerL.transform.position, Quaternion.identity);  // プレイヤーL
+        Instantiate(gameOverEffectR, playerR.transform.position, Quaternion.identity);  // プレイヤーR
     }
 
     // リザルトシーンに遷移
