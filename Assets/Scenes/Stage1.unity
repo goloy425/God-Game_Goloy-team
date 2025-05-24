@@ -235,7 +235,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e76fcfa08818f9499c6c2b418c7e4ff, type: 3}
   m_PrefabInstance: {fileID: 1290059389}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &100613893
+--- !u!114 &100613897
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -251,10 +251,10 @@ MonoBehaviour:
   moveSpeed: 2
   isStopped: 0
   moveOrder:
-  - direction: 0
-    steps: 3
-  - direction: 1
-    steps: 3
+  - direction: 2
+    steps: 5
+  - direction: 3
+    steps: 5
 --- !u!1 &153842631
 GameObject:
   m_ObjectHideFlags: 0
@@ -2451,11 +2451,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e76fcfa08818f9499c6c2b418c7e4ff, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e76fcfa08818f9499c6c2b418c7e4ff, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e76fcfa08818f9499c6c2b418c7e4ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
