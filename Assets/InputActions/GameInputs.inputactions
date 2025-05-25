@@ -139,6 +139,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "98d7241e-d31a-4661-821e-3c1273a611fa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SelectUp",
                     "type": "Button",
                     "id": "5f792602-fbe5-4a6a-a6b9-aa711c9825d7",
@@ -208,6 +217,65 @@
                     "processors": "",
                     "groups": "",
                     "action": "SelectDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a380822-e8f6-4fd5-b911-44900b0e112d",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "QTE",
+            "id": "a425e505-d1b3-4b1a-ae74-c73bf2df49b8",
+            "actions": [
+                {
+                    "name": "A",
+                    "type": "Button",
+                    "id": "9859d3aa-ffce-459b-8629-b246c33f7b89",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "B",
+                    "type": "Button",
+                    "id": "272eae19-42fc-4d8f-b977-9fbd19d3fe7e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4ed34a87-0461-4bcf-b37f-bc2bb9f2eca4",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "A",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "71e390ae-1cfb-4772-ae1d-7d8a75018c32",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "B",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
