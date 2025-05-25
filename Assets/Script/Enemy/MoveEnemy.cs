@@ -4,9 +4,7 @@ using UnityEngine;
 
 // 制作者　ゴロイ
 
-// ※敵が最初に動く方向をrotationのｙを変えて正面にしてください。
-//
-// Forward(前) = 180 , Backward(後ろ) = 0 , Left(左) = -90 , right(右) = 90
+// ※敵のrotationのｙを必ず０にしてください。
 
 
 public class MoveEnemy : MonoBehaviour
