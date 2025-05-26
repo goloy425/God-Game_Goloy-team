@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //===========================================================
@@ -22,15 +23,23 @@ public class SpotLightController : MonoBehaviour
 	private float stayTimer = 0.0f;		// 計測用のタイマー
 	private int currentNum = 0;
 
+	// x軸の回転制御用
 	private float currentX;
 	private float targetX;
 	private float deltaX;
 	private bool moveX;
 
+	// z軸の回転制御用
 	private float currentZ;
 	private float targetZ;
 	private float deltaZ;
 	private bool moveZ;
+
+
+	void Start()
+	{
+
+	}
 
 	void Update()
 	{
@@ -42,7 +51,7 @@ public class SpotLightController : MonoBehaviour
 		{
 			currentX = transform.localEulerAngles.x;
 			targetX = targetAngle[currentNum].x;
-			deltaX = Mathf.DeltaAngle(currentX, targetX);
+			deltaX = Mathf.DeltaAngle(currentX, targetX);	// 最短の角度差を求める
 			moveX = true;
 		}
 
@@ -54,24 +63,21 @@ public class SpotLightController : MonoBehaviour
 			moveZ = true;
 		}
 
-		// 最短の角度差を求める（-180〜180°の範囲で出る）
-
-
-		// 一定のスピードで回転
-		if (moveX && moveZ)
+		if (moveX && moveZ)		// x軸z軸両方が設定されている場合
 		{
 			if (Mathf.Abs(deltaX) > 0.5f && Mathf.Abs(deltaZ) > 0.5f)  // ある程度近づいたら止める
 			{
+				// 一定のスピードで回転
 				float stepX = Mathf.Sign(deltaX) * rotateSpeed;
 				float stepZ = Mathf.Sign(deltaZ) * rotateSpeed;
-				transform.Rotate(stepZ, 0f, stepZ, Space.Self);
+				transform.Rotate(stepX, 0f, stepZ, Space.Self);
 			}
 			else
 			{
 				UpdateTimer();
 			}
 		}
-		else if (moveX)
+		else if (moveX)		// x軸のみ設定されている場合
 		{
 			if (Mathf.Abs(deltaX) > 0.5f)
 			{
@@ -83,12 +89,12 @@ public class SpotLightController : MonoBehaviour
 				UpdateTimer();
 			}
 		}
-		else if(moveZ)
+		else if (moveZ)		// z軸のみ設定されている場合
 		{
 			if (Mathf.Abs(deltaZ) > 0.5f)
 			{
-				float stepZ = Mathf.Sign(deltaX) * rotateSpeed;
-				transform.Rotate(stepZ, 0f, 0f, Space.Self);
+				float stepZ = Mathf.Sign(deltaZ) * rotateSpeed;
+				transform.Rotate(0f, 0f, stepZ, Space.Self);
 			}
 			else
 			{

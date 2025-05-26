@@ -684,28 +684,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4803428742003963157, guid: 6c22c5212b84c6c408c6499f85d17bc1, type: 3}
   m_PrefabInstance: {fileID: 1095271074}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &717449421 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1071846581121979432, guid: edf8c5267a5487f45bf39ea7371c4965, type: 3}
-  m_PrefabInstance: {fileID: 1323157984653088473}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &717449426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 717449421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 357ae5930da2a504a9801ac95c89b5e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetAngle:
-  - {x: 15, y: 0, z: 0}
-  - {x: -15, y: 0, z: 0}
-  rotateSpeed: 0.1
-  stayTime: 5
 --- !u!1 &873356308
 GameObject:
   m_ObjectHideFlags: 0
@@ -1723,6 +1701,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 717449426, guid: edf8c5267a5487f45bf39ea7371c4965, type: 3}
+      propertyPath: targetAngle.Array.data[0].z
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 717449426, guid: edf8c5267a5487f45bf39ea7371c4965, type: 3}
+      propertyPath: targetAngle.Array.data[1].z
+      value: -30
+      objectReference: {fileID: 0}
     - target: {fileID: 401988486200970898, guid: edf8c5267a5487f45bf39ea7371c4965, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1770,14 +1756,6 @@ PrefabInstance:
     - target: {fileID: 1071846581121979432, guid: edf8c5267a5487f45bf39ea7371c4965, type: 3}
       propertyPath: m_Name
       value: Spotlight
-      objectReference: {fileID: 0}
-    - target: {fileID: 3873769145729859440, guid: edf8c5267a5487f45bf39ea7371c4965, type: 3}
-      propertyPath: m_SpotAngle
-      value: 38
-      objectReference: {fileID: 0}
-    - target: {fileID: 3873769145729859440, guid: edf8c5267a5487f45bf39ea7371c4965, type: 3}
-      propertyPath: m_InnerSpotAngle
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edf8c5267a5487f45bf39ea7371c4965, type: 3}
