@@ -28,8 +28,8 @@ public class TooClose : MonoBehaviour
 	void Start()
 	{
 		// 各距離を設定
-		dangerDist = magnet1.deadRange + 0.2f;
-		safetyDist = dangerDist + 0.25f;
+		dangerDist = magnet1.deadRange + 0.1f;
+		safetyDist = dangerDist + 0.2f;
 	}
 
 	// Update is called once per frame
