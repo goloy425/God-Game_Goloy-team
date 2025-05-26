@@ -17,7 +17,10 @@ public class CustomCameraController : MonoBehaviour
 	[Header("開始時の演出にかける秒数")]
 	public float startDirectionTime = 2.0f;
 
-	[Header("カメラ設定")]
+    [Header("クリア時の演出にかける秒数")]
+    public float clearDirectionTime = 4.0f;
+
+    [Header("カメラ設定")]
 	public float minSize = 5f;          // 最小サイズ
 	public float maxSize = 15f;         // 最大サイズを15に制限
 	public float zoomSpeed = 5f;        // 拡大速度
@@ -40,6 +43,7 @@ public class CustomCameraController : MonoBehaviour
 	private float timer = 0.0f;
 
 	private GameManager gameManager;
+	private FadeController fadeController;
 	private MovePlayerL movePlayerL;
 	private MovePlayerR movePlayerR;
 	private Rigidbody rbL;
@@ -56,6 +60,7 @@ public class CustomCameraController : MonoBehaviour
 		cam.orthographic = true;       // カメラを正射影モードに設定
 		dynamicOffset = initialOffset; // 初期オフセットをセット
 		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		fadeController = GameObject.Find("FadeImage").GetComponent<FadeController>();
 		movePlayerL = target1.gameObject.GetComponent<MovePlayerL>();
 		movePlayerR = target2.gameObject.GetComponent<MovePlayerR>();
 		rbL = target1.transform.parent.GetComponent<Rigidbody>();
@@ -113,7 +118,7 @@ public class CustomCameraController : MonoBehaviour
 				}
 			}
 			// ステージクリア後に次ステージ全体を写して戻す演出を行う
-			else if (!completeDirectionFg[curStage] && gameManager.GetStageClearFg(curStage - 1) && timer <= startDirectionTime)
+			else if (!completeDirectionFg[curStage] && gameManager.GetStageClearFg(curStage - 1) && fadeController.GetCompleteFdeInFg() && timer <= clearDirectionTime)
 			{
 				// プレイヤーが動かないようにする
 				rbL.velocity = Vector3.zero;
@@ -123,7 +128,7 @@ public class CustomCameraController : MonoBehaviour
 				timer += Time.deltaTime;
 			}
 			// 演出時間経過後タイマーリセット
-			else if (timer > startDirectionTime)
+			else if (timer > clearDirectionTime)
 			{
 				timer = 0.0f;
 				completeDirectionFg[curStage] = true;
