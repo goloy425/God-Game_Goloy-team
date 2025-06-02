@@ -37,9 +37,10 @@ public class SphereMagnetism : MonoBehaviour
 
 	private SphereCollider sCollider;  // 磁石を引き寄せる頂点の計算用
 	private MoveSphere moveS;
+    private TooClose tooClose;
 
-	//--- 磁石のリスト管理 ---//
-	private static List<Magnetism> registeredMagnets = new();
+    //--- 磁石のリスト管理 ---//
+    private static List<Magnetism> registeredMagnets = new();
 
 	public static void Register(Magnetism magnet)
 	{
@@ -57,10 +58,7 @@ public class SphereMagnetism : MonoBehaviour
 	void Start()
 	{
 		// TryGetComponentの返り値はbool、SphereColliderが見つからなかった時falseになる
-		if (!TryGetComponent<SphereCollider>(out sCollider))
-		{
-			Debug.LogError("SphereColliderついてないよ");
-		}
+		TryGetComponent<SphereCollider>(out sCollider);
 
 		playerL.TryGetComponent<AugMagL>(out magL_Aug);
 		playerR.TryGetComponent<AugMagR>(out magR_Aug);
@@ -70,6 +68,8 @@ public class SphereMagnetism : MonoBehaviour
 		oridinalDRange = magnet1.deadRange;		// 本来のdeadRangeを保存しておく
 
 		TryGetComponent<MoveSphere>(out moveS);
+
+		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
 	}
 
 	// Update is called once per frame
@@ -116,15 +116,29 @@ public class SphereMagnetism : MonoBehaviour
 			if (surfaceDistance > magnetismRange)
 			{
 				magnet.inObjMagArea = false;
-				continue;   // 磁力範囲外ならスキップ
+				continue;	// 磁力範囲外ならスキップ
 			}
 
 			magnet.inObjMagArea = true;	// フラグを立てておく
 
-			// 引き寄せる処理
+			// 引き寄せ処理
 			Vector3 direction = (surfacePoint - magnetPos).normalized;
 			float force = (surfaceDistance < deadRange) ? strongMagnetism : magnetism;
-			magnet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Acceleration);
+
+			// 時間補正倍率（スロー中だけ強めに引き寄せ）
+			float timeScaleFactor = Time.timeScale < 1f ? 3f / Time.timeScale : 1.0f;
+
+			magnet.GetComponent<Rigidbody>().AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
+
+			// 接近警告
+			if (surfaceDistance <= tooClose.GetDangerDist())
+			{
+				magnet.isSlow_magObj = true;
+			}
+			else if (magnet.isSlow_magObj && surfaceDistance > tooClose.GetSafetyDist())
+			{
+				magnet.isSlow_magObj = false;
+			}
 
 			// 近づきすぎるとくっつく
 			if (surfaceDistance < magnet.snapDistance)
@@ -135,6 +149,8 @@ public class SphereMagnetism : MonoBehaviour
 
 				AttachToSurface(magnet);
 				magnet.isSnapping = true;
+
+				return;
 			}
 		}
 	}
@@ -153,25 +169,31 @@ public class SphereMagnetism : MonoBehaviour
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);    // SE再生
 	}
 
-    // このスクリプトが無効になる瞬間に磁力範囲エリアに入っているかのフラグを無効にする
-    private void OnDisable()
-    {
-        foreach (var magnet in registeredMagnets)
-        {
-            if (magnet == null) continue;
-            magnet.inObjMagArea = false;
-        }
-    }
+	// このスクリプトが無効になる瞬間に磁力範囲エリアに入っているかのフラグを無効にする
+	private void OnDisable()
+	{
+		foreach (var magnet in registeredMagnets)
+		{
+			if (magnet == null) continue;
+			magnet.inObjMagArea = false;
+		}
+	}
 
-    // 磁力範囲のゲッター
-    public float GetMagnetismRange()
-    {
-        return magnetismRange;
-    }
+	private void OnDestroy()
+	{
+		registeredMagnets.Clear();	// リストのクリア
+	}
 
-    // コライダーのゲッター
-    public SphereCollider GetSphereCollider()
-    {
-        return sCollider;
-    }
+
+	// 磁力範囲のゲッター
+	public float GetMagnetismRange()
+	{
+		return magnetismRange;
+	}
+
+	// コライダーのゲッター
+	public SphereCollider GetSphereCollider()
+	{
+		return sCollider;
+	}
 }

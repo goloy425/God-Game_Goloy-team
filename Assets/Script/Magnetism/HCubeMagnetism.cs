@@ -17,10 +17,11 @@ public class HCubeMagnetism : MonoBehaviour
 	public GameObject playerL;
 	public GameObject playerR;
 
-    private SphereCollider hCubeCollider;
+	private SphereCollider hCubeCollider;
+	private TooClose tooClose;
 
-    //--- 磁石のリスト管理 ---//
-    private static List<Magnetism> registeredMagnets = new();
+	//--- 磁石のリスト管理 ---//
+	private static List<Magnetism> registeredMagnets = new();
 
 	public static void Register(Magnetism magnet)
 	{
@@ -40,9 +41,10 @@ public class HCubeMagnetism : MonoBehaviour
 		// 半分になる前は非アクティブにしておく
 		enabled = false;
 
-        // コライダーを取得
-        hCubeCollider = GetComponent<SphereCollider>();
-    }
+		// コンポーネントを取得
+		hCubeCollider = GetComponent<SphereCollider>();
+		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
+	}
 
 
 	private void FixedUpdate()
@@ -84,7 +86,21 @@ public class HCubeMagnetism : MonoBehaviour
 		// 引き寄せ処理
 		Vector3 direction = (surface - nearestMagnet.myPlate.position).normalized;
 		float force = (minDistance < deadRange) ? strongMagnetism : magnetism;
-		nearestMagnet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Acceleration);
+
+		// 時間補正倍率（スロー中だけ強めに引き寄せ）
+		float timeScaleFactor = Time.timeScale < 1f ? 3f / Time.timeScale : 1.0f;
+
+		nearestMagnet.GetComponent<Rigidbody>().AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
+
+		// 接近警告
+		if (minDistance <= tooClose.GetDangerDist())
+		{
+			nearestMagnet.isSlow_magObj = true;
+		}
+		else if (nearestMagnet.isSlow_magObj && minDistance > tooClose.GetSafetyDist())
+		{
+			nearestMagnet.isSlow_magObj = false;
+		}
 
 		// 吸着処理
 		if (minDistance < nearestMagnet.snapDistance)
@@ -110,25 +126,30 @@ public class HCubeMagnetism : MonoBehaviour
 		magnet.GetComponent<AudioSource>().PlayOneShot(magnet.magnetSE);
 	}
 
-    // このスクリプトが無効になる瞬間に磁力範囲エリアに入っているかのフラグを無効にする
-    private void OnDisable()
-    {
-        foreach (var magnet in registeredMagnets)
-        {
-            if (magnet == null) continue;
-            magnet.inObjMagArea = false;
-        }
-    }
+	// このスクリプトが無効になる瞬間に磁力範囲エリアに入っているかのフラグを無効にする
+	private void OnDisable()
+	{
+		foreach (var magnet in registeredMagnets)
+		{
+			if (magnet == null) continue;
+			magnet.inObjMagArea = false;
+		}
+	}
 
-    // 磁力範囲のゲッター
-    public float GetMagnetismRange()
-    {
-        return magnetismRange;
-    }
+	private void OnDestroy()
+	{
+		registeredMagnets.Clear();		// リストのクリア
+	}
 
-    // コライダーのゲッター
-    public SphereCollider GetHCubeCollider()
-    {
-        return hCubeCollider;
-    }
+	// 磁力範囲のゲッター
+	public float GetMagnetismRange()
+	{
+		return magnetismRange;
+	}
+
+	// コライダーのゲッター
+	public SphereCollider GetHCubeCollider()
+	{
+		return hCubeCollider;
+	}
 }
