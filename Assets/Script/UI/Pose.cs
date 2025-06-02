@@ -55,6 +55,8 @@ public class Pose : MonoBehaviour
 				// ポーズ画面を開く＆コマンドを初期化
 				_pose = true;
 				num = 1;
+
+				myButton[num].GetComponent<Image>().color = Color.red;
 			}
 			else
 			{
@@ -87,24 +89,37 @@ public class Pose : MonoBehaviour
 
 		if (_pose)
 		{
-			float move = Input.GetAxis("Vertical");
+            Color newColor = targetImage.color;
+            newColor.a = 0.5f;
+            targetImage.color = newColor;
+
+
+            float move = Input.GetAxis("Vertical");
 
 			if (select)
 			{
 				// 上ボタンの入力検出
 				if (move > 0.4)
 				{
+					myButton[num].GetComponent<Image>().color = Color.white;
+
 					--num;
 					num = Mathf.Clamp(num, 0, 3);
 
 					select = false;
+
+					myButton[num].GetComponent<Image>().color = Color.red;
 				}
 				else if (move < -0.4)
 				{
+					myButton[num].GetComponent<Image>().color = Color.white;
+
 					++num;
 					num = Mathf.Clamp(num, 0, 3);
 
 					select = false;
+
+					myButton[num].GetComponent<Image>().color = Color.red;
 				}
 			}
 			else if (move > -0.1 && move < 0.1)
@@ -113,7 +128,7 @@ public class Pose : MonoBehaviour
 			}
 
 			// 〇ボタン（XBOXのBボタン）の入力検出
-			if (Input.GetKeyDown(KeyCode.JoystickButton2))
+			if (Input.GetKeyDown(KeyCode.JoystickButton2)||inputs.Pose.Select.IsPressed())
 			{
 				OnButtonClicked();
 			}

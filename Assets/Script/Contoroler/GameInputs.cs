@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public partial class @GameInputs : IInputActionCollection2, IDisposable
+public partial class @GameInputs: IInputActionCollection2, IDisposable
 {
     public InputActionAsset asset { get; }
     public @GameInputs()
@@ -161,6 +161,15 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""98d7241e-d31a-4661-821e-3c1273a611fa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""SelectUp"",
                     ""type"": ""Button"",
                     ""id"": ""5f792602-fbe5-4a6a-a6b9-aa711c9825d7"",
@@ -232,6 +241,105 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                     ""action"": ""SelectDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a380822-e8f6-4fd5-b911-44900b0e112d"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""QTE"",
+            ""id"": ""a425e505-d1b3-4b1a-ae74-c73bf2df49b8"",
+            ""actions"": [
+                {
+                    ""name"": ""A"",
+                    ""type"": ""Button"",
+                    ""id"": ""9859d3aa-ffce-459b-8629-b246c33f7b89"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""B"",
+                    ""type"": ""Button"",
+                    ""id"": ""272eae19-42fc-4d8f-b977-9fbd19d3fe7e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""X"",
+                    ""type"": ""Button"",
+                    ""id"": ""a192200d-b722-4084-8f4f-0d28b9f31305"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Y"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e263305-820b-44ab-ac35-2a77cc57fdee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4ed34a87-0461-4bcf-b37f-bc2bb9f2eca4"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""A"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71e390ae-1cfb-4772-ae1d-7d8a75018c32"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""B"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d034266-0777-40c2-8211-2ffb4fd6d36e"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""X"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0353856-be68-44d1-8ebc-c5ea62bd5c88"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Y"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -252,9 +360,16 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         // Pose
         m_Pose = asset.FindActionMap("Pose", throwIfNotFound: true);
         m_Pose_SwitchPose = m_Pose.FindAction("SwitchPose", throwIfNotFound: true);
+        m_Pose_Select = m_Pose.FindAction("Select", throwIfNotFound: true);
         m_Pose_SelectUp = m_Pose.FindAction("SelectUp", throwIfNotFound: true);
         m_Pose_SelectDown = m_Pose.FindAction("SelectDown", throwIfNotFound: true);
         m_Pose_Decide = m_Pose.FindAction("Decide", throwIfNotFound: true);
+        // QTE
+        m_QTE = asset.FindActionMap("QTE", throwIfNotFound: true);
+        m_QTE_A = m_QTE.FindAction("A", throwIfNotFound: true);
+        m_QTE_B = m_QTE.FindAction("B", throwIfNotFound: true);
+        m_QTE_X = m_QTE.FindAction("X", throwIfNotFound: true);
+        m_QTE_Y = m_QTE.FindAction("Y", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -471,6 +586,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Pose;
     private List<IPoseActions> m_PoseActionsCallbackInterfaces = new List<IPoseActions>();
     private readonly InputAction m_Pose_SwitchPose;
+    private readonly InputAction m_Pose_Select;
     private readonly InputAction m_Pose_SelectUp;
     private readonly InputAction m_Pose_SelectDown;
     private readonly InputAction m_Pose_Decide;
@@ -479,6 +595,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         private @GameInputs m_Wrapper;
         public PoseActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @SwitchPose => m_Wrapper.m_Pose_SwitchPose;
+        public InputAction @Select => m_Wrapper.m_Pose_Select;
         public InputAction @SelectUp => m_Wrapper.m_Pose_SelectUp;
         public InputAction @SelectDown => m_Wrapper.m_Pose_SelectDown;
         public InputAction @Decide => m_Wrapper.m_Pose_Decide;
@@ -494,6 +611,9 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             @SwitchPose.started += instance.OnSwitchPose;
             @SwitchPose.performed += instance.OnSwitchPose;
             @SwitchPose.canceled += instance.OnSwitchPose;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
             @SelectUp.started += instance.OnSelectUp;
             @SelectUp.performed += instance.OnSelectUp;
             @SelectUp.canceled += instance.OnSelectUp;
@@ -510,6 +630,9 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             @SwitchPose.started -= instance.OnSwitchPose;
             @SwitchPose.performed -= instance.OnSwitchPose;
             @SwitchPose.canceled -= instance.OnSwitchPose;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
             @SelectUp.started -= instance.OnSelectUp;
             @SelectUp.performed -= instance.OnSelectUp;
             @SelectUp.canceled -= instance.OnSelectUp;
@@ -536,6 +659,76 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         }
     }
     public PoseActions @Pose => new PoseActions(this);
+
+    // QTE
+    private readonly InputActionMap m_QTE;
+    private List<IQTEActions> m_QTEActionsCallbackInterfaces = new List<IQTEActions>();
+    private readonly InputAction m_QTE_A;
+    private readonly InputAction m_QTE_B;
+    private readonly InputAction m_QTE_X;
+    private readonly InputAction m_QTE_Y;
+    public struct QTEActions
+    {
+        private @GameInputs m_Wrapper;
+        public QTEActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @A => m_Wrapper.m_QTE_A;
+        public InputAction @B => m_Wrapper.m_QTE_B;
+        public InputAction @X => m_Wrapper.m_QTE_X;
+        public InputAction @Y => m_Wrapper.m_QTE_Y;
+        public InputActionMap Get() { return m_Wrapper.m_QTE; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(QTEActions set) { return set.Get(); }
+        public void AddCallbacks(IQTEActions instance)
+        {
+            if (instance == null || m_Wrapper.m_QTEActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_QTEActionsCallbackInterfaces.Add(instance);
+            @A.started += instance.OnA;
+            @A.performed += instance.OnA;
+            @A.canceled += instance.OnA;
+            @B.started += instance.OnB;
+            @B.performed += instance.OnB;
+            @B.canceled += instance.OnB;
+            @X.started += instance.OnX;
+            @X.performed += instance.OnX;
+            @X.canceled += instance.OnX;
+            @Y.started += instance.OnY;
+            @Y.performed += instance.OnY;
+            @Y.canceled += instance.OnY;
+        }
+
+        private void UnregisterCallbacks(IQTEActions instance)
+        {
+            @A.started -= instance.OnA;
+            @A.performed -= instance.OnA;
+            @A.canceled -= instance.OnA;
+            @B.started -= instance.OnB;
+            @B.performed -= instance.OnB;
+            @B.canceled -= instance.OnB;
+            @X.started -= instance.OnX;
+            @X.performed -= instance.OnX;
+            @X.canceled -= instance.OnX;
+            @Y.started -= instance.OnY;
+            @Y.performed -= instance.OnY;
+            @Y.canceled -= instance.OnY;
+        }
+
+        public void RemoveCallbacks(IQTEActions instance)
+        {
+            if (m_Wrapper.m_QTEActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IQTEActions instance)
+        {
+            foreach (var item in m_Wrapper.m_QTEActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_QTEActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public QTEActions @QTE => new QTEActions(this);
     public interface IPlayerLActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -553,8 +746,16 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     public interface IPoseActions
     {
         void OnSwitchPose(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
         void OnSelectUp(InputAction.CallbackContext context);
         void OnSelectDown(InputAction.CallbackContext context);
         void OnDecide(InputAction.CallbackContext context);
+    }
+    public interface IQTEActions
+    {
+        void OnA(InputAction.CallbackContext context);
+        void OnB(InputAction.CallbackContext context);
+        void OnX(InputAction.CallbackContext context);
+        void OnY(InputAction.CallbackContext context);
     }
 }
