@@ -35,6 +35,7 @@ public class SphereMagnetism : MonoBehaviour
 	private Magnetism magnet2;
 	private float oridinalDRange;
 
+	private Rigidbody rb;
 	private SphereCollider sCollider;  // 磁石を引き寄せる頂点の計算用
 	private MoveSphere moveS;
     private TooClose tooClose;
@@ -59,6 +60,8 @@ public class SphereMagnetism : MonoBehaviour
 	{
 		// TryGetComponentの返り値はbool、SphereColliderが見つからなかった時falseになる
 		TryGetComponent<SphereCollider>(out sCollider);
+
+		TryGetComponent<Rigidbody>(out rb);
 
 		playerL.TryGetComponent<AugMagL>(out magL_Aug);
 		playerR.TryGetComponent<AugMagR>(out magR_Aug);
@@ -131,7 +134,7 @@ public class SphereMagnetism : MonoBehaviour
 			magnet.GetComponent<Rigidbody>().AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
 
 			// 接近警告
-			if (surfaceDistance <= tooClose.GetDangerDist())
+			if (!rb.isKinematic && surfaceDistance <= tooClose.GetDangerDist())
 			{
 				magnet.isSlow_magObj = true;
 			}

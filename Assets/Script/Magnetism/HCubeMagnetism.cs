@@ -19,6 +19,7 @@ public class HCubeMagnetism : MonoBehaviour
 
 	private SphereCollider hCubeCollider;
 	private TooClose tooClose;
+	private Rigidbody rb;
 
 	//--- 磁石のリスト管理 ---//
 	private static List<Magnetism> registeredMagnets = new();
@@ -44,6 +45,7 @@ public class HCubeMagnetism : MonoBehaviour
 		// コンポーネントを取得
 		hCubeCollider = GetComponent<SphereCollider>();
 		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
+		rb = GetComponent<Rigidbody>();
 	}
 
 
@@ -93,7 +95,7 @@ public class HCubeMagnetism : MonoBehaviour
 		nearestMagnet.GetComponent<Rigidbody>().AddForce(direction * force * timeScaleFactor, ForceMode.Acceleration);
 
 		// 接近警告
-		if (minDistance <= tooClose.GetDangerDist())
+		if (!rb.isKinematic && minDistance <= tooClose.GetDangerDist())
 		{
 			nearestMagnet.isSlow_magObj = true;
 		}
