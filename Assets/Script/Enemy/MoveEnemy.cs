@@ -1,89 +1,84 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// §ìÒ@ƒSƒƒC
-
-// ¦“G‚Ìrotation‚Ì‚™‚ğ•K‚¸‚O‚É‚µ‚Ä‚­‚¾‚³‚¢B
-
+// åˆ¶ä½œè€…ï¼šã‚´ãƒ­ã‚¤
 
 public class MoveEnemy : MonoBehaviour
 {
-    // “G‚ÌˆÚ“®İ’è
-    public float stepSize = 1f;   // 1‰ñ‚ÌˆÚ“®‹——£
-    public float moveSpeed = 2f;  // ˆÚ“®‘¬“xi”’l‚ª‘å‚«‚¢‚Ù‚Ç‘¬‚­ˆÚ“®j
-    public bool isStopped = false; // true ‚Ìê‡A“G‚ÌˆÚ“®‚ğ’â~
+    public float stepSize = 1f;        // 1å›ã®ç§»å‹•è·é›¢
+    public float moveSpeed = 2f;       // ç§»å‹•é€Ÿåº¦
+    public bool isStopped = false;     // ç§»å‹•åœæ­¢ãƒ•ãƒ©ã‚°
 
-    // Inspector ‚Åİ’è‰Â”\‚ÈˆÚ“®‡
-    public List<MoveDirection> moveOrder = new List<MoveDirection>();
+    public List<MoveDirection> moveOrder = new List<MoveDirection>(); // ç§»å‹•é †åº
 
     private bool isMoving = false;
-    private Quaternion initialRotation; // **ƒIƒuƒWƒFƒNƒg‚Ì‰Šú‰ñ“]‚ğ•Ûi³–Ê‚ÌŠî€‚ğŒˆ’èj**
 
-    void Start()
+    // å„æ–¹å‘ã«å¯¾ã™ã‚‹ Y å›è»¢è§’ï¼ˆåˆæœŸå‘ãèª¿æ•´ç”¨ï¼‰
+    private Dictionary<Direction, float> rotationYMap = new Dictionary<Direction, float>
     {
-        // ‰Šú‰ñ“]‚ğæ“¾iY²‚ÌŒü‚«‚ğŠî€‚Æ‚µ‚Ä•Ûj
-        initialRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        { Direction.Forward, 0f },
+        { Direction.Backward, 180f },
+        { Direction.Right, -90f },
+        { Direction.Left, 90f }
+    };
 
-        // “G‚ÌˆÚ“®‚ğŠJn
+    // ãƒ¯ãƒ¼ãƒ«ãƒ‰åŸºæº–ã§ã®ç§»å‹•æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+    private Dictionary<Direction, Vector3> directionMap = new Dictionary<Direction, Vector3>
+    {
+        { Direction.Forward, Vector3.right },
+        { Direction.Backward, Vector3.left },
+        { Direction.Right, Vector3.forward },
+        { Direction.Left, Vector3.back }
+    };
+
+    // âœ… Start ã‚’ã‚³ãƒ«ãƒ¼ãƒãƒ³ã«å¤‰æ›´ã—ã¦æœ€åˆã®å‘ãã‚’ã¡ã‚ƒã‚“ã¨é©ç”¨
+    private IEnumerator Start()
+    {
+        // æœ€åˆã®å‘ãã«ä¸€åº¦ã ã‘å›è»¢
+        if (moveOrder.Count > 0)
+        {
+            float initialYRotation = rotationYMap[moveOrder[0].direction];
+            transform.rotation = Quaternion.Euler(0, initialYRotation, 0);
+        }
+
+        // â— 1ãƒ•ãƒ¬ãƒ¼ãƒ å¾…ã£ã¦ã‹ã‚‰ç§»å‹•ã‚’é–‹å§‹ï¼ˆå›è»¢ãŒåæ˜ ã•ã‚Œã‚‹ã®ã‚’å¾…ã¤ï¼‰
+        yield return null;
+
         StartCoroutine(Move());
     }
 
-    void Update()
+    private void Update()
     {
-        // ˆÚ“®’â~ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚éê‡AƒRƒ‹[ƒ`ƒ“‚ğ’â~
         if (isStopped)
         {
             StopAllCoroutines();
         }
     }
 
-    // ˆÚ“®•ûŒü‚É‘Î‚·‚é‰ñ“]î•ñ‚Ì«‘
-    private Dictionary<Direction, Quaternion> rotationMap = new Dictionary<Direction, Quaternion>
-    {
-        { Direction.Forward, Quaternion.Euler(0, 180, 0) },  // ‘OŒü‚«
-        { Direction.Backward, Quaternion.Euler(0, 0, 0) },   // Œã‚ëŒü‚«
-        { Direction.Right, Quaternion.Euler(0, 90, 0) },     // ‰EŒü‚«
-        { Direction.Left, Quaternion.Euler(0, -90, 0) }      // ¶Œü‚«
-    };
-
-    // ˆÚ“®•ûŒü‚É‘Î‚·‚éƒxƒNƒgƒ‹î•ñ‚Ì«‘
-    private Dictionary<Direction, Vector3> directionMap = new Dictionary<Direction, Vector3>
-    {
-        { Direction.Forward, Vector3.right },  // ‘O ¨ ‰EˆÚ“®
-        { Direction.Backward, Vector3.left },  // Œã‚ë ¨ ¶ˆÚ“®
-        { Direction.Right, Vector3.forward },  // ‰E ¨ ‘OˆÚ“®
-        { Direction.Left, Vector3.back }       // ¶ ¨ Œã‚ëˆÚ“®
-    };
-
-    IEnumerator Move()
+    private IEnumerator Move()
     {
         isMoving = true;
 
-        // ’â~ƒtƒ‰ƒO‚ª—§‚Â‚Ü‚Åƒ‹[ƒv
         while (!isStopped)
         {
-            foreach (MoveDirection direction in moveOrder) // İ’è‚³‚ê‚½‡‚ÉˆÚ“®
+            foreach (MoveDirection direction in moveOrder)
             {
-                int steps = direction.steps;
+                Vector3 moveVec = directionMap[direction.direction];
+                float yRotation = rotationYMap[direction.direction];
 
-                // ˆÚ“®•ûŒü‚ğ«‘‚©‚çæ“¾
-                Vector3 targetDirection = directionMap[direction.direction];
+                // å‘ãã‚’æ›´æ–°ï¼ˆã“ã®æ–¹å‘ã«å›è»¢ï¼‰
+                transform.rotation = Quaternion.Euler(0, yRotation, 0);
 
-                for (int j = 0; j < steps; j++)
+                for (int i = 0; i < direction.steps; i++)
                 {
-                    // ‚à‚µ“r’†‚Å’â~ƒtƒ‰ƒO‚ª—§‚Á‚½‚çAˆ—‚ğI—¹
                     if (isStopped) yield break;
 
-                    // Œ»İ‚ÌˆÊ’u‚ğæ“¾
                     Vector3 startPos = transform.position;
-
-                    // Ÿ‚ÌˆÚ“®ˆÊ’u‚ğŒvZiŒ»İˆÊ’u + ˆÚ“®ƒxƒNƒgƒ‹j
-                    Vector3 targetPos = startPos + targetDirection * stepSize;
+                    Vector3 targetPos = startPos + moveVec * stepSize;
 
                     float elapsedTime = 0f;
 
-                    // ŠŠ‚ç‚©‚ÉˆÚ“®‚·‚éˆ—
                     while (elapsedTime < 1f / moveSpeed)
                     {
                         transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime * moveSpeed);
@@ -91,12 +86,8 @@ public class MoveEnemy : MonoBehaviour
                         yield return null;
                     }
 
-                    // ÅI“I‚ÈˆÊ’u‚ğŠm’è
                     transform.position = targetPos;
                 }
-
-                // ƒIƒuƒWƒFƒNƒg‚ÌŒü‚«‚ğ•ÏXi‰Šú‰ñ“]‚ğŠî€j
-                transform.rotation = initialRotation * rotationMap[direction.direction];
             }
         }
 
@@ -104,19 +95,19 @@ public class MoveEnemy : MonoBehaviour
     }
 }
 
-// ˆÚ“®‡‚Ìİ’è‚ğŠÇ—‚·‚é\‘¢‘Ì
+// Inspector ã§è¨­å®šã™ã‚‹ç§»å‹•ãƒ‘ã‚¿ãƒ¼ãƒ³
 [System.Serializable]
 public struct MoveDirection
 {
-    public Direction direction; // i‚Ş•ûŒü
-    public int steps; // ‚»‚Ì•ûŒü‚Öi‚Ş•à”
+    public Direction direction;
+    public int steps;
 }
 
-// ˆÚ“®‰Â”\‚È•ûŒü‚Ì‘I‘ğˆ
+// ç§»å‹•æ–¹å‘ã®é¸æŠè‚¢
 public enum Direction
 {
-    Forward,  // ‘O
-    Backward, // Œã‚ë
-    Right,    // ‰E
-    Left      // ¶
+    Forward,
+    Backward,
+    Right,
+    Left
 }
