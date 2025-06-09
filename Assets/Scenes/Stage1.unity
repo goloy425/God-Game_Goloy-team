@@ -7877,11 +7877,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5197802349528711819, guid: 912b73ade8f9b0a48b3e5bf4cf41d7b3, type: 3}
       propertyPath: m_Name
-      value: MachinUI
+      value: MachineUI
       objectReference: {fileID: 0}
     - target: {fileID: 5197802349968572559, guid: 912b73ade8f9b0a48b3e5bf4cf41d7b3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 912b73ade8f9b0a48b3e5bf4cf41d7b3, type: 3}
@@ -10203,6 +10203,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerRUI
       objectReference: {fileID: 0}
+    - target: {fileID: 9038968108190246789, guid: ed918257f0d6b1046aa30b79e7a20b56, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9038968108190246790, guid: ed918257f0d6b1046aa30b79e7a20b56, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -12223,9 +12227,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7150428592570721907, guid: a409e148e1ec09a42bf39d890c877f47, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7150428593652274606, guid: a409e148e1ec09a42bf39d890c877f47, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7150428593773553126, guid: a409e148e1ec09a42bf39d890c877f47, type: 3}
       propertyPath: m_Name
       value: PlayerLUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7150428593773553126, guid: a409e148e1ec09a42bf39d890c877f47, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7150428593773553127, guid: a409e148e1ec09a42bf39d890c877f47, type: 3}
       propertyPath: m_RootOrder
