@@ -243,7 +243,7 @@ Transform:
   - {fileID: 4970943497113371242}
   - {fileID: 7150428593967510649}
   - {fileID: 8239655134258833951}
-  m_Father: {fileID: 7150428593773553127}
+  m_Father: {fileID: 4959389373859635927}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7150428592463752798
@@ -277,7 +277,7 @@ Transform:
   - {fileID: 7150428592790252472}
   - {fileID: 2106783750178986655}
   - {fileID: 8239655132639266124}
-  m_Father: {fileID: 7150428593773553127}
+  m_Father: {fileID: 4959389373859635927}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7150428592570721907
@@ -311,7 +311,7 @@ Transform:
   - {fileID: 390733128878171475}
   - {fileID: 2106783751199414386}
   - {fileID: 6899835197295903102}
-  m_Father: {fileID: 7150428593773553127}
+  m_Father: {fileID: 4959389373859635927}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7150428592790252421
@@ -451,7 +451,7 @@ Transform:
   - {fileID: 7150428592788558692}
   - {fileID: 7150428593278100297}
   - {fileID: 8239655133892213618}
-  m_Father: {fileID: 7150428593773553127}
+  m_Father: {fileID: 4959389373859635927}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7150428593278100298
@@ -591,7 +591,7 @@ Transform:
   - {fileID: 7792533798667052033}
   - {fileID: 2781776084015795321}
   - {fileID: 8239655134067264265}
-  m_Father: {fileID: 7150428593773553127}
+  m_Father: {fileID: 4959389373859635927}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7150428593773553126
@@ -602,7 +602,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7150428593773553127}
+  - component: {fileID: 4959389373859635927}
   m_Layer: 0
   m_Name: PlayerLUI
   m_TagString: Untagged
@@ -610,8 +610,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &7150428593773553127
-Transform:
+--- !u!224 &4959389373859635927
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -630,6 +630,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &4793129334272544164
 PrefabInstance:
   m_ObjectHideFlags: 0
