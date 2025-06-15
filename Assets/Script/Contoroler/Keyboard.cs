@@ -68,7 +68,10 @@ public class Keyboard : MonoBehaviour
 		// ˆÚ“®‚³‚¹‚é
 		rb.velocity = moveForward * moveSpeed;
 
-		// •R‚ÌˆÊ’u‚ğ‡‚í‚¹‚é
-		rope.transform.position = this.transform.position;
+		if (rope != null)
+		{
+			// •R‚ÌˆÊ’u‚ğ‡‚í‚¹‚é
+			rope.transform.position = this.transform.position;
+		}
 	}
 }

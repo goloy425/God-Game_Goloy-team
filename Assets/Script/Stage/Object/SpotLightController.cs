@@ -36,11 +36,6 @@ public class SpotLightController : MonoBehaviour
 	private bool moveZ;
 
 
-	void Start()
-	{
-
-	}
-
 	void Update()
 	{
 		if (targetAngle == null) return;
