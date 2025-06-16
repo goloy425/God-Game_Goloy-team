@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 // スポットライトがプレイヤーを見つけた時の処理
 //=================================================
 
-public class SpotLightFindPlayer : MonoBehaviour
+public class SL_FindPlayer : MonoBehaviour
 {
 	private Renderer coneRenderer;
 	private Light spotLight;

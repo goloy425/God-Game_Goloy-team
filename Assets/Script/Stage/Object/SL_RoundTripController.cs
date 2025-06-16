@@ -9,7 +9,7 @@ using UnityEngine;
 // スポットライトの動き（首振り）を制御するスクリプト
 //===========================================================
 
-public class SpotLightController : MonoBehaviour
+public class SL_RoundTripController : MonoBehaviour
 {
 	[Header("ターゲットの角度を設定(y=0固定！)")]
 	public Vector3[] targetAngle;

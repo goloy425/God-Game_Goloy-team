@@ -703,6 +703,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: botchase_Blue
       objectReference: {fileID: 0}
+    - target: {fileID: 1570659377142672811, guid: 08fe264f53ce39049b75c97f6b764489, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2199949925465847569, guid: 08fe264f53ce39049b75c97f6b764489, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2047,6 +2051,63 @@ MonoBehaviour:
   cameraTransform: {fileID: 1127656643}
   rope: {fileID: 171694613}
   moveSpeed: 5
+--- !u!1001 &4835024571635446163
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5083811221324356488, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5604311863771693362, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
+      propertyPath: m_Name
+      value: Spotlight_rotate
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0bc2fb5e8d2ae1043b99fe6e5028651a, type: 3}
 --- !u!1001 &7966163008997317798
 PrefabInstance:
   m_ObjectHideFlags: 0
