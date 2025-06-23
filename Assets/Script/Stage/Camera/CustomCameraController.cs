@@ -30,7 +30,10 @@ public class CustomCameraController : MonoBehaviour
 	[Header("近すぎズーム用")]
 	public TooClose distManager;
 	public float focusSize = 4.0f;      // フォーカス時のカメラサイズ
-	public float focusSpeed = 5.0f;		// フォーカス時のズーム・移動スピード
+	public float focusSpeed = 5.0f;     // フォーカス時のズーム・移動スピード
+
+	[Header("プレイヤー・磁力オブジェクトのUI")]
+	public List<GameObject> stateUIList = new List<GameObject>();
 
 	private Camera cam;                 // メインカメラへの参照を保持
 	private Vector3 dynamicOffset;      // 動的に変化するカメラオフセットを保持
@@ -102,6 +105,12 @@ public class CustomCameraController : MonoBehaviour
 
 					StartDirection(curStage);
 					timer += Time.deltaTime;
+
+					// 非表示にする
+					foreach(GameObject stateUI in stateUIList)
+					{
+						stateUI.SetActive(false);
+					}
 				}
 				// 演出時間経過後タイマーリセット
 				else if (timer > startDirectionTime)
@@ -113,8 +122,13 @@ public class CustomCameraController : MonoBehaviour
 				}
 				// プレイヤーに追従するカメラ処理に戻す
 				else
-				{
-					MoveCamera();
+                {
+                    // 表示にする
+                    foreach (GameObject stateUI in stateUIList)
+                    {
+                        stateUI.SetActive(true);
+                    }
+                    MoveCamera();
 				}
 			}
 			// ステージクリア後に次ステージ全体を写して戻す演出を行う
@@ -126,9 +140,15 @@ public class CustomCameraController : MonoBehaviour
 
 				StartDirection(curStage);
 				timer += Time.deltaTime;
-			}
-			// 演出時間経過後タイマーリセット
-			else if (timer > clearDirectionTime)
+
+                // 非表示にする
+                foreach (GameObject stateUI in stateUIList)
+                {
+                    stateUI.SetActive(false);
+                }
+            }
+            // 演出時間経過後タイマーリセット
+            else if (timer > clearDirectionTime)
 			{
 				timer = 0.0f;
 				completeDirectionFg[curStage] = true;
@@ -136,8 +156,14 @@ public class CustomCameraController : MonoBehaviour
 				curStage++;
 			}
 			else
-			{
-				MoveCamera();
+            {
+                // 表示にする
+                foreach (GameObject stateUI in stateUIList)
+                {
+                    stateUI.SetActive(true);
+                }
+
+                MoveCamera();
 			}
 		}
 		else
