@@ -323,4 +323,40 @@ public class Magnetism : MonoBehaviour
 		inPlayerMagArea = false;
 		inObjMagArea = false;
 	}
+
+	// 磁力範囲内かどうかの取得
+	public bool GetInMagnetismArea()
+	{
+		return inMagnetismArea;
+	}
+
+	// プレイヤーのマグネットによるスロー再生かどうかの取得
+	public bool GetIsSlowPMag()
+	{
+        return isSlow_pMag;
+    }
+
+    // 磁力オブジェクトによるスロー再生かどうかの取得
+    public bool GetIsSlowMagObj()
+    {
+        return isSlow_magObj;
+    }
+
+    // くっついたかどうかの取得
+    public bool GetIsSnapping()
+    {
+        return isSnapping;
+    }
+
+    // Lの磁石が強化中かどうかの取得
+    public bool GetIsAugmentingL()
+    {
+        return L_isAugmenting;
+    }
+
+    // Rの磁石が強化中かどうかの取得
+    public bool GetIsAugmentingR()
+    {
+        return R_isAugmenting;
+    }
 }

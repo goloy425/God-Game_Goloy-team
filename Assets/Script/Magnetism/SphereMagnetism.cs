@@ -40,6 +40,10 @@ public class SphereMagnetism : MonoBehaviour
 	private MoveSphere moveS;
     private TooClose tooClose;
 
+    private GameObject sphereMagUI;    // 磁力オブジェクトの状態のUI
+    private GameObject magNormal;      // 通常
+    private GameObject magCaution;	   // 警告
+
     //--- 磁石のリスト管理 ---//
     private static List<Magnetism> registeredMagnets = new();
 
@@ -73,7 +77,12 @@ public class SphereMagnetism : MonoBehaviour
 		TryGetComponent<MoveSphere>(out moveS);
 
 		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
-	}
+
+		// 磁力オブジェクトの状態UIを取得
+		sphereMagUI = transform.Find("MachineUI").gameObject;
+        magNormal = sphereMagUI.transform.Find("Normal").gameObject;
+        magCaution = sphereMagUI.transform.Find("Caution").gameObject;
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -137,11 +146,17 @@ public class SphereMagnetism : MonoBehaviour
 			if (!rb.isKinematic && surfaceDistance <= tooClose.GetDangerDist())
 			{
 				magnet.isSlow_magObj = true;
-			}
+				// UIの状態を警告に変更
+                magCaution.SetActive(true);
+                magNormal.SetActive(false);
+            }
 			else if (magnet.isSlow_magObj && surfaceDistance > tooClose.GetSafetyDist())
 			{
 				magnet.isSlow_magObj = false;
-			}
+                // UIの状態を通常に変更
+                magNormal.SetActive(true);
+                magCaution.SetActive(false);
+            }
 
 			// 近づきすぎるとくっつく
 			if (surfaceDistance < magnet.snapDistance)

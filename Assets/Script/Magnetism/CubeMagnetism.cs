@@ -30,6 +30,10 @@ public class CubeMagnetism : MonoBehaviour
 
     private TooClose tooClose;
 
+    private GameObject CubeMagUI;      // 磁力オブジェクトの状態のUI
+    private GameObject magNormal;      // 通常
+    private GameObject magCaution;     // 警告
+
     public static void Register(Magnetism magnet)
 	{
 		if (!registeredMagnets.Contains(magnet))
@@ -50,10 +54,19 @@ public class CubeMagnetism : MonoBehaviour
 		cube2Collider = cube2.GetComponent<SphereCollider>();
 
 		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
+
+        // 磁力オブジェクトの状態UIを取得
+        CubeMagUI = transform.Find("MachineUI").gameObject;
+        magNormal = CubeMagUI.transform.Find("Normal").gameObject;
+        magCaution = CubeMagUI.transform.Find("Caution").gameObject;
     }
 
 	private void FixedUpdate()
 	{
+		// スクリプトが無効時、UIを非表示
+		if (enabled) { CubeMagUI.SetActive(true); }
+		else { CubeMagUI.SetActive(false); }
+
 		//--- 磁石の引き寄せ処理 ---//
 		foreach (var magnet in registeredMagnets)
 		{
@@ -94,11 +107,17 @@ public class CubeMagnetism : MonoBehaviour
 			if (surfaceDistance <= tooClose.GetDangerDist())
 			{
 				magnet.isSlow_magObj = true;
-			}
+                // UIの状態を警告に変更
+                magCaution.SetActive(true);
+                magNormal.SetActive(false);
+            }
 			else if (magnet.isSlow_magObj && surfaceDistance > tooClose.GetSafetyDist())
 			{
 				magnet.isSlow_magObj = false;
-			}
+                // UIの状態を通常に変更
+                magNormal.SetActive(true);
+                magCaution.SetActive(false);
+            }
 
 			// 近付きすぎるとくっつく
 			if (surfaceDistance < magnet.snapDistance)
