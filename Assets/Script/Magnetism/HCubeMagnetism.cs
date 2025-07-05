@@ -21,8 +21,12 @@ public class HCubeMagnetism : MonoBehaviour
 	private TooClose tooClose;
 	private Rigidbody rb;
 
+    private GameObject hCubeMagUI;     // 磁力オブジェクトの状態のUI
+    private GameObject magNormal;      // 通常
+    private GameObject magCaution;     // 警告
+
 	//--- 磁石のリスト管理 ---//
-	private static List<Magnetism> registeredMagnets = new();
+    private static List<Magnetism> registeredMagnets = new();
 
 	public static void Register(Magnetism magnet)
 	{
@@ -46,12 +50,22 @@ public class HCubeMagnetism : MonoBehaviour
 		hCubeCollider = GetComponent<SphereCollider>();
 		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
 		rb = GetComponent<Rigidbody>();
-	}
+
+        // 磁力オブジェクトの状態UIを取得
+        hCubeMagUI = transform.Find("MachineUI").gameObject;
+        magNormal = hCubeMagUI.transform.Find("Normal").gameObject;
+        magCaution = hCubeMagUI.transform.Find("Caution").gameObject;
+		// 半分になる前は非アクティブにする
+		hCubeMagUI.SetActive(false);
+    }
 
 
 	private void FixedUpdate()
 	{
 		if (registeredMagnets == null || registeredMagnets.Count == 0) return;
+
+		// スクリプトが有効時、UIを表示
+		if(enabled) { hCubeMagUI.SetActive(true); }
 
 		Magnetism nearestMagnet = null;
 		float minDistance = float.MaxValue;
@@ -98,11 +112,17 @@ public class HCubeMagnetism : MonoBehaviour
 		if (!rb.isKinematic && minDistance <= tooClose.GetDangerDist())
 		{
 			nearestMagnet.isSlow_magObj = true;
-		}
+            // UIの状態を警告に変更
+            magCaution.SetActive(true);
+            magNormal.SetActive(false);
+        }
 		else if (nearestMagnet.isSlow_magObj && minDistance > tooClose.GetSafetyDist())
 		{
 			nearestMagnet.isSlow_magObj = false;
-		}
+            // UIの状態を通常に変更
+            magNormal.SetActive(true);
+            magCaution.SetActive(false);
+        }
 
 		// 吸着処理
 		if (minDistance < nearestMagnet.snapDistance)

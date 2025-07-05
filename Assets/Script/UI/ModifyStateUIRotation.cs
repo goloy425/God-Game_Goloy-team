@@ -6,17 +6,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModifyPlayerUIScale : MonoBehaviour
+public class ModifyStateUIRotation : MonoBehaviour
 {
-    [SerializeField] Camera mainCamera;
-    // UIの向きベクトル
-    private Vector3 UIdir = new Vector3(0.0f, 0.0f, 0.0f);
+    // 初期回転
+    private Quaternion initialRotation;
 
     // Start is called before the first frame update
     void Start()
     {
-        // カメラの方向に向きベクトルを設定
-        UIdir = -mainCamera.transform.forward;  
-        this.transform.forward = UIdir;
+        // 初期回転を取得
+        initialRotation = transform.rotation;
+    }
+
+    private void LateUpdate()
+    {
+        // 回転をもとに戻す
+        transform.rotation = initialRotation;
     }
 }

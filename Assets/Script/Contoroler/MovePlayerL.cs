@@ -18,9 +18,17 @@ public class MovePlayerL : MonoBehaviour
     [Header("移動させる紐オブジェクト")]
     public GameObject rope;
 
-    private Rigidbody rb;                       // Rigidbody
-    private GameInputs inputs;                  // GameInputsクラス
-    //private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
+    [Header("移動させるUIオブジェクト")]
+    public GameObject UI;
+    [Header("UIの最大移動距離")]
+    public float maxRadius = 1.0f;
+    [Header("UIが元の位置に戻る速さ")]
+    public float returnSpeed = 5.0f;
+    private Vector3 basePosition = Vector3.zero;    // 移動の基準点
+
+    private Rigidbody rb;                           // Rigidbody
+    private GameInputs inputs;                      // GameInputsクラス
+    //private PlaySEAtRegularIntervals playSE;      // PlaySEAtRegularIntervalsコンポーネント
     private Animator animator;
 
     private Vector2 moveInputValue;     // スティックの入力を受け取る
@@ -88,7 +96,27 @@ public class MovePlayerL : MonoBehaviour
 
         //------ アニメーション切り替え ------// 
         if (rb.velocity == Vector3.zero) { animator.SetBool("moveFg", false); }  // アニメーションを待機状態に切り替え
-        else { animator.SetBool("moveFg", true); }                              // アニメーションを移動状態に切り替え
+        else { animator.SetBool("moveFg", true); }                               // アニメーションを移動状態に切り替え
+
+        //------ UIを移動させる ------//
+        // UIの移動の基準点を取得
+        basePosition.x = UI.transform.parent.position.x;  
+        basePosition.y = UI.transform.position.y;
+        basePosition.z = UI.transform.parent.position.z;
+        // UIをスティックに合わせて動かす
+        if (moveInputValue.sqrMagnitude > 0.001f)
+        {
+            Vector3 target = Vector3.zero;
+            // -maxRadius～maxRadiusの間で範囲制限
+            target.x = Mathf.Clamp(moveForward.x * maxRadius, -maxRadius, maxRadius);
+            target.z = Mathf.Clamp(moveForward.z * maxRadius, -maxRadius, maxRadius);
+            UI.transform.position = basePosition + target;
+        }
+        // 入力がない場合は基準点にゆっくり戻す
+        else
+        {
+            UI.transform.position = Vector3.Lerp(UI.transform.position, basePosition, Time.deltaTime * returnSpeed);
+        }
     }
 
     private void OnDestroy()

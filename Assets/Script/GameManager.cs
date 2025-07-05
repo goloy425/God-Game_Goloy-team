@@ -123,6 +123,10 @@ public class GameManager : MonoBehaviour
     public GameObject magnet1;
     public GameObject magnet2;
 
+    [Header("プレイヤーのUI")]
+    public GameObject playerLUI;
+    public GameObject playerRUI;
+
     [Header("ゲームオーバー時のプレイヤーのエフェクト")]
     public GameObject gameOverEffectL;
     public GameObject gameOverEffectR;
@@ -151,6 +155,18 @@ public class GameManager : MonoBehaviour
     private Magnetism magnetism2 = null;      // プレイヤーRのマグネティズム
     private GameObject playerLController = null;
     private GameObject playerRController = null;
+    // プレイヤーLのUI
+    private GameObject playerLNormal = null;
+    private GameObject playerLCaution = null;
+    private GameObject playerLDanger = null;
+    private GameObject playerLWeak = null;
+    private GameObject playerLHold = null;
+    // プレイヤーRのUI
+    private GameObject playerRNormal = null;
+    private GameObject playerRCaution = null;
+    private GameObject playerRDanger = null;
+    private GameObject playerRWeak = null;
+    private GameObject playerRHold = null;
     private float moveTime = 1.0f;            // プレイヤーの移動演出の秒数
     //private float moveTimer = 0.0f;           // プレイヤーの移動演出の計測
 
@@ -201,6 +217,29 @@ public class GameManager : MonoBehaviour
         // プレイヤーコントローラーを取得
         playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
         playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
+        // プレイヤーLのUIを取得
+        playerLNormal  = playerLUI.transform.Find("Normal").gameObject;
+        playerLCaution = playerLUI.transform.Find("Caution").gameObject;
+        playerLDanger  = playerLUI.transform.Find("Danger").gameObject;
+        playerLWeak    = playerLUI.transform.Find("Weak").gameObject;
+        playerLHold    = playerLUI.transform.Find("Hold").gameObject;
+        // プレイヤーRのUIを取得
+        playerRNormal  = playerRUI.transform.Find("Normal").gameObject;
+        playerRCaution = playerRUI.transform.Find("Caution").gameObject;
+        playerRDanger  = playerRUI.transform.Find("Danger").gameObject;
+        playerRWeak    = playerRUI.transform.Find("Weak").gameObject;
+        playerRHold    = playerRUI.transform.Find("Hold").gameObject;
+        // UIの初期設定
+        playerLNormal.SetActive(true);
+        playerLCaution.SetActive(false);
+        playerLDanger.SetActive(false);
+        playerLWeak.SetActive(false);
+        playerLHold.SetActive(false);
+        playerRNormal.SetActive(true);
+        playerRCaution.SetActive(false);
+        playerRDanger.SetActive(false);
+        playerRWeak.SetActive(false);
+        playerRHold.SetActive(false);
 
         //------ 開始ステージ数と現在のステージ数の決定 ------//
         // CurrentStageに保存されたステージ数を取得
@@ -258,6 +297,9 @@ public class GameManager : MonoBehaviour
         {
             SearchCanCarryMagObj(i);
         }
+
+        //------ プレイヤーのUIの状態変化 ------//
+        ChaneUIState();
 
         //------ ステージのクリア処理 ------//
         int connectCount = 0;             // 各ステージの繋がっている判定エリアの数
@@ -815,6 +857,105 @@ public class GameManager : MonoBehaviour
         Instantiate(gameOverEffectL, playerL.transform.position, Quaternion.identity);  // プレイヤーL
         Instantiate(gameOverEffectR, playerR.transform.position, Quaternion.identity);  // プレイヤーR
     }
+
+    // プレイヤーのUIの状態を変更する処理
+    private void ChaneUIState()
+    {
+        //------ プレイヤーL ------//
+        // 磁力強化中の時、Hold
+        if(magnetism1.GetIsAugmentingL())
+        {
+            playerLHold.SetActive(true);
+            playerLDanger.SetActive(false);
+            playerLCaution.SetActive(false);
+            playerLNormal.SetActive(false);
+            playerLWeak.SetActive(false);
+        }
+        // くっついた時、Danger
+        else if(magnetism1.GetIsSnapping())
+        {
+            playerLDanger.SetActive(true);
+            playerLCaution.SetActive(false);
+            playerLNormal.SetActive(false);
+            playerLWeak.SetActive(false);
+            playerLHold.SetActive(false);
+        }
+        // スロー再生時、Caution
+        else if (magnetism1.GetIsSlowPMag() || magnetism1.GetIsSlowMagObj())
+        {
+            playerLCaution.SetActive(true);
+            playerLNormal.SetActive(false);
+            playerLDanger.SetActive(false);
+            playerLWeak.SetActive(false);
+            playerLHold.SetActive(false);
+        }
+        // 磁力範囲内の時、Normal
+        else if (magnetism1.GetInMagnetismArea())
+        {
+            playerLNormal.SetActive(true);
+            playerLCaution.SetActive(false);
+            playerLDanger.SetActive(false);
+            playerLWeak.SetActive(false);
+            playerLHold.SetActive(false);
+        }
+        // 磁力範囲外の時、Weak
+        else
+        {
+            playerLWeak.SetActive(true);
+            playerLNormal.SetActive(false);
+            playerLCaution.SetActive(false);
+            playerLDanger.SetActive(false);
+            playerLHold.SetActive(false);
+        }
+
+        //------ プレイヤーR ------//
+        // 磁力強化中の時、Hold
+        if (magnetism2.GetIsAugmentingR())
+        {
+            playerRHold.SetActive(true);
+            playerRDanger.SetActive(false);
+            playerRCaution.SetActive(false);
+            playerRNormal.SetActive(false);
+            playerRWeak.SetActive(false);
+        }
+        // くっついた時、Danger
+        else if (magnetism2.GetIsSnapping())
+        {
+            playerRDanger.SetActive(true);
+            playerRCaution.SetActive(false);
+            playerRNormal.SetActive(false);
+            playerRWeak.SetActive(false);
+            playerRHold.SetActive(false);
+        }
+        // スロー再生時、Caution
+        else if (magnetism2.GetIsSlowPMag() || magnetism2.GetIsSlowMagObj())
+        {
+            playerRCaution.SetActive(true);
+            playerRNormal.SetActive(false);
+            playerRDanger.SetActive(false);
+            playerRWeak.SetActive(false);
+            playerRHold.SetActive(false);
+        }
+        // 磁力範囲内の時、Normal
+        else if (magnetism2.GetInMagnetismArea())
+        {
+            playerRNormal.SetActive(true);
+            playerRCaution.SetActive(false);
+            playerRDanger.SetActive(false);
+            playerRWeak.SetActive(false);
+            playerRHold.SetActive(false);
+        }
+        // 磁力範囲外の時、Weak
+        else
+        {
+            playerRWeak.SetActive(true);
+            playerRNormal.SetActive(false);
+            playerRCaution.SetActive(false);
+            playerRDanger.SetActive(false);
+            playerRHold.SetActive(false);
+        }
+    }
+
 
     // リザルトシーンに遷移
     private void MoveResultScene()
