@@ -203,7 +203,7 @@ public class Magnetism : MonoBehaviour
 		}
 		else if (isSlow_pMag && distance > tooClose.GetSafetyDist())
 		{
-            isSlow_pMag = false;
+			isSlow_pMag = false;
 		}
 
 		// くっつく処理：両方が強化状態にある時は無視
@@ -333,30 +333,30 @@ public class Magnetism : MonoBehaviour
 	// プレイヤーのマグネットによるスロー再生かどうかの取得
 	public bool GetIsSlowPMag()
 	{
-        return isSlow_pMag;
-    }
+		return isSlow_pMag;
+	}
 
-    // 磁力オブジェクトによるスロー再生かどうかの取得
-    public bool GetIsSlowMagObj()
-    {
-        return isSlow_magObj;
-    }
+	// 磁力オブジェクトによるスロー再生かどうかの取得
+	public bool GetIsSlowMagObj()
+	{
+		return isSlow_magObj;
+	}
 
-    // くっついたかどうかの取得
-    public bool GetIsSnapping()
-    {
-        return isSnapping;
-    }
+	// くっついたかどうかの取得
+	public bool GetIsSnapping()
+	{
+		return isSnapping;
+	}
 
-    // Lの磁石が強化中かどうかの取得
-    public bool GetIsAugmentingL()
-    {
-        return L_isAugmenting;
-    }
+	// Lの磁石が強化中かどうかの取得
+	public bool GetIsAugmentingL()
+	{
+		return L_isAugmenting;
+	}
 
-    // Rの磁石が強化中かどうかの取得
-    public bool GetIsAugmentingR()
-    {
-        return R_isAugmenting;
-    }
+	// Rの磁石が強化中かどうかの取得
+	public bool GetIsAugmentingR()
+	{
+		return R_isAugmenting;
+	}
 }

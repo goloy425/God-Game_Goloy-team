@@ -65,6 +65,9 @@ public class DetectArea : MonoBehaviour
             if (other.gameObject == detectedObjects[i])
             {
                 freezeMagObj = other.gameObject;    // 動きを止める磁力オブジェクトを登録
+                 // スロー解除
+                Time.timeScale = 1f;
+                Time.fixedDeltaTime = 0.02f;
 
                 // 判定エリア内にオブジェクトが存在しない時に実行
                 if (objNum < 1)

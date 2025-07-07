@@ -124,6 +124,12 @@ public class HCubeMagnetism : MonoBehaviour
             magCaution.SetActive(false);
         }
 
+		// DetectAreaã‚É‚ ‚é‚â‚Â‚É‚Í‹ß‚Ã‚«‚·‚¬‚Ä‚àŒx‚ğo‚³‚È‚¢
+		if (rb.isKinematic)
+		{
+			nearestMagnet.isSlow_magObj = false;
+		}
+
 		// ‹z’…ˆ—
 		if (minDistance < nearestMagnet.snapDistance)
 		{
