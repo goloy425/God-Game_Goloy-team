@@ -776,12 +776,12 @@ MonoBehaviour:
   fadeObjects:
   - targetObj: {fileID: 667009454}
     fadeIn: 1
-    fadeTime: 20
+    fadeTime: 5
     delay: 0
   - targetObj: {fileID: 1487062820}
     fadeIn: 0
-    fadeTime: 10
-    delay: 5
+    fadeTime: 5
+    delay: 2
 --- !u!1 &1465743951
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,8 +1015,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1487062822}
-        m_TargetAssemblyTypeName: SceneChangeManager, Assembly-CSharp
+      - m_Target: {fileID: 69320095}
+        m_TargetAssemblyTypeName: SceneSwitch, Assembly-CSharp
         m_MethodName: ChangeScene
         m_Mode: 5
         m_Arguments:
