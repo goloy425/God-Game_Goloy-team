@@ -12,6 +12,7 @@ public class Fade : MonoBehaviour
     {
         public GameObject targetObj;  // フェードする画像
         public bool fadeIn = true;    // フェードインするかフェードアウトするか
+        public bool delete = false;   // フェードイン/アウト後、消すかどうか
         public float fadeTime = 1.0f; // フェードの時間（秒）
         public float delay = 0.0f;    // フェード開始までの遅延時間（秒）
     }
@@ -53,6 +54,19 @@ public class Fade : MonoBehaviour
                 canvasGroup.alpha = alphaValue;
             }
 
+
+            // フェード完了判定
+            if (elapsedTime >= fadeObj.fadeTime)
+            {
+                if (fadeObj.delete)
+                {
+                    // 非表示にする場合
+                    fadeObj.targetObj.SetActive(false);
+
+                    // もしくは削除する場合
+                    // Destroy(fadeObj.targetObj);
+                }
+            }
 
             //// UI要素を取得し、フェードを適応
             //Image img = fadeObj.targetObj.GetComponent<Image>();

@@ -776,10 +776,12 @@ MonoBehaviour:
   fadeObjects:
   - targetObj: {fileID: 667009454}
     fadeIn: 1
+    delete: 1
     fadeTime: 5
     delay: 0
   - targetObj: {fileID: 1487062820}
     fadeIn: 0
+    delete: 0
     fadeTime: 5
     delay: 2
 --- !u!1 &1465743951
