@@ -320,6 +320,10 @@ public class GameManager : MonoBehaviour
                 // クリアとみなす秒数を超えたらクリア
                 if (clearTimer > clearTime)
                 {
+                    // スロー解除
+                    Time.timeScale = 1f;
+                    Time.fixedDeltaTime = 0.02f;
+
                     totalConnected += connectCount;
                     Debug.Log("総合接続回路数:" + totalConnected);
                     stageData[curStage].SetClearFg(true);
@@ -417,6 +421,10 @@ public class GameManager : MonoBehaviour
                     Invoke("CreateGameOverEffet", 0.5f);
                     effectCnt++;
                 }
+
+                // スロー解除
+                Time.timeScale = 1f;
+                Time.fixedDeltaTime = 0.02f;
 
                 // changeSceneTime秒後にゲームオーバーシーンに遷移
                 Invoke("MoveGameOverScene", changeSceneTime);

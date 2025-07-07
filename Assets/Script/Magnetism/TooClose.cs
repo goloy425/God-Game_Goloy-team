@@ -56,7 +56,7 @@ public class TooClose : MonoBehaviour
 		while ((magnet1.isSlow_pMag || magnet2.isSlow_pMag || magnet1.isSlow_magObj || magnet2.isSlow_magObj) &&
 			   !magnet1.isSnapping && !magnet2.isSnapping)
 		{
-			yield return null;      // 次のフレームまで待つ
+			yield return null;		// 次のフレームまで待つ
 		}
 
 		// スロー解除
