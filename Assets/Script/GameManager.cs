@@ -156,25 +156,19 @@ public class GameManager : MonoBehaviour
     private GameObject playerLController = null;
     private GameObject playerRController = null;
     // プレイヤーLのUI
-    private GameObject pulseNormalL = null;
-    private GameObject pulseDangerL = null;
-    private GameObject playerLRing = null;
     private GameObject playerLNormal = null;
     private GameObject playerLCaution = null;
     private GameObject playerLDanger = null;
     private GameObject playerLWeak = null;
     private GameObject playerLHold = null;
     // プレイヤーRのUI
-    private GameObject pulseNormalR = null;
-    private GameObject pulseDangerR = null;
-    private GameObject playerRRing = null;
     private GameObject playerRNormal = null;
     private GameObject playerRCaution = null;
     private GameObject playerRDanger = null;
     private GameObject playerRWeak = null;
     private GameObject playerRHold = null;
     private float moveTime = 1.0f;            // プレイヤーの移動演出の秒数
-    //private float moveTimer = 0.0f;         // プレイヤーの移動演出の計測
+    //private float moveTimer = 0.0f;           // プレイヤーの移動演出の計測
 
     private bool fadeInFg = false;            // フェードイン中かどうか
     private bool fadeOutFg = false;           // フェードアウト中かどうか
@@ -224,23 +218,17 @@ public class GameManager : MonoBehaviour
         playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
         playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
         // プレイヤーLのUIを取得
-        pulseNormalL   = playerLUI.transform.Find("L").transform.Find("palse_ring").gameObject;
-        pulseDangerL   = playerLUI.transform.Find("L").transform.Find("palse_danger_ring06").gameObject;
-        playerLRing    = playerLUI.transform.Find("Ring").gameObject;
-        playerLNormal  = playerLRing.transform.Find("Normal").gameObject;
-        playerLCaution = playerLRing.transform.Find("Caution").gameObject;
-        playerLDanger  = playerLRing.transform.Find("Danger").gameObject;
-        playerLWeak    = playerLRing.transform.Find("Weak").gameObject;
-        playerLHold    = playerLRing.transform.Find("Hold").gameObject;
+        playerLNormal  = playerLUI.transform.Find("Normal").gameObject;
+        playerLCaution = playerLUI.transform.Find("Caution").gameObject;
+        playerLDanger  = playerLUI.transform.Find("Danger").gameObject;
+        playerLWeak    = playerLUI.transform.Find("Weak").gameObject;
+        playerLHold    = playerLUI.transform.Find("Hold").gameObject;
         // プレイヤーRのUIを取得
-        pulseNormalR   = playerRUI.transform.Find("R").transform.Find("palse_ring").gameObject;
-        pulseDangerR   = playerRUI.transform.Find("R").transform.Find("palse_danger_ring").gameObject;
-        playerRRing    = playerRUI.transform.Find("Ring").gameObject;
-        playerRNormal  = playerRRing.transform.Find("Normal").gameObject;
-        playerRCaution = playerRRing.transform.Find("Caution").gameObject;
-        playerRDanger  = playerRRing.transform.Find("Danger").gameObject;
-        playerRWeak    = playerRRing.transform.Find("Weak").gameObject;
-        playerRHold    = playerRRing.transform.Find("Hold").gameObject;
+        playerRNormal  = playerRUI.transform.Find("Normal").gameObject;
+        playerRCaution = playerRUI.transform.Find("Caution").gameObject;
+        playerRDanger  = playerRUI.transform.Find("Danger").gameObject;
+        playerRWeak    = playerRUI.transform.Find("Weak").gameObject;
+        playerRHold    = playerRUI.transform.Find("Hold").gameObject;
         // UIの初期設定
         playerLNormal.SetActive(true);
         playerLCaution.SetActive(false);
@@ -293,7 +281,7 @@ public class GameManager : MonoBehaviour
         //    Debug.Log("ステージ" + (i + 1) + "初期化");
         //    SearchCanCarryMagObj(i);
         //}
-        Debug.Log("totalAreas" + totalAreas);
+        Debug.Log(totalAreas);
     }
 
     private void FixedUpdate()
@@ -311,7 +299,7 @@ public class GameManager : MonoBehaviour
         }
 
         //------ プレイヤーのUIの状態変化 ------//
-        ChangeUIState();
+        ChaneUIState();
 
         //------ ステージのクリア処理 ------//
         int connectCount = 0;             // 各ステージの繋がっている判定エリアの数
@@ -549,13 +537,6 @@ public class GameManager : MonoBehaviour
                     stageData[_index].GetSphereMagCS()[i].enabled = false;
                     stageData[_index].GetMoveSphereCS()[i].enabled = false;
                 }
-                // それ以外は無効化
-                else
-                {
-                    Debug.Log(_index + 1 + ": Sphere 無効化");
-                    stageData[_index].GetSphereMagCS()[i].enabled = false;
-                    stageData[_index].GetMoveSphereCS()[i].enabled = false;
-                }
             }
         }
 
@@ -575,14 +556,6 @@ public class GameManager : MonoBehaviour
                     stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
                     stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
                 }
-                // 分割後でプレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                else if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
-                    !connecter.activeSelf)
-                {
-                    Debug.Log(_index + 1 + ": Split1 有効化");
-                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
-                    //stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
-                }
                 // 分割前または、入っていない時は無効化
                 else if (!magnetism1.inObjMagArea || connecter.activeSelf)
                 {
@@ -590,15 +563,17 @@ public class GameManager : MonoBehaviour
                     stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
                     stageData[_index].GetMoveHCubeLCS()[i].enabled = false;
                 }
+
+                // 分割後でプレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
+                if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split1 有効化");
+                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
+                    stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
+                }
                 // 分割前または、入っていない時は無効化
                 else if (!magnetism2.inObjMagArea || connecter.activeSelf)
-                {
-                    Debug.Log(_index + 1 + ": Split1 無効化");
-                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
-                    stageData[_index].GetMoveHCubeLCS()[i].enabled = false;
-                }
-                // それ以外は無効化
-                else
                 {
                     Debug.Log(_index + 1 + ": Split1 無効化");
                     stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
@@ -615,6 +590,22 @@ public class GameManager : MonoBehaviour
 
             if (magObj != null)
             {
+                // 分割後でプレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
+                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split2 有効化");
+                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
+                    stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
+                }
+                // 分割前または、入っていない時は無効化
+                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split2 無効化");
+                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
+                }
+
                 // 分割後でプレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
                 // Split2はプレイヤーRでのみ動かせるので、ここで制御
                 if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
@@ -624,30 +615,8 @@ public class GameManager : MonoBehaviour
                     stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
                     stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
                 }
-                // 分割後でプレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                else if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
-                    !connecter.activeSelf)
-                {
-                    Debug.Log(_index + 1 + ": Split2 有効化");
-                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
-                    //stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
-                }
                 // 分割前または、入っていない時は無効化
                 else if (!magnetism2.inObjMagArea || connecter.activeSelf)
-                {
-                    Debug.Log(_index + 1 + ": Split2 無効化");
-                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
-                    stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
-                }
-                // 分割前または、入っていない時は無効化
-                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
-                {
-                    Debug.Log(_index + 1 + ": Split2 無効化");
-                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
-                    stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
-                }
-                // それ以外は無効化
-                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split2 無効化");
                     stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
@@ -673,13 +642,6 @@ public class GameManager : MonoBehaviour
                 }
                 // 入っていない時は無効化
                 else if (!magnetism1.inObjMagArea && !magnetism2.inObjMagArea)
-                {
-                    Debug.Log(_index + 1 + ": Connecter 無効化");
-                    stageData[_index].GetCubeMagCS()[i].enabled = false;
-                    stageData[_index].GetSplitCubeCS()[i].enabled = false;
-                }
-                // それ以外は無効化
-                else
                 {
                     Debug.Log(_index + 1 + ": Connecter 無効化");
                     stageData[_index].GetCubeMagCS()[i].enabled = false;
@@ -905,14 +867,12 @@ public class GameManager : MonoBehaviour
     }
 
     // プレイヤーのUIの状態を変更する処理
-    private void ChangeUIState()
+    private void ChaneUIState()
     {
         //------ プレイヤーL ------//
         // 磁力強化中の時、Hold
         if(magnetism1.GetIsAugmentingL())
         {
-            pulseDangerL.SetActive(false);
-            pulseNormalL.SetActive(true);
             playerLHold.SetActive(true);
             playerLDanger.SetActive(false);
             playerLCaution.SetActive(false);
@@ -922,8 +882,6 @@ public class GameManager : MonoBehaviour
         // くっついた時、Danger
         else if(magnetism1.GetIsSnapping())
         {
-            pulseNormalL.SetActive(false);
-            pulseDangerL.SetActive(true);
             playerLDanger.SetActive(true);
             playerLCaution.SetActive(false);
             playerLNormal.SetActive(false);
@@ -933,8 +891,6 @@ public class GameManager : MonoBehaviour
         // スロー再生時、Caution
         else if (magnetism1.GetIsSlowPMag() || magnetism1.GetIsSlowMagObj())
         {
-            pulseDangerL.SetActive(false);
-            pulseNormalL.SetActive(true);
             playerLCaution.SetActive(true);
             playerLNormal.SetActive(false);
             playerLDanger.SetActive(false);
@@ -944,8 +900,6 @@ public class GameManager : MonoBehaviour
         // 磁力範囲内の時、Normal
         else if (magnetism1.GetInMagnetismArea())
         {
-            pulseDangerL.SetActive(false);
-            pulseNormalL.SetActive(true);
             playerLNormal.SetActive(true);
             playerLCaution.SetActive(false);
             playerLDanger.SetActive(false);
@@ -955,8 +909,6 @@ public class GameManager : MonoBehaviour
         // 磁力範囲外の時、Weak
         else
         {
-            pulseDangerL.SetActive(false);
-            pulseNormalL.SetActive(true);
             playerLWeak.SetActive(true);
             playerLNormal.SetActive(false);
             playerLCaution.SetActive(false);
@@ -968,8 +920,6 @@ public class GameManager : MonoBehaviour
         // 磁力強化中の時、Hold
         if (magnetism2.GetIsAugmentingR())
         {
-            pulseDangerR.SetActive(false);
-            pulseNormalR.SetActive(true);
             playerRHold.SetActive(true);
             playerRDanger.SetActive(false);
             playerRCaution.SetActive(false);
@@ -979,8 +929,6 @@ public class GameManager : MonoBehaviour
         // くっついた時、Danger
         else if (magnetism2.GetIsSnapping())
         {
-            pulseNormalR.SetActive(false);
-            pulseDangerR.SetActive(true);
             playerRDanger.SetActive(true);
             playerRCaution.SetActive(false);
             playerRNormal.SetActive(false);
@@ -990,8 +938,6 @@ public class GameManager : MonoBehaviour
         // スロー再生時、Caution
         else if (magnetism2.GetIsSlowPMag() || magnetism2.GetIsSlowMagObj())
         {
-            pulseDangerR.SetActive(false);
-            pulseNormalR.SetActive(true);
             playerRCaution.SetActive(true);
             playerRNormal.SetActive(false);
             playerRDanger.SetActive(false);
@@ -1001,8 +947,6 @@ public class GameManager : MonoBehaviour
         // 磁力範囲内の時、Normal
         else if (magnetism2.GetInMagnetismArea())
         {
-            pulseDangerR.SetActive(false);
-            pulseNormalR.SetActive(true);
             playerRNormal.SetActive(true);
             playerRCaution.SetActive(false);
             playerRDanger.SetActive(false);
@@ -1012,8 +956,6 @@ public class GameManager : MonoBehaviour
         // 磁力範囲外の時、Weak
         else
         {
-            pulseDangerR.SetActive(false);
-            pulseNormalR.SetActive(true);
             playerRWeak.SetActive(true);
             playerRNormal.SetActive(false);
             playerRCaution.SetActive(false);

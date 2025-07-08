@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5197802349259730392}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5197802349259730392
 Transform:
   m_ObjectHideFlags: 0
@@ -23,15 +23,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5197802349259730395}
-  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5197802350063759049}
-  m_Father: {fileID: 5078742707998300588}
+  m_Father: {fileID: 5201046543056848325}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5197802349311665082
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 5197802349311665081}
   - component: {fileID: 5197802349311665080}
   - component: {fileID: 5197802349311665083}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: palse_cautionM00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,8 +59,8 @@ Transform:
   m_GameObject: {fileID: 5197802349311665082}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.28, y: 0.28, z: 0.28}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5197802349968572556}
   m_RootOrder: 0
@@ -148,7 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5201046543056848325}
   - component: {fileID: 250070254428053413}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: MachineUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 5078742707998300588}
+  - {fileID: 5197802349259730392}
+  - {fileID: 5197802349968572556}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -197,7 +198,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5197802349968572556}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Caution
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,15 +212,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5197802349968572559}
-  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5197802349311665081}
-  m_Father: {fileID: 5078742707998300588}
+  m_Father: {fileID: 5201046543056848325}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5197802350063759050
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +232,7 @@ GameObject:
   - component: {fileID: 5197802350063759049}
   - component: {fileID: 5197802350063759048}
   - component: {fileID: 5197802350063759051}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: palse_nomalM03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,8 +248,8 @@ Transform:
   m_GameObject: {fileID: 5197802350063759050}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.28, y: 0.28, z: 0.28}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5197802349259730392}
   m_RootOrder: 0
@@ -326,36 +327,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &7455212722105617340
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5078742707998300588}
-  m_Layer: 9
-  m_Name: Ring
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5078742707998300588
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7455212722105617340}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5197802349259730392}
-  - {fileID: 5197802349968572556}
-  m_Father: {fileID: 5201046543056848325}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

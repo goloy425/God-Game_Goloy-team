@@ -158,7 +158,7 @@ public class DrawCircle : MonoBehaviour
 			// ƒŒƒC‚ª“–‚½‚Á‚½“_‚æ‚è‚¿‚å‚Á‚Æã‚ğposition‚Æ‚·‚é
 			if (Physics.Raycast(ray, out hit, rayDistance, ground))
 			{
-				float posY = hit.point.y + 0.2f;
+				float posY = hit.point.y + 0.06f;
 
 				// ˆÊ’u‚Ì’Ç]•‰ñ“]‚ğŒÅ’è
 				magnetismCircle.SetPositionAndRotation(new Vector3(hit.point.x, posY, hit.point.z), Quaternion.identity);
@@ -185,7 +185,7 @@ public class DrawCircle : MonoBehaviour
 
 		if (Physics.Raycast(ray, out hit, rayDistance, ground))
 		{
-			float posY = hit.point.y + 0.2f;
+			float posY = hit.point.y + 0.06f;
 
 			// ˆÊ’u‚Ì’Ç]•‰ñ“]‚ğŒÅ’è
 			magnetismCircle.SetPositionAndRotation(new Vector3(hit.point.x, posY, hit.point.z), Quaternion.identity);

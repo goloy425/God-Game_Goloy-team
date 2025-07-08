@@ -52,7 +52,7 @@ public class HCubeMagnetism : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 
         // 磁力オブジェクトの状態UIを取得
-        hCubeMagUI = transform.Find("MachineUI").transform.Find("Ring").gameObject;
+        hCubeMagUI = transform.Find("MachineUI").gameObject;
         magNormal = hCubeMagUI.transform.Find("Normal").gameObject;
         magCaution = hCubeMagUI.transform.Find("Caution").gameObject;
 		// 半分になる前は非アクティブにする
