@@ -79,7 +79,7 @@ public class SphereMagnetism : MonoBehaviour
 		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
 
 		// 磁力オブジェクトの状態UIを取得
-		sphereMagUI = transform.Find("MachineUI").gameObject;
+		sphereMagUI = transform.Find("MachineUI").transform.Find("Ring").gameObject;
         magNormal = sphereMagUI.transform.Find("Normal").gameObject;
         magCaution = sphereMagUI.transform.Find("Caution").gameObject;
     }

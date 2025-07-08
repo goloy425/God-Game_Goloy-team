@@ -30,7 +30,7 @@ public class CubeMagnetism : MonoBehaviour
 
     private TooClose tooClose;
 
-    private GameObject CubeMagUI;      // 磁力オブジェクトの状態のUI
+    private GameObject cubeMagUI;      // 磁力オブジェクトの状態のUI
     private GameObject magNormal;      // 通常
     private GameObject magCaution;     // 警告
 
@@ -56,16 +56,16 @@ public class CubeMagnetism : MonoBehaviour
 		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
 
         // 磁力オブジェクトの状態UIを取得
-        CubeMagUI = transform.Find("MachineUI").gameObject;
-        magNormal = CubeMagUI.transform.Find("Normal").gameObject;
-        magCaution = CubeMagUI.transform.Find("Caution").gameObject;
+        cubeMagUI = transform.Find("MachineUI").transform.Find("Ring").gameObject;
+        magNormal = cubeMagUI.transform.Find("Normal").gameObject;
+        magCaution = cubeMagUI.transform.Find("Caution").gameObject;
     }
 
 	private void FixedUpdate()
 	{
 		// スクリプトが無効時、UIを非表示
-		if (enabled) { CubeMagUI.SetActive(true); }
-		else { CubeMagUI.SetActive(false); }
+		if (enabled) { cubeMagUI.SetActive(true); }
+		else { cubeMagUI.SetActive(false); }
 
 		//--- 磁石の引き寄せ処理 ---//
 		foreach (var magnet in registeredMagnets)
