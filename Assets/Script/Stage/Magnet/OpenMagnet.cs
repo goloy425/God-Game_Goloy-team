@@ -57,12 +57,12 @@ public class OpenMagnet : MonoBehaviour
     private void FixedUpdate()
     {
         // テストでキーボードのAを押すと動く
-        if (Input.GetKey(KeyCode.A))
-        {
-            openFg = true;
-            Debug.Log(openFg);
-        }
-        else if (Input.GetKey(KeyCode.S)) { openFg = false; }
+        //if (Input.GetKey(KeyCode.A))
+        //{
+        //    openFg = true;
+        //    Debug.Log(openFg);
+        //}
+        //else if (Input.GetKey(KeyCode.S)) { openFg = false; }
 
         //------ 回路接続時に開ける処理 ------//
         // フラグが立っている時

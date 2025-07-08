@@ -27,7 +27,7 @@ public class TitleManager : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		bool keyDecision = inputs.Title.Decision.IsPressed();	// キー入力取得
+		bool keyDecision = inputs.Title.Decide.IsPressed();	// キー入力取得
 
 		if (UInum == 0)
 		{

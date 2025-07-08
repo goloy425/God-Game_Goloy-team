@@ -161,15 +161,6 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Select"",
-                    ""type"": ""Button"",
-                    ""id"": ""98d7241e-d31a-4661-821e-3c1273a611fa"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""SelectUp"",
                     ""type"": ""Button"",
                     ""id"": ""5f792602-fbe5-4a6a-a6b9-aa711c9825d7"",
@@ -239,17 +230,6 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SelectDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0a380822-e8f6-4fd5-b911-44900b0e112d"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -348,7 +328,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             ""id"": ""ebb2dbe1-a635-41e2-b980-59f767d99236"",
             ""actions"": [
                 {
-                    ""name"": ""Decision"",
+                    ""name"": ""Decide"",
                     ""type"": ""Button"",
                     ""id"": ""3ee9641c-db3d-4ed2-b1f0-d049807e4f58"",
                     ""expectedControlType"": ""Button"",
@@ -361,11 +341,11 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d612fe61-2370-4d72-89a5-42fb074f3ce7"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Decision"",
+                    ""action"": ""Decide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -388,7 +368,6 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         // Pose
         m_Pose = asset.FindActionMap("Pose", throwIfNotFound: true);
         m_Pose_SwitchPose = m_Pose.FindAction("SwitchPose", throwIfNotFound: true);
-        m_Pose_Select = m_Pose.FindAction("Select", throwIfNotFound: true);
         m_Pose_SelectUp = m_Pose.FindAction("SelectUp", throwIfNotFound: true);
         m_Pose_SelectDown = m_Pose.FindAction("SelectDown", throwIfNotFound: true);
         m_Pose_Decide = m_Pose.FindAction("Decide", throwIfNotFound: true);
@@ -400,7 +379,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         m_QTE_Y = m_QTE.FindAction("Y", throwIfNotFound: true);
         // Title
         m_Title = asset.FindActionMap("Title", throwIfNotFound: true);
-        m_Title_Decision = m_Title.FindAction("Decision", throwIfNotFound: true);
+        m_Title_Decide = m_Title.FindAction("Decide", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -617,7 +596,6 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Pose;
     private List<IPoseActions> m_PoseActionsCallbackInterfaces = new List<IPoseActions>();
     private readonly InputAction m_Pose_SwitchPose;
-    private readonly InputAction m_Pose_Select;
     private readonly InputAction m_Pose_SelectUp;
     private readonly InputAction m_Pose_SelectDown;
     private readonly InputAction m_Pose_Decide;
@@ -626,7 +604,6 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         private @GameInputs m_Wrapper;
         public PoseActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @SwitchPose => m_Wrapper.m_Pose_SwitchPose;
-        public InputAction @Select => m_Wrapper.m_Pose_Select;
         public InputAction @SelectUp => m_Wrapper.m_Pose_SelectUp;
         public InputAction @SelectDown => m_Wrapper.m_Pose_SelectDown;
         public InputAction @Decide => m_Wrapper.m_Pose_Decide;
@@ -642,9 +619,6 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             @SwitchPose.started += instance.OnSwitchPose;
             @SwitchPose.performed += instance.OnSwitchPose;
             @SwitchPose.canceled += instance.OnSwitchPose;
-            @Select.started += instance.OnSelect;
-            @Select.performed += instance.OnSelect;
-            @Select.canceled += instance.OnSelect;
             @SelectUp.started += instance.OnSelectUp;
             @SelectUp.performed += instance.OnSelectUp;
             @SelectUp.canceled += instance.OnSelectUp;
@@ -661,9 +635,6 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             @SwitchPose.started -= instance.OnSwitchPose;
             @SwitchPose.performed -= instance.OnSwitchPose;
             @SwitchPose.canceled -= instance.OnSwitchPose;
-            @Select.started -= instance.OnSelect;
-            @Select.performed -= instance.OnSelect;
-            @Select.canceled -= instance.OnSelect;
             @SelectUp.started -= instance.OnSelectUp;
             @SelectUp.performed -= instance.OnSelectUp;
             @SelectUp.canceled -= instance.OnSelectUp;
@@ -764,12 +735,12 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     // Title
     private readonly InputActionMap m_Title;
     private List<ITitleActions> m_TitleActionsCallbackInterfaces = new List<ITitleActions>();
-    private readonly InputAction m_Title_Decision;
+    private readonly InputAction m_Title_Decide;
     public struct TitleActions
     {
         private @GameInputs m_Wrapper;
         public TitleActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Decision => m_Wrapper.m_Title_Decision;
+        public InputAction @Decide => m_Wrapper.m_Title_Decide;
         public InputActionMap Get() { return m_Wrapper.m_Title; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -779,16 +750,16 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_TitleActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_TitleActionsCallbackInterfaces.Add(instance);
-            @Decision.started += instance.OnDecision;
-            @Decision.performed += instance.OnDecision;
-            @Decision.canceled += instance.OnDecision;
+            @Decide.started += instance.OnDecide;
+            @Decide.performed += instance.OnDecide;
+            @Decide.canceled += instance.OnDecide;
         }
 
         private void UnregisterCallbacks(ITitleActions instance)
         {
-            @Decision.started -= instance.OnDecision;
-            @Decision.performed -= instance.OnDecision;
-            @Decision.canceled -= instance.OnDecision;
+            @Decide.started -= instance.OnDecide;
+            @Decide.performed -= instance.OnDecide;
+            @Decide.canceled -= instance.OnDecide;
         }
 
         public void RemoveCallbacks(ITitleActions instance)
@@ -823,7 +794,6 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     public interface IPoseActions
     {
         void OnSwitchPose(InputAction.CallbackContext context);
-        void OnSelect(InputAction.CallbackContext context);
         void OnSelectUp(InputAction.CallbackContext context);
         void OnSelectDown(InputAction.CallbackContext context);
         void OnDecide(InputAction.CallbackContext context);
@@ -837,6 +807,6 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     }
     public interface ITitleActions
     {
-        void OnDecision(InputAction.CallbackContext context);
+        void OnDecide(InputAction.CallbackContext context);
     }
 }

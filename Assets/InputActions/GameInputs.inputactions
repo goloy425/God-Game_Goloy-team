@@ -139,15 +139,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Select",
-                    "type": "Button",
-                    "id": "98d7241e-d31a-4661-821e-3c1273a611fa",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "SelectUp",
                     "type": "Button",
                     "id": "5f792602-fbe5-4a6a-a6b9-aa711c9825d7",
@@ -217,17 +208,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "SelectDown",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0a380822-e8f6-4fd5-b911-44900b0e112d",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -326,7 +306,7 @@
             "id": "ebb2dbe1-a635-41e2-b980-59f767d99236",
             "actions": [
                 {
-                    "name": "Decision",
+                    "name": "Decide",
                     "type": "Button",
                     "id": "3ee9641c-db3d-4ed2-b1f0-d049807e4f58",
                     "expectedControlType": "Button",
@@ -339,11 +319,11 @@
                 {
                     "name": "",
                     "id": "d612fe61-2370-4d72-89a5-42fb074f3ce7",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Decision",
+                    "action": "Decide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
