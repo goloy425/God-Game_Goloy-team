@@ -156,6 +156,8 @@ public class GameManager : MonoBehaviour
     private GameObject playerLController = null;
     private GameObject playerRController = null;
     // プレイヤーLのUI
+    private GameObject pulseNormalL = null;
+    private GameObject pulseDangerL = null;
     private GameObject playerLRing = null;
     private GameObject playerLNormal = null;
     private GameObject playerLCaution = null;
@@ -163,6 +165,8 @@ public class GameManager : MonoBehaviour
     private GameObject playerLWeak = null;
     private GameObject playerLHold = null;
     // プレイヤーRのUI
+    private GameObject pulseNormalR = null;
+    private GameObject pulseDangerR = null;
     private GameObject playerRRing = null;
     private GameObject playerRNormal = null;
     private GameObject playerRCaution = null;
@@ -220,14 +224,18 @@ public class GameManager : MonoBehaviour
         playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
         playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
         // プレイヤーLのUIを取得
-        playerLRing = playerLUI.transform.Find("Ring").gameObject;
+        pulseNormalL   = playerLUI.transform.Find("L").transform.Find("palse_ring").gameObject;
+        pulseDangerL   = playerLUI.transform.Find("L").transform.Find("palse_danger_ring06").gameObject;
+        playerLRing    = playerLUI.transform.Find("Ring").gameObject;
         playerLNormal  = playerLRing.transform.Find("Normal").gameObject;
         playerLCaution = playerLRing.transform.Find("Caution").gameObject;
         playerLDanger  = playerLRing.transform.Find("Danger").gameObject;
         playerLWeak    = playerLRing.transform.Find("Weak").gameObject;
         playerLHold    = playerLRing.transform.Find("Hold").gameObject;
         // プレイヤーRのUIを取得
-        playerRRing = playerRUI.transform.Find("Ring").gameObject;
+        pulseNormalR   = playerRUI.transform.Find("R").transform.Find("palse_ring").gameObject;
+        pulseDangerR   = playerRUI.transform.Find("R").transform.Find("palse_danger_ring").gameObject;
+        playerRRing    = playerRUI.transform.Find("Ring").gameObject;
         playerRNormal  = playerRRing.transform.Find("Normal").gameObject;
         playerRCaution = playerRRing.transform.Find("Caution").gameObject;
         playerRDanger  = playerRRing.transform.Find("Danger").gameObject;
@@ -903,6 +911,8 @@ public class GameManager : MonoBehaviour
         // 磁力強化中の時、Hold
         if(magnetism1.GetIsAugmentingL())
         {
+            pulseDangerL.SetActive(false);
+            pulseNormalL.SetActive(true);
             playerLHold.SetActive(true);
             playerLDanger.SetActive(false);
             playerLCaution.SetActive(false);
@@ -912,6 +922,8 @@ public class GameManager : MonoBehaviour
         // くっついた時、Danger
         else if(magnetism1.GetIsSnapping())
         {
+            pulseNormalL.SetActive(false);
+            pulseDangerL.SetActive(true);
             playerLDanger.SetActive(true);
             playerLCaution.SetActive(false);
             playerLNormal.SetActive(false);
@@ -921,6 +933,8 @@ public class GameManager : MonoBehaviour
         // スロー再生時、Caution
         else if (magnetism1.GetIsSlowPMag() || magnetism1.GetIsSlowMagObj())
         {
+            pulseDangerL.SetActive(false);
+            pulseNormalL.SetActive(true);
             playerLCaution.SetActive(true);
             playerLNormal.SetActive(false);
             playerLDanger.SetActive(false);
@@ -930,6 +944,8 @@ public class GameManager : MonoBehaviour
         // 磁力範囲内の時、Normal
         else if (magnetism1.GetInMagnetismArea())
         {
+            pulseDangerL.SetActive(false);
+            pulseNormalL.SetActive(true);
             playerLNormal.SetActive(true);
             playerLCaution.SetActive(false);
             playerLDanger.SetActive(false);
@@ -939,6 +955,8 @@ public class GameManager : MonoBehaviour
         // 磁力範囲外の時、Weak
         else
         {
+            pulseDangerL.SetActive(false);
+            pulseNormalL.SetActive(true);
             playerLWeak.SetActive(true);
             playerLNormal.SetActive(false);
             playerLCaution.SetActive(false);
@@ -950,6 +968,8 @@ public class GameManager : MonoBehaviour
         // 磁力強化中の時、Hold
         if (magnetism2.GetIsAugmentingR())
         {
+            pulseDangerR.SetActive(false);
+            pulseNormalR.SetActive(true);
             playerRHold.SetActive(true);
             playerRDanger.SetActive(false);
             playerRCaution.SetActive(false);
@@ -959,6 +979,8 @@ public class GameManager : MonoBehaviour
         // くっついた時、Danger
         else if (magnetism2.GetIsSnapping())
         {
+            pulseNormalR.SetActive(false);
+            pulseDangerR.SetActive(true);
             playerRDanger.SetActive(true);
             playerRCaution.SetActive(false);
             playerRNormal.SetActive(false);
@@ -968,6 +990,8 @@ public class GameManager : MonoBehaviour
         // スロー再生時、Caution
         else if (magnetism2.GetIsSlowPMag() || magnetism2.GetIsSlowMagObj())
         {
+            pulseDangerR.SetActive(false);
+            pulseNormalR.SetActive(true);
             playerRCaution.SetActive(true);
             playerRNormal.SetActive(false);
             playerRDanger.SetActive(false);
@@ -977,6 +1001,8 @@ public class GameManager : MonoBehaviour
         // 磁力範囲内の時、Normal
         else if (magnetism2.GetInMagnetismArea())
         {
+            pulseDangerR.SetActive(false);
+            pulseNormalR.SetActive(true);
             playerRNormal.SetActive(true);
             playerRCaution.SetActive(false);
             playerRDanger.SetActive(false);
@@ -986,6 +1012,8 @@ public class GameManager : MonoBehaviour
         // 磁力範囲外の時、Weak
         else
         {
+            pulseDangerR.SetActive(false);
+            pulseNormalR.SetActive(true);
             playerRWeak.SetActive(true);
             playerRNormal.SetActive(false);
             playerRCaution.SetActive(false);
