@@ -5,20 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitch : MonoBehaviour
 {
-    public void ChangeScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName); // シーンを読み込む処理
-    }
+	public void ChangeScene(string sceneName)
+	{
+		SceneManager.LoadScene(sceneName); // シーンを読み込む処理
+	}
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	// Update is called once per frame
+	void Update()
+	{
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	}
 }

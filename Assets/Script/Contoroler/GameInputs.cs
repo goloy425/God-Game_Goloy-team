@@ -342,6 +342,34 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Title"",
+            ""id"": ""ebb2dbe1-a635-41e2-b980-59f767d99236"",
+            ""actions"": [
+                {
+                    ""name"": ""Decision"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ee9641c-db3d-4ed2-b1f0-d049807e4f58"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d612fe61-2370-4d72-89a5-42fb074f3ce7"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Decision"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -370,6 +398,9 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         m_QTE_B = m_QTE.FindAction("B", throwIfNotFound: true);
         m_QTE_X = m_QTE.FindAction("X", throwIfNotFound: true);
         m_QTE_Y = m_QTE.FindAction("Y", throwIfNotFound: true);
+        // Title
+        m_Title = asset.FindActionMap("Title", throwIfNotFound: true);
+        m_Title_Decision = m_Title.FindAction("Decision", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -729,6 +760,52 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         }
     }
     public QTEActions @QTE => new QTEActions(this);
+
+    // Title
+    private readonly InputActionMap m_Title;
+    private List<ITitleActions> m_TitleActionsCallbackInterfaces = new List<ITitleActions>();
+    private readonly InputAction m_Title_Decision;
+    public struct TitleActions
+    {
+        private @GameInputs m_Wrapper;
+        public TitleActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Decision => m_Wrapper.m_Title_Decision;
+        public InputActionMap Get() { return m_Wrapper.m_Title; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(TitleActions set) { return set.Get(); }
+        public void AddCallbacks(ITitleActions instance)
+        {
+            if (instance == null || m_Wrapper.m_TitleActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TitleActionsCallbackInterfaces.Add(instance);
+            @Decision.started += instance.OnDecision;
+            @Decision.performed += instance.OnDecision;
+            @Decision.canceled += instance.OnDecision;
+        }
+
+        private void UnregisterCallbacks(ITitleActions instance)
+        {
+            @Decision.started -= instance.OnDecision;
+            @Decision.performed -= instance.OnDecision;
+            @Decision.canceled -= instance.OnDecision;
+        }
+
+        public void RemoveCallbacks(ITitleActions instance)
+        {
+            if (m_Wrapper.m_TitleActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ITitleActions instance)
+        {
+            foreach (var item in m_Wrapper.m_TitleActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_TitleActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public TitleActions @Title => new TitleActions(this);
     public interface IPlayerLActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -757,5 +834,9 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         void OnB(InputAction.CallbackContext context);
         void OnX(InputAction.CallbackContext context);
         void OnY(InputAction.CallbackContext context);
+    }
+    public interface ITitleActions
+    {
+        void OnDecision(InputAction.CallbackContext context);
     }
 }
