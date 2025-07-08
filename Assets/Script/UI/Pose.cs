@@ -89,12 +89,11 @@ public class Pose : MonoBehaviour
 
 		if (_pose)
 		{
-            Color newColor = targetImage.color;
-            newColor.a = 0.5f;
-            targetImage.color = newColor;
+			Color newColor = targetImage.color;
+			newColor.a = 0.5f;
+			targetImage.color = newColor;
 
-
-            float move = Input.GetAxis("Vertical");
+			float move = Input.GetAxis("Vertical");
 
 			if (select)
 			{
@@ -128,7 +127,7 @@ public class Pose : MonoBehaviour
 			}
 
 			// 〇ボタン（XBOXのBボタン）の入力検出
-			if (Input.GetKeyDown(KeyCode.JoystickButton2)||inputs.Pose.Select.IsPressed())
+			if (inputs.Pose.Decide.IsPressed())
 			{
 				OnButtonClicked();
 			}
@@ -184,8 +183,9 @@ public class Pose : MonoBehaviour
 				SceneManager.LoadScene("MainMenu");
 				break;
 
-			case 1:
-				Canvas.alpha = 0.0f;
+			case 1:		// 再開する
+				_pose = false;			// ポーズ解除
+				Canvas.alpha = 0.0f;	// キャンバスを透明化する
 				break;
 
 			case 2:
