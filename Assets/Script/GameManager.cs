@@ -156,19 +156,21 @@ public class GameManager : MonoBehaviour
     private GameObject playerLController = null;
     private GameObject playerRController = null;
     // プレイヤーLのUI
+    private GameObject playerLRing = null;
     private GameObject playerLNormal = null;
     private GameObject playerLCaution = null;
     private GameObject playerLDanger = null;
     private GameObject playerLWeak = null;
     private GameObject playerLHold = null;
     // プレイヤーRのUI
+    private GameObject playerRRing = null;
     private GameObject playerRNormal = null;
     private GameObject playerRCaution = null;
     private GameObject playerRDanger = null;
     private GameObject playerRWeak = null;
     private GameObject playerRHold = null;
     private float moveTime = 1.0f;            // プレイヤーの移動演出の秒数
-    //private float moveTimer = 0.0f;           // プレイヤーの移動演出の計測
+    //private float moveTimer = 0.0f;         // プレイヤーの移動演出の計測
 
     private bool fadeInFg = false;            // フェードイン中かどうか
     private bool fadeOutFg = false;           // フェードアウト中かどうか
@@ -218,17 +220,19 @@ public class GameManager : MonoBehaviour
         playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
         playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
         // プレイヤーLのUIを取得
-        playerLNormal  = playerLUI.transform.Find("Normal").gameObject;
-        playerLCaution = playerLUI.transform.Find("Caution").gameObject;
-        playerLDanger  = playerLUI.transform.Find("Danger").gameObject;
-        playerLWeak    = playerLUI.transform.Find("Weak").gameObject;
-        playerLHold    = playerLUI.transform.Find("Hold").gameObject;
+        playerLRing = playerLUI.transform.Find("Ring").gameObject;
+        playerLNormal  = playerLRing.transform.Find("Normal").gameObject;
+        playerLCaution = playerLRing.transform.Find("Caution").gameObject;
+        playerLDanger  = playerLRing.transform.Find("Danger").gameObject;
+        playerLWeak    = playerLRing.transform.Find("Weak").gameObject;
+        playerLHold    = playerLRing.transform.Find("Hold").gameObject;
         // プレイヤーRのUIを取得
-        playerRNormal  = playerRUI.transform.Find("Normal").gameObject;
-        playerRCaution = playerRUI.transform.Find("Caution").gameObject;
-        playerRDanger  = playerRUI.transform.Find("Danger").gameObject;
-        playerRWeak    = playerRUI.transform.Find("Weak").gameObject;
-        playerRHold    = playerRUI.transform.Find("Hold").gameObject;
+        playerRRing = playerRUI.transform.Find("Ring").gameObject;
+        playerRNormal  = playerRRing.transform.Find("Normal").gameObject;
+        playerRCaution = playerRRing.transform.Find("Caution").gameObject;
+        playerRDanger  = playerRRing.transform.Find("Danger").gameObject;
+        playerRWeak    = playerRRing.transform.Find("Weak").gameObject;
+        playerRHold    = playerRRing.transform.Find("Hold").gameObject;
         // UIの初期設定
         playerLNormal.SetActive(true);
         playerLCaution.SetActive(false);
@@ -281,7 +285,7 @@ public class GameManager : MonoBehaviour
         //    Debug.Log("ステージ" + (i + 1) + "初期化");
         //    SearchCanCarryMagObj(i);
         //}
-        Debug.Log(totalAreas);
+        Debug.Log("totalAreas" + totalAreas);
     }
 
     private void FixedUpdate()
@@ -299,7 +303,7 @@ public class GameManager : MonoBehaviour
         }
 
         //------ プレイヤーのUIの状態変化 ------//
-        ChaneUIState();
+        ChangeUIState();
 
         //------ ステージのクリア処理 ------//
         int connectCount = 0;             // 各ステージの繋がっている判定エリアの数
@@ -537,6 +541,13 @@ public class GameManager : MonoBehaviour
                     stageData[_index].GetSphereMagCS()[i].enabled = false;
                     stageData[_index].GetMoveSphereCS()[i].enabled = false;
                 }
+                // それ以外は無効化
+                else
+                {
+                    Debug.Log(_index + 1 + ": Sphere 無効化");
+                    stageData[_index].GetSphereMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveSphereCS()[i].enabled = false;
+                }
             }
         }
 
@@ -556,6 +567,14 @@ public class GameManager : MonoBehaviour
                     stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
                     stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
                 }
+                // 分割後でプレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
+                else if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split1 有効化");
+                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
+                    //stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
+                }
                 // 分割前または、入っていない時は無効化
                 else if (!magnetism1.inObjMagArea || connecter.activeSelf)
                 {
@@ -563,17 +582,15 @@ public class GameManager : MonoBehaviour
                     stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
                     stageData[_index].GetMoveHCubeLCS()[i].enabled = false;
                 }
-
-                // 分割後でプレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit1HCubeMagCS()[i].GetMagnetismRange() &&
-                    !connecter.activeSelf)
-                {
-                    Debug.Log(_index + 1 + ": Split1 有効化");
-                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = true;
-                    stageData[_index].GetMoveHCubeLCS()[i].enabled = true;
-                }
                 // 分割前または、入っていない時は無効化
                 else if (!magnetism2.inObjMagArea || connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split1 無効化");
+                    stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveHCubeLCS()[i].enabled = false;
+                }
+                // それ以外は無効化
+                else
                 {
                     Debug.Log(_index + 1 + ": Split1 無効化");
                     stageData[_index].GetSplit1HCubeMagCS()[i].enabled = false;
@@ -590,22 +607,6 @@ public class GameManager : MonoBehaviour
 
             if (magObj != null)
             {
-                // 分割後でプレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
-                if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
-                    !connecter.activeSelf)
-                {
-                    Debug.Log(_index + 1 + ": Split2 有効化");
-                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
-                    stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
-                }
-                // 分割前または、入っていない時は無効化
-                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
-                {
-                    Debug.Log(_index + 1 + ": Split2 無効化");
-                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
-                    stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
-                }
-
                 // 分割後でプレイヤーRの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
                 // Split2はプレイヤーRでのみ動かせるので、ここで制御
                 if (GetDistancePlayerMagToMagObj(_index, 2, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
@@ -615,8 +616,30 @@ public class GameManager : MonoBehaviour
                     stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
                     stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
                 }
+                // 分割後でプレイヤーLの磁力範囲に入っている磁力オブジェクトのスクリプトのみ有効化
+                else if (GetDistancePlayerMagToMagObj(_index, 1, i, magObj) < stageData[_index].GetSplit2HCubeMagCS()[i].GetMagnetismRange() &&
+                    !connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split2 有効化");
+                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = true;
+                    //stageData[_index].GetMoveHCubeRCS()[i].enabled = true;
+                }
                 // 分割前または、入っていない時は無効化
                 else if (!magnetism2.inObjMagArea || connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split2 無効化");
+                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
+                }
+                // 分割前または、入っていない時は無効化
+                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
+                {
+                    Debug.Log(_index + 1 + ": Split2 無効化");
+                    stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetMoveHCubeRCS()[i].enabled = false;
+                }
+                // それ以外は無効化
+                else if (!magnetism1.inObjMagArea || connecter.activeSelf)
                 {
                     Debug.Log(_index + 1 + ": Split2 無効化");
                     stageData[_index].GetSplit2HCubeMagCS()[i].enabled = false;
@@ -642,6 +665,13 @@ public class GameManager : MonoBehaviour
                 }
                 // 入っていない時は無効化
                 else if (!magnetism1.inObjMagArea && !magnetism2.inObjMagArea)
+                {
+                    Debug.Log(_index + 1 + ": Connecter 無効化");
+                    stageData[_index].GetCubeMagCS()[i].enabled = false;
+                    stageData[_index].GetSplitCubeCS()[i].enabled = false;
+                }
+                // それ以外は無効化
+                else
                 {
                     Debug.Log(_index + 1 + ": Connecter 無効化");
                     stageData[_index].GetCubeMagCS()[i].enabled = false;
@@ -867,7 +897,7 @@ public class GameManager : MonoBehaviour
     }
 
     // プレイヤーのUIの状態を変更する処理
-    private void ChaneUIState()
+    private void ChangeUIState()
     {
         //------ プレイヤーL ------//
         // 磁力強化中の時、Hold
