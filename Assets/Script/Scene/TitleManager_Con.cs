@@ -48,9 +48,9 @@ public class TitleManager_Con : MonoBehaviour
 		if (gamepad == null) { return; }	// コントローラーが接続されてない場合はスルー
 
 		// 入力の取得
-		bool decideKey = inputs.Title.Decide.WasPressedThisFrame();		// 決定（任天堂:A PS:〇 Xbox:B）
-		bool selectUpKey = inputs.Title.SelectUp.WasPressedThisFrame();			// 十字キー上
-		bool selectDownKey = inputs.Title.SelectDown.WasPressedThisFrame();		// 　 〃 　下
+		bool decideKey = inputs.Select.Decide.WasPressedThisFrame();		// 決定（任天堂:A PS:〇 Xbox:B）
+		bool selectUpKey = inputs.Select.SelectUp.WasPressedThisFrame();			// 十字キー上
+		bool selectDownKey = inputs.Select.SelectDown.WasPressedThisFrame();		// 　 〃 　下
 
 		// 表示されてるUIによって決定ボタンの処理を変える
 		if (UInum == 0)		// PushtoStartの時

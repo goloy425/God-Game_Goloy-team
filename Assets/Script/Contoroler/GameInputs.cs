@@ -324,7 +324,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Title"",
+            ""name"": ""Select"",
             ""id"": ""ebb2dbe1-a635-41e2-b980-59f767d99236"",
             ""actions"": [
                 {
@@ -417,11 +417,11 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         m_QTE_B = m_QTE.FindAction("B", throwIfNotFound: true);
         m_QTE_X = m_QTE.FindAction("X", throwIfNotFound: true);
         m_QTE_Y = m_QTE.FindAction("Y", throwIfNotFound: true);
-        // Title
-        m_Title = asset.FindActionMap("Title", throwIfNotFound: true);
-        m_Title_Decide = m_Title.FindAction("Decide", throwIfNotFound: true);
-        m_Title_SelectUp = m_Title.FindAction("SelectUp", throwIfNotFound: true);
-        m_Title_SelectDown = m_Title.FindAction("SelectDown", throwIfNotFound: true);
+        // Select
+        m_Select = asset.FindActionMap("Select", throwIfNotFound: true);
+        m_Select_Decide = m_Select.FindAction("Decide", throwIfNotFound: true);
+        m_Select_SelectUp = m_Select.FindAction("SelectUp", throwIfNotFound: true);
+        m_Select_SelectDown = m_Select.FindAction("SelectDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -774,28 +774,28 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     }
     public QTEActions @QTE => new QTEActions(this);
 
-    // Title
-    private readonly InputActionMap m_Title;
-    private List<ITitleActions> m_TitleActionsCallbackInterfaces = new List<ITitleActions>();
-    private readonly InputAction m_Title_Decide;
-    private readonly InputAction m_Title_SelectUp;
-    private readonly InputAction m_Title_SelectDown;
-    public struct TitleActions
+    // Select
+    private readonly InputActionMap m_Select;
+    private List<ISelectActions> m_SelectActionsCallbackInterfaces = new List<ISelectActions>();
+    private readonly InputAction m_Select_Decide;
+    private readonly InputAction m_Select_SelectUp;
+    private readonly InputAction m_Select_SelectDown;
+    public struct SelectActions
     {
         private @GameInputs m_Wrapper;
-        public TitleActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Decide => m_Wrapper.m_Title_Decide;
-        public InputAction @SelectUp => m_Wrapper.m_Title_SelectUp;
-        public InputAction @SelectDown => m_Wrapper.m_Title_SelectDown;
-        public InputActionMap Get() { return m_Wrapper.m_Title; }
+        public SelectActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Decide => m_Wrapper.m_Select_Decide;
+        public InputAction @SelectUp => m_Wrapper.m_Select_SelectUp;
+        public InputAction @SelectDown => m_Wrapper.m_Select_SelectDown;
+        public InputActionMap Get() { return m_Wrapper.m_Select; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(TitleActions set) { return set.Get(); }
-        public void AddCallbacks(ITitleActions instance)
+        public static implicit operator InputActionMap(SelectActions set) { return set.Get(); }
+        public void AddCallbacks(ISelectActions instance)
         {
-            if (instance == null || m_Wrapper.m_TitleActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_TitleActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_SelectActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SelectActionsCallbackInterfaces.Add(instance);
             @Decide.started += instance.OnDecide;
             @Decide.performed += instance.OnDecide;
             @Decide.canceled += instance.OnDecide;
@@ -807,7 +807,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             @SelectDown.canceled += instance.OnSelectDown;
         }
 
-        private void UnregisterCallbacks(ITitleActions instance)
+        private void UnregisterCallbacks(ISelectActions instance)
         {
             @Decide.started -= instance.OnDecide;
             @Decide.performed -= instance.OnDecide;
@@ -820,21 +820,21 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             @SelectDown.canceled -= instance.OnSelectDown;
         }
 
-        public void RemoveCallbacks(ITitleActions instance)
+        public void RemoveCallbacks(ISelectActions instance)
         {
-            if (m_Wrapper.m_TitleActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_SelectActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ITitleActions instance)
+        public void SetCallbacks(ISelectActions instance)
         {
-            foreach (var item in m_Wrapper.m_TitleActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_SelectActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_TitleActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_SelectActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public TitleActions @Title => new TitleActions(this);
+    public SelectActions @Select => new SelectActions(this);
     public interface IPlayerLActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -863,7 +863,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         void OnX(InputAction.CallbackContext context);
         void OnY(InputAction.CallbackContext context);
     }
-    public interface ITitleActions
+    public interface ISelectActions
     {
         void OnDecide(InputAction.CallbackContext context);
         void OnSelectUp(InputAction.CallbackContext context);
