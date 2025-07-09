@@ -313,6 +313,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SelectUp",
+                    "type": "Button",
+                    "id": "e5a8498f-8329-4b59-b64f-4e6fe0426d15",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectDown",
+                    "type": "Button",
+                    "id": "9b86ff52-e390-4658-9a5f-4e6f08d8717f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -324,6 +342,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Decide",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ff6e5d94-c85c-4047-a768-ab67d1402e45",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2dc7657c-6492-4a00-a725-872885df9486",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

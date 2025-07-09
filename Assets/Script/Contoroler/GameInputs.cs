@@ -335,6 +335,24 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""e5a8498f-8329-4b59-b64f-4e6fe0426d15"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""9b86ff52-e390-4658-9a5f-4e6f08d8717f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -346,6 +364,28 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Decide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff6e5d94-c85c-4047-a768-ab67d1402e45"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2dc7657c-6492-4a00-a725-872885df9486"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -380,6 +420,8 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         // Title
         m_Title = asset.FindActionMap("Title", throwIfNotFound: true);
         m_Title_Decide = m_Title.FindAction("Decide", throwIfNotFound: true);
+        m_Title_SelectUp = m_Title.FindAction("SelectUp", throwIfNotFound: true);
+        m_Title_SelectDown = m_Title.FindAction("SelectDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -736,11 +778,15 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Title;
     private List<ITitleActions> m_TitleActionsCallbackInterfaces = new List<ITitleActions>();
     private readonly InputAction m_Title_Decide;
+    private readonly InputAction m_Title_SelectUp;
+    private readonly InputAction m_Title_SelectDown;
     public struct TitleActions
     {
         private @GameInputs m_Wrapper;
         public TitleActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Decide => m_Wrapper.m_Title_Decide;
+        public InputAction @SelectUp => m_Wrapper.m_Title_SelectUp;
+        public InputAction @SelectDown => m_Wrapper.m_Title_SelectDown;
         public InputActionMap Get() { return m_Wrapper.m_Title; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -753,6 +799,12 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             @Decide.started += instance.OnDecide;
             @Decide.performed += instance.OnDecide;
             @Decide.canceled += instance.OnDecide;
+            @SelectUp.started += instance.OnSelectUp;
+            @SelectUp.performed += instance.OnSelectUp;
+            @SelectUp.canceled += instance.OnSelectUp;
+            @SelectDown.started += instance.OnSelectDown;
+            @SelectDown.performed += instance.OnSelectDown;
+            @SelectDown.canceled += instance.OnSelectDown;
         }
 
         private void UnregisterCallbacks(ITitleActions instance)
@@ -760,6 +812,12 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
             @Decide.started -= instance.OnDecide;
             @Decide.performed -= instance.OnDecide;
             @Decide.canceled -= instance.OnDecide;
+            @SelectUp.started -= instance.OnSelectUp;
+            @SelectUp.performed -= instance.OnSelectUp;
+            @SelectUp.canceled -= instance.OnSelectUp;
+            @SelectDown.started -= instance.OnSelectDown;
+            @SelectDown.performed -= instance.OnSelectDown;
+            @SelectDown.canceled -= instance.OnSelectDown;
         }
 
         public void RemoveCallbacks(ITitleActions instance)
@@ -808,5 +866,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     public interface ITitleActions
     {
         void OnDecide(InputAction.CallbackContext context);
+        void OnSelectUp(InputAction.CallbackContext context);
+        void OnSelectDown(InputAction.CallbackContext context);
     }
 }
