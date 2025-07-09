@@ -16,19 +16,25 @@ public class TitleManager_Con : MonoBehaviour
 	public Button start;
 	[Header("ボタン Start→Continue→Quitの順番で設定")]
 	public Button[] buttons;
+	[Header("SE　1:ビープ音 2:スタート")]
+	public AudioClip beep;
+	public AudioClip goGame;
 
 	private Gamepad gamepad;
 	private GameInputs inputs;  // GameInputsクラス
+	private AudioSource audioSource;
 	private TitleManager_KeyMou tManager_k;
 	private TitleUISwitch tUIswitch;
 
 	private int UInum = 0;		// 今どのUIパターンを表示しているか 0:PushtoStart 1:選択
-	public int buttonIdx = 0;	// 
+	private int buttonIdx = 0;  // どのコマンドを選択しているか
+	private int prevIdx = 0;		// UI切り替え用
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		gamepad = Gamepad.current;
+		audioSource = GetComponent<AudioSource>();
 		tManager_k = GetComponent<TitleManager_KeyMou>();
 		tUIswitch = GameObject.Find("Title").GetComponent<TitleUISwitch>();
 
@@ -39,62 +45,87 @@ public class TitleManager_Con : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (gamepad == null) { return; }
+		if (gamepad == null) { return; }	// コントローラーが接続されてない場合はスルー
 
-		bool decideKey = inputs.Title.Decide.WasPressedThisFrame();
-		bool selectUpKey = inputs.Title.SelectUp.WasPressedThisFrame();
-		bool selectDownKey = inputs.Title.SelectDown.WasPressedThisFrame();
+		// 入力の取得
+		bool decideKey = inputs.Title.Decide.WasPressedThisFrame();		// 決定（任天堂:A PS:〇 Xbox:B）
+		bool selectUpKey = inputs.Title.SelectUp.WasPressedThisFrame();			// 十字キー上
+		bool selectDownKey = inputs.Title.SelectDown.WasPressedThisFrame();		// 　 〃 　下
 
-		if (UInum == 0)
+		// 表示されてるUIによって決定ボタンの処理を変える
+		if (UInum == 0)		// PushtoStartの時
 		{
 			if (decideKey)
 			{
 				start.onClick.Invoke();
 			}
 		}
-		else if (UInum == 1)
+		else if (UInum == 1)	// FromTheStartとかの時
 		{
 			if (decideKey)
 			{
+				// リトライできるデータがない、かつContinueが選択された時
 				if (tManager_k.GetNoContinue() && buttonIdx == 1)
 				{
-					Debug.Log("リトライないよ");
-					// のSEを鳴らしたい
+					audioSource.PlayOneShot(beep);
 				}
 				else
 				{
+					if (buttonIdx != 2) { audioSource.PlayOneShot(goGame); }	// スタート時のSE再生
 					buttons[buttonIdx].onClick.Invoke();
 				}
 			}
 
-			if (selectUpKey && buttonIdx > 0)
+			// 取得した入力処理でインデックスを切り替える
+			if (selectUpKey)	// 上
 			{
-				buttonIdx--;
+				if(buttonIdx > 0) { buttonIdx--; }
+				else { buttonIdx = 2; }
 			}
-			if (selectDownKey && buttonIdx < buttons.Length - 1)
+			if (selectDownKey)	// 下
 			{
-				buttonIdx++;
+				if (buttonIdx < buttons.Length - 1) { buttonIdx++; }
+				else { buttonIdx = 0; }
 			}
 
+			// コマンドによるUIの切り替え
 			switch(buttonIdx)
 			{
-				case 0:
+				case 0:		// FromTheStart
+					if (prevIdx == 1) {
+						tUIswitch.Switch_ContinueNormal();
+					}
+					else if (prevIdx == 2) {
+						tUIswitch.Switch_QuitNormal();
+					}
 					tUIswitch.Switch_StartGlow();
-					tUIswitch.Switch_ContinueNormal();
 					break;
-				case 1:
+
+				case 1:		// Continue
+					if (prevIdx == 0) {
+						tUIswitch.Switch_StartNormal();
+					}
+					else if (prevIdx == 2) {
+						tUIswitch.Switch_QuitNormal();
+					}
 					tUIswitch.Switch_ContinueGlow();
-					tUIswitch.Switch_StartNormal();
-					tUIswitch.Switch_QuitNormal();
 					break;
-				case 2:
+
+				case 2:		// QuitGame
+					if (prevIdx == 0) {
+						tUIswitch.Switch_StartNormal();
+					}
+					else if (prevIdx == 1) {
+						tUIswitch.Switch_ContinueNormal();
+					}
 					tUIswitch.Switch_QuitGlow();
-					tUIswitch.Switch_ContinueNormal();
 					break;
 				default:
 					break;
 			}
 		}
+
+		prevIdx = buttonIdx;
 	}
 
 	public void SetUINum(int num)
