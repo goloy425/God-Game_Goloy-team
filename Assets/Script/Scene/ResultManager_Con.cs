@@ -47,7 +47,10 @@ public class ResultManager_Con : MonoBehaviour
 			}
 			else
 			{
-				buttons[rManager_k.buttonIdx - 1].onClick.Invoke();
+				if (rManager_k.buttonIdx != 0)
+				{ 
+					buttons[rManager_k.buttonIdx - 1].onClick.Invoke();
+				}
 			}
 		}
 
