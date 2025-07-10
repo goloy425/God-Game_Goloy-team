@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 //==========================================================
@@ -15,17 +16,117 @@ public class TitleManager_KeyMou : MonoBehaviour
 	[Header("PushtoStartの次のUI群を設定")]
 	public GameObject startMenu;
 
-	private TitleManager_Con tManager_c;
+	[Header("ボタン Start→Continue→Quitの順番で設定")]
+	public Button[] buttons;
+	[Header("SE　1:ビープ音 2:スタート")]
+	public AudioClip beep;
+	public AudioClip goGame;
+
+	private AudioSource audioSource;
+	private TitleUISwitch tUIswitch;
 
 	private string currentScene = "";	// 現在のステージシーン Continueを表示するかどうかに使う
 	private bool noContinue = false;
+
+	private int UInum = 0;		// 今どのUIパターンを表示しているか 0:PushtoStart 1:選択
+	public int buttonIdx = 0;	// どのコマンドを選択しているか
+	private int prevIdx = 0;	// UI切り替え用
 
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		tManager_c = GetComponent<TitleManager_Con>();
+		audioSource = GetComponent<AudioSource>();
+		tUIswitch = GameObject.Find("Title").GetComponent<TitleUISwitch>();
 	}
+
+	// Update is called once per frame
+	void Update()
+	{
+		// 表示しているUIによって決定ボタンの処理を変える
+		if (UInum == 0)
+		{
+			if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+			{
+				OnPushToStart();
+			}
+		}
+		else
+		{
+			if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+			{
+				// リトライできるデータがない、かつContinueが選択された時
+				if (noContinue && buttonIdx == 2)
+				{
+					audioSource.PlayOneShot(beep);
+				}
+				else
+				{
+					if (buttonIdx != 3) { audioSource.PlayOneShot(goGame); } // スタート時のSE再生
+					buttons[buttonIdx - 1].onClick.Invoke();
+				}
+			}
+
+			// 取得した入力処理でインデックスを切り替える
+			if (Input.GetKeyDown(KeyCode.UpArrow))	// 上
+			{
+				if (buttonIdx > 2) { buttonIdx--; }
+				else if (buttonIdx == 1) { buttonIdx = 3; }
+				else { buttonIdx = 1; }
+			}
+			if (Input.GetKeyDown(KeyCode.DownArrow))	// 下
+			{
+				if (buttonIdx < buttons.Length) { buttonIdx++; }
+				else if (buttonIdx == 3) { buttonIdx = 1; }
+				else { buttonIdx = 3; }
+			}
+		}
+
+		// コマンドによるUIの切り替え
+		switch (buttonIdx)
+		{
+			case 1:		// FromTheStart
+				if (prevIdx == 2)
+				{
+					tUIswitch.Switch_ContinueNormal();
+				}
+				else if (prevIdx == 3)
+				{
+					tUIswitch.Switch_QuitNormal();
+				}
+				tUIswitch.Switch_StartGlow();
+				break;
+
+			case 2:		// Continue
+				if (prevIdx == 1)
+				{
+					tUIswitch.Switch_StartNormal();
+				}
+				else if (prevIdx == 3)
+				{
+					tUIswitch.Switch_QuitNormal();
+				}
+				tUIswitch.Switch_ContinueGlow();
+				break;
+
+			case 3:		// QuitGame
+				if (prevIdx == 1)
+				{
+					tUIswitch.Switch_StartNormal();
+				}
+				else if (prevIdx == 2)
+				{
+					tUIswitch.Switch_ContinueNormal();
+				}
+				tUIswitch.Switch_QuitGlow();
+				break;
+			default:
+				break;
+		}
+
+		prevIdx = buttonIdx;
+	}
+
 
 	//--- ボタン処理ズ ---//
 	//--- PushtoStartが押された時 ---//
@@ -38,15 +139,17 @@ public class TitleManager_KeyMou : MonoBehaviour
 		currentScene = PlayerPrefs.GetString("CurrentScene", currentScene);
 
 		// シーンが存在するか確認
-		if (Application.CanStreamedLevelBeLoaded(currentScene))	{
+		if (Application.CanStreamedLevelBeLoaded(currentScene))
+		{
 			noContinue = false;
 		}
-		else {
+		else
+		{
 			noContinue = true;
 		}
 
 		startMenu.SetActive(true);
-		tManager_c.SetUINum(1);		// UI切り替えを伝える
+		UInum = 1;
 	}
 
 	//--- FromTheStartが押された時 ---//
@@ -71,5 +174,9 @@ public class TitleManager_KeyMou : MonoBehaviour
 	public bool GetNoContinue()
 	{
 		return noContinue;
+	}
+	public int GetUInum()
+	{
+		return UInum;
 	}
 }

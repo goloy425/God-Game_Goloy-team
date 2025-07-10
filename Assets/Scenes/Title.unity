@@ -292,7 +292,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 832588162}
           m_TargetAssemblyTypeName: TitleUISwitch, Assembly-CSharp
           m_MethodName: Switch_StartNormal
           m_Mode: 1
@@ -411,6 +411,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushtoStart: {fileID: 1487062820}
   startMenu: {fileID: 94973710}
+  buttons:
+  - {fileID: 32751505}
+  - {fileID: 608727205}
+  - {fileID: 1231373793}
+  beep: {fileID: 8300000, guid: b475c69d9f744644b9dd163136cc8d08, type: 3}
+  goGame: {fileID: 8300000, guid: 12c31164506d62e469f3c3e64daa567c, type: 3}
+  buttonIdx: 0
 --- !u!114 &69320096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -875,7 +882,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 832588162}
           m_TargetAssemblyTypeName: TitleUISwitch, Assembly-CSharp
           m_MethodName: Switch_ContinueNormal
           m_Mode: 1
@@ -1635,7 +1642,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 832588162}
           m_TargetAssemblyTypeName: TitleUISwitch, Assembly-CSharp
           m_MethodName: Switch_QuitNormal
           m_Mode: 1
@@ -1733,14 +1740,12 @@ MonoBehaviour:
   - targetObj: {fileID: 667009454}
     fadeIn: 1
     delete: 1
-    isFadeScreen: 0
     fadeTime: 5
     delay: 0
     canvasGroup: {fileID: 0}
   - targetObj: {fileID: 1487062820}
     fadeIn: 0
     delete: 0
-    isFadeScreen: 0
     fadeTime: 3
     delay: 2
     canvasGroup: {fileID: 0}
@@ -1780,7 +1785,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 832588162}
           m_TargetAssemblyTypeName: TitleUISwitch, Assembly-CSharp
           m_MethodName: Switch_QuitGlow
           m_Mode: 1
@@ -2388,7 +2393,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 832588162}
           m_TargetAssemblyTypeName: TitleUISwitch, Assembly-CSharp
           m_MethodName: Switch_ContinueGlow
           m_Mode: 1
@@ -2533,7 +2538,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 832588162}
           m_TargetAssemblyTypeName: TitleUISwitch, Assembly-CSharp
           m_MethodName: Switch_StartGlow
           m_Mode: 1
