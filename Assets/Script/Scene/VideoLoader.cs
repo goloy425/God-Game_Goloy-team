@@ -10,6 +10,7 @@ public class VideoLoader : MonoBehaviour
     public string nextSceneName = "Stage1";
     public float delay = 1.0f;      // ロードを待つ秒数
     private float timer = 0.0f;
+    private int loopCnt = 0;
     private bool loadFg = false;    // ロードするフラグ
     private bool finishFg = false;
 
@@ -26,7 +27,12 @@ public class VideoLoader : MonoBehaviour
         // 待つ秒数経過後にロード
         if(timer >= delay)
         {
-            loadFg = true;
+            // 一回だけtrueにする
+            if (loopCnt == 0)
+            {
+                loadFg = true;
+            }
+            loopCnt++;
         }
         else
         {
