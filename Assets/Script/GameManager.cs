@@ -1074,15 +1074,11 @@ public class GameManager : MonoBehaviour
         if (moveGameOver) { return; }
 
         moveGameOver = true;
-        // 死亡回数カウント
-        deaths++;
+        deaths++;   // 死亡回数カウント
 
         PlayerPrefs.SetInt("CurrentStageNum", curStage);    // CurrentStageキーとして現在のステージを保存
-        PlayerPrefs.Save();
         PlayerPrefs.SetString("CurrentScene", SceneManager.GetActiveScene().name);    // CurrentStageキーとして現在のシーンを保存
-        PlayerPrefs.Save();
         PlayerPrefs.SetInt("Deaths", deaths);
-        PlayerPrefs.Save();
         PlayerPrefs.SetFloat("PlayTime", playTime);
         PlayerPrefs.Save();
         SaveMagObjPositions();  // 磁力オブジェクトの位置を保存

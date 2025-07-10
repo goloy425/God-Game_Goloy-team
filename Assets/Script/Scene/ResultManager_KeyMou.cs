@@ -120,7 +120,7 @@ public class ResultManager_KeyMou : MonoBehaviour
 		PlayerPrefs.SetInt("CurrentStageNum", 0);	// 現在ステージを1に戻す
 		PlayerPrefs.DeleteKey("MagObjPositions");	// 磁石のデータを削除
 		PlayerPrefs.SetInt("Deaths", 0);			// 死亡回数をリセット
-		PlayerPrefs.SetFloat("PlayTime", 0.0f);     // プレイ時間をリセット
+		PlayerPrefs.SetFloat("PlayTime", 0.0f);		// プレイ時間をリセット
 		PlayerPrefs.Save();
 		SceneManager.LoadScene(sceneName);
 	}
