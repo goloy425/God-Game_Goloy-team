@@ -47,7 +47,7 @@ public class TitleManager_KeyMou : MonoBehaviour
 	{
 		audioSource = GetComponent<AudioSource>();
 		tUIswitch = GameObject.Find("Title").GetComponent<TitleUISwitch>();
-	}
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -182,8 +182,8 @@ public class TitleManager_KeyMou : MonoBehaviour
 
 	//--- FromTheStartが押された時 ---//
 	public void OnFromTheStart(string sceneName)
-	{
-		pressedFg = true;
+    {
+        pressedFg = true;
 		nextScene = sceneName;
 		timer = 0.0f;
         fadeController.StartFadeOut();	// フェードアウト
