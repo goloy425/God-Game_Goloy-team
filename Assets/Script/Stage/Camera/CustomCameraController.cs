@@ -132,7 +132,7 @@ public class CustomCameraController : MonoBehaviour
 				}
 			}
 			// ステージクリア後に次ステージ全体を写して戻す演出を行う
-			else if (!completeDirectionFg[curStage] && gameManager.GetStageClearFg(curStage - 1) && fadeController.GetCompleteFdeInFg() && timer <= clearDirectionTime)
+			else if (!completeDirectionFg[curStage] && gameManager.GetStageClearFg(curStage - 1) && fadeController.GetCompleteFadeInFg() && timer <= clearDirectionTime)
 			{
 				// プレイヤーが動かないようにする
 				rbL.velocity = Vector3.zero;

@@ -319,6 +319,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("プレイ時間が見つかりません");
         }
+
+        // ロード画面と自然につなげるためにフェードイン
+        fadeInFg = true;
     }
 
     private void Update()

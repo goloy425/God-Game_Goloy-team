@@ -16,21 +16,30 @@ public class TitleManager_KeyMou : MonoBehaviour
 	[Header("PushtoStartの次のUI群を設定")]
 	public GameObject startMenu;
 
+    [Header("フェードアウトするImageを設定")]
+    public FadeController fadeController;
+
 	[Header("ボタン Start→Continue→Quitの順番で設定")]
 	public Button[] buttons;
 	[Header("SE　1:ビープ音 2:スタート")]
 	public AudioClip beep;
 	public AudioClip goGame;
-
-	private AudioSource audioSource;
+    private AudioSource audioSource;
 	private TitleUISwitch tUIswitch;
 
-	private string currentScene = "";	// 現在のステージシーン Continueを表示するかどうかに使う
+	[Header("ロードシーンに移行するまでの待ち時間")]
+	public float delay = 0.5f;
+	private float timer = 0.0f;
+
+
+	private string currentScene = "";   // 現在のステージシーン Continueを表示するかどうかに使う
+	private string nextScene = "";		// 次のシーン名
 	private bool noContinue = false;
+	private bool pressedFg = false;		// 押されたかどうか
 
 	private int UInum = 0;		// 今どのUIパターンを表示しているか 0:PushtoStart 1:選択
 	public int buttonIdx = 0;	// どのコマンドを選択しているか
-	private int prevIdx = 0;	// UI切り替え用
+	private int prevIdx = 0;    // UI切り替え用
 
 
 	// Start is called before the first frame update
@@ -43,6 +52,9 @@ public class TitleManager_KeyMou : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		Debug.Log(timer);
+		timer += Time.deltaTime;
+
 		// 表示しているUIによって決定ボタンの処理を変える
 		if (UInum == 0)
 		{
@@ -125,6 +137,24 @@ public class TitleManager_KeyMou : MonoBehaviour
 		}
 
 		prevIdx = buttonIdx;
+
+		if(pressedFg)
+        {
+
+            if (fadeController != null)
+            {
+                // フェードアウト完了後にシーン遷移
+                Debug.Log(fadeController.GetCompleteFadeOutFg());
+                if (fadeController.GetCompleteFadeOutFg() && timer >= delay)
+                {
+                    SceneManager.LoadScene(nextScene);
+                }
+            }
+            else
+            {
+                SceneManager.LoadScene(nextScene);
+            }
+        }
 	}
 
 
@@ -155,8 +185,11 @@ public class TitleManager_KeyMou : MonoBehaviour
 	//--- FromTheStartが押された時 ---//
 	public void OnFromTheStart(string sceneName)
 	{
-		SceneManager.LoadScene(sceneName);
-	}
+		pressedFg = true;
+		nextScene = sceneName;
+		timer = 0.0f;
+        fadeController.StartFadeOut();	// フェードアウト
+    }
 
 	//--- Continueが押された時 ---//
 	// StageManagerのRetryStageが起動するようにしてある
