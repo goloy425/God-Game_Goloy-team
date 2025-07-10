@@ -19,7 +19,7 @@ public class StageData
     public List<DetectArea> detectAreas = new List<DetectArea>();               // クリア判定オブジェクト              // クリア判定オブジェクト
     public GameObject doorFlame;
     public Vector3 playerLPos;
-    public Vector3 playerRPos; 
+    public Vector3 playerRPos;
     public Quaternion playerLRotation;
     public Quaternion playerRRotation;
 
@@ -92,9 +92,9 @@ public class StageData
 [System.Serializable]
 public class MagObjPosition
 {
-	public List<float> posX;
-	public List<float> posY;
-	public List<float> posZ;
+    public List<float> posX;
+    public List<float> posY;
+    public List<float> posZ;
 }
 
 //------------------------------------------------------------------------------
@@ -105,12 +105,12 @@ public class MagObjPosition
 [System.Serializable]
 public class MagObjPositionWrapper
 {
-	public List<MagObjPosition> magObjPositions;
+    public List<MagObjPosition> magObjPositions;
 
-	public MagObjPositionWrapper(List<MagObjPosition> positions)
-	{
-		magObjPositions = positions;
-	}
+    public MagObjPositionWrapper(List<MagObjPosition> positions)
+    {
+        magObjPositions = positions;
+    }
 }
 
 
@@ -143,6 +143,10 @@ public class GameManager : MonoBehaviour
     private bool augMagFg = false;            // 磁力強化できるかどうか
     private int effectCnt = 0;                // ゲームオーバーエフェクトの作成回数
 
+    private bool moveGameOver = false;  // ゲームオーバーシーンに1回行ったらシーン遷移しきるまでは行かないようにする
+    private int deaths = 0; // 死亡回数
+    private float playTime = 0.0f;  // ステージをクリアするまでにかかった時間
+
     private int totalAreas = 0;               // 設定された判定エリアの数
     private int totalConnected = 0;           // 接続された判定エリアの数
     private float clearTimer = 0.0f;          // 接続され続けている秒数
@@ -174,7 +178,7 @@ public class GameManager : MonoBehaviour
     private GameObject playerRWeak = null;
     private GameObject playerRHold = null;
     private float moveTime = 1.0f;            // プレイヤーの移動演出の秒数
-    //private float moveTimer = 0.0f;         // プレイヤーの移動演出の計測
+                                              //private float moveTimer = 0.0f;         // プレイヤーの移動演出の計測
 
     private bool fadeInFg = false;            // フェードイン中かどうか
     private bool fadeOutFg = false;           // フェードアウト中かどうか
@@ -224,23 +228,23 @@ public class GameManager : MonoBehaviour
         playerLController = playerL.transform.Find("PlayerL_Controller").gameObject;
         playerRController = playerR.transform.Find("PlayerR_Controller").gameObject;
         // プレイヤーLのUIを取得
-        pulseNormalL   = playerLUI.transform.Find("L").transform.Find("palse_ring").gameObject;
-        pulseDangerL   = playerLUI.transform.Find("L").transform.Find("palse_danger_ring06").gameObject;
-        playerLRing    = playerLUI.transform.Find("Ring").gameObject;
-        playerLNormal  = playerLRing.transform.Find("Normal").gameObject;
+        pulseNormalL = playerLUI.transform.Find("L").transform.Find("palse_ring").gameObject;
+        pulseDangerL = playerLUI.transform.Find("L").transform.Find("palse_danger_ring06").gameObject;
+        playerLRing = playerLUI.transform.Find("Ring").gameObject;
+        playerLNormal = playerLRing.transform.Find("Normal").gameObject;
         playerLCaution = playerLRing.transform.Find("Caution").gameObject;
-        playerLDanger  = playerLRing.transform.Find("Danger").gameObject;
-        playerLWeak    = playerLRing.transform.Find("Weak").gameObject;
-        playerLHold    = playerLRing.transform.Find("Hold").gameObject;
+        playerLDanger = playerLRing.transform.Find("Danger").gameObject;
+        playerLWeak = playerLRing.transform.Find("Weak").gameObject;
+        playerLHold = playerLRing.transform.Find("Hold").gameObject;
         // プレイヤーRのUIを取得
-        pulseNormalR   = playerRUI.transform.Find("R").transform.Find("palse_ring").gameObject;
-        pulseDangerR   = playerRUI.transform.Find("R").transform.Find("palse_danger_ring").gameObject;
-        playerRRing    = playerRUI.transform.Find("Ring").gameObject;
-        playerRNormal  = playerRRing.transform.Find("Normal").gameObject;
+        pulseNormalR = playerRUI.transform.Find("R").transform.Find("palse_ring").gameObject;
+        pulseDangerR = playerRUI.transform.Find("R").transform.Find("palse_danger_ring").gameObject;
+        playerRRing = playerRUI.transform.Find("Ring").gameObject;
+        playerRNormal = playerRRing.transform.Find("Normal").gameObject;
         playerRCaution = playerRRing.transform.Find("Caution").gameObject;
-        playerRDanger  = playerRRing.transform.Find("Danger").gameObject;
-        playerRWeak    = playerRRing.transform.Find("Weak").gameObject;
-        playerRHold    = playerRRing.transform.Find("Hold").gameObject;
+        playerRDanger = playerRRing.transform.Find("Danger").gameObject;
+        playerRWeak = playerRRing.transform.Find("Weak").gameObject;
+        playerRHold = playerRRing.transform.Find("Hold").gameObject;
         // UIの初期設定
         playerLNormal.SetActive(true);
         playerLCaution.SetActive(false);
@@ -294,6 +298,36 @@ public class GameManager : MonoBehaviour
         //    SearchCanCarryMagObj(i);
         //}
         Debug.Log("totalAreas" + totalAreas);
+
+        //--- リザルトで表示する要素の取得 ---//
+        if (PlayerPrefs.HasKey("Deaths"))   // 死亡回数
+        {
+            deaths = PlayerPrefs.GetInt("Deaths");
+            Debug.Log("Deaths" + deaths);
+        }
+        else
+        {
+            Debug.Log("死亡回数が見つかりません");
+        }
+
+        if (PlayerPrefs.HasKey("PlayTime")) // プレイ時間
+        {
+            playTime = PlayerPrefs.GetFloat("PlayTime");
+            Debug.Log("PlayTime" + playTime);
+        }
+        else
+        {
+            Debug.Log("プレイ時間が見つかりません");
+        }
+    }
+
+    private void Update()
+    {
+        // 演出中、ゲームオーバー確定後、ポーズ中以外はプレイ時間をカウント
+        if (!fadeInFg || !fadeOutFg || !gameOverFg || !pose.GetPose())
+        {
+            playTime += Time.deltaTime;
+        }
     }
 
     private void FixedUpdate()
@@ -315,7 +349,7 @@ public class GameManager : MonoBehaviour
 
         //------ ステージのクリア処理 ------//
         int connectCount = 0;             // 各ステージの繋がっている判定エリアの数
-        // 現在のステージの判定エリアが繋がっているかを調べる
+                                          // 現在のステージの判定エリアが繋がっているかを調べる
         for (int i = 0; i < stageData[curStage].detectAreas.Count; i++)
         {
             // 繋がっている時、その数をカウント
@@ -439,8 +473,11 @@ public class GameManager : MonoBehaviour
                 Time.fixedDeltaTime = 0.02f;
 
                 // changeSceneTime秒後にゲームオーバーシーンに遷移
-                Invoke("MoveGameOverScene", changeSceneTime);
-                Debug.Log("ゲームオーバー！Result画面に移ります");
+                if(!moveGameOver)
+                {
+                    Invoke("MoveGameOverScene", changeSceneTime);
+                    Debug.Log("ゲームオーバー！Result画面に移ります");
+                }
             }
         }
 
@@ -743,6 +780,8 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteKey("CurrentStageNum");
         PlayerPrefs.DeleteKey("CurrentScene");
         PlayerPrefs.DeleteKey("MagObjPositions");
+        PlayerPrefs.DeleteKey("Deaths");
+        PlayerPrefs.DeleteKey("PlayTime");
     }
 
     private void SaveMagObjPositions()
@@ -819,14 +858,14 @@ public class GameManager : MonoBehaviour
 
     private void LoadMagObjPositions()
     {
-        if(PlayerPrefs.HasKey("MagObjPositions"))
+        if (PlayerPrefs.HasKey("MagObjPositions"))
         {
             List<MagObjPosition> magObjPosition = new List<MagObjPosition>();   // リロード用のリスト
             string json = PlayerPrefs.GetString("MagObjPositions");
             MagObjPositionWrapper dataWrapper = JsonUtility.FromJson<MagObjPositionWrapper>(json);
             magObjPosition = dataWrapper.magObjPositions;
 
-            for(int i = 0; i < magObjPosition.Count; i++)
+            for (int i = 0; i < magObjPosition.Count; i++)
             {
                 for (int j = 0; j < magObjPosition[i].posX.Count; j++)
                 {
@@ -909,7 +948,7 @@ public class GameManager : MonoBehaviour
     {
         //------ プレイヤーL ------//
         // 磁力強化中の時、Hold
-        if(magnetism1.GetIsAugmentingL())
+        if (magnetism1.GetIsAugmentingL())
         {
             pulseDangerL.SetActive(false);
             pulseNormalL.SetActive(true);
@@ -920,7 +959,7 @@ public class GameManager : MonoBehaviour
             playerLWeak.SetActive(false);
         }
         // くっついた時、Danger
-        else if(magnetism1.GetIsSnapping())
+        else if (magnetism1.GetIsSnapping())
         {
             pulseNormalL.SetActive(false);
             pulseDangerL.SetActive(true);
@@ -1032,9 +1071,19 @@ public class GameManager : MonoBehaviour
     // ゲームオーバーシーンに遷移
     private void MoveGameOverScene()
     {
+        if (moveGameOver) { return; }
+
+        moveGameOver = true;
+        // 死亡回数カウント
+        deaths++;
+
         PlayerPrefs.SetInt("CurrentStageNum", curStage);    // CurrentStageキーとして現在のステージを保存
         PlayerPrefs.Save();
         PlayerPrefs.SetString("CurrentScene", SceneManager.GetActiveScene().name);    // CurrentStageキーとして現在のシーンを保存
+        PlayerPrefs.Save();
+        PlayerPrefs.SetInt("Deaths", deaths);
+        PlayerPrefs.Save();
+        PlayerPrefs.SetFloat("PlayTime", playTime);
         PlayerPrefs.Save();
         SaveMagObjPositions();  // 磁力オブジェクトの位置を保存
         SceneManager.LoadScene(gameOverSceneName);
