@@ -911,13 +911,8 @@ public class GameManager : MonoBehaviour
         // 磁力強化中の時、Hold
         if(magnetism1.GetIsAugmentingL())
         {
-            pulseDangerL.SetActive(false);
             pulseNormalL.SetActive(true);
             playerLHold.SetActive(true);
-            playerLDanger.SetActive(false);
-            playerLCaution.SetActive(false);
-            playerLNormal.SetActive(false);
-            playerLWeak.SetActive(false);
         }
         // くっついた時、Danger
         else if(magnetism1.GetIsSnapping())
@@ -968,13 +963,8 @@ public class GameManager : MonoBehaviour
         // 磁力強化中の時、Hold
         if (magnetism2.GetIsAugmentingR())
         {
-            pulseDangerR.SetActive(false);
             pulseNormalR.SetActive(true);
             playerRHold.SetActive(true);
-            playerRDanger.SetActive(false);
-            playerRCaution.SetActive(false);
-            playerRNormal.SetActive(false);
-            playerRWeak.SetActive(false);
         }
         // くっついた時、Danger
         else if (magnetism2.GetIsSnapping())
