@@ -52,7 +52,6 @@ public class TitleManager_KeyMou : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		Debug.Log(timer);
 		timer += Time.deltaTime;
 
 		// 表示しているUIによって決定ボタンの処理を変える
@@ -144,7 +143,6 @@ public class TitleManager_KeyMou : MonoBehaviour
             if (fadeController != null)
             {
                 // フェードアウト完了後にシーン遷移
-                Debug.Log(fadeController.GetCompleteFadeOutFg());
                 if (fadeController.GetCompleteFadeOutFg() && timer >= delay)
                 {
                     SceneManager.LoadScene(nextScene);
