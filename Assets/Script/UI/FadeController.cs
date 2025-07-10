@@ -5,6 +5,7 @@
 //----------------------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,6 +39,7 @@ public class FadeController : MonoBehaviour
             yield return null;
         }
         completeFadeInFg = true;
+        yield break;
         //fadeImage.gameObject.SetActive(false);  // フェードイン終了時に非表示
     }
 
@@ -56,6 +58,7 @@ public class FadeController : MonoBehaviour
             yield return null;
         }
         completeFadeOutFg = true;
+        yield break;
     }
 
     // 外部から呼び出し可能なフェードイン開始関数
@@ -70,12 +73,12 @@ public class FadeController : MonoBehaviour
         StartCoroutine(FadeOut());
     }
 
-    public bool GetCompleteFdeInFg()
+    public bool GetCompleteFadeInFg()
     {
         return completeFadeInFg;
     }
 
-    public bool GetCompleteFdeOutFg()
+    public bool GetCompleteFadeOutFg()
     {
         return completeFadeOutFg;
     }
