@@ -89,7 +89,8 @@ public class Vibration : MonoBehaviour
 
 	private void Update()
 	{
-		if (notVibration) { return; }	// 振動無しの時はスキップ
+		// 振動無しの時、もしくはコントローラーが接続されていない時はスキップ
+		if (notVibration || gamepad == null) { return; }
 
 		// 磁石がくっついた時のSEが再生されているかどうか…なんだけど磁石にアタッチされてるAudioSourceが
 		// 再生されていればなので他のSEが追加されたら使えない、もうちょっとどうにかできないか考える
