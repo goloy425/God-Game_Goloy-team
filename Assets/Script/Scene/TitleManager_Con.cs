@@ -54,9 +54,9 @@ public class TitleManager_Con : MonoBehaviour
 				start.onClick.Invoke();
 			}
 		}
-		else if (tManager_k.GetUInum() == 1)    // FromTheStartとかの時
+		else if (tManager_k.GetUInum() == 1)	// FromTheStartとかの時
 		{
-			if (decideKey)
+			if (decideKey && tManager_k.buttonIdx != 0)
 			{
 				// リトライできるデータがない、かつContinueが選択された時
 				if (tManager_k.GetNoContinue() && tManager_k.buttonIdx == 2)
@@ -74,7 +74,7 @@ public class TitleManager_Con : MonoBehaviour
 			if (selectUpKey)	// 上
 			{
 				if (tManager_k.buttonIdx > 1) { tManager_k.buttonIdx--; }
-				else if(tManager_k.buttonIdx==0) { tManager_k.buttonIdx = 3; }
+				else if (tManager_k.buttonIdx == 0) { tManager_k.buttonIdx = 3; }
 			}
 			if (selectDownKey)  // 下
 			{
