@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
+// ポーズ画面のキーマウ操作
+
 public class PoseManager_KeyMou : MonoBehaviour
 {
     [Header("ボタン Resume→Retry→ReturnTitleの順番で設定")]
@@ -108,17 +111,6 @@ public class PoseManager_KeyMou : MonoBehaviour
     //--- Retryが押された時 ---//
     public void OnRetry(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
-    }
-
-    //--- StageResetが押された時 ---//
-    public void OnStageReset(string sceneName)
-    {
-        PlayerPrefs.SetInt("CurrentStageNum", 0);   // 現在ステージを1に戻す
-        PlayerPrefs.DeleteKey("MagObjPositions");   // 磁石のデータを削除
-        PlayerPrefs.SetInt("Deaths", 0);            // 死亡回数をリセット
-        PlayerPrefs.SetFloat("PlayTime", 0.0f);     // プレイ時間をリセット
-        PlayerPrefs.Save();
         SceneManager.LoadScene(sceneName);
     }
 

@@ -10,16 +10,12 @@ public class Pose : MonoBehaviour
     public Canvas pose;
     public Image targetImage;   // 操作するImage
 
-    public Button[] myButton;
-
-    int num = 0;
-
     bool _pose = false;
     bool select = true;
 
     private GameInputs inputs;  // GameInputsクラス
-
-    private PoseManager_KeyMou pKM;
+    private PoseManager_KeyMou pKM; // PoseManager_KeyMouクラス
+    private PoseManager_Con pC; // PoseManager_Conクラス
 
     // キー入力取得用
     private bool nowFg;
@@ -44,6 +40,8 @@ public class Pose : MonoBehaviour
 
         pKM = GameObject.Find("SceneManager").GetComponent<PoseManager_KeyMou>();
         pKM.Start();
+        pC = GameObject.Find("SceneManager").GetComponent<PoseManager_Con>();
+        pC.Start();
     }
 
     // Update is called once per frame
@@ -59,7 +57,6 @@ public class Pose : MonoBehaviour
             {
                 // ポーズ画面を開く＆コマンドを初期化
                 _pose = true;
-                num = 0;
 
                 //myButton[num].GetComponent<Image>().color = Color.red;
             }
@@ -99,10 +96,8 @@ public class Pose : MonoBehaviour
             targetImage.color = newColor;
 
             pKM.Update();
-
+            pC.Update();
         }
-
-        //Debug.Log(num);
     }
 
     //--- ポーズを開く・閉じる時にキャンバスを点滅させる演出用の関数 ---//
