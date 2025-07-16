@@ -17,10 +17,13 @@ public class PoseManager_KeyMou : MonoBehaviour
     public int buttonIdx = 0;   // どのコマンドを選択しているか
     private int prevIdx = 0;    // UI切り替え用
 
+    private GameManager gManager;
+
     // Start is called before the first frame update
     public void Start()
     {
         GameObject.Find("Pose").TryGetComponent<PoseUISwitch>(out pUIswitch);
+        GameObject.Find("GameManager").TryGetComponent<GameManager>(out gManager);
     }
 
     // Update is called once per frame
@@ -111,6 +114,8 @@ public class PoseManager_KeyMou : MonoBehaviour
     //--- Retryが押された時 ---//
     public void OnRetry(string sceneName)
     {
+        PlayerPrefs.SetInt("CurrentStageNum", gManager.GetCurStage());    // CurrentStageキーとして現在のステージを保存
+        PlayerPrefs.SetString("CurrentScene", SceneManager.GetActiveScene().name);    // CurrentStageキーとして現在のシーンを保存
         SceneManager.LoadScene(sceneName);
     }
 

@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 public class PoseManager_Con : MonoBehaviour
 {
-    [Header("ボタン Retry→StageReset→ReturnTitleの順番で設定")]
+    [Header("ボタン Resume→Retry→ReturnTitleの順番で設定")]
     public Button[] buttons;
 
     private Gamepad gamepad;
