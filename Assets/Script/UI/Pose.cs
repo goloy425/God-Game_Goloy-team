@@ -6,205 +6,158 @@ using UnityEngine.UI;
 
 public class Pose : MonoBehaviour
 {
-	CanvasGroup Canvas;		// CanvasGroupコンポーネントを取得
-	public Canvas pose;
-	public Image targetImage;	// 操作するImage
+    CanvasGroup Canvas;     // CanvasGroupコンポーネントを取得
+    public Canvas pose;
+    public Image targetImage;   // 操作するImage
 
-	public Button[] myButton;
+    public Button[] myButton;
 
-	int num = 1;
+    int num = 0;
 
-	bool _pose = false;
-	bool select = true;
+    bool _pose = false;
+    bool select = true;
 
-	private GameInputs inputs;	// GameInputsクラス
+    private GameInputs inputs;  // GameInputsクラス
 
-	// キー入力取得用
-	private bool nowFg;
-	private bool prevFg;
+    private PoseManager_KeyMou pKM;
 
-	// 点滅周りの変数
-	private float time = 0.0f;
-	private bool activeCanvas = false;
-	private bool blinking = false;
+    // キー入力取得用
+    private bool nowFg;
+    private bool prevFg;
 
-	[Header("キャンバスを点滅させる時間")]
-	public float blinkCanvasTime = 0.3f;
+    // 点滅周りの変数
+    private float time = 0.0f;
+    private bool activeCanvas = false;
+    private bool blinking = false;
 
-	// Start is called before the first frame update
-	void Start()
-	{
-		Canvas = this.GetComponent<CanvasGroup>();
-		Canvas.alpha = 0.0f;		// あらかじめ透明化
+    [Header("キャンバスを点滅させる時間")]
+    public float blinkCanvasTime = 0.3f;
 
-		inputs = new GameInputs();
-		inputs.Enable();
-	}
+    // Start is called before the first frame update
+    void Start()
+    {
+        Canvas = this.GetComponent<CanvasGroup>();
+        Canvas.alpha = 0.0f;        // あらかじめ透明化
 
-	// Update is called once per frame
-	void Update()
-	{
-		bool key = inputs.Pose.SwitchPose.IsPressed();	// オプションボタン（右側）の入力取得
-		nowFg = key;	// フラグの反映
+        inputs = new GameInputs();
+        inputs.Enable();
 
-		// キー入力でフラグの切り替え
-		if (nowFg && !prevFg)
-		{
-			if (!_pose)
-			{
-				// ポーズ画面を開く＆コマンドを初期化
-				_pose = true;
-				num = 1;
+        pKM = GameObject.Find("SceneManager").GetComponent<PoseManager_KeyMou>();
+        pKM.Start();
+    }
 
-				myButton[num].GetComponent<Image>().color = Color.red;
-			}
-			else
-			{
-				// ポーズ画面を閉じる
-				_pose = false;
-			}
+    // Update is called once per frame
+    void Update()
+    {
+        bool key = inputs.Pose.SwitchPose.IsPressed();  // オプションボタン（右側）の入力取得
+        nowFg = key;    // フラグの反映
 
-			time = 0.0f;
-			blinking = true;
-		}
+        // キー入力でフラグの切り替え
+        if ((nowFg || Input.GetKeyDown(KeyCode.P)) && !prevFg)
+        {
+            if (!_pose)
+            {
+                // ポーズ画面を開く＆コマンドを初期化
+                _pose = true;
+                num = 0;
 
-		if (blinking && time < blinkCanvasTime)
-		{
-			time += Time.deltaTime;
-			BrinkPoseCanvas();  // 点滅の演出
-		}
-		else if (blinking && time >= blinkCanvasTime)
-		{
-			DisplayPose(_pose);		// フラグに応じてキャンバスの表示・非表示を確定させる
-			activeCanvas = _pose;	// フラグの反映
-		}
+                //myButton[num].GetComponent<Image>().color = Color.red;
+            }
+            else
+            {
+                // ポーズ画面を閉じる
+                _pose = false;
+            }
 
-		prevFg = nowFg;		// フラグ更新
+            time = 0.0f;
+            blinking = true;
+        }
 
-		//--- ポーズ画面の操作 ---//
-		// 実装終わったらこの行と以下4行のコメント消して大丈夫です
-		// inputs.Pose.SelectUp.IsPressed()で十字上
-		// 　　〃　   .SelectDown.IsPressed()で十字下
-		// 　　〃　   .Decide.IsPressed()で○ボタンの入力取得ができます
+        if (blinking && time < blinkCanvasTime)
+        {
+            time += Time.deltaTime;
+            BrinkPoseCanvas();  // 点滅の演出
+        }
+        else if (blinking && time >= blinkCanvasTime)
+        {
+            DisplayPose(_pose);     // フラグに応じてキャンバスの表示・非表示を確定させる
+            activeCanvas = _pose;   // フラグの反映
+        }
 
-		if (_pose)
-		{
-			Color newColor = targetImage.color;
-			newColor.a = 0.5f;
-			targetImage.color = newColor;
+        prevFg = nowFg;     // フラグ更新
 
-			float move = Input.GetAxis("Vertical");
+        //--- ポーズ画面の操作 ---//
+        // 実装終わったらこの行と以下4行のコメント消して大丈夫です
+        // inputs.Pose.SelectUp.IsPressed()で十字上
+        // 　　〃　   .SelectDown.IsPressed()で十字下
+        // 　　〃　   .Decide.IsPressed()で○ボタンの入力取得ができます
 
-			if (select)
-			{
-				// 上ボタンの入力検出
-				if (move > 0.4)
-				{
-					myButton[num].GetComponent<Image>().color = Color.white;
+        if (_pose)
+        {
+            Color newColor = targetImage.color;
+            newColor.a = 0.5f;
+            targetImage.color = newColor;
 
-					--num;
-					num = Mathf.Clamp(num, 0, 3);
+            pKM.Update();
 
-					select = false;
+        }
 
-					myButton[num].GetComponent<Image>().color = Color.red;
-				}
-				else if (move < -0.4)
-				{
-					myButton[num].GetComponent<Image>().color = Color.white;
+        //Debug.Log(num);
+    }
 
-					++num;
-					num = Mathf.Clamp(num, 0, 3);
+    //--- ポーズを開く・閉じる時にキャンバスを点滅させる演出用の関数 ---//
+    void BrinkPoseCanvas()
+    {
+        if (activeCanvas)
+        {
+            Canvas.alpha = 1.0f;
 
-					select = false;
+            Color newColor = targetImage.color;
+            newColor.a = 0.5f;
+            targetImage.color = newColor;
 
-					myButton[num].GetComponent<Image>().color = Color.red;
-				}
-			}
-			else if (move > -0.1 && move < 0.1)
-			{
-				select = true;
-			}
+            activeCanvas = false;
+        }
+        else
+        {
+            Canvas.alpha = 0.0f;
 
-			// 〇ボタン（XBOXのBボタン）の入力検出
-			if (inputs.Pose.Decide.IsPressed())
-			{
-				OnButtonClicked();
-			}
-		}
-		Debug.Log(num);
-	}
+            Color newColor = targetImage.color;
+            newColor.a = 0.0f;
+            targetImage.color = newColor;
 
-	//--- ポーズを開く・閉じる時にキャンバスを点滅させる演出用の関数 ---//
-	void BrinkPoseCanvas()
-	{
-		if (activeCanvas)
-		{
-			Canvas.alpha = 1.0f;
+            activeCanvas = true;
+        }
+    }
 
-			Color newColor = targetImage.color;
-			newColor.a = 0.5f;
-			targetImage.color = newColor;
+    //--- 点滅後キャンバスを表示するかしないかを確定させる関数 ---//
+    void DisplayPose(bool pose)
+    {
+        if (pose)
+        {
+            Canvas.alpha = 1.0f;
+        }
+        else
+        {
+            Canvas.alpha = 0.0f;
+        }
 
-			activeCanvas = false;
-		}
-		else
-		{
-			Canvas.alpha = 0.0f;
+        blinking = false;   // 点滅終了
+    }
 
-			Color newColor = targetImage.color;
-			newColor.a = 0.0f;
-			targetImage.color = newColor;
+    public void ClosePose()
+    {
+        _pose = false;          // ポーズ解除
+        Canvas.alpha = 0.0f;    // キャンバスを透明化する
+    }
 
-			activeCanvas = true;
-		}
-	}
+    public bool GetPose()
+    {
+        return _pose;
+    }
 
-	//--- 点滅後キャンバスを表示するかしないかを確定させる関数 ---//
-	void DisplayPose(bool pose)
-	{
-		if (pose)
-		{
-			Canvas.alpha = 1.0f;
-		}
-		else
-		{
-			Canvas.alpha = 0.0f;
-		}
-
-		blinking = false;	// 点滅終了
-	}
-
-	void OnButtonClicked()
-	{
-		switch (num)
-		{
-			case 0:
-				SceneManager.LoadScene("MainMenu");
-				break;
-
-			case 1:		// 再開する
-				_pose = false;			// ポーズ解除
-				Canvas.alpha = 0.0f;	// キャンバスを透明化する
-				break;
-
-			case 2:
-
-				break;
-
-			case 3:
-				SceneManager.LoadScene("Title");
-				break;
-		}
-	}
-
-	public bool GetPose()
-	{
-		return _pose;
-	}
-
-	private void OnDestroy()
-	{
-		inputs?.Dispose();
-	}
+    private void OnDestroy()
+    {
+        inputs?.Dispose();
+    }
 }
