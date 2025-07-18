@@ -197,11 +197,11 @@ public class Magnetism : MonoBehaviour
 		}
 
 		// スローモーション切替用フラグの管理
-		if (distance <= tooClose.GetDangerDist())
+		if (distance <= tooClose.GetPDangerDist())
 		{
 			isSlow_pMag = true;
 		}
-		else if (isSlow_pMag && distance > tooClose.GetSafetyDist())
+		else if (isSlow_pMag && distance > tooClose.GetPSafetyDist())
 		{
 			isSlow_pMag = false;
 		}

@@ -9,7 +9,7 @@ using UnityEngine;
 //===========================================================================
 
 public class TooClose : MonoBehaviour
-{ 
+{
 	[Header("GameManagerを設定")]
 	public GameManager gm;
 
@@ -21,8 +21,12 @@ public class TooClose : MonoBehaviour
 	public GameObject plate1;
 	public GameObject plate2;
 
-	private float dangerDist;	// 危険距離
-	private float safetyDist;	//  ↑ から脱する距離
+	private float dangerDist;   // 危険距離
+	private float safetyDist;   //  ↑ から脱する距離
+
+	// プレイヤー用
+	private float pDangerDist;
+	private float pSafetyDist;
 
 	// Start is called before the first frame update
 	void Start()
@@ -30,6 +34,9 @@ public class TooClose : MonoBehaviour
 		// 各距離を設定
 		dangerDist = magnet1.deadRange + 0.1f;
 		safetyDist = dangerDist + 0.2f;
+
+		pDangerDist = magnet1.deadRange + 0.5f;
+		pSafetyDist = pDangerDist + 0.2f;
 	}
 
 	// Update is called once per frame
@@ -56,7 +63,7 @@ public class TooClose : MonoBehaviour
 		while ((magnet1.isSlow_pMag || magnet2.isSlow_pMag || magnet1.isSlow_magObj || magnet2.isSlow_magObj) &&
 			   !magnet1.isSnapping && !magnet2.isSnapping)
 		{
-			yield return null;		// 次のフレームまで待つ
+			yield return null;      // 次のフレームまで待つ
 		}
 
 		// スロー解除
@@ -72,5 +79,14 @@ public class TooClose : MonoBehaviour
 	public float GetSafetyDist()
 	{
 		return safetyDist;
+	}
+
+	public float GetPDangerDist()
+	{
+		return pDangerDist;
+	}
+	public float GetPSafetyDist()
+	{
+		return pSafetyDist;
 	}
 }
