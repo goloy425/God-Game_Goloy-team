@@ -37,11 +37,16 @@ public class MovePlayerR : MonoBehaviour
 
 	Pose pose;          // Poseの状態を受け取る
 
+	QTE qte;
+
 	// Start is called before the first frame update
 	void Start()
 	{
 		// Poseオブジェクトを取得
 		pose = GameObject.Find("Pose").GetComponent<Pose>();
+
+		// CheckFoundコンポーネントを取得
+		qte = GameObject.Find("QTE").GetComponent<QTE>();
 
 		// Rigidbodyコンポーネントを取得
 		rb = transform.parent.GetComponent<Rigidbody>();
@@ -65,7 +70,7 @@ public class MovePlayerR : MonoBehaviour
 	void Update()
 	{
 		// Pose画面を表示しているなら
-		if (pose.GetPose())
+		if (pose.GetPose()||qte.GetStop())
 		{
 			return;
 		}
