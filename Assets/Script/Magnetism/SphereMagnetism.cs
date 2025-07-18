@@ -38,14 +38,16 @@ public class SphereMagnetism : MonoBehaviour
 	private Rigidbody rb;
 	private SphereCollider sCollider;  // 磁石を引き寄せる頂点の計算用
 	private MoveSphere moveS;
-    private TooClose tooClose;
+	private TooClose tooClose;
+	private TooFarAway tooFarAway;
 
-    private GameObject sphereMagUI;    // 磁力オブジェクトの状態のUI
-    private GameObject magNormal;      // 通常
-    private GameObject magCaution;	   // 警告
+	private GameObject sphereMagUI;		// 磁力オブジェクトの状態のUI
+	private GameObject magNormal;		// 通常
+	private GameObject magCaution;		// 警告（近い）
+	private GameObject magWeak;			// 警告（遠い）
 
-    //--- 磁石のリスト管理 ---//
-    private static List<Magnetism> registeredMagnets = new();
+	//--- 磁石のリスト管理 ---//
+	private static List<Magnetism> registeredMagnets = new();
 
 	public static void Register(Magnetism magnet)
 	{
@@ -64,7 +66,6 @@ public class SphereMagnetism : MonoBehaviour
 	{
 		// TryGetComponentの返り値はbool、SphereColliderが見つからなかった時falseになる
 		TryGetComponent<SphereCollider>(out sCollider);
-
 		TryGetComponent<Rigidbody>(out rb);
 
 		playerL.TryGetComponent<AugMagL>(out magL_Aug);
@@ -77,12 +78,14 @@ public class SphereMagnetism : MonoBehaviour
 		TryGetComponent<MoveSphere>(out moveS);
 
 		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
+		tooFarAway = GameObject.Find("DistanceManager").GetComponent<TooFarAway>();
 
 		// 磁力オブジェクトの状態UIを取得
 		sphereMagUI = transform.Find("MachineUI").transform.Find("Ring").gameObject;
-        magNormal = sphereMagUI.transform.Find("Normal").gameObject;
-        magCaution = sphereMagUI.transform.Find("Caution").gameObject;
-    }
+		magNormal = sphereMagUI.transform.Find("Normal").gameObject;
+		magCaution = sphereMagUI.transform.Find("Caution").gameObject;
+		magWeak = sphereMagUI.transform.Find("Weak").gameObject;
+	}
 
 	// Update is called once per frame
 	void Update()
@@ -147,16 +150,26 @@ public class SphereMagnetism : MonoBehaviour
 			{
 				magnet.isSlow_magObj = true;
 				// UIの状態を警告に変更
-                magCaution.SetActive(true);
-                magNormal.SetActive(false);
-            }
+				magCaution.SetActive(true);
+				magNormal.SetActive(false);
+			}
 			else if (magnet.isSlow_magObj && surfaceDistance > tooClose.GetSafetyDist())
 			{
 				magnet.isSlow_magObj = false;
-                // UIの状態を通常に変更
-                magNormal.SetActive(true);
-                magCaution.SetActive(false);
-            }
+				// UIの状態を通常に変更
+				magNormal.SetActive(true);
+				magCaution.SetActive(false);
+			}
+
+			// 離れすぎる直前のやつ
+			if (surfaceDistance >= tooFarAway.GetDangerDist())
+			{
+				magnet.dangerFarAway_magObj = true;
+			}
+			else if (magnet.dangerFarAway_magObj && surfaceDistance < tooFarAway.GetSafetyDist())
+			{
+				magnet.dangerFarAway_magObj = false;
+			}
 
 			// 近づきすぎるとくっつく
 			if (surfaceDistance < magnet.snapDistance)

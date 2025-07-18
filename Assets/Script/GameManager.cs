@@ -981,13 +981,27 @@ public class GameManager : MonoBehaviour
         // 磁力範囲内の時、Normal
         else if (magnetism1.GetInMagnetismArea())
         {
-            pulseDangerL.SetActive(false);
-            pulseNormalL.SetActive(true);
-            playerLNormal.SetActive(true);
-            playerLCaution.SetActive(false);
-            playerLDanger.SetActive(false);
-            playerLWeak.SetActive(false);
-            playerLHold.SetActive(false);
+            // 範囲外に出かけてる時
+            if (magnetism1.GetIsFarAwayPMag() || magnetism1.GetIsFarAwayMagObj())
+            {
+                pulseDangerL.SetActive(false);
+                pulseNormalL.SetActive(true);
+                playerLWeak.SetActive(true);
+                playerLNormal.SetActive(false);
+                playerLCaution.SetActive(false);
+                playerLDanger.SetActive(false);
+                playerLHold.SetActive(false);
+            }
+            else
+            {
+                pulseDangerL.SetActive(false);
+                pulseNormalL.SetActive(true);
+                playerLNormal.SetActive(true);
+                playerLCaution.SetActive(false);
+                playerLDanger.SetActive(false);
+                playerLWeak.SetActive(false);
+                playerLHold.SetActive(false);
+            }
         }
         // 磁力範囲外の時、Weak
         else
@@ -1033,13 +1047,27 @@ public class GameManager : MonoBehaviour
         // 磁力範囲内の時、Normal
         else if (magnetism2.GetInMagnetismArea())
         {
-            pulseDangerR.SetActive(false);
-            pulseNormalR.SetActive(true);
-            playerRNormal.SetActive(true);
-            playerRCaution.SetActive(false);
-            playerRDanger.SetActive(false);
-            playerRWeak.SetActive(false);
-            playerRHold.SetActive(false);
+            // 範囲外に出かけてる時
+            if (magnetism2.GetIsFarAwayPMag() || magnetism2.GetIsFarAwayMagObj())
+            {
+                pulseDangerR.SetActive(false);
+                pulseNormalR.SetActive(true);
+                playerRWeak.SetActive(true);
+                playerRNormal.SetActive(false);
+                playerRCaution.SetActive(false);
+                playerRDanger.SetActive(false);
+                playerRHold.SetActive(false);
+            }
+            else
+            {
+                pulseDangerR.SetActive(false);
+                pulseNormalR.SetActive(true);
+                playerRNormal.SetActive(true);
+                playerRCaution.SetActive(false);
+                playerRDanger.SetActive(false);
+                playerRWeak.SetActive(false);
+                playerRHold.SetActive(false);
+            }
         }
         // 磁力範囲外の時、Weak
         else

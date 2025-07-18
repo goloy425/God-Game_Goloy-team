@@ -22,9 +22,6 @@ public class Magnetism : MonoBehaviour
 	public float strongMagnetism = 999.0f;	// 磁力（近づきすぎの方）
 	public float snapDistance = 0.07f;		// くっつく距離の閾値
 
-	public float dangerZone;   // 危険範囲
-	public float safeZone;		// 安全範囲
-
 	//--- magnetismRangeとdeadRangeの設定 ---//
 	// とりあえずこの2つだけ、もし他の変数も同じようにする場合は↓
 	// 上の「public」を「[SerializeField] private」にしたうえで↓
@@ -68,17 +65,22 @@ public class Magnetism : MonoBehaviour
 
 	private Rigidbody rb;
 	private TooClose tooClose;
+	private TooFarAway tooFarAway;
 
 	// 強化状態かどうか確認するためのやつ
 	private AugMagL playerL;
 	private AugMagR playerR;
 
-	private bool L_isAugmenting;
-	private bool R_isAugmenting;
+	private bool L_isAugmenting = false;
+	private bool R_isAugmenting = false;
 
 	// スローモーション管理
-	public bool isSlow_pMag;		// プレイヤーの磁石と近付きすぎた
-	public bool isSlow_magObj;		// 磁力オブジェクト　　　〃
+	[HideInInspector] public bool isSlow_pMag = false;		// プレイヤーの磁石と近付きすぎた
+	[HideInInspector] public bool isSlow_magObj = false;	// 磁力オブジェクト　　　〃
+
+	// 離れすぎる直前ですよのフラグ
+	/*[HideInInspector]*/ public bool dangerFarAway_pMag = false;
+	/*[HideInInspector]*/ public bool dangerFarAway_magObj = false;
 
 	void Awake()
 	{
@@ -140,6 +142,7 @@ public class Magnetism : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 		audioSource = GetComponent<AudioSource>();
 		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
+		tooFarAway = GameObject.Find("DistanceManager").GetComponent<TooFarAway>();
 
 		// 成否に関わるフラグを初期化しておく
 		isSnapping = false;
@@ -204,6 +207,16 @@ public class Magnetism : MonoBehaviour
 		else if (isSlow_pMag && distance > tooClose.GetPSafetyDist())
 		{
 			isSlow_pMag = false;
+		}
+
+		// 離れすぎる直前のやつ（磁力オブジェクトの磁力範囲内にいる時は入らない）
+		if (distance >= tooFarAway.GetPDangerDist() && !inObjMagArea)
+		{
+			dangerFarAway_pMag = true;
+		}
+		else if (dangerFarAway_pMag && distance < tooFarAway.GetPSafetyDist() || inObjMagArea)
+		{
+			dangerFarAway_pMag = false;
 		}
 
 		// くっつく処理：両方が強化状態にある時は無視
@@ -359,4 +372,16 @@ public class Magnetism : MonoBehaviour
 	{
 		return R_isAugmenting;
 	}
+
+    // プレイヤーの磁石同士が離れすぎる直前かどうか
+    public bool GetIsFarAwayPMag()
+	{
+		return dangerFarAway_pMag;
+	}
+    // プレイヤーの磁石対磁力オブジェクトが離れすぎる直前かどうか
+    public bool GetIsFarAwayMagObj()
+    {
+        return dangerFarAway_magObj;
+    }
+
 }
