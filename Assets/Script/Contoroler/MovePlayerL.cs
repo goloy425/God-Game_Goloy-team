@@ -36,14 +36,19 @@ public class MovePlayerL : MonoBehaviour
 
 	Pose pose;          // Poseの状態を受け取る
 
+	QTE qte;
+
 	// Start is called before the first frame update
 	void Start()
 	{
 		// Poseオブジェクトを取得
 		pose = GameObject.Find("Pose").GetComponent<Pose>();
 
-		// Rigidbodyコンポーネントを取得
-		rb = transform.parent.GetComponent<Rigidbody>();
+        // CheckFoundコンポーネントを取得
+        qte = GameObject.Find("QTE").GetComponent<QTE>();
+
+        // Rigidbodyコンポーネントを取得
+        rb = transform.parent.GetComponent<Rigidbody>();
 		//// PlaySEAtRegularIntervalsコンポーネントを取得
 		//playSE = GetComponent<PlaySEAtRegularIntervals>();
 		// アニメーターを取得
@@ -63,10 +68,10 @@ public class MovePlayerL : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		// Pose画面を表示しているなら
-		if(pose.GetPose())
-		{
-			return;
+        // Pose画面を表示しているなら
+        if (pose.GetPose() || qte.GetStop())
+        {
+            return;
 		}
 
 		// カメラの方向から、X-Z平面の単位ベクトルを取得
