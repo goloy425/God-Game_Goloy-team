@@ -23,7 +23,7 @@ public class Result_Score : MonoBehaviour
 		//--- ƒvƒŒƒCŽžŠÔ ---//
 		if (PlayerPrefs.HasKey("PlayTime"))
 		{
-			int time = PlayerPrefs.GetInt("PlayTime");
+			int time = Mathf.FloorToInt(PlayerPrefs.GetFloat("PlayTime"));
 			nDis.SetTime(time);
 		}
 		else
