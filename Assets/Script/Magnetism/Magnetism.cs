@@ -85,7 +85,7 @@ public class Magnetism : MonoBehaviour
 	[HideInInspector] public bool dangerFarAway_magObj = false;
 
 	private float time = 0.0f;
-    /*[HideInInspector]*/ public bool isResisting = false;
+	[HideInInspector] public bool isResisting = false;
 
 	// 磁力範囲とかのデバッグ用Awake()はコメントアウトして最後尾に持ってった
 	// 必要ならコメントアウト解除してこの直下に貼ること
@@ -173,9 +173,6 @@ public class Magnetism : MonoBehaviour
 			return;
 		}
 
-		if (inPlayerMagArea) { dangerFarAway_magObj = false; }
-		if (!dangerFarAway_pMag && !dangerFarAway_magObj) { isResisting = false; }
-
 		// プレイヤーの磁石同士が離れすぎる直前のやつ
 		// （磁力オブジェクトの磁力範囲内にいる時は入らない）
 		if (distance >= tooFarAway.GetPDangerDist() && !inObjMagArea)
@@ -188,6 +185,11 @@ public class Magnetism : MonoBehaviour
 			dangerFarAway_pMag = false;
 			isResisting = false;
 		}
+
+		// 離れすぎ判定　フラグの調整
+		if (inPlayerMagArea) { dangerFarAway_magObj = false; }
+		if (!dangerFarAway_pMag && !dangerFarAway_magObj) { isResisting = false; }
+
 
 		// スローモーション切替用フラグの管理
 		if (distance <= tooClose.GetPDangerDist())
