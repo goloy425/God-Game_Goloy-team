@@ -17,10 +17,10 @@ public class CustomCameraController : MonoBehaviour
 	[Header("開始時の演出にかける秒数")]
 	public float startDirectionTime = 2.0f;
 
-    [Header("クリア時の演出にかける秒数")]
-    public float clearDirectionTime = 4.0f;
+	[Header("クリア時の演出にかける秒数")]
+	public float clearDirectionTime = 4.0f;
 
-    [Header("カメラ設定")]
+	[Header("カメラ設定")]
 	public float minSize = 5f;          // 最小サイズ
 	public float maxSize = 15f;         // 最大サイズを15に制限
 	public float zoomSpeed = 5f;        // 拡大速度
@@ -30,7 +30,8 @@ public class CustomCameraController : MonoBehaviour
 	[Header("近すぎズーム用")]
 	public TooClose distManager;
 	public float focusSize = 4.0f;      // フォーカス時のカメラサイズ
-	public float focusSpeed = 5.0f;     // フォーカス時のズーム・移動スピード
+	//private float zoomSpeed_origin = 0.0f;		// スローでない時に拡大速度を下げるので、元の数値の保存用
+	//public bool isSlow = false;
 
 	[Header("プレイヤー・磁力オブジェクトのUI")]
 	public List<GameObject> stateUIList = new List<GameObject>();
@@ -84,6 +85,8 @@ public class CustomCameraController : MonoBehaviour
 			// 開始ステージ以前のステージの演出を完了済みにする
 			for (int i = 0; i < startStage - 1; i++) { completeDirectionFg[i] = true; }
 		}
+
+		//zoomSpeed_origin = zoomSpeed;
 	}
 
 	// Update is called once per frame
@@ -122,13 +125,13 @@ public class CustomCameraController : MonoBehaviour
 				}
 				// プレイヤーに追従するカメラ処理に戻す
 				else
-                {
-                    // 表示にする
-                    foreach (GameObject stateUI in stateUIList)
-                    {
-                        stateUI.SetActive(true);
-                    }
-                    MoveCamera();
+				{
+					// 表示にする
+					foreach (GameObject stateUI in stateUIList)
+					{
+						stateUI.SetActive(true);
+					}
+					MoveCamera();
 				}
 			}
 			// ステージクリア後に次ステージ全体を写して戻す演出を行う
@@ -141,14 +144,14 @@ public class CustomCameraController : MonoBehaviour
 				StartDirection(curStage);
 				timer += Time.deltaTime;
 
-                // 非表示にする
-                foreach (GameObject stateUI in stateUIList)
-                {
-                    stateUI.SetActive(false);
-                }
-            }
-            // 演出時間経過後タイマーリセット
-            else if (timer > clearDirectionTime)
+				// 非表示にする
+				foreach (GameObject stateUI in stateUIList)
+				{
+					stateUI.SetActive(false);
+				}
+			}
+			// 演出時間経過後タイマーリセット
+			else if (timer > clearDirectionTime)
 			{
 				timer = 0.0f;
 				completeDirectionFg[curStage] = true;
@@ -156,31 +159,42 @@ public class CustomCameraController : MonoBehaviour
 				curStage++;
 			}
 			else
-            {
-                // 表示にする
-                foreach (GameObject stateUI in stateUIList)
-                {
-                    stateUI.SetActive(true);
-                }
+			{
+				// 表示にする
+				foreach (GameObject stateUI in stateUIList)
+				{
+					stateUI.SetActive(true);
+				}
 
-                MoveCamera();
+				MoveCamera();
 			}
 		}
 		else
 		{
 			MoveCamera();
 		}
-		
-		// スローになったら危ない方の磁石にカメラをフォーカス
-		if (mag1.isSlow_pMag && mag2.isSlow_pMag)
+
+		// 離れすぎる直前にもフォーカスを入れようとしたがカメラの動きがグワングワンして気持ち悪かったのでやめた
+		//if (mag1.isSlow_pMag || mag1.isSlow_magObj || mag2.isSlow_pMag || mag2.isSlow_magObj)
+		//{
+		//	isSlow = true;
+		//}
+		//else
+		//{
+		//	isSlow = false;
+		//	zoomSpeed = zoomSpeed_origin;
+		//}
+
+		// スローになったらor離れすぎる直前になったら磁石にカメラをフォーカス
+		if (mag1.isSlow_pMag && mag2.isSlow_pMag/* || mag1.dangerFarAway_pMag && mag2.dangerFarAway_pMag*/)
 		{
 			FocusOnMagnets();
 		}
-		else if (mag1.isSlow_pMag || mag1.isSlow_magObj)
+		else if (mag1.isSlow_pMag || mag1.isSlow_magObj/* || mag1.dangerFarAway_pMag || mag1.dangerFarAway_magObj*/)
 		{
 			FocusOnDangerPlayer(new Vector3(target1.position.x, target1.position.y, target1.position.z));
 		}
-		else if (mag2.isSlow_pMag || mag2.isSlow_magObj)
+		else if (mag2.isSlow_pMag || mag2.isSlow_magObj/* || mag2.dangerFarAway_pMag || mag2.dangerFarAway_magObj*/)
 		{
 			FocusOnDangerPlayer(new Vector3(target2.position.x, target2.position.y, target2.position.z));
 		}
@@ -241,8 +255,10 @@ public class CustomCameraController : MonoBehaviour
 	//--- プレイヤーにカメラをフォーカスする関数 ---//
 	private void FocusOnMagnets()
 	{
+		//if (!isSlow) { zoomSpeed /= 4.0f; }
+
 		Vector3 targetPos = (target1.position + target2.position) / 2f;
-		midPoint = Vector3.Lerp(midPoint, targetPos, Time.deltaTime * focusSpeed);
+		midPoint = Vector3.Lerp(midPoint, targetPos, Time.deltaTime * zoomSpeed);
 
 		// カメラサイズをフォーカス用サイズにスムーズに変更
 		cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, focusSize, Time.deltaTime * zoomSpeed);
@@ -257,7 +273,9 @@ public class CustomCameraController : MonoBehaviour
 	//--- 危ない方のプレイヤーにフォーカスする関数 ---//
 	private void FocusOnDangerPlayer(Vector3 target)
 	{
-		midPoint = Vector3.Lerp(midPoint, target, Time.deltaTime * focusSpeed);
+		//if (!isSlow) { zoomSpeed /= 4.0f; }
+
+		midPoint = Vector3.Lerp(midPoint, target, Time.deltaTime * zoomSpeed);
 
 		// カメラサイズをフォーカス用サイズにスムーズに変更
 		cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, focusSize, Time.deltaTime * zoomSpeed);

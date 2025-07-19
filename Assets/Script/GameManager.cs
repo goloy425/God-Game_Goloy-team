@@ -982,7 +982,7 @@ public class GameManager : MonoBehaviour
         else if (magnetism1.GetInMagnetismArea())
         {
             // 範囲外に出かけてる時
-            if (magnetism1.GetIsFarAwayPMag() || magnetism1.GetIsFarAwayMagObj())
+            if (magnetism1.GetIsResisting())
             {
                 pulseDangerL.SetActive(false);
                 pulseNormalL.SetActive(true);
@@ -1048,7 +1048,7 @@ public class GameManager : MonoBehaviour
         else if (magnetism2.GetInMagnetismArea())
         {
             // 範囲外に出かけてる時
-            if (magnetism2.GetIsFarAwayPMag() || magnetism2.GetIsFarAwayMagObj())
+            if (magnetism2.GetIsResisting())
             {
                 pulseDangerR.SetActive(false);
                 pulseNormalR.SetActive(true);

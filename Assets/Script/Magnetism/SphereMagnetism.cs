@@ -165,10 +165,12 @@ public class SphereMagnetism : MonoBehaviour
 			if (surfaceDistance >= tooFarAway.GetDangerDist())
 			{
 				magnet.dangerFarAway_magObj = true;
+				magnet.isResisting = true;
 			}
 			else if (magnet.dangerFarAway_magObj && surfaceDistance < tooFarAway.GetSafetyDist())
 			{
-				magnet.dangerFarAway_magObj = false;
+				magnet.dangerFarAway_magObj = false; 
+				magnet.isResisting = false;
 			}
 
 			// 近づきすぎるとくっつく

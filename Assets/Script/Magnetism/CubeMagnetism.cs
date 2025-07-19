@@ -123,10 +123,12 @@ public class CubeMagnetism : MonoBehaviour
 			if (surfaceDistance >= tooFarAway.GetDangerDist_C() && !magnet.inPlayerMagArea)
 			{
 				magnet.dangerFarAway_magObj = true;
+				magnet.isResisting = true;
 			}
 			else if (magnet.dangerFarAway_magObj && surfaceDistance < tooFarAway.GetSafetyDist_C())
 			{
 				magnet.dangerFarAway_magObj = false;
+				magnet.isResisting = false;
 			}
 
 			// ‹ß•t‚«‚·‚¬‚é‚Æ‚­‚Á‚Â‚­

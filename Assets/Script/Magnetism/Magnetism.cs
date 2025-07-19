@@ -78,14 +78,14 @@ public class Magnetism : MonoBehaviour
 
 	// スローモーション管理
 	[HideInInspector] public bool isSlow_pMag = false;		// プレイヤーの磁石と近付きすぎた
-	[HideInInspector] public bool isSlow_magObj = false;	// 磁力オブジェクト　　　〃
+	[HideInInspector] public bool isSlow_magObj = false;    // 磁力オブジェクト　　　〃
 
 	// 離れすぎる直前ですよのフラグ
-	/*[HideInInspector]*/ public bool dangerFarAway_pMag = false;
-	/*[HideInInspector]*/ public bool dangerFarAway_magObj = false;
+	[HideInInspector] public bool dangerFarAway_pMag = false;
+	[HideInInspector] public bool dangerFarAway_magObj = false;
 
 	private float time = 0.0f;
-	public bool isResisting = false;
+    /*[HideInInspector]*/ public bool isResisting = false;
 
 	// 磁力範囲とかのデバッグ用Awake()はコメントアウトして最後尾に持ってった
 	// 必要ならコメントアウト解除してこの直下に貼ること
@@ -166,7 +166,15 @@ public class Magnetism : MonoBehaviour
 			inPlayerMagArea = false;
 		}
 
+		// カメラがプレイヤーに追従し始めるまで後の処理をスルーする
+		if (time < ccc.startDirectionTime)
+		{
+			time += Time.deltaTime;
+			return;
+		}
+
 		if (inPlayerMagArea) { dangerFarAway_magObj = false; }
+		if (!dangerFarAway_pMag && !dangerFarAway_magObj) { isResisting = false; }
 
 		// プレイヤーの磁石同士が離れすぎる直前のやつ
 		// （磁力オブジェクトの磁力範囲内にいる時は入らない）
@@ -175,17 +183,10 @@ public class Magnetism : MonoBehaviour
 			dangerFarAway_pMag = true;
 			isResisting = true;
 		}
-		else if (dangerFarAway_pMag && distance < tooFarAway.GetPSafetyDist() || inObjMagArea)
+		else if (dangerFarAway_pMag && distance < tooFarAway.GetPSafetyDist())
 		{
 			dangerFarAway_pMag = false;
 			isResisting = false;
-		}
-
-		// カメラがプレイヤーに追従し始めるまで後の処理をスルーする
-		if (time < ccc.startDirectionTime)
-		{
-			time += Time.deltaTime;
-			return;
 		}
 
 		// スローモーション切替用フラグの管理
@@ -196,12 +197,6 @@ public class Magnetism : MonoBehaviour
 		else if (isSlow_pMag && distance > tooClose.GetPSafetyDist())
 		{
 			isSlow_pMag = false;
-		}
-
-		//--- 離れすぎる直前の抵抗処理 ---//
-		if (isResisting)
-		{
-			
 		}
 
 		// くっつく処理：両方が強化状態にある時は無視
@@ -333,7 +328,6 @@ public class Magnetism : MonoBehaviour
 	{
 		return isSlow_pMag;
 	}
-
 	// 磁力オブジェクトによるスロー再生かどうかの取得
 	public bool GetIsSlowMagObj()
 	{
@@ -351,7 +345,6 @@ public class Magnetism : MonoBehaviour
 	{
 		return L_isAugmenting;
 	}
-
 	// Rの磁石が強化中かどうかの取得
 	public bool GetIsAugmentingR()
 	{
@@ -367,6 +360,11 @@ public class Magnetism : MonoBehaviour
 	public bool GetIsFarAwayMagObj()
 	{
 		return dangerFarAway_magObj;
+	}
+
+	public bool GetIsResisting()
+	{
+		return isResisting;
 	}
 }
 

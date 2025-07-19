@@ -14,6 +14,13 @@ public class TooFarAway : MonoBehaviour
 	public Magnetism magnet1;
 	public Magnetism magnet2;
 
+	[Header("プレイヤー(Controllerじゃない)を設定")]
+	public GameObject playerL;
+	public GameObject playerR;
+
+	[Header("遠すぎ危険の時のRB.dragの数値")]
+	[SerializeField] private float dangerDrag = 0.0f;
+
 	private float dangerDist;	// 危険距離
 	private float safetyDist;	//  ↑ から脱する距離
 
@@ -25,24 +32,64 @@ public class TooFarAway : MonoBehaviour
 	private float pDangerDist;
 	private float pSafetyDist;
 
+	// プレイヤーのコンポーネント
+	private Magnetism magL;
+	private Magnetism magR;
+	private Rigidbody pLrb;
+	private Rigidbody pRrb;
+
 	// Start is called before the first frame update
 	void Start()
 	{
-		// 各距離を設定
-		dangerDist = magnet1.magnetismRange * 0.75f;
-		safetyDist = dangerDist - 0.4f;
+		// 各距離を設定　AdjustMagnetismが関わってくるので現状の通常磁力範囲を固定値で入れてある…
+		dangerDist = 6.0f * 0.75f;
+		safetyDist = dangerDist - 0.05f;
 
-		dangerDist_c = 8.0f * 0.85f;	// 2つに分かれるやつの磁力範囲
-		safetyDist_c = dangerDist_c - 0.4f;
+		dangerDist_c = 8.0f * 0.8f;	// 8.0f：2つに分かれるやつの磁力範囲
+		safetyDist_c = dangerDist_c - 0.05f;
 
-		pDangerDist = magnet1.magnetismRange * 0.85f;
-		pSafetyDist = pDangerDist - 0.4f;
+		pDangerDist = 7.0f * 0.8f;		// 7.0F：プレイヤーの磁力範囲
+		pSafetyDist = pDangerDist - 0.05f;
+
+		// プレイヤーのコンポーネントを取得
+		magL = playerL.transform.Find("Magnet1").GetComponent<Magnetism>();
+		magR = playerR.transform.Find("Magnet2").GetComponent<Magnetism>();
+		pLrb = playerL.GetComponent<Rigidbody>();
+		pRrb = playerR.GetComponent<Rigidbody>();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		
+		// どっちも危なくない時はdragをもとの値に戻しておく
+		if (!magL.dangerFarAway_magObj && !magL.dangerFarAway_pMag)
+		{
+			pLrb.drag = 0.0f;
+		}
+		if (!magR.dangerFarAway_magObj && !magR.dangerFarAway_pMag)
+		{
+			pRrb.drag = 0.0f;
+		}
+
+		// Lの抵抗処理
+		if (magL.GetIsResisting())
+		{
+			pLrb.drag = dangerDrag;
+		}
+		else
+		{
+			pLrb.drag = 0.0f;
+		}
+
+		// Rの抵抗処理
+		if (magR.GetIsResisting())
+		{
+			pRrb.drag = dangerDrag;
+		}
+		else
+		{
+			pRrb.drag = 0.0f;
+		}
 	}
 
 	//--- 各距離のゲッター ---//

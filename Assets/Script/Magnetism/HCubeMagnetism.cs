@@ -136,10 +136,12 @@ public class HCubeMagnetism : MonoBehaviour
 		if (minDistance >= tooFarAway.GetDangerDist())
 		{
 			nearestMagnet.dangerFarAway_magObj = true;
+			nearestMagnet.isResisting = true;
 		}
 		else if (nearestMagnet.dangerFarAway_magObj && minDistance < tooFarAway.GetSafetyDist())
 		{
 			nearestMagnet.dangerFarAway_magObj = false;
+			nearestMagnet.isResisting = false;
 		}
 
 		// ‹z’…ˆ—
