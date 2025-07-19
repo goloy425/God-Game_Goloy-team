@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+
+// QTEの表示とコマンド入力
 
 public class QTE : MonoBehaviour
 {
+    CanvasGroup canvas;
+
     public TMP_Text[] QTETexts;
 
     private List<int> Actions = new List<int>();
@@ -21,31 +26,56 @@ public class QTE : MonoBehaviour
 
     private GameInputs inputs;
 
-    bool now = false;
-    bool old = false;
+    CheckFound cfL;
+    CheckFound cfR;
+
+    bool clear = false;
+    bool reset = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        canvas = this.GetComponent<CanvasGroup>();
+        canvas.alpha = 0.0f;
+
+        cfR = GameObject.Find("PlayerR").GetComponent<CheckFound>();
+        cfL = GameObject.Find("PlayerL").GetComponent<CheckFound>();
+
         inputs = new GameInputs();
         inputs.Enable();
-;
-        SetQTE();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        if(now!=old)
+        if (!cfR.GetHit())
         {
+            canvas.alpha = 0.0f;
+            clear = false;
             return;
         }
+        else
+        {
+            canvas.alpha = 1.0f;
+        }
+        if (num == 4)
+        {
+            num = 0;
+            clear = true;
+            reset = false;
+        }
 
-        switch(QTETexts[num].text)
+        if (!reset)
+        {
+            SetQTE();
+            reset = true;
+        }
+
+        switch (QTETexts[num].text)
         {
             case "A":
-                if(inputs.QTE.A.IsPressed())
+                if (inputs.QTE.A.WasPerformedThisFrame())
                 {
                     PushedQTE();
 
@@ -54,7 +84,7 @@ public class QTE : MonoBehaviour
                 break;
 
             case "B":
-                if(inputs.QTE.B.IsPressed())
+                if (inputs.QTE.B.WasPerformedThisFrame())
                 {
                     PushedQTE();
 
@@ -63,7 +93,7 @@ public class QTE : MonoBehaviour
                 break;
 
             case "X":
-                if(inputs.QTE.X.IsPressed())
+                if (inputs.QTE.X.WasPerformedThisFrame())
                 {
                     PushedQTE();
 
@@ -72,7 +102,7 @@ public class QTE : MonoBehaviour
                 break;
 
             case "Y":
-                if(inputs.QTE.Y.IsPressed())
+                if (inputs.QTE.Y.WasPerformedThisFrame())
                 {
                     PushedQTE();
 
@@ -90,8 +120,8 @@ public class QTE : MonoBehaviour
         for (int i = 0; i < maxNum; ++i)
         {
             int randNum = Random.Range(0, 3);
-                
-            switch(randNum)
+
+            switch (randNum)
             {
                 case 0:
                     QTETexts[i].text = "A";
@@ -112,6 +142,9 @@ public class QTE : MonoBehaviour
                 default:
                     break;
             }
+            Color color = new Color(1.0f,1.0f,1.0f,1.0f);
+            QTETexts[i].color = color;
+
         }
     }
 
@@ -120,5 +153,19 @@ public class QTE : MonoBehaviour
         Color color = new Color();
         color.a = 0.5f;
         QTETexts[num].color = color;
+    }
+
+    public bool GetStop()
+    {
+        if (cfR.GetHit() || cfL.GetHit())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool GetClear()
+    {
+        return clear;
     }
 }
