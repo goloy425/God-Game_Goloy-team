@@ -98,7 +98,7 @@ public class StageManager : MonoBehaviour
         string nextSceneName = "Stage" + currentStage; // 次のシーン名を生成
         if (Application.CanStreamedLevelBeLoaded(nextSceneName)) // シーンが存在するか確認
         {
-            PlayerPrefs.SetInt("CurrentStage", currentStage); // ステージ番号を保存
+            //PlayerPrefs.SetInt("CurrentStage", currentStage); // ステージ番号を保存
             SceneManager.LoadScene(nextSceneName); // 次のシーンを読み込む
         }
         else

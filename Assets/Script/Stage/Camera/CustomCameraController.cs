@@ -141,6 +141,7 @@ public class CustomCameraController : MonoBehaviour
 				rbL.velocity = Vector3.zero;
 				rbR.velocity = Vector3.zero;
 
+				Debug.Log("演出中のステージ：" + curStage);
 				StartDirection(curStage);
 				timer += Time.deltaTime;
 
