@@ -6,6 +6,7 @@ using UnityEngine;
 
 //=================================================
 // 制作者　宮本和音
+// プレイヤーの磁石の処理
 //=================================================
 
 public class Magnetism : MonoBehaviour
@@ -21,9 +22,6 @@ public class Magnetism : MonoBehaviour
 	public float magnetism = 200.0f;		// 磁力
 	public float strongMagnetism = 999.0f;	// 磁力（近づきすぎの方）
 	public float snapDistance = 0.07f;		// くっつく距離の閾値
-
-	public float dangerZone;   // 危険範囲
-	public float safeZone;		// 安全範囲
 
 	//--- magnetismRangeとdeadRangeの設定 ---//
 	// とりあえずこの2つだけ、もし他の変数も同じようにする場合は↓
@@ -67,60 +65,30 @@ public class Magnetism : MonoBehaviour
 	private AudioSource audioSource;
 
 	private Rigidbody rb;
+	private CustomCameraController ccc;
 	private TooClose tooClose;
+	private TooFarAway tooFarAway;
 
 	// 強化状態かどうか確認するためのやつ
 	private AugMagL playerL;
 	private AugMagR playerR;
 
-	private bool L_isAugmenting;
-	private bool R_isAugmenting;
+	private bool L_isAugmenting = false;
+	private bool R_isAugmenting = false;
 
 	// スローモーション管理
-	public bool isSlow_pMag;		// プレイヤーの磁石と近付きすぎた
-	public bool isSlow_magObj;		// 磁力オブジェクト　　　〃
+	[HideInInspector] public bool isSlow_pMag = false;		// プレイヤーの磁石と近付きすぎた
+	[HideInInspector] public bool isSlow_magObj = false;    // 磁力オブジェクト　　　〃
 
-	void Awake()
-	{
-		//--- 磁力・範囲のデバッグ用 ---//
-		// 磁石同士で各変数が一致しているかチェック、不一致なら実行できない
+	// 離れすぎる直前ですよのフラグ
+	[HideInInspector] public bool dangerFarAway_pMag = false;
+	[HideInInspector] public bool dangerFarAway_magObj = false;
 
-		Magnetism mag1 = GameObject.Find("Magnet1").GetComponent<Magnetism>();
-		Magnetism mag2 = GameObject.Find("Magnet2").GetComponent<Magnetism>();
+	private float time = 0.0f;
+    /*[HideInInspector]*/ public bool isResisting = false;
 
-		if (mag1.magnetismRange != mag2.magnetismRange || mag1.deadRange != mag2.deadRange ||
-			mag1.magnetism != mag2.magnetism || mag1.strongMagnetism != mag2.strongMagnetism ||
-			mag1.snapDistance != mag2.snapDistance)
-		{
-			if (mag1.magnetismRange != mag2.MagnetismRange)
-			{
-				Debug.LogError("Error：変数不一致　[magnetismRange]が一致していません　" +
-					"magnet1：" + mag1.magnetismRange + "　magnet2：" + mag2.magnetismRange);
-			}
-			if (mag1.deadRange != mag2.deadRange)
-			{
-				Debug.LogError("Error：変数不一致　[deadRange]が一致していません　" +
-					"magnet1：" + mag1.deadRange + "　magnet2：" + mag2.deadRange);
-			}
-			if (mag1.magnetism != mag2.magnetism)
-			{
-				Debug.LogError("Error：変数不一致　[magnetism]が一致していません　" +
-					"magnet1：" + mag1.magnetism + "　magnet2：" + mag2.magnetism);
-			}
-			if (mag1.strongMagnetism != mag2.strongMagnetism)
-			{
-				Debug.LogError("Error：変数不一致　[strongMagnetism]が一致していません　" +
-					"magnet1：" + mag1.strongMagnetism + "　magnet2：" + mag2.strongMagnetism);
-			}
-			if (mag1.snapDistance != mag2.snapDistance)
-			{
-				Debug.LogError("Error：変数不一致　[snapDistance]が一致していません　" +
-					"magnet1：" + mag1.snapDistance + "　magnet2：" + mag2.snapDistance);
-			}
-
-			//UnityEditor.EditorApplication.isPlaying = false;	// ゲームの実行を停止
-		}
-	}
+	// 磁力範囲とかのデバッグ用Awake()はコメントアウトして最後尾に持ってった
+	// 必要ならコメントアウト解除してこの直下に貼ること
 
 	void OnEnable()
 	{
@@ -139,7 +107,9 @@ public class Magnetism : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody>();
 		audioSource = GetComponent<AudioSource>();
+		ccc = GameObject.Find("Main Camera").GetComponent<CustomCameraController>();
 		tooClose = GameObject.Find("DistanceManager").GetComponent<TooClose>();
+		tooFarAway = GameObject.Find("DistanceManager").GetComponent<TooFarAway>();
 
 		// 成否に関わるフラグを初期化しておく
 		isSnapping = false;
@@ -194,6 +164,29 @@ public class Magnetism : MonoBehaviour
 		else
 		{
 			inPlayerMagArea = false;
+		}
+
+		// カメラがプレイヤーに追従し始めるまで後の処理をスルーする
+		if (time < ccc.startDirectionTime)
+		{
+			time += Time.deltaTime;
+			return;
+		}
+
+		if (inPlayerMagArea) { dangerFarAway_magObj = false; }
+		if (!dangerFarAway_pMag && !dangerFarAway_magObj) { isResisting = false; }
+
+		// プレイヤーの磁石同士が離れすぎる直前のやつ
+		// （磁力オブジェクトの磁力範囲内にいる時は入らない）
+		if (distance >= tooFarAway.GetPDangerDist() && !inObjMagArea)
+		{
+			dangerFarAway_pMag = true;
+			isResisting = true;
+		}
+		else if (dangerFarAway_pMag && distance < tooFarAway.GetPSafetyDist())
+		{
+			dangerFarAway_pMag = false;
+			isResisting = false;
 		}
 
 		// スローモーション切替用フラグの管理
@@ -335,7 +328,6 @@ public class Magnetism : MonoBehaviour
 	{
 		return isSlow_pMag;
 	}
-
 	// 磁力オブジェクトによるスロー再生かどうかの取得
 	public bool GetIsSlowMagObj()
 	{
@@ -353,10 +345,69 @@ public class Magnetism : MonoBehaviour
 	{
 		return L_isAugmenting;
 	}
-
 	// Rの磁石が強化中かどうかの取得
 	public bool GetIsAugmentingR()
 	{
 		return R_isAugmenting;
 	}
+
+	// プレイヤーの磁石同士が離れすぎる直前かどうか
+	public bool GetIsFarAwayPMag()
+	{
+		return dangerFarAway_pMag;
+	}
+	// プレイヤーの磁石対磁力オブジェクトが離れすぎる直前かどうか
+	public bool GetIsFarAwayMagObj()
+	{
+		return dangerFarAway_magObj;
+	}
+
+	public bool GetIsResisting()
+	{
+		return isResisting;
+	}
 }
+
+
+
+//void Awake()
+//{
+//	//--- 磁力・範囲のデバッグ用 ---//
+//	// 磁石同士で各変数が一致しているかチェック、不一致なら実行できない
+
+//	Magnetism mag1 = GameObject.Find("Magnet1").GetComponent<Magnetism>();
+//	Magnetism mag2 = GameObject.Find("Magnet2").GetComponent<Magnetism>();
+
+//	if (mag1.magnetismRange != mag2.magnetismRange || mag1.deadRange != mag2.deadRange ||
+//		mag1.magnetism != mag2.magnetism || mag1.strongMagnetism != mag2.strongMagnetism ||
+//		mag1.snapDistance != mag2.snapDistance)
+//	{
+//		if (mag1.magnetismRange != mag2.MagnetismRange)
+//		{
+//			Debug.LogError("Error：変数不一致　[magnetismRange]が一致していません　" +
+//				"magnet1：" + mag1.magnetismRange + "　magnet2：" + mag2.magnetismRange);
+//		}
+//		if (mag1.deadRange != mag2.deadRange)
+//		{
+//			Debug.LogError("Error：変数不一致　[deadRange]が一致していません　" +
+//				"magnet1：" + mag1.deadRange + "　magnet2：" + mag2.deadRange);
+//		}
+//		if (mag1.magnetism != mag2.magnetism)
+//		{
+//			Debug.LogError("Error：変数不一致　[magnetism]が一致していません　" +
+//				"magnet1：" + mag1.magnetism + "　magnet2：" + mag2.magnetism);
+//		}
+//		if (mag1.strongMagnetism != mag2.strongMagnetism)
+//		{
+//			Debug.LogError("Error：変数不一致　[strongMagnetism]が一致していません　" +
+//				"magnet1：" + mag1.strongMagnetism + "　magnet2：" + mag2.strongMagnetism);
+//		}
+//		if (mag1.snapDistance != mag2.snapDistance)
+//		{
+//			Debug.LogError("Error：変数不一致　[snapDistance]が一致していません　" +
+//				"magnet1：" + mag1.snapDistance + "　magnet2：" + mag2.snapDistance);
+//		}
+
+//		//UnityEditor.EditorApplication.isPlaying = false;	// ゲームの実行を停止
+//	}
+//}
