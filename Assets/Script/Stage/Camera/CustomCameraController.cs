@@ -41,8 +41,10 @@ public class CustomCameraController : MonoBehaviour
 	private Vector3 midPoint;
 
 	private int curStage = 0;                   // 現在のステージ
-	private int startStage;                     // 開始ステージ
-	private float startMinSize = 20.0f;         // 最初にステージの全体を写してから戻す
+    private int startStage = 0;                 // 開始ステージ
+    private int startStageGM = 0;				// ゲームマネージャーで設定されている開始ステージ
+    private int startStageRetry = 0;            // リトライ時の開始ステージ
+    private float startMinSize = 20.0f;         // 最初にステージの全体を写してから戻す
 	private bool[] completeDirectionFg = { };   // 各ステージでステージクリア後演出が終わったかどうか
 	private bool isDirection = false;			// 現在演出中かどうか
 	private float timer = 0.0f;
@@ -78,8 +80,15 @@ public class CustomCameraController : MonoBehaviour
 		isDirection = false;						
 		startMinSize = maxSize - 1.0f;              // 0除算回避のため最大サイズと同じにしない
 
-		startStage = gameManager.GetStartStage();
-		// 開始ステージが2以上で設定されている時
+		// ゲームマネージャーで設定した値とリトライ時の値の大きいほうを開始ステージとする
+		startStageGM = gameManager.GetStartStage();
+		startStageRetry = PlayerPrefs.GetInt("CurrentStageNum", 0) + 1;
+        Debug.Log("startStageGM  " + startStageGM);
+        Debug.Log("startStageRetry  " + startStageRetry);
+
+        startStage = Mathf.Max(startStageGM, startStageRetry);
+
+		// 開始ステージが1以上で設定されている時
 		if (startStage > 0)
 		{
 			// 入力を添え字に合わせる

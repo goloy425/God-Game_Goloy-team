@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
 	public int startStage;
 
     [Header("ステージ移動時のフェード処理にかける秒数")]
-    public float fadeDuration = 3.0f;
+    public float fadeDuration = 0.3f;
 
     [Header("遷移先のシーン名")]
 	public string resultSceneName = "Result";       // 遷移先のシーン名をInspectorで設定

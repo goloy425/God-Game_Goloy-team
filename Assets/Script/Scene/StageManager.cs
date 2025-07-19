@@ -54,6 +54,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -98,7 +99,7 @@ public class StageManager : MonoBehaviour
         string nextSceneName = "Stage" + currentStage; // 次のシーン名を生成
         if (Application.CanStreamedLevelBeLoaded(nextSceneName)) // シーンが存在するか確認
         {
-            //PlayerPrefs.SetInt("CurrentStage", currentStage); // ステージ番号を保存
+            PlayerPrefs.SetInt("CurrentStage", currentStage); // ステージ番号を保存
             SceneManager.LoadScene(nextSceneName); // 次のシーンを読み込む
         }
         else
@@ -119,7 +120,9 @@ public class StageManager : MonoBehaviour
         //if (Application.CanStreamedLevelBeLoaded(retrySceneName)) // シーンが存在するか確認
         if (Application.CanStreamedLevelBeLoaded(currentScene)) // シーンが存在するか確認
         {
+
             SceneManager.LoadScene(currentScene); // 現在のシーンを再読み込み
+            Debug.Log("Stage" + currentStage + "からスタート");
         }
         else
         {
