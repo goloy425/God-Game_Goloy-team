@@ -84,7 +84,6 @@ public class SphereMagnetism : MonoBehaviour
 		sphereMagUI = transform.Find("MachineUI").transform.Find("Ring").gameObject;
 		magNormal = sphereMagUI.transform.Find("Normal").gameObject;
 		magCaution = sphereMagUI.transform.Find("Caution").gameObject;
-		magWeak = sphereMagUI.transform.Find("Weak").gameObject;
 	}
 
 	// Update is called once per frame

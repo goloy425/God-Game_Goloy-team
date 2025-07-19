@@ -27,7 +27,6 @@ public class MovePlayerR : MonoBehaviour
 	private Vector3 basePosition = Vector3.zero;    // 移動の基準点
 
 	private Rigidbody rb;                       // Rigidbody
-	private Rigidbody ropeRb;                   // 紐のRigidbody
 	private GameInputs inputs;                  // GameInputsクラス
 	//private PlaySEAtRegularIntervals playSE;    // PlaySEAtRegularIntervalsコンポーネント
 	private Animator animator;
@@ -36,7 +35,6 @@ public class MovePlayerR : MonoBehaviour
 	private Vector3 moveForward;        // カメラ基準の移動方向
 
 	Pose pose;          // Poseの状態を受け取る
-
 	QTE qte;
 
 	// Start is called before the first frame update
@@ -45,8 +43,8 @@ public class MovePlayerR : MonoBehaviour
 		// Poseオブジェクトを取得
 		pose = GameObject.Find("Pose").GetComponent<Pose>();
 
-		// CheckFoundコンポーネントを取得
-		qte = GameObject.Find("QTE").GetComponent<QTE>();
+		//// CheckFoundコンポーネントを取得
+		//qte = GameObject.Find("QTE").GetComponent<QTE>();
 
 		// Rigidbodyコンポーネントを取得
 		rb = transform.parent.GetComponent<Rigidbody>();
@@ -69,11 +67,11 @@ public class MovePlayerR : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		// Pose画面を表示しているなら
-		if (pose.GetPose()||qte.GetStop())
-		{
-			return;
-		}
+		//// Pose画面を表示しているなら
+		//if (pose.GetPose() || qte.GetStop())
+		//{
+		//	return;
+		//}
 
 		// カメラの方向から、X-Z平面の単位ベクトルを取得
 		Vector3 cameraForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
