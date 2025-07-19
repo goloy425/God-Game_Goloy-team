@@ -43,7 +43,8 @@ public class CustomCameraController : MonoBehaviour
 	private int curStage = 0;                   // 現在のステージ
 	private int startStage;                     // 開始ステージ
 	private float startMinSize = 20.0f;         // 最初にステージの全体を写してから戻す
-	bool[] completeDirectionFg = { };           // ステージクリア後演出が終わったかどうか
+	private bool[] completeDirectionFg = { };   // 各ステージでステージクリア後演出が終わったかどうか
+	private bool isDirection = false;			// 現在演出中かどうか
 	private float timer = 0.0f;
 
 	private GameManager gameManager;
@@ -74,6 +75,7 @@ public class CustomCameraController : MonoBehaviour
 		mag2 = GameObject.Find("Magnet2").GetComponent<Magnetism>();
 
 		completeDirectionFg = new bool[stageNum];   // 演出完了フラグを初期化
+		isDirection = false;						
 		startMinSize = maxSize - 1.0f;              // 0除算回避のため最大サイズと同じにしない
 
 		startStage = gameManager.GetStartStage();
@@ -102,8 +104,10 @@ public class CustomCameraController : MonoBehaviour
 			{
 				if ((curStage == 0 || (startStage > 0 && curStage == startStage - 1)) && timer <= startDirectionTime)
 				{
-					// プレイヤーが動かないようにする
-					rbL.velocity = Vector3.zero;
+					isDirection = true;		// 演出中
+
+                    // プレイヤーが動かないようにする
+                    rbL.velocity = Vector3.zero;
 					rbR.velocity = Vector3.zero;
 
 					StartDirection(curStage);
@@ -119,7 +123,8 @@ public class CustomCameraController : MonoBehaviour
 				else if (timer > startDirectionTime)
 				{
 					timer = 0.0f;
-					completeDirectionFg[curStage] = true;
+                    isDirection = false;	// 演出中でない
+                    completeDirectionFg[curStage] = true;
 					Debug.Log("ステージ" + (curStage + 1) + "の演出：" + completeDirectionFg[curStage]);
 					curStage++;
 				}
@@ -135,10 +140,12 @@ public class CustomCameraController : MonoBehaviour
 				}
 			}
 			// ステージクリア後に次ステージ全体を写して戻す演出を行う
-			else if (!completeDirectionFg[curStage] && gameManager.GetStageClearFg(curStage - 1) && fadeController.GetCompleteFadeInFg() && timer <= clearDirectionTime)
-			{
-				// プレイヤーが動かないようにする
-				rbL.velocity = Vector3.zero;
+			else if (!completeDirectionFg[curStage] && gameManager.GetStageClearFg(curStage - 1) && timer <= clearDirectionTime)
+            {
+                isDirection = true;     // 演出中
+
+                // プレイヤーが動かないようにする
+                rbL.velocity = Vector3.zero;
 				rbR.velocity = Vector3.zero;
 
 				Debug.Log("演出中のステージ：" + curStage);
@@ -155,7 +162,8 @@ public class CustomCameraController : MonoBehaviour
 			else if (timer > clearDirectionTime)
 			{
 				timer = 0.0f;
-				completeDirectionFg[curStage] = true;
+                isDirection = false;    // 演出中でない
+                completeDirectionFg[curStage] = true;
 				Debug.Log("ステージ" + (curStage + 1) + "の演出：" + completeDirectionFg[curStage]);
 				curStage++;
 			}
@@ -186,19 +194,23 @@ public class CustomCameraController : MonoBehaviour
 		//	zoomSpeed = zoomSpeed_origin;
 		//}
 
-		// スローになったらor離れすぎる直前になったら磁石にカメラをフォーカス
-		if (mag1.isSlow_pMag && mag2.isSlow_pMag/* || mag1.dangerFarAway_pMag && mag2.dangerFarAway_pMag*/)
-		{
-			FocusOnMagnets();
-		}
-		else if (mag1.isSlow_pMag || mag1.isSlow_magObj/* || mag1.dangerFarAway_pMag || mag1.dangerFarAway_magObj*/)
-		{
-			FocusOnDangerPlayer(new Vector3(target1.position.x, target1.position.y, target1.position.z));
-		}
-		else if (mag2.isSlow_pMag || mag2.isSlow_magObj/* || mag2.dangerFarAway_pMag || mag2.dangerFarAway_magObj*/)
-		{
-			FocusOnDangerPlayer(new Vector3(target2.position.x, target2.position.y, target2.position.z));
-		}
+		// ステージ全体を移す演出中はそれを優先する
+		if(!isDirection)
+        {
+            // スローになったらor離れすぎる直前になったら磁石にカメラをフォーカス
+            if (mag1.isSlow_pMag && mag2.isSlow_pMag/* || mag1.dangerFarAway_pMag && mag2.dangerFarAway_pMag*/)
+            {
+                FocusOnMagnets();
+            }
+            else if (mag1.isSlow_pMag || mag1.isSlow_magObj/* || mag1.dangerFarAway_pMag || mag1.dangerFarAway_magObj*/)
+            {
+                FocusOnDangerPlayer(new Vector3(target1.position.x, target1.position.y, target1.position.z));
+            }
+            else if (mag2.isSlow_pMag || mag2.isSlow_magObj/* || mag2.dangerFarAway_pMag || mag2.dangerFarAway_magObj*/)
+            {
+                FocusOnDangerPlayer(new Vector3(target2.position.x, target2.position.y, target2.position.z));
+            }
+        }
 	}
 
 	// 必要なカメラサイズを計算する補助関数

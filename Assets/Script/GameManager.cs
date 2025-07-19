@@ -134,7 +134,10 @@ public class GameManager : MonoBehaviour
 	[Header("開始ステージ")]
 	public int startStage;
 
-	[Header("遷移先のシーン名")]
+    [Header("ステージ移動時のフェード処理にかける秒数")]
+    public float fadeDuration = 3.0f;
+
+    [Header("遷移先のシーン名")]
 	public string resultSceneName = "Result";       // 遷移先のシーン名をInspectorで設定
 	public string gameOverSceneName = "GameOver";   // 遷移先のシーン名をInspectorで設定
 
@@ -488,14 +491,14 @@ public class GameManager : MonoBehaviour
 		// フェードイン
 		if (fadeInFg)
 		{
-			fadeController.StartFadeIn();
+			fadeController.StartFadeIn(fadeDuration);
 			fadeInFg = false;
 		}
 
 		// フェードアウト
 		if (fadeOutFg)
 		{
-			fadeController.StartFadeOut();
+			fadeController.StartFadeOut(fadeDuration);
 			fadeOutFg = false;
 		}
 	}
