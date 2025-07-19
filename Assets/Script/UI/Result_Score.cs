@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 //==========================================================
 // êßçÏé“ÅFã{ñ{òaâπ
@@ -11,29 +9,46 @@ using TMPro;
 
 public class Result_Score : MonoBehaviour
 {
-	private TextMeshProUGUI playTime;
-	private TextMeshProUGUI deaths;
-	private GameManager gm;
+	private NumDisplay nDis;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		playTime = GameObject.Find("PlayTime").GetComponent<TextMeshProUGUI>();
-		deaths = GameObject.Find("Deaths").GetComponent<TextMeshProUGUI>();
+		nDis = GetComponent<NumDisplay>();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		//--- ÉvÉåÉCéûä‘ ---//
-		float time = PlayerPrefs.GetFloat("PlayTime");
+		if (PlayerPrefs.HasKey("PlayTime"))
+		{
+			int time = PlayerPrefs.GetInt("PlayTime");
+			nDis.SetTime(time);
+		}
+		else
+		{
+			int time = 0;
+			nDis.SetTime(time);
+		}
 
-		int minutes = Mathf.FloorToInt(time / 60);
-		int seconds = Mathf.FloorToInt(time % 60);
-		int fraction = Mathf.FloorToInt((time * 10) % 10);
 
-		playTime.text=string.Format("{0:00}:{1:00}.{2}", minutes, seconds, fraction);
+		//--- éÄñSâÒêî ---//
+		if (PlayerPrefs.HasKey("Deaths"))
+		{
+			int deaths = PlayerPrefs.GetInt("Deaths");
+			nDis.SetDeathCount(deaths);
+		}
+		else
+		{
+			int deaths = 0;
+			nDis.SetDeathCount(deaths);
+		}
+	}
 
-        //--- éÄñSâÒêî ---//
-    }
+	private void OnDestroy()
+	{
+		PlayerPrefs.DeleteKey("PlayTime");
+		PlayerPrefs.DeleteKey("Deaths");
+	}
 }
