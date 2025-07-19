@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6597408835253065721
+--- !u!1 &1797142626108716774
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3700168238338199847}
-  - component: {fileID: 2438506856380710220}
-  - component: {fileID: 1356007189502076878}
-  - component: {fileID: 2369243511030767718}
+  - component: {fileID: 7791742372597098513}
+  - component: {fileID: 6944667451841880563}
+  - component: {fileID: 8151523359529128518}
+  - component: {fileID: 4712176622657562383}
   m_Layer: 0
-  m_Name: deskchair
+  m_Name: door_rend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3700168238338199847
+--- !u!4 &7791742372597098513
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6597408835253065721}
+  m_GameObject: {fileID: 1797142626108716774}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.427683, y: 0.7282301, z: -11.798582}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalPosition: {x: 345.09726, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 3181548891876890707}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2438506856380710220
+--- !u!33 &6944667451841880563
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6597408835253065721}
-  m_Mesh: {fileID: 154446336845586858, guid: f120c3da7a2700c4f8e5e8bd6dfaae8e, type: 3}
---- !u!23 &1356007189502076878
+  m_GameObject: {fileID: 1797142626108716774}
+  m_Mesh: {fileID: 565222141647583878, guid: 4fb3d389c77e0e246aa0a57deba4e41e, type: 3}
+--- !u!23 &8151523359529128518
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6597408835253065721}
+  m_GameObject: {fileID: 1797142626108716774}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 92085cb54bb6c374a9b3865f26296080, type: 2}
+  - {fileID: 2100000, guid: c8c2cdc3cdfd19b498a934495756584a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,16 +84,48 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2369243511030767718
+--- !u!65 &4712176622657562383
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6597408835253065721}
+  m_GameObject: {fileID: 1797142626108716774}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 61.061287, y: 77.28957, z: 70.03859}
-  m_Center: {x: -1.2974739, y: -34.483578, z: -0.22469461}
+  m_Size: {x: 229.98007, y: 279.90527, z: 52.787724}
+  m_Center: {x: -0.000015258789, y: 139.92175, z: 16.393866}
+--- !u!1 &2840910931883213545
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3181548891876890707}
+  m_Layer: 0
+  m_Name: brokendoor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3181548891876890707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2840910931883213545}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 44.052002, y: 0.0003089732, z: -8.030847}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7791742372597098513}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
