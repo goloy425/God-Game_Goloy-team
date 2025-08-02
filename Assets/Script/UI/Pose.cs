@@ -14,8 +14,8 @@ public class Pose : MonoBehaviour
     bool select = true;
 
     private GameInputs inputs;  // GameInputsクラス
-    private PoseManager_KeyMou pKM; // PoseManager_KeyMouクラス
-    private PoseManager_Con pC; // PoseManager_Conクラス
+    //private PoseManager_KeyMou pKM; // PoseManager_KeyMouクラス
+    //private PoseManager_Con pC; // PoseManager_Conクラス
 
     // キー入力取得用
     private bool nowFg;
@@ -38,10 +38,10 @@ public class Pose : MonoBehaviour
         inputs = new GameInputs();
         inputs.Enable();
 
-        pKM = GameObject.Find("SceneManager").GetComponent<PoseManager_KeyMou>();
-        pKM.Start();
-        pC = GameObject.Find("SceneManager").GetComponent<PoseManager_Con>();
-        pC.Start();
+        //pKM = GameObject.Find("SceneManager").GetComponent<PoseManager_KeyMou>();
+        //pKM.Start();
+        //pC = GameObject.Find("SceneManager").GetComponent<PoseManager_Con>();
+        //pC.Start();
     }
 
     // Update is called once per frame
@@ -95,8 +95,8 @@ public class Pose : MonoBehaviour
             newColor.a = 0.5f;
             targetImage.color = newColor;
 
-            pKM.Update();
-            pC.Update();
+            //pKM.Update();
+            //pC.Update();
         }
     }
 
