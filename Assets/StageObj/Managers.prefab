@@ -1,5 +1,104 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1418172950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1418172951}
+  - component: {fileID: 1418172954}
+  - component: {fileID: 1418172956}
+  - component: {fileID: 1418172955}
+  - component: {fileID: 1418172957}
+  m_Layer: 0
+  m_Name: SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1418172951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418172950}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 63.36475, y: 56.861763, z: -3.2263389}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3777458884086646856}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1418172954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418172950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1b2ac10cdc79f0488526d8e209458b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentStage: 1
+--- !u!114 &1418172956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418172950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9f0642671126f4a9ea625c725ddefb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resumeNormal: {fileID: 0}
+  resumeGlow: {fileID: 0}
+  retryNormal: {fileID: 0}
+  retryGlow: {fileID: 0}
+  titleNormal: {fileID: 0}
+  titleGlow: {fileID: 0}
+--- !u!114 &1418172955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418172950}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae3d3c9f6162c1439e65c7ef08d59d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  buttonIdx: 0
+--- !u!114 &1418172957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418172950}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057dfed5b4a23ba469d25a575ca299a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &3777458883820336243
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,6 +203,7 @@ Transform:
   - {fileID: 3777458883820336242}
   - {fileID: 4371288125661148670}
   - {fileID: 3777458884507966041}
+  - {fileID: 1418172951}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -202,8 +302,8 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     doorFlame: {fileID: 0}
-    playerLPos: {x: -56, y: 1.06, z: 22}
-    playerRPos: {x: -51, y: 1.06, z: 22}
+    playerLPos: {x: -51, y: 1.06, z: 22}
+    playerRPos: {x: -58, y: 1.06, z: 22}
     playerLRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     playerRRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
   - magObjSphere: []
@@ -233,8 +333,9 @@ MonoBehaviour:
   gameOverEffectL: {fileID: 2866261753732326601, guid: 0bead49cc8de38444a5e74daff638456, type: 3}
   gameOverEffectR: {fileID: 8693479264715462332, guid: b1598d29b49c0b743a999479a35282fd, type: 3}
   startStage: 1
-  resultSceneName: Result
-  gameOverSceneName: GameOver
+  fadeDuration: 0.3
+  resultSceneName: Result_StageClear
+  gameOverSceneName: Result_GameOver
   pressurePlates: []
 --- !u!1 &3777458884274074974
 GameObject:
@@ -374,6 +475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3777458884507966041}
   - component: {fileID: 3777458884507966040}
+  - component: {fileID: 831330402}
   m_Layer: 0
   m_Name: DistanceManager
   m_TagString: Untagged
@@ -408,11 +510,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97e6f98e097765c448d7f5d02ca6f5da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 3777458884219958472}
   magnet1: {fileID: 0}
   magnet2: {fileID: 0}
-  plate1: {fileID: 0}
-  plate2: {fileID: 0}
+--- !u!114 &831330402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3777458884507965990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b78a34a2c76842f4aa58f9a5be9557c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magnet1: {fileID: 0}
+  magnet2: {fileID: 0}
+  playerL: {fileID: 0}
+  playerR: {fileID: 0}
+  dangerDrag: 35
 --- !u!1001 &3777458884097831166
 PrefabInstance:
   m_ObjectHideFlags: 0

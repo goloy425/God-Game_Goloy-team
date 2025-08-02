@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class MoveHCubeR : MonoBehaviour
 {
-	[Header("プレイヤーオブジェクトを設定")]
+	[Header("プレイヤーコントローラーを設定")]
 	public GameObject playerR;
 
 	[Header("磁石の登録")]

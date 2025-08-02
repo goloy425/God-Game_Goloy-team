@@ -67,11 +67,11 @@ public class MovePlayerR : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		//// Pose画面を表示しているなら
-		//if (pose.GetPose() || qte.GetStop())
-		//{
-		//	return;
-		//}
+		// Pose画面を表示しているなら
+		if (pose.GetPose() /*|| qte.GetStop()*/)
+		{
+			return;
+		}
 
 		// カメラの方向から、X-Z平面の単位ベクトルを取得
 		Vector3 cameraForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;

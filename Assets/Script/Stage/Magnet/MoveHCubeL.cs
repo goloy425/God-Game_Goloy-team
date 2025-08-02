@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class MoveHCubeL : MonoBehaviour
 {
-	[Header("プレイヤーオブジェクトを設定")]
+	[Header("プレイヤーコントローラーを設定")]
 	public GameObject playerL;
 
 	[Header("磁石の登録")]

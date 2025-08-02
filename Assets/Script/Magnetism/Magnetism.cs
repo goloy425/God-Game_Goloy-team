@@ -186,9 +186,9 @@ public class Magnetism : MonoBehaviour
 			isResisting = false;
 		}
 
-		// 離れすぎ判定　フラグの調整
-		if (inPlayerMagArea) { dangerFarAway_magObj = false; }
-		if (!dangerFarAway_pMag && !dangerFarAway_magObj) { isResisting = false; }
+		//// 離れすぎ判定　フラグの調整
+		//if (inPlayerMagArea) { dangerFarAway_magObj = false; }
+		//if (!dangerFarAway_pMag && !dangerFarAway_magObj) { isResisting = false; }
 
 
 		// スローモーション切替用フラグの管理

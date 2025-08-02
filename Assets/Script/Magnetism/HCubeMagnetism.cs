@@ -13,7 +13,7 @@ public class HCubeMagnetism : MonoBehaviour
 	public float MagnetismRange => magnetismRange;
 	public float DeadRange => deadRange;
 
-	[Header("プレイヤーオブジェクトを設定")]
+	[Header("プレイヤーコントローラーを設定")]
 	public GameObject playerL;
 	public GameObject playerR;
 
