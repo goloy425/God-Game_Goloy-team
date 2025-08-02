@@ -51,7 +51,7 @@ public class Vibration : MonoBehaviour
 	private bool playing = false;
 
 	public int startStage;
-	public bool getStartStage = false;
+	private bool getStartStage = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -121,22 +121,22 @@ public class Vibration : MonoBehaviour
 
 
 		//--- ドアが開いた時周りの処理 ---//
-		if(!getStartStage)
-		{
-			startStage = gameManager.GetStartStage();   // 開始ステージを取得
-			getStartStage = true;
-		}
+		//if(!getStartStage)
+		//{
+		//	startStage = gameManager.GetStartStage();   // 開始ステージを取得
+		//	getStartStage = true;
+		//}
 
-		for (int i = startStage - 1; i < doors.Length; i++)
-		{
-			isMoving = doors[i].GetDoorMovingFg();
+		//for (int i = startStage; i < doors.Length; i++)
+		//{
+		//	isMoving = doors[i].GetDoorMovingFg();
 
-			if (isMoving)
-			{
-				StartCoroutine(VibOpenDoor());
-				return;
-			}
-		}
+		//	if (isMoving)
+		//	{
+		//		StartCoroutine(VibOpenDoor());
+		//		return;
+		//	}
+		//}
 
 
 		//--- 強化時の振動周りの処理 ---//

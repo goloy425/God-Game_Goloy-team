@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class SplitCube : MonoBehaviour
 {
-	[Header("プレイヤーオブジェクトを設定")]
+	[Header("プレイヤーコントローラーを設定")]
 	public GameObject playerL;
 	public GameObject playerR;
 

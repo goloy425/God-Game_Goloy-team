@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class SwitchMap : MonoBehaviour
 {
-	[Header("マップオブジェクトのObjectsを設定")]
+	[Header("マップオブジェクト(カメラ+Objectsの塊)を設定")]
 	public GameObject[] Objects;
 
 	[Header("GameManagerを設定")]

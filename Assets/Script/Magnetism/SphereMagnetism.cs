@@ -16,7 +16,7 @@ public class SphereMagnetism : MonoBehaviour
 	public float magnetism = 200.0f;
 	public float strongMagnetism = 999.0f;
 
-	[Header("プレイヤーオブジェクトを設定")]
+	[Header("プレイヤーコントローラーを設定")]
 	public GameObject playerL;
 	public GameObject playerR;
 
@@ -160,8 +160,8 @@ public class SphereMagnetism : MonoBehaviour
 				magCaution.SetActive(false);
 			}
 
-			// 離れすぎる直前のやつ
-			if (surfaceDistance >= tooFarAway.GetDangerDist())
+			// 離れすぎる直前のやつ プレイヤー同士が磁力範囲内にない状態で離れると以下が通る
+			if (surfaceDistance >= tooFarAway.GetDangerDist()&&!magnet.inPlayerMagArea)
 			{
 				magnet.dangerFarAway_magObj = true;
 				magnet.isResisting = true;

@@ -42,13 +42,13 @@ public class TooFarAway : MonoBehaviour
 	void Start()
 	{
 		// 各距離を設定　AdjustMagnetismが関わってくるので現状の通常磁力範囲を固定値で入れてある…
-		dangerDist = 6.0f * 0.75f;
+		dangerDist = 7.0f * 0.8f;
 		safetyDist = dangerDist - 0.05f;
 
 		dangerDist_c = 8.0f * 0.8f;	// 8.0f：2つに分かれるやつの磁力範囲
 		safetyDist_c = dangerDist_c - 0.05f;
 
-		pDangerDist = 7.0f * 0.8f;		// 7.0F：プレイヤーの磁力範囲
+		pDangerDist = 9.0f * 0.8f;		// 9.0F：プレイヤーの磁力範囲
 		pSafetyDist = pDangerDist - 0.05f;
 
 		// プレイヤーのコンポーネントを取得
