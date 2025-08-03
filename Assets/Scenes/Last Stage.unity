@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9476,6 +9477,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: doorframe_rend (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4497845281144370387, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
+      propertyPath: curStage
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
 --- !u!4 &280524918 stripped
@@ -18503,6 +18508,10 @@ PrefabInstance:
     - target: {fileID: 4497845281144370386, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
       propertyPath: m_Name
       value: doorframe_rend (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497845281144370387, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
+      propertyPath: curStage
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
@@ -45386,6 +45395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: doorframe_rend (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4497845281144370387, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
+      propertyPath: curStage
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
 --- !u!4 &1400061618 stripped
@@ -46860,6 +46873,10 @@ PrefabInstance:
     - target: {fileID: 4497845281144370386, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
       propertyPath: m_Name
       value: doorframe_rend (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497845281144370387, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
+      propertyPath: curStage
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0354b025971df49478da73e6beeda3c5, type: 3}
